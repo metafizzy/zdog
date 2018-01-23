@@ -17,9 +17,9 @@ var colors = {
   fur: '#EA0',
   eye: '#333',
   inner: 'white',
-  cloth: '#F18',
-  // cloth: 'hsla(0, 100%, 50%, 0.2)',
-  armor: '#804',
+  cloak: '#F18',
+  // cloak: 'hsla(0, 100%, 50%, 0.2)',
+  armor: '#915',
 };
 
 var isRotating = true;
@@ -181,8 +181,7 @@ new Shape({
 // left shoulder
 new Shape({
   points: [
-    // { x: -8, y: 38, z: 2 },
-    { x: -12, y: 38, z: 2 },
+    { x: -11, y: 38, z: 2 },
     { x: -12, y: 40, z: 2 },
   ],
   closed: false,
@@ -192,7 +191,7 @@ new Shape({
 // right shoulder
 new Shape({
   points: [
-    { x: 12, y: 38, z: 2 },
+    { x: 11, y: 38, z: 2 },
     { x: 12, y: 40, z: 2 },
   ],
   color: colors.armor,
@@ -251,78 +250,63 @@ new Shape({
 });
 
 
-var robeX0 = 8;
+var cloakX0 = 7;
+var cloakX1 = 8;
 
-var robeY0 = 36;
-var robeY1 = 40;
-var robeY2 = 47;
+var cloakY0 = 35;
+var cloakY1 = 40;
+var cloakY2 = 47;
 
-var robeZ0 = 3;
-var robeZ1 = 8;
+var cloakZ0 = 0;
+var cloakZ1 = 8;
 
-// front robe
+// front cloak
 new Shape({
   points: [
-    { x: -robeX0, y: robeY1, z: -robeZ1 },
-    { x: robeX0, y: robeY1, z: -robeZ1 },
-    { x: robeX0, y: robeY2, z: -robeZ1 },
-    { x: -robeX0, y: robeY2, z: -robeZ1 },
+    { x: -cloakX1, y: cloakY1, z: -cloakZ1 },
+    { x: cloakX1, y: cloakY1, z: -cloakZ1 },
+    { x: cloakX1, y: cloakY2, z: -cloakZ1 },
+    { x: -cloakX1, y: cloakY2, z: -cloakZ1 },
   ],
   fill: true,
-  // closed: true,
-  color: colors.cloth,
+  color: colors.cloak,
   lineWidth: 4,
 });
-// back robe
+// back cloak
 new Shape({
   points: [
-    { x: -robeX0, y: robeY1, z: robeZ1 },
-    { x: robeX0, y: robeY1, z: robeZ1 },
-    { x: robeX0, y: robeY2, z: robeZ1 },
-    { x: -robeX0, y: robeY2, z: robeZ1 },
+    { x: -cloakX1, y: cloakY1, z: cloakZ1 },
+    { x: cloakX1, y: cloakY1, z: cloakZ1 },
+    { x: cloakX1, y: cloakY2, z: cloakZ1 },
+    { x: -cloakX1, y: cloakY2, z: cloakZ1 },
   ],
   fill: true,
-  // closed: true,
-  color: colors.cloth,
+  color: colors.cloak,
   lineWidth: 4,
 });
-// robe top
+
+// cloak front-top
 new Shape({
   points: [
-    { x: -robeX0, y: robeY0, z: robeZ0 },
-    { x: robeX0, y: robeY0, z: robeZ0 },
-    { x: robeX0, y: robeY0, z: -robeZ0 },
-    { x: -robeX0, y: robeY0, z: -robeZ0 },
+    { x: -cloakX0, y: cloakY0, z: -cloakZ0 },
+    { x: cloakX0, y: cloakY0, z: -cloakZ0 },
+    { x: cloakX1, y: cloakY1, z: -cloakZ1 },
+    { x: -cloakX1, y: cloakY1, z: -cloakZ1 },
   ],
   fill: true,
-  // closed: true,
-  color: colors.cloth,
+  color: colors.cloak,
   lineWidth: 4,
 });
-// robe front-top
+// cloak back-top
 new Shape({
   points: [
-    { x: -robeX0, y: robeY0, z: -robeZ0 },
-    { x: robeX0, y: robeY0, z: -robeZ0 },
-    { x: robeX0, y: robeY1, z: -robeZ1 },
-    { x: -robeX0, y: robeY1, z: -robeZ1 },
+    { x: -cloakX0, y: cloakY0, z: cloakZ0 },
+    { x: cloakX0, y: cloakY0, z: cloakZ0 },
+    { x: cloakX1, y: cloakY1, z: cloakZ1 },
+    { x: -cloakX1, y: cloakY1, z: cloakZ1 },
   ],
   fill: true,
-  // closed: true,
-  color: colors.cloth,
-  lineWidth: 4,
-});
-// robe back-top
-new Shape({
-  points: [
-    { x: -robeX0, y: robeY0, z: robeZ0 },
-    { x: robeX0, y: robeY0, z: robeZ0 },
-    { x: robeX0, y: robeY1, z: robeZ1 },
-    { x: -robeX0, y: robeY1, z: robeZ1 },
-  ],
-  fill: true,
-  // closed: true,
-  color: colors.cloth,
+  color: colors.cloak,
   lineWidth: 4,
 });
 
