@@ -237,11 +237,11 @@ new Shape({
 new Shape({
   points: [
     { x: -8, y: 29, z: -4 },
-    { x: 0, y: 29, z: -12 }, // snout tip
+    { x: 0, y: 29, z: -10.5 }, // snout tip
     { x: 8, y: 29, z: -4 },
   ],
   color: colors.fur,
-  lineWidth: 13,
+  lineWidth: 14,
 });
 
 // whiskers
