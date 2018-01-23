@@ -295,7 +295,7 @@ new Shape({
 // left shoulder
 new Shape({
   points: [
-    { x: -11.5, y: 38, z: 2 },
+    { x: -11, y: 38, z: 2 },
     { x: -12, y: 40, z: 2 },
   ],
   closed: false,
@@ -305,7 +305,7 @@ new Shape({
 // right shoulder
 new Shape({
   points: [
-    { x: 11.5, y: 38, z: 2 },
+    { x: 11, y: 38, z: 2 },
     { x: 12, y: 40, z: 2 },
   ],
   color: colors.armor,
@@ -365,63 +365,37 @@ new Shape({
 
 
 var cloakX0 = 8;
-var cloakX1 = 8;
+// var cloakX1 = 8;
 
 var cloakY0 = 35;
-var cloakY1 = 40;
-var cloakY2 = 48;
+var cloakY1 = 37;
+var cloakY2 = 40;
+var cloakY3 = 47;
 
 var cloakZ0 = 0;
-var cloakZ1 = 8;
+var cloakZ1 = 5;
+var cloakZ2 = 7;
 
-// front cloak
-new Shape({
-  points: [
-    { x: -cloakX1, y: cloakY1, z: -cloakZ1 },
-    { x: cloakX1, y: cloakY1, z: -cloakZ1 },
-    { x: cloakX1, y: cloakY2, z: -cloakZ1 },
-    { x: -cloakX1, y: cloakY2, z: -cloakZ1 },
-  ],
-  fill: true,
-  color: colors.cloak,
-  lineWidth: 2,
-});
-// back cloak
-new Shape({
-  points: [
-    { x: -cloakX1, y: cloakY1, z: cloakZ1 },
-    { x: cloakX1, y: cloakY1, z: cloakZ1 },
-    { x: cloakX1, y: cloakY2, z: cloakZ1 },
-    { x: -cloakX1, y: cloakY2, z: cloakZ1 },
-  ],
-  fill: true,
-  color: colors.cloak,
-  lineWidth: 2,
-});
-
-// cloak front-top
-new Shape({
-  points: [
-    { x: -cloakX0, y: cloakY0, z: -cloakZ0 },
-    { x: cloakX0, y: cloakY0, z: -cloakZ0 },
-    { x: cloakX1, y: cloakY1, z: -cloakZ1 },
-    { x: -cloakX1, y: cloakY1, z: -cloakZ1 },
-  ],
-  fill: true,
-  color: colors.cloak,
-  lineWidth: 2,
-});
-// cloak back-top
-new Shape({
-  points: [
-    { x: -cloakX0, y: cloakY0, z: cloakZ0 },
-    { x: cloakX0, y: cloakY0, z: cloakZ0 },
-    { x: cloakX1, y: cloakY1, z: cloakZ1 },
-    { x: -cloakX1, y: cloakY1, z: cloakZ1 },
-  ],
-  fill: true,
-  color: colors.cloak,
-  lineWidth: 2,
+[
+  { ya: cloakY0, za: cloakZ0, yb: cloakY1, zb: cloakZ1 },
+  { ya: cloakY1, za: cloakZ1, yb: cloakY2, zb: cloakZ2 },
+  { ya: cloakY2, za: cloakZ2, yb: cloakY3, zb: cloakZ2 },
+].forEach( function( yzPosition ) {
+  [ 1, -1 ].forEach( function( zSide ) {
+    var za = yzPosition.za * zSide;
+    var zb = yzPosition.zb * zSide;
+    new Shape({
+      points: [
+        { x: -cloakX0, y: yzPosition.ya, z: za },
+        { x: cloakX0, y: yzPosition.ya, z: za },
+        { x: cloakX0, y: yzPosition.yb, z: zb },
+        { x: -cloakX0, y: yzPosition.yb, z: zb },
+      ],
+      fill: true,
+      color: colors.cloak,
+      lineWidth: 4,
+    });
+  });
 });
 
 
