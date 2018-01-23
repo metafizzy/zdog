@@ -237,7 +237,7 @@ new Shape({
 new Shape({
   points: [
     { x: -8, y: 29, z: -4 },
-    { x: 0, y: 29, z: -10.5 }, // snout tip
+    { x: 0, y: 29, z: -11 }, // snout tip
     { x: 8, y: 29, z: -4 },
   ],
   color: colors.fur,
