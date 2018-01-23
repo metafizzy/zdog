@@ -3,7 +3,6 @@
 // *~*~*~* Bless this mess *~*~*~* //
 
 var TAU = Math.PI * 2;
-var RT2 = Math.sqrt(2);
 var canvas = document.querySelector('canvas');
 var rotateSlider= document.querySelector('.rotate-slider');
 var ctx = canvas.getContext('2d');
@@ -142,8 +141,8 @@ new Shape({
 // left eye
 new Shape({
   points: [
-    { x: -8, y: 22, z: -8*RT2 },
-    { x: -8, y: 26, z: -8*RT2 },
+    { x: -8, y: 22, z: -11 },
+    { x: -8, y: 26, z: -11 },
   ],
   color: colors.eye,
   lineWidth: 4,
@@ -152,8 +151,8 @@ new Shape({
 // right eye
 new Shape({
   points: [
-    { x: 8, y: 22, z: -8*RT2 },
-    { x: 8, y: 26, z: -8*RT2 },
+    { x: 8, y: 22, z: -11 },
+    { x: 8, y: 26, z: -11 },
   ],
   color: colors.eye,
   lineWidth: 4,
@@ -234,9 +233,18 @@ new Shape({
   lineWidth: 3,
 });
 
+// snout
+new Shape({
+  points: [
+    { x: -8, y: 29, z: -4 },
+    { x: 0, y: 29, z: -12 }, // snout tip
+    { x: 8, y: 29, z: -4 },
+  ],
+  color: colors.fur,
+  lineWidth: 13,
+});
+
 // whiskers
-
-
 var whiskerX0 = 7;
 var whiskerX1 = 16;
 var whiskerY0 = 27;
