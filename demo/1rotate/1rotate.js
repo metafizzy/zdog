@@ -1,10 +1,11 @@
-/* jshint browser: true, unused: true, undef: true */
+/* jshint browser: true, devel: true, unused: true, undef: true */
 
-// *~*~*~* Bless this mess *~*~*~* // 
+// *~*~*~* Bless this mess *~*~*~* //
 
 var TAU = Math.PI * 2;
 var RT2 = Math.sqrt(2);
 var canvas = document.querySelector('canvas');
+var rotateSlider= document.querySelector('.rotate-slider');
 var ctx = canvas.getContext('2d');
 var w = 48;
 var h = 64;
@@ -20,369 +21,274 @@ var colors = {
   armor: '#804',
 };
 
+var isRotating = true;
 var angleY = 0;
 var rYCos, rYSin;
 var persp = 0.5;
 
+// -- Pseudo Vector3 class -- //
+
+function Vector3( x, y, z ) {
+  this.x = x;
+  this.y = y;
+  this.z = z;
+}
+
+Vector3.prototype.update = function() {
+  var rzx = rYSin * -this.z;
+  var rzy = rYCos * -this.z;
+  var zx = this.x * rYCos;
+  var zy = this.x * -rYSin;
+  this.renderZ = rzy + zy;
+  this.renderX = rzx + zx + w/2;
+  this.renderY = this.renderZ * persp + this.y;
+};
 
 // -- Shape class -- //
 
 // collection of shapes
 var shapes = [];
 
-function Shape( props ) {
-  this.x = props.x;
-  this.y = props.y;
-  this.z = props.z;
-  this.render = props.render;
+function Shape( properties ) {
+  // default
+  this.stroke = true;
+  this.fill = false;
+  this.lineWidth = 1;
+  this.closed = true;
+  // extend properties
+  for ( var propName in properties ) {
+    this[ propName ] = properties[ propName ];
+  }
+  // convert plain ol' object to Vector3 object
+  this.points = this.points.map( function( point ) {
+    return new Vector3( point.x, point.y, point.z );
+  });
+
   // add to collection
   shapes.push( this );
 }
 
 Shape.prototype.update = function() {
-  var rzx = rYSin * -this.z;
-  var rzy = rYCos * -this.z;
-  var zx = this.x * rYCos;
-  var zy = this.x * -rYSin;
-  this.rendZ = rzy + zy;
-  this.rendX = rzx + zx + w/2;
-  this.rendY = this.rendZ * persp + this.y;
+  var sortValueTotal = 0;
+  this.points.forEach( function( point ) {
+    point.update();
+    sortValueTotal += point.y - point.renderZ;
+  });
+
+  // average sort value of all points
+  // def not geometrically correct, but works for me
+  this.sortValue = sortValueTotal / this.points.length;
 };
 
-// -- VerticalRect class -- // 
+// HACK, maybe use array?
+// var renderProps = {
+//   lineCap: true,
+//   lineJoin: true,
+//   strokeStyle: true,
+//   fillStyle: true,
+// }
 
-function VerticalRect( props ) {
-  this.x = props.x;
-  this.y = props.y;
-  this.z = props.z;
-  this.width = props.width;
-  this.height = props.height;
-  this.render = props.render;
-  this.points = {
-    a: {},
-    b: {},
-    c: {},
-    d: {},
-  };
-  // add to collection
-  shapes.push( this );
-}
+Shape.prototype.render = function() {
+  // set default color
+  ctx.fillStyle = this.color;
+  ctx.strokeStyle = this.color;
+  // set any render properties
+  ctx.lineWidth = this.lineWidth;
+  ctx.lineCap = 'round';
+  // console.log( this.lineWidth );
+  // for ( var renderPropName in renderProps ) {
+  //   var renderProp = this[ renderProp ];
+  //   if ( renderProp ) {
+  //     ctx[ renderPropName ] = renderProp;
+  //   }
+  // }
 
-VerticalRect.prototype.update = function() {
-  var rzx = rYSin * -this.z;
-  var rzy = rYCos * -this.z;
-  var zx = this.x * rYCos;
-  var zy = this.x * -rYSin;
-  this.rendZ = rzy + zy;
-  this.rendX = rzx + zx + w/2;
-  this.rendY = this.rendZ * persp + this.y;
-  var x1 = this.x - this.width/2;
-  var y1 = this.y - this.height/2;
-  var x2 = this.x + this.width/2;
-  var y2 = this.y + this.height/2;
-  this.points.a.x = projectX( x1, y1, this.z );
-  this.points.a.y = projectY( x1, y1, this.z );
-  this.points.b.x = projectX( x2, y1, this.z );
-  this.points.b.y = projectY( x2, y1, this.z );
-  this.points.c.x = projectX( x2, y2, this.z );
-  this.points.c.y = projectY( x2, y2, this.z );
-  this.points.d.x = projectX( x1, y2, this.z );
-  this.points.d.y = projectY( x1, y2, this.z );
+  // render points
+  ctx.beginPath();
+  this.points.forEach( function( point, i ) {
+    // moveTo first point, lineTo others
+    var renderMethod = i ? 'lineTo' : 'moveTo';
+    ctx[ renderMethod ]( point.renderX, point.renderY );
+    // console.log( renderMethod, point.renderX, point.renderY );
+  });
+  // close path by return to first point
+  var length = this.points.length;
+  var isOnePoint = length == 1;
+  var isClosed = this.closed && length > 2;
+  if ( isOnePoint || isClosed ) {
+    var point0 = this.points[0];
+    ctx.lineTo( point0.renderX, point0.renderY );
+  }
+  if ( this.stroke ) {
+    ctx.stroke();
+    // console.log('stroke');
+  }
+  if ( this.fill ) {
+    ctx.fill();
+  }
+  // debugger;
+  ctx.closePath();
 };
-
-function projectX( x, y, z ) {
-  var rzx = rYSin * -z;
-  var zx = x * rYCos;
-  return rzx + zx + w/2;
-}
-
-function projectY( x, y, z ) {
-  var rzy = rYCos * -z;
-  var zy = x * -rYSin;
-  var rendZ =  rzy + zy;
-  return rendZ * persp + y;
-}
 
 // -- illustration shapes --- //
 
 // body center
 new Shape({
-  x: 0,
-  y: 43,
-  z: 0,
-  render: function() {
-    ctx.strokeStyle = colors.inner;
-    ctx.lineWidth = 12;
-    line( this.rendX, this.rendY-2,
-      this.rendX, this.rendY+2 );
-  },
+  points: [
+    { x: 0, y: 42, z: 0 },
+    { x: 0, y: 44, z: 0 },
+  ],
+  color: colors.inner,
+  lineWidth: 12,
 });
 
 // head circle
 new Shape({
-  x: 0,
-  y: 24,
-  z: 0,
-  render: function() {
-    ctx.fillStyle = colors.fur;
-    circle( this.rendX, this.rendY, 16 );
-  },
+  points: [
+    { x: 0, y: 24, z: 0 },
+  ],
+  color: colors.fur,
+  lineWidth: 32,
 });
+
 
 // left eye
 new Shape({
-  x: -8,
-  y: 24,
-  z: -8*RT2,
-  render: function() {
-    ctx.strokeStyle = colors.eye;
-    ctx.lineWidth = 4;
-    line( this.rendX, this.rendY-2,
-      this.rendX, this.rendY+2 );
-  },
+  points: [
+    { x: -8, y: 22, z: -8*RT2 },
+    { x: -8, y: 26, z: -8*RT2 },
+  ],
+  color: colors.eye,
+  lineWidth: 4,
 });
 
 // right eye
 new Shape({
-  x: 8,
-  y: 24,
-  z: -8*RT2,
-  render: function() {
-    ctx.strokeStyle = colors.eye;
-    ctx.lineWidth = 4;
-    line( this.rendX, this.rendY-2,
-      this.rendX, this.rendY+2 );
-  },
+  points: [
+    { x: 8, y: 22, z: -8*RT2 },
+    { x: 8, y: 26, z: -8*RT2 },
+  ],
+  color: colors.eye,
+  lineWidth: 4,
 });
 
 // left ear
 new Shape({
-  x: -9,
-  y: 18,
-  z: 5,
-  render: function() {
-    ctx.strokeStyle = colors.fur;
-    ctx.lineWidth = 14;
-    line( this.rendX, this.rendY-4,
-      this.rendX, this.rendY+4 );
-  },
+  points: [
+    { x: -9, y: 10, z: 5 },
+    { x: -9, y: 18, z: 5 },
+  ],
+  color: colors.fur,
+  lineWidth: 14,
 });
-
 // right ear
 new Shape({
-  x: 9,
-  y: 18,
-  z: 5,
-  render: function() {
-    ctx.strokeStyle = colors.fur;
-    ctx.lineWidth = 14;
-    line( this.rendX, this.rendY-4,
-      this.rendX, this.rendY+4 );
-  },
+  points: [
+    { x: 9, y: 10, z: 5 },
+    { x: 9, y: 18, z: 5 },
+  ],
+  color: colors.fur,
+  lineWidth: 14,
 });
-
-// left inner ear
-// new Shape({
-//   x: -10,
-//   y: 16,
-//   z: 0,
-//   render: function() {
-//     ctx.strokeStyle = colors.inner;
-//     ctx.lineWidth = 6;
-//     line( this.rendX, this.rendY-2,
-//       this.rendX, this.rendY+2 );
-//   },
-// });
-
-// // right inner ear
-// new Shape({
-//   x: 10,
-//   y: 16,
-//   z: 0,
-//   render: function() {
-//     ctx.strokeStyle = colors.inner;
-//     ctx.lineWidth = 6;
-//     line( this.rendX, this.rendY-2,
-//       this.rendX, this.rendY+2 );
-//   },
-// });
-
-
 
 // left shoulder
 new Shape({
-  x: 12,
-  y: 40,
-  z: 2,
-  render: function() {
-    ctx.strokeStyle = colors.armor;
-    ctx.lineWidth = 8;
-    line( this.rendX, this.rendY-1,
-      this.rendX, this.rendY+1 );
-  },
+  points: [
+    // { x: -8, y: 38, z: 2 },
+    { x: -12, y: 38, z: 2 },
+    { x: -12, y: 40, z: 2 },
+  ],
+  color: colors.armor,
+  lineWidth: 8,
 });
-
 // right shoulder
 new Shape({
-  x: -12,
-  y: 40,
-  z: 2,
-  render: function() {
-    ctx.strokeStyle = colors.armor;
-    ctx.lineWidth = 8;
-    line( this.rendX, this.rendY-1,
-      this.rendX, this.rendY+1 );
-  },
+  points: [
+    { x: 12, y: 38, z: 2 },
+    { x: 12, y: 40, z: 2 },
+  ],
+  color: colors.armor,
+  lineWidth: 8,
 });
 
 // left arm
 new Shape({
-  x: 12,
-  y: 44,
-  z: 2,
-  render: function() {
-    ctx.strokeStyle = colors.fur;
-    ctx.lineWidth = 8;
-    line( this.rendX, this.rendY-1,
-      this.rendX, this.rendY+1 );
-  },
+  points: [
+    { x: -12, y: 42, z: 2 },
+    { x: -12, y: 44, z: 2 },
+  ],
+  color: colors.fur,
+  lineWidth: 8,
 });
-
 // right arm
 new Shape({
-  x: -12,
-  y: 44,
-  z: 2,
-  render: function() {
-    ctx.strokeStyle = colors.fur;
-    ctx.lineWidth = 8;
-    line( this.rendX, this.rendY-1,
-      this.rendX, this.rendY+1 );
-  },
+  points: [
+    { x: 12, y: 42, z: 2 },
+    { x: 12, y: 44, z: 2 },
+  ],
+  color: colors.fur,
+  lineWidth: 8,
 });
 
 // left hand
 new Shape({
-  x: -11,
-  y: 47,
-  z: 1,
-  render: function() {
-    ctx.fillStyle = colors.armor;
-    circle( this.rendX, this.rendY, 5 );
-  },
+  points: [ { x: -11, y: 46, z: 1} ],
+  color: colors.armor,
+  lineWidth: 10,
 });
-
 // right hand
 new Shape({
-  x: 11,
-  y: 47,
-  z: 1,
-  render: function() {
-    ctx.fillStyle = colors.armor;
-    circle( this.rendX, this.rendY, 5 );
-  },
+  points: [ { x: 11, y: 46, z: 1} ],
+  color: colors.armor,
+  lineWidth: 10,
 });
 
-// left foot
+// left leg
 new Shape({
-  x: -6,
-  y: 50,
-  z: 0,
-  render: function() {
-    ctx.strokeStyle = colors.armor;
-    ctx.lineWidth = 8;
-    line( this.rendX, this.rendY-2,
-      this.rendX, this.rendY+2 );
-  },
+  points: [
+    { x: -5, y: 48, z: 0 },
+    { x: -5, y: 52, z: 0 },
+  ],
+  color: colors.armor,
+  lineWidth: 8,
 });
-
-// right foot
+// right leg
 new Shape({
-  x: 6,
-  y: 50,
-  z: 0,
-  render: function() {
-    ctx.strokeStyle = colors.armor;
-    ctx.lineWidth = 8;
-    line( this.rendX, this.rendY-2,
-      this.rendX, this.rendY+2 );
-  },
+  points: [
+    { x: 5, y: 48, z: 0 },
+    { x: 5, y: 52, z: 0 },
+  ],
+  color: colors.armor,
+  lineWidth: 8,
 });
 
-// front left robe1
-// new Shape({
-//   x: -8,
-//   y: 40,
-//   z: -8,
-//   render: function() {
-//     ctx.strokeStyle = colors.cloth;
-//     ctx.lineWidth = 4;
-//     line( this.rendX, this.rendY-8,
-//         this.rendX, this.rendY+8)
-//   },
-// });
-
-// // front right robe1
-// new Shape({
-//   x: 8,
-//   y: 40,
-//   z: -8,
-//   render: function() {
-//     ctx.strokeStyle = colors.cloth;
-//     ctx.lineWidth = 4;
-//     line( this.rendX, this.rendY-8,
-//         this.rendX, this.rendY+8)
-//   },
-// });
 
 // front robe
-new VerticalRect({
-  x: 0,
-  y: 42,
-  z: -8,
-  width: 14,
-  height: 10,
-  render: function() {
-    ctx.strokeStyle = colors.cloth;
-    ctx.fillStyle = colors.cloth;
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo( this.points.a.x, this.points.a.y );
-    ctx.lineTo( this.points.b.x, this.points.b.y );
-    ctx.lineTo( this.points.c.x, this.points.c.y );
-    ctx.lineTo( this.points.d.x, this.points.d.y );
-    ctx.lineTo( this.points.a.x, this.points.a.y );
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  },
+new Shape({
+  points: [
+    { x: -8, y: 37, z: -8 },
+    { x: 8, y: 37, z: -8 },
+    { x: 8, y: 47, z: -8 },
+    { x: -8, y: 47, z: -8 },
+  ],
+  fill: true,
+  // closed: true,
+  color: colors.cloth,
+  lineWidth: 4,
 });
-
 // back robe
-new VerticalRect({
-  x: 0,
-  y: 42,
-  z: 8,
-  width: 14,
-  height: 10,
-  render: function() {
-    ctx.strokeStyle = colors.cloth;
-    ctx.fillStyle = colors.cloth;
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo( this.points.a.x, this.points.a.y );
-    ctx.lineTo( this.points.b.x, this.points.b.y );
-    ctx.lineTo( this.points.c.x, this.points.c.y );
-    ctx.lineTo( this.points.d.x, this.points.d.y );
-    ctx.lineTo( this.points.a.x, this.points.a.y );
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  },
+new Shape({
+  points: [
+    { x: -8, y: 37, z: 8 },
+    { x: 8, y: 37, z: 8 },
+    { x: 8, y: 47, z: 8 },
+    { x: -8, y: 47, z: 8 },
+  ],
+  fill: true,
+  // closed: true,
+  color: colors.cloth,
+  lineWidth: 4,
 });
-
 
 // -- animate --- //
 
@@ -399,12 +305,12 @@ animate();
 
 function update() {
   // rotate
-  angleY += TAU/180;
+  angleY += isRotating ? TAU/180 : 0;
   rYCos = Math.cos( angleY );
   rYSin = Math.sin( angleY );
   // perspective sort
   shapes.sort( function( a, b ) {
-    return ( b.y - b.rendZ ) - ( a.y - a.rendZ );
+    return ( b.sortValue ) - ( a.sortValue );
   });
   // render shapes
   shapes.forEach( function( shape ) {
@@ -414,11 +320,10 @@ function update() {
 
 // -- render -- //
 
-
-  ctx.lineCap = 'round';
-
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
@@ -426,23 +331,14 @@ function render() {
   shapes.forEach( function( shape ) {
     shape.render();
   });
-  
+
   ctx.restore();
 }
 
-// -- basic shapes -- //
+// ----- inputs ----- //
 
-function circle( x, y, r ) {
-  ctx.beginPath();
-  ctx.arc( x, y, r, 0, TAU );
-  ctx.fill();
-  ctx.closePath();
-}
-
-function line( x1, y1, x2, y2 ) {
-  ctx.beginPath();
-  ctx.moveTo( x1, y1 );
-  ctx.lineTo( x2, y2 );
-  ctx.stroke();
-  ctx.closePath();
-}
+rotateSlider.addEventListener( 'input', function() {
+  isRotating = false;
+  angleY = parseInt( rotateSlider.value ) / 360 * TAU;
+  // console.log( rotateSlider.value )
+});
