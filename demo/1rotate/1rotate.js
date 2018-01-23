@@ -160,7 +160,7 @@ new Shape({
 });
 
 var frontEarZ = -4;
-var topEarY = 9;
+var topEarY = 8;
 
 var earA = { x: -14, y: topEarY+12, z: frontEarZ+4 };
 var earB = { x: -14, y: topEarY, z: frontEarZ };
@@ -234,6 +234,64 @@ new Shape({
   lineWidth: 3,
 });
 
+// whiskers
+
+
+var whiskerX0 = 7;
+var whiskerX1 = 16;
+var whiskerY0 = 27;
+var whiskerY1 = 32;
+var whiskerZ = -8;
+var whiskerColor = colors.fur;
+
+// left bottom whisker
+new Shape({
+  points: [
+    { x: -whiskerX0, y: whiskerY0, z: whiskerZ },
+    { x: -whiskerX0, y: whiskerY1, z: whiskerZ },
+    { x: -whiskerX1, y: whiskerY1, z: whiskerZ },
+  ],
+  fill: true,
+  color: whiskerColor,
+  lineWidth: 2,
+});
+// left top whisker
+new Shape({
+  points: [
+    { x: -whiskerX0-1, y: whiskerY0-4, z: whiskerZ },
+    { x: -whiskerX0-1, y: whiskerY1-4, z: whiskerZ },
+    { x: -whiskerX1-1, y: whiskerY1-4, z: whiskerZ },
+  ],
+  fill: true,
+  color: whiskerColor,
+  lineWidth: 2,
+});
+
+// left bottom whisker
+new Shape({
+  points: [
+    { x: whiskerX0, y: whiskerY0, z: whiskerZ },
+    { x: whiskerX0, y: whiskerY1, z: whiskerZ },
+    { x: whiskerX1, y: whiskerY1, z: whiskerZ },
+  ],
+  fill: true,
+  color: whiskerColor,
+  lineWidth: 2,
+});
+// left top whisker
+new Shape({
+  points: [
+    { x: whiskerX0+1, y: whiskerY0-4, z: whiskerZ },
+    { x: whiskerX0+1, y: whiskerY1-4, z: whiskerZ },
+    { x: whiskerX1+1, y: whiskerY1-4, z: whiskerZ },
+  ],
+  fill: true,
+  color: whiskerColor,
+  lineWidth: 2,
+});
+
+
+
 // left shoulder
 new Shape({
   points: [
@@ -306,12 +364,12 @@ new Shape({
 });
 
 
-var cloakX0 = 7;
+var cloakX0 = 8;
 var cloakX1 = 8;
 
 var cloakY0 = 35;
 var cloakY1 = 40;
-var cloakY2 = 47;
+var cloakY2 = 48;
 
 var cloakZ0 = 0;
 var cloakZ1 = 8;
@@ -326,7 +384,7 @@ new Shape({
   ],
   fill: true,
   color: colors.cloak,
-  lineWidth: 4,
+  lineWidth: 2,
 });
 // back cloak
 new Shape({
@@ -338,7 +396,7 @@ new Shape({
   ],
   fill: true,
   color: colors.cloak,
-  lineWidth: 4,
+  lineWidth: 2,
 });
 
 // cloak front-top
@@ -351,7 +409,7 @@ new Shape({
   ],
   fill: true,
   color: colors.cloak,
-  lineWidth: 4,
+  lineWidth: 2,
 });
 // cloak back-top
 new Shape({
@@ -363,7 +421,7 @@ new Shape({
   ],
   fill: true,
   color: colors.cloak,
-  lineWidth: 4,
+  lineWidth: 2,
 });
 
 
