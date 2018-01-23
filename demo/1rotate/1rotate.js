@@ -168,7 +168,7 @@ var earC = { x: -8, y: topEarY+11, z: frontEarZ+14 };
 var earD = { x: -10, y: topEarY, z: frontEarZ };
 var earE = { x: -3, y: topEarY+5, z: frontEarZ-1 };
 
-var earColor = colors.cloak;
+var earColor = colors.fur;
 
 // left ear
 new Shape({
@@ -193,8 +193,8 @@ new Shape({
 new Shape({
   points: [
     { x: earA.x+4, y: earA.y-3, z: frontEarZ+1 },
-    { x: earD.x, y: earD.y+4, z: frontEarZ-1 },
-    { x: earE.x-4, y: earE.y+3, z: frontEarZ },
+    { x: earD.x, y: earD.y+5, z: frontEarZ-1 },
+    { x: earE.x-4, y: earE.y+2, z: frontEarZ },
   ],
   color: colors.inner,
   fill: true,
@@ -226,8 +226,8 @@ new Shape({
 new Shape({
   points: [
     { x: earA.x-4, y: earA.y-3, z: frontEarZ+1 },
-    { x: earD.x, y: earD.y+4, z: frontEarZ-1 },
-    { x: earE.x+4, y: earE.y+3, z: frontEarZ },
+    { x: earD.x, y: earD.y+5, z: frontEarZ-1 },
+    { x: earE.x+4, y: earE.y+2, z: frontEarZ },
   ],
   color: colors.inner,
   fill: true,
