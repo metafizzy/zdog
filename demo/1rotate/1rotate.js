@@ -160,83 +160,84 @@ new Shape({
 });
 
 var frontEarZ = -4;
-var frontEarY = 8;
+var topEarY = 9;
 
-// left ear front
+var earA = { x: -15, y: topEarY+11, z: frontEarZ+4 };
+var earB = { x: -14, y: topEarY, z: frontEarZ };
+var earC = { x: -8, y: topEarY+11, z: frontEarZ+14 };
+var earD = { x: -10, y: topEarY, z: frontEarZ };
+var earE = { x: -3, y: topEarY+5, z: frontEarZ-1 };
+
+var earColor = colors.eye;
+
+// left ear
 new Shape({
-  points: [
-    { x: -16, y: frontEarY, z: frontEarZ },
-    { x: -12, y: frontEarY, z: frontEarZ },
-    { x: -4, y: frontEarY+4, z: frontEarZ },
-    { x: -0, y: frontEarY+12, z: frontEarZ },
-    { x: -0, y: frontEarY+13, z: frontEarZ },
-    { x: -13, y: frontEarY+13, z: frontEarZ },
-    { x: -16, y: frontEarY+10, z: frontEarZ },
-  ],
+  points: [ earA, earB, earC ],
+  color: earColor,
   fill: true,
-  color: colors.cloak,
   lineWidth: 4,
 });
-// right ear front
 new Shape({
-  points: [
-    { x: 16, y: frontEarY, z: frontEarZ },
-    { x: 12, y: frontEarY, z: frontEarZ },
-    { x: 4, y: frontEarY+4, z: frontEarZ },
-    { x: 0, y: frontEarY+12, z: frontEarZ },
-    { x: 0, y: frontEarY+13, z: frontEarZ },
-    { x: 13, y: frontEarY+13, z: frontEarZ },
-    { x: 16, y: frontEarY+10, z: frontEarZ },
-  ],
+  points: [ earB, earC, earD ],
+  color: earColor,
   fill: true,
-  color: colors.cloak,
+  lineWidth: 4,
+});
+new Shape({
+  points: [ earC, earD, earE ],
+  color: earColor,
+  fill: true,
   lineWidth: 4,
 });
 
-var sideEarX = 12;
-
-// left ear side
 new Shape({
   points: [
-    { x: -sideEarX, y: frontEarY, z: frontEarZ },
-    { x: -sideEarX, y: frontEarY, z: frontEarZ+4 },
-    { x: -sideEarX+4, y: frontEarY+12, z: frontEarZ+16 },
-    { x: -sideEarX+4, y: frontEarY+14, z: frontEarZ+16 },
-    { x: -sideEarX, y: frontEarY+14, z: frontEarZ },
+    { x: earA.x+4, y: earA.y-2, z: frontEarZ+1 },
+    { x: earD.x, y: earD.y+4, z: frontEarZ-1 },
+    { x: earE.x-4, y: earE.y+3, z: frontEarZ },
   ],
+  color: colors.inner,
   fill: true,
-  color: colors.cloak,
+  lineWidth: 3,
+});
+
+earA.x *= -1; earB.x *= -1; earC.x *= -1; earD.x *= -1; earE.x *= -1;
+
+// right ear
+new Shape({
+  points: [ earA, earB, earC ],
+  color: earColor,
+  fill: true,
+  lineWidth: 4,
+});
+new Shape({
+  points: [ earB, earC, earD ],
+  color: earColor,
+  fill: true,
+  lineWidth: 4,
+});
+new Shape({
+  points: [ earC, earD, earE ],
+  color: earColor,
+  fill: true,
   lineWidth: 4,
 });
 
-// left ear side
 new Shape({
   points: [
-    { x: sideEarX, y: frontEarY, z: frontEarZ },
-    { x: sideEarX, y: frontEarY, z: frontEarZ+4 },
-    { x: sideEarX-4, y: frontEarY+12, z: frontEarZ+16 },
-    { x: sideEarX-4, y: frontEarY+14, z: frontEarZ+16 },
-    { x: sideEarX, y: frontEarY+14, z: frontEarZ },
+    { x: earA.x-4, y: earA.y-2, z: frontEarZ+1 },
+    { x: earD.x, y: earD.y+4, z: frontEarZ-1 },
+    { x: earE.x+4, y: earE.y+3, z: frontEarZ },
   ],
+  color: colors.inner,
   fill: true,
-  color: colors.cloak,
-  lineWidth: 4,
+  lineWidth: 3,
 });
-
-// // right ear
-// new Shape({
-//   points: [
-//     { x: 9, y: 10, z: 5 },
-//     { x: 9, y: 18, z: 5 },
-//   ],
-//   color: colors.fur,
-//   lineWidth: 14,
-// });
 
 // left shoulder
 new Shape({
   points: [
-    { x: -11, y: 38, z: 2 },
+    { x: -11.5, y: 38, z: 2 },
     { x: -12, y: 40, z: 2 },
   ],
   closed: false,
@@ -246,7 +247,7 @@ new Shape({
 // right shoulder
 new Shape({
   points: [
-    { x: 11, y: 38, z: 2 },
+    { x: 11.5, y: 38, z: 2 },
     { x: 12, y: 40, z: 2 },
   ],
   color: colors.armor,
