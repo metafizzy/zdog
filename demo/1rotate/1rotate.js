@@ -159,24 +159,79 @@ new Shape({
   lineWidth: 4,
 });
 
-// left ear
+var frontEarZ = -4;
+var frontEarY = 8;
+
+// left ear front
 new Shape({
   points: [
-    { x: -9, y: 10, z: 5 },
-    { x: -9, y: 18, z: 5 },
+    { x: -16, y: frontEarY, z: frontEarZ },
+    { x: -12, y: frontEarY, z: frontEarZ },
+    { x: -4, y: frontEarY+4, z: frontEarZ },
+    { x: -0, y: frontEarY+12, z: frontEarZ },
+    { x: -0, y: frontEarY+13, z: frontEarZ },
+    { x: -13, y: frontEarY+13, z: frontEarZ },
+    { x: -16, y: frontEarY+10, z: frontEarZ },
   ],
-  color: colors.fur,
-  lineWidth: 14,
+  fill: true,
+  color: colors.cloak,
+  lineWidth: 4,
 });
-// right ear
+// right ear front
 new Shape({
   points: [
-    { x: 9, y: 10, z: 5 },
-    { x: 9, y: 18, z: 5 },
+    { x: 16, y: frontEarY, z: frontEarZ },
+    { x: 12, y: frontEarY, z: frontEarZ },
+    { x: 4, y: frontEarY+4, z: frontEarZ },
+    { x: 0, y: frontEarY+12, z: frontEarZ },
+    { x: 0, y: frontEarY+13, z: frontEarZ },
+    { x: 13, y: frontEarY+13, z: frontEarZ },
+    { x: 16, y: frontEarY+10, z: frontEarZ },
   ],
-  color: colors.fur,
-  lineWidth: 14,
+  fill: true,
+  color: colors.cloak,
+  lineWidth: 4,
 });
+
+var sideEarX = 12;
+
+// left ear side
+new Shape({
+  points: [
+    { x: -sideEarX, y: frontEarY, z: frontEarZ },
+    { x: -sideEarX, y: frontEarY, z: frontEarZ+4 },
+    { x: -sideEarX+4, y: frontEarY+12, z: frontEarZ+16 },
+    { x: -sideEarX+4, y: frontEarY+14, z: frontEarZ+16 },
+    { x: -sideEarX, y: frontEarY+14, z: frontEarZ },
+  ],
+  fill: true,
+  color: colors.cloak,
+  lineWidth: 4,
+});
+
+// left ear side
+new Shape({
+  points: [
+    { x: sideEarX, y: frontEarY, z: frontEarZ },
+    { x: sideEarX, y: frontEarY, z: frontEarZ+4 },
+    { x: sideEarX-4, y: frontEarY+12, z: frontEarZ+16 },
+    { x: sideEarX-4, y: frontEarY+14, z: frontEarZ+16 },
+    { x: sideEarX, y: frontEarY+14, z: frontEarZ },
+  ],
+  fill: true,
+  color: colors.cloak,
+  lineWidth: 4,
+});
+
+// // right ear
+// new Shape({
+//   points: [
+//     { x: 9, y: 10, z: 5 },
+//     { x: 9, y: 18, z: 5 },
+//   ],
+//   color: colors.fur,
+//   lineWidth: 14,
+// });
 
 // left shoulder
 new Shape({
