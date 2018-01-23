@@ -141,8 +141,8 @@ new Shape({
 // left eye
 new Shape({
   points: [
-    { x: -8, y: 22, z: -11 },
-    { x: -8, y: 26, z: -11 },
+    { x: -8, y: 23, z: -11 },
+    { x: -8, y: 27, z: -11 },
   ],
   color: colors.eye,
   lineWidth: 4,
@@ -151,8 +151,8 @@ new Shape({
 // right eye
 new Shape({
   points: [
-    { x: 8, y: 22, z: -11 },
-    { x: 8, y: 26, z: -11 },
+    { x: 8, y: 23, z: -11 },
+    { x: 8, y: 27, z: -11 },
   ],
   color: colors.eye,
   lineWidth: 4,
@@ -247,9 +247,9 @@ new Shape({
 // whiskers
 var whiskerX0 = 7;
 var whiskerX1 = 16;
-var whiskerY0 = 27;
-var whiskerY1 = 32;
-var whiskerZ = -8;
+var whiskerY0 = 28;
+var whiskerY1 = 33;
+var whiskerZ = -7;
 var whiskerColor = colors.fur;
 
 // left bottom whisker
@@ -444,6 +444,7 @@ ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
+  ctx.translate( 0, 3 );
 
   shapes.forEach( function( shape ) {
     shape.render();
