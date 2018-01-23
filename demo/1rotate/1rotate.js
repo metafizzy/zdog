@@ -162,13 +162,13 @@ new Shape({
 var frontEarZ = -4;
 var topEarY = 9;
 
-var earA = { x: -15, y: topEarY+11, z: frontEarZ+4 };
+var earA = { x: -14, y: topEarY+12, z: frontEarZ+4 };
 var earB = { x: -14, y: topEarY, z: frontEarZ };
 var earC = { x: -8, y: topEarY+11, z: frontEarZ+14 };
 var earD = { x: -10, y: topEarY, z: frontEarZ };
 var earE = { x: -3, y: topEarY+5, z: frontEarZ-1 };
 
-var earColor = colors.eye;
+var earColor = colors.cloak;
 
 // left ear
 new Shape({
@@ -192,7 +192,7 @@ new Shape({
 
 new Shape({
   points: [
-    { x: earA.x+4, y: earA.y-2, z: frontEarZ+1 },
+    { x: earA.x+4, y: earA.y-3, z: frontEarZ+1 },
     { x: earD.x, y: earD.y+4, z: frontEarZ-1 },
     { x: earE.x-4, y: earE.y+3, z: frontEarZ },
   ],
@@ -225,7 +225,7 @@ new Shape({
 
 new Shape({
   points: [
-    { x: earA.x-4, y: earA.y-2, z: frontEarZ+1 },
+    { x: earA.x-4, y: earA.y-3, z: frontEarZ+1 },
     { x: earD.x, y: earD.y+4, z: frontEarZ-1 },
     { x: earE.x+4, y: earE.y+3, z: frontEarZ },
   ],
