@@ -18,6 +18,7 @@ var colors = {
   eye: '#333',
   inner: 'white',
   cloth: '#F18',
+  // cloth: 'hsla(0, 100%, 50%, 0.2)',
   armor: '#804',
 };
 
@@ -80,14 +81,6 @@ Shape.prototype.update = function() {
   this.sortValue = sortValueTotal / this.points.length;
 };
 
-// HACK, maybe use array?
-// var renderProps = {
-//   lineCap: true,
-//   lineJoin: true,
-//   strokeStyle: true,
-//   fillStyle: true,
-// }
-
 Shape.prototype.render = function() {
   // set default color
   ctx.fillStyle = this.color;
@@ -95,13 +88,6 @@ Shape.prototype.render = function() {
   // set any render properties
   ctx.lineWidth = this.lineWidth;
   ctx.lineCap = 'round';
-  // console.log( this.lineWidth );
-  // for ( var renderPropName in renderProps ) {
-  //   var renderProp = this[ renderProp ];
-  //   if ( renderProp ) {
-  //     ctx[ renderPropName ] = renderProp;
-  //   }
-  // }
 
   // render points
   ctx.beginPath();
@@ -121,7 +107,6 @@ Shape.prototype.render = function() {
   }
   if ( this.stroke ) {
     ctx.stroke();
-    // console.log('stroke');
   }
   if ( this.fill ) {
     ctx.fill();
@@ -135,8 +120,10 @@ Shape.prototype.render = function() {
 // body center
 new Shape({
   points: [
-    { x: 0, y: 42, z: 0 },
-    { x: 0, y: 44, z: 0 },
+    { x: -2, y: 42, z: 0 },
+    { x: -2, y: 44, z: 0 },
+    { x: 2, y: 44, z: 0 },
+    { x: 2, y: 42, z: 0 },
   ],
   color: colors.inner,
   lineWidth: 12,
@@ -198,6 +185,7 @@ new Shape({
     { x: -12, y: 38, z: 2 },
     { x: -12, y: 40, z: 2 },
   ],
+  closed: false,
   color: colors.armor,
   lineWidth: 8,
 });
@@ -246,8 +234,8 @@ new Shape({
 // left leg
 new Shape({
   points: [
-    { x: -5, y: 48, z: 0 },
-    { x: -5, y: 52, z: 0 },
+    { x: -6, y: 48, z: 0 },
+    { x: -6, y: 52, z: 0 },
   ],
   color: colors.armor,
   lineWidth: 8,
@@ -255,21 +243,30 @@ new Shape({
 // right leg
 new Shape({
   points: [
-    { x: 5, y: 48, z: 0 },
-    { x: 5, y: 52, z: 0 },
+    { x: 6, y: 48, z: 0 },
+    { x: 6, y: 52, z: 0 },
   ],
   color: colors.armor,
   lineWidth: 8,
 });
 
 
+var robeX0 = 8;
+
+var robeY0 = 36;
+var robeY1 = 40;
+var robeY2 = 47;
+
+var robeZ0 = 3;
+var robeZ1 = 8;
+
 // front robe
 new Shape({
   points: [
-    { x: -8, y: 37, z: -8 },
-    { x: 8, y: 37, z: -8 },
-    { x: 8, y: 47, z: -8 },
-    { x: -8, y: 47, z: -8 },
+    { x: -robeX0, y: robeY1, z: -robeZ1 },
+    { x: robeX0, y: robeY1, z: -robeZ1 },
+    { x: robeX0, y: robeY2, z: -robeZ1 },
+    { x: -robeX0, y: robeY2, z: -robeZ1 },
   ],
   fill: true,
   // closed: true,
@@ -279,16 +276,56 @@ new Shape({
 // back robe
 new Shape({
   points: [
-    { x: -8, y: 37, z: 8 },
-    { x: 8, y: 37, z: 8 },
-    { x: 8, y: 47, z: 8 },
-    { x: -8, y: 47, z: 8 },
+    { x: -robeX0, y: robeY1, z: robeZ1 },
+    { x: robeX0, y: robeY1, z: robeZ1 },
+    { x: robeX0, y: robeY2, z: robeZ1 },
+    { x: -robeX0, y: robeY2, z: robeZ1 },
   ],
   fill: true,
   // closed: true,
   color: colors.cloth,
   lineWidth: 4,
 });
+// robe top
+new Shape({
+  points: [
+    { x: -robeX0, y: robeY0, z: robeZ0 },
+    { x: robeX0, y: robeY0, z: robeZ0 },
+    { x: robeX0, y: robeY0, z: -robeZ0 },
+    { x: -robeX0, y: robeY0, z: -robeZ0 },
+  ],
+  fill: true,
+  // closed: true,
+  color: colors.cloth,
+  lineWidth: 4,
+});
+// robe front-top
+new Shape({
+  points: [
+    { x: -robeX0, y: robeY0, z: -robeZ0 },
+    { x: robeX0, y: robeY0, z: -robeZ0 },
+    { x: robeX0, y: robeY1, z: -robeZ1 },
+    { x: -robeX0, y: robeY1, z: -robeZ1 },
+  ],
+  fill: true,
+  // closed: true,
+  color: colors.cloth,
+  lineWidth: 4,
+});
+// robe back-top
+new Shape({
+  points: [
+    { x: -robeX0, y: robeY0, z: robeZ0 },
+    { x: robeX0, y: robeY0, z: robeZ0 },
+    { x: robeX0, y: robeY1, z: robeZ1 },
+    { x: -robeX0, y: robeY1, z: robeZ1 },
+  ],
+  fill: true,
+  // closed: true,
+  color: colors.cloth,
+  lineWidth: 4,
+});
+
 
 // -- animate --- //
 
