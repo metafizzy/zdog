@@ -143,11 +143,14 @@ new Shape({
   // shoulder
   new Shape({
     points: [
-      { x: 11*xSide, y: 38, z: 2 },
-      elbow,
+      { x: 12*xSide, y: 36, z: 0 },
+      { x: 14*xSide, y: 40, z: 0 },
+      { x: 14*xSide, y: 40, z: 4 },
+      { x: 11*xSide, y: 36, z: 4 },
     ],
+    closed: true,
     color: colors.armor,
-    lineWidth: 8,
+    lineWidth: 6,
   });
   // arm
   new Shape({
