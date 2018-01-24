@@ -8,7 +8,7 @@ var rotateSlider= document.querySelector('.rotate-slider');
 var ctx = canvas.getContext('2d');
 var w = 48;
 var h = 64;
-var zoom = 8;
+var zoom = 6;
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
 // colors
@@ -304,7 +304,7 @@ new Shape({
 new Shape({
   points: [
     { x: -11, y: 38, z: 2 },
-    { x: -12, y: 40, z: 2 },
+    { x: -12, y: 40, z: 2.5 },
   ],
   closed: false,
   color: colors.armor,
@@ -314,7 +314,7 @@ new Shape({
 new Shape({
   points: [
     { x: 11, y: 38, z: 2 },
-    { x: 12, y: 40, z: 2 },
+    { x: 12, y: 40, z: 2.5 },
   ],
   color: colors.armor,
   lineWidth: 8,
@@ -323,7 +323,7 @@ new Shape({
 // left arm
 new Shape({
   points: [
-    { x: -12, y: 42, z: 2 },
+    { x: -12, y: 40, z: 2.5 },
     { x: -12, y: 44, z: 2 },
   ],
   color: colors.fur,
@@ -332,7 +332,7 @@ new Shape({
 // right arm
 new Shape({
   points: [
-    { x: 12, y: 42, z: 2 },
+    { x: 12, y: 40, z: 2.5 },
     { x: 12, y: 44, z: 2 },
   ],
   color: colors.fur,
