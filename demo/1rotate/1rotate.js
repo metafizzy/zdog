@@ -3,7 +3,6 @@
 
 var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
-var rotateSlider= document.querySelector('.rotate-slider');
 var ctx = canvas.getContext('2d');
 var w = 48;
 var h = 64;
@@ -13,14 +12,14 @@ var canvasHeight = canvas.height = h * zoom;
 // colors
 var colors = {
   fur: '#EA0',
-  eye: '#333',
-  inner: 'white',
+  eye: '#444',
+  inner: '#FEE',
   cloak: '#F18',
   // cloak: 'hsla(0, 100%, 50%, 0.2)',
   armor: '#915',
 };
 
-var isRotating = true;
+var rotateSpeed = TAU/180;
 var angleY = 0;
 var rYCos, rYSin;
 
@@ -183,7 +182,7 @@ var cloakX0 = 8;
 
 var cloakY0 = 35;
 var cloakY1 = 37;
-var cloakY2 = 40;
+var cloakY2 = 41;
 var cloakY3 = 47;
 
 var cloakZ0 = 0;
@@ -228,7 +227,7 @@ animate();
 
 function update() {
   // rotate
-  angleY += isRotating ? TAU/180 : 0;
+  angleY += rotateSpeed;
   rYCos = Math.cos( angleY );
   rYSin = Math.sin( angleY );
   // perspective sort
@@ -261,7 +260,17 @@ function render() {
 
 // ----- inputs ----- //
 
+
+var rotateSlider= document.querySelector('.rotate-slider');
 rotateSlider.addEventListener( 'input', function() {
-  isRotating = false;
+  rotateSpeed = 0;
   angleY = parseInt( rotateSlider.value ) / 360 * TAU;
 });
+
+document.querySelector('.rotate-cw-button').onclick = function() {
+  rotateSpeed = -TAU/180;
+};
+
+document.querySelector('.rotate-ccw-button').onclick = function() {
+  rotateSpeed = TAU/180;
+};
