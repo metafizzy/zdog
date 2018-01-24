@@ -119,9 +119,9 @@ new Shape({
 
   // whiskers
   [ 0, -4 ].forEach( function( yShift ) {
-    var whiskerX0 = 7*xSide;
+    var whiskerX0 = 10*xSide;
     var whiskerX1 = 16*xSide;
-    var whiskerY0 = 28+yShift;
+    var whiskerY0 = 30+yShift;
     var whiskerY1 = 33+yShift;
 
     new Shape({
