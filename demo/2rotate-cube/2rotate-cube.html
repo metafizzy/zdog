@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+
+  <title>2rotate-cube</title>
+
+  <style>
+    body {
+      background: #DDD;
+      text-align: center;
+    }
+
+    canvas {
+      display: block;
+      border: 2px solid white;
+      margin: 0px auto;
+    }
+
+    .rotate-slider {
+      width: 300px;
+    }
+  </style>
+
+</head>
+<body>
+
+<canvas></canvas>
+
+<p>
+  <input class="rotate-slider" type="range" min="-180" max="180" value="0" step="22.5" />
+</p>
+<p>
+  <button class="rotate-cw-button">Rotate CW</button>
+  <button class="rotate-ccw-button">Rotate CCW</button>
+</p>
+
+<script src="vector3.js"></script>
+<script src="shape.js"></script>
+<script src="2rotate-cube.js"></script>
+
+</body>
+</html>
