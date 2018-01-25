@@ -19,14 +19,11 @@ var colors = {
   armor: '#915',
 };
 
-var rXSpeed = 0;
-var rYSpeed = TAU/360;
-var rZSpeed = TAU/360;
+var rZSpeed = 0;
 
-
-var rotateSpeed = TAU/360;
+var angleX = 0;
 var angleY = 0;
-var rYCos, rYSin;
+var angleZ = 0;
 
 // collection of shapes
 var shapes = [];
@@ -42,6 +39,7 @@ new Shape({
     { x: -10, y: 10, z: -10 },
   ],
   color: colors.cloak,
+  lineWidth: 2,
 })
 
 // back square
@@ -50,12 +48,12 @@ new Shape({
     { x: -10, y: -10, z: 10 },
     { x: 10, y: -10, z: 10 },
     { x: 10, y: 10, z: 10 },
-    { x: -10, y: 10, z: 10 },
   ],
   color: colors.fur,
+  lineWidth: 2,
 })
 
-
+// 
 
 // -- animate --- //
 
@@ -74,17 +72,14 @@ var angleZ = 1;
 
 function update() {
   // rotate
-  angleY += rotateSpeed;
-  angleZ += rotateSpeed/2;
-  rYCos = Math.cos( angleY );
-  rYSin = Math.sin( angleY );
+  angleZ += rZSpeed;
   // perspective sort
   shapes.sort( function( a, b ) {
     return ( b.sortValue ) - ( a.sortValue );
   });
   // render shapes
   shapes.forEach( function( shape ) {
-    shape.update( angleZ, angleY );
+    shape.update( angleX, angleY, angleZ );
   });
 }
 
@@ -108,17 +103,35 @@ function render() {
 
 // ----- inputs ----- //
 
+document.querySelector('.toggle-z-rotation-button').onclick = function() {
+  rZSpeed = rZSpeed ? 0 : TAU/360;
+};
 
-var rotateSlider= document.querySelector('.rotate-slider');
-rotateSlider.addEventListener( 'input', function() {
-  rotateSpeed = 0;
-  angleY = parseInt( rotateSlider.value ) / 360 * TAU;
+// click drag to rotate
+
+var dragStartX, dragStartY;
+var dragStartAngleX, dragStartAngleX;
+
+document.addEventListener( 'mousedown', function( event ) {
+  dragStartX = event.pageX;
+  dragStartY = event.pageY;
+  dragStartAngleX = angleX;
+  dragStartAngleY = angleY;
+
+  window.addEventListener( 'mousemove', onMousemoveDrag );
+  window.addEventListener( 'mouseup', onMouseupDrag );
 });
 
-document.querySelector('.rotate-cw-button').onclick = function() {
-  rotateSpeed = -TAU/180;
-};
+function onMousemoveDrag( event ) {
+  var dx = event.pageX - dragStartX;
+  var dy = event.pageY - dragStartY;
+  var angleXMove = dy * TAU/360;
+  var angleYMove = dx * TAU/360;
+  angleX = dragStartAngleX + angleXMove;
+  angleY = dragStartAngleY + angleYMove;
+}
 
-document.querySelector('.rotate-ccw-button').onclick = function() {
-  rotateSpeed = TAU/180;
-};
+function onMouseupDrag() {
+  window.removeEventListener( 'mousemove', onMousemoveDrag );
+  window.removeEventListener( 'mouseup', onMouseupDrag );
+}

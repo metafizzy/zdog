@@ -24,11 +24,11 @@ function Shape( properties ) {
   shapes.push( this );
 }
 
-Shape.prototype.update = function( rZAngle, rYAngle ) {
+Shape.prototype.update = function( angleX, angleY, angleZ ) {
   var sortValueTotal = 0;
   this.points.forEach( function( point ) {
-    point.update( rZAngle, rYAngle );
-    sortValueTotal += point.y - point.renderZ;
+    point.update( angleX, angleY, angleZ );
+    sortValueTotal += point.renderZ;
   });
 
   // average sort value of all points

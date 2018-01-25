@@ -10,22 +10,29 @@ function Vector3( x, y, z ) {
   this.z = z;
 }
 
-Vector3.prototype.update = function( rZAngle, rYAngle ) {
-  // 
-
-  var rZSin = Math.sin( rZAngle );
-  var rZCos = Math.cos( rZAngle );
-
+Vector3.prototype.update = function( angleX, angleY, angleZ ) {
+  // rotate Z
+  var rZSin = Math.sin( angleZ );
+  var rZCos = Math.cos( angleZ );
   var x1 = this.x*rZCos - this.y*rZSin;
   var y1 = this.y*rZCos + this.x*rZSin;
+  var z1 = this.z;
 
-  var rYSin = Math.sin( rYAngle );
-  var rYCos = Math.cos( rYAngle );
+  // rotate Y
+  var rYSin = Math.sin( angleY );
+  var rYCos = Math.cos( angleY );
+  var x2 = x1*rYCos - z1*rYSin;
+  var y2 = y1;
+  var z2 = z1*rYCos + x1*rYSin;
 
-  var x2 = x1*rYCos - this.z*rYSin;
-  var z2 = this.z*rYCos + x1*rYSin;
+  // rotateX
+  var rXSin = Math.sin( angleX );
+  var rXCos = Math.cos( angleX );
+  var x3 = x2;
+  var y3 = y2*rXCos - z2*rXSin;
+  var z3 = z2*rXCos + y2*rXSin;
 
-  this.renderX = x2;
-  this.renderY = y1;
-  this.renderZ = z2;
+  this.renderX = x3;
+  this.renderY = y3;
+  this.renderZ = z3;
 };
