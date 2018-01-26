@@ -42,7 +42,7 @@ new Shape({
   lineWidth: 2,
 })
 
-// back square
+// back triangle
 new Shape({
   points: [
     { x: -10, y: -10, z: 10 },
@@ -51,9 +51,20 @@ new Shape({
   ],
   color: colors.fur,
   lineWidth: 2,
-})
+});
 
-// 
+// side diamond
+
+new Shape({
+  points: [
+    { x: -10, y: -8, z: 0 },
+    { x: -10, y: 0, z: -8 },
+    { x: -10, y: 8, z: 0 },
+    { x: -10, y: 0, z: 8 },
+  ],
+  color: colors.armor,
+  lineWidth: 1,
+});
 
 // -- animate --- //
 
@@ -67,8 +78,6 @@ function animate() {
 animate();
 
 // -- update -- //
-
-var angleZ = 1;
 
 function update() {
   // rotate
