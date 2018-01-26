@@ -54,7 +54,6 @@ new Shape({
 });
 
 // side diamond
-
 new Shape({
   points: [
     { x: -10, y: -8, z: 0 },
@@ -62,7 +61,21 @@ new Shape({
     { x: -10, y: 8, z: 0 },
     { x: -10, y: 0, z: 8 },
   ],
-  color: colors.armor,
+  color: colors.inner,
+  fill: true,
+  lineWidth: 1,
+});
+
+// side filled square
+new Shape({
+  points: [
+    { x: 10, y: -6, z: -6 },
+    { x: 10, y: 6, z: -6 },
+    { x: 10, y: 6, z: 6 },
+    { x: 10, y: -6, z: 6 },
+  ],
+  color: colors.inner,
+  fill: true,
   lineWidth: 1,
 });
 
