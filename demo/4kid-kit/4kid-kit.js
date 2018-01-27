@@ -71,7 +71,7 @@ new Shape({
 
   var earA = { x: 14*xSide, y: topEarY+12, z: frontEarZ+2 };
   var earB = { x: 14*xSide, y: topEarY, z: frontEarZ };
-  var earC = { x: 8*xSide, y: topEarY+11, z: frontEarZ+14 };
+  var earC = { x: 7*xSide, y: topEarY+11, z: frontEarZ+14 };
   var earD = { x: 10*xSide, y: topEarY, z: frontEarZ };
   var earE = { x: 3*xSide, y: topEarY+5, z: frontEarZ };
   // outer ear
@@ -142,16 +142,14 @@ new Shape({
   // shoulder
   new Shape({
     points: [
-      { x: 13*xSide, y: 4, z: 0 },
-      { x: 15*xSide, y: 8, z: 0 },
-      { x: 15*xSide, y: 8, z: 4 },
-      { x: 13*xSide, y: 4, z: 4 },
+      { x: 11*xSide, y: 6, z: 2 },
+      { x: 12*xSide, y: 9, z: 2.5 },
     ],
     closed: true,
     color: colors.armor,
-    lineWidth: 6,
+    lineWidth: 8,
   });
-  // arm
+  // forearm
   new Shape({
     points: [
       { x: 12*xSide, y: 12, z: 2.5 },
@@ -180,6 +178,7 @@ new Shape({
 });
 
 var cloakX0 = 8;
+var cloakX1 = 5;
 // var cloakX1 = 8;
 
 var cloakY0 = 4;
@@ -191,25 +190,47 @@ var cloakZ0 = 0;
 var cloakZ1 = 6;
 var cloakZ2 = 8;
 
-[
-  { ya: cloakY0, za: cloakZ0, yb: cloakY1, zb: cloakZ1 },
-  { ya: cloakY1, za: cloakZ1, yb: cloakY2, zb: cloakZ2 },
-  { ya: cloakY2, za: cloakZ2, yb: cloakY3, zb: cloakZ2 },
-].forEach( function( yzPosition ) {
-  [ 1, -1 ].forEach( function( zSide ) {
-    var za = yzPosition.za * zSide;
-    var zb = yzPosition.zb * zSide;
+[ 1, -1 ].forEach( function( zSide ) {
+  // top straps
+  [ 1, -1 ].forEach( function( xSide ) {
     new Shape({
-      points: [
-        { x: -cloakX0, y: yzPosition.ya, z: za },
-        { x: cloakX0, y: yzPosition.ya, z: za },
-        { x: cloakX0, y: yzPosition.yb, z: zb },
-        { x: -cloakX0, y: yzPosition.yb, z: zb },
+    points: [
+        { x: cloakX0*xSide, y: cloakY0, z: cloakZ0*zSide },
+        { x: cloakX0*xSide, y: cloakY1, z: cloakZ1*zSide },
+        { x: cloakX1*xSide, y: cloakY1, z: cloakZ1*zSide },
       ],
       fill: true,
       color: colors.cloak,
       lineWidth: 4,
     });
+  });
+
+  var vNeckY = ( cloakY1+cloakY2 ) / 2;
+  var vNeckZ = ( cloakZ2+cloakZ1 ) / 2 * zSide;
+  new Shape({
+    points: [
+      { x: -cloakX0, y: cloakY1, z: cloakZ1*zSide },
+      { x: -cloakX1, y: cloakY1, z: cloakZ1*zSide },
+      { x: 0, y: vNeckY, z: vNeckZ },
+      { x: cloakX1, y: cloakY1, z: cloakZ1*zSide },
+      { x: cloakX0, y: cloakY1, z: cloakZ1*zSide },
+      { x: cloakX0, y: cloakY2, z: cloakZ2*zSide },
+      { x: -cloakX0, y: cloakY2, z: cloakZ2*zSide },
+    ],
+    fill: true,
+    color: colors.cloak,
+    lineWidth: 4,
+  });
+  new Shape({
+    points: [
+      { x: -cloakX0, y: cloakY2, z: cloakZ2*zSide },
+      { x: cloakX0, y: cloakY2, z: cloakZ2*zSide },
+      { x: cloakX0, y: cloakY3, z: cloakZ2*zSide },
+      { x: -cloakX0, y: cloakY3, z: cloakZ2*zSide },
+    ],
+    fill: true,
+    color: colors.cloak,
+    lineWidth: 4,
   });
 });
 
