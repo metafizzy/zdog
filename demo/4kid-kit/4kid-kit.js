@@ -50,6 +50,29 @@ new Shape({
   lineWidth: 32,
 });
 
+// nose
+
+var noseZ = -16;
+
+new Shape({
+  points: [
+    { x: -1, y: -7, z: noseZ },
+    { x: 1, y: -7, z: noseZ },
+    // { x: 0, y: -5.5, z: noseZ },
+  ],
+  color: colors.eye,
+  lineWidth: 3,
+});
+
+new Shape({
+  points: [
+    { x: 0, y: -7, z: noseZ },
+    { x: 0, y: -6, z: noseZ },
+  ],
+  color: colors.eye,
+  lineWidth: 3,
+});
+
 
 [ -1, 1 ].forEach( function( xSide ) {
 
@@ -129,11 +152,10 @@ new Shape({
   // snout
   new Shape({
     points: [
-      { x: 6*xSide, y: -5, z: -4 },
-      { x: 0, y: -5, z: -11 }, // snout tip
+      { x: 2*xSide, y: -5, z: -13 },
     ],
-    color: colors.fur,
-    lineWidth: 14,
+    color: colors.inner,
+    lineWidth: 8,
   });
 
 
