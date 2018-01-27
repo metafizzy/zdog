@@ -42,7 +42,9 @@ Shape.prototype.render = function( ctx ) {
   ctx.strokeStyle = this.color;
   // set any render properties
   ctx.lineWidth = this.lineWidth;
-  ctx.lineCap = 'round';
+  if ( this.lineCap ) {
+    ctx.lineCap = this.lineCap;
+  }
 
   // render points
   ctx.beginPath();

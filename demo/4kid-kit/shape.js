@@ -42,7 +42,9 @@ Shape.prototype.render = function( ctx ) {
   ctx.strokeStyle = this.color;
   // set any render properties
   ctx.lineWidth = this.lineWidth;
-  ctx.lineCap = 'round';
+  if ( this.lineCap ) {
+    ctx.lineCap = this.lineCap;
+  }
 
   // render points
   ctx.beginPath();
@@ -50,15 +52,13 @@ Shape.prototype.render = function( ctx ) {
     // moveTo first point, lineTo others
     var renderMethod = i ? 'lineTo' : 'moveTo';
     ctx[ renderMethod ]( point.renderX, point.renderY );
-    // console.log( renderMethod, point.renderX, point.renderY );
   });
-  // close path by return to first point
+  // close path
   var length = this.points.length;
   var isOnePoint = length == 1;
   var isClosed = this.closed && length > 2;
   if ( isOnePoint || isClosed ) {
-    var point0 = this.points[0];
-    ctx.lineTo( point0.renderX, point0.renderY );
+    ctx.closePath();
   }
   if ( this.stroke ) {
     ctx.stroke();
@@ -67,5 +67,4 @@ Shape.prototype.render = function( ctx ) {
     ctx.fill();
   }
   // debugger;
-  ctx.closePath();
 };
