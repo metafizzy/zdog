@@ -34,7 +34,6 @@ new Shape({
   points: [
     { x: -3, y: 10, z: 0 },
     { x: 0, y: 14, z: 0 },
-    // { x: 2, y: 14, z: 0 },
     { x: 3, y: 10, z: 0 },
   ],
   color: colors.inner,
@@ -58,7 +57,6 @@ new Shape({
   points: [
     { x: -1, y: -7, z: noseZ },
     { x: 1, y: -7, z: noseZ },
-    // { x: 0, y: -5.5, z: noseZ },
   ],
   color: colors.eye,
   lineWidth: 3,
@@ -73,6 +71,23 @@ new Shape({
   lineWidth: 3,
 });
 
+// snout
+new Shape({
+  points: [
+    { x: -2, y: -5, z: -13 },
+    { x:  2, y: -5, z: -13 },
+  ],
+  color: colors.inner,
+  lineWidth: 7,
+});
+new Shape({
+  points: [
+    { x: 0, y: -3, z: -12.5 },
+  ],
+  color: colors.inner,
+  lineWidth: 7,
+});
+
 
 [ -1, 1 ].forEach( function( xSide ) {
 
@@ -80,7 +95,7 @@ new Shape({
   var x = 8 * xSide;
   new Shape({
     points: [
-      { x: x, y: -13, z: -11 },
+      { x: x, y: -12, z: -11 },
       { x: x, y: -9, z: -11 },
     ],
     color: colors.eye,
@@ -92,7 +107,7 @@ new Shape({
   var topEarY = -30;
   var earColor = colors.fur;
 
-  var earA = { x: 14*xSide, y: topEarY+12, z: frontEarZ+2 };
+  var earA = { x: 14*xSide, y: topEarY+12, z: frontEarZ+4 };
   var earB = { x: 14*xSide, y: topEarY, z: frontEarZ };
   var earC = { x: 7*xSide, y: topEarY+11, z: frontEarZ+14 };
   var earD = { x: 10*xSide, y: topEarY, z: frontEarZ };
@@ -131,11 +146,11 @@ new Shape({
 
 
   // whiskers
-  [ 0, -4 ].forEach( function( yShift ) {
-    var whiskerX0 = 10*xSide;
+  [ -0, -6 ].forEach( function( yShift ) {
+    var whiskerX0 = 9*xSide;
     var whiskerX1 = 16*xSide;
-    var whiskerY0 = -5+yShift;
-    var whiskerY1 = -3+yShift;
+    var whiskerY0 = -6+yShift;
+    var whiskerY1 = -2+yShift;
 
     new Shape({
       points: [
@@ -145,19 +160,9 @@ new Shape({
       ],
       fill: true,
       color: colors.fur,
-      lineWidth: 2,
+      lineWidth: 3,
     });
   });
-
-  // snout
-  new Shape({
-    points: [
-      { x: 2*xSide, y: -5, z: -13 },
-    ],
-    color: colors.inner,
-    lineWidth: 8,
-  });
-
 
   // arms
 
