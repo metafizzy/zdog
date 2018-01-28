@@ -55,17 +55,16 @@ var noseZ = -17;
 
 new Shape({
   points: [
-    { x: -1.5, y: -7, z: noseZ },
-    { x: 1.5, y: -7, z: noseZ },
+    { x: -1, y: -7, z: noseZ },
+    { x: 1, y: -7, z: noseZ },
   ],
   color: colors.eye,
   lineWidth: 3,
 });
-
 new Shape({
   points: [
     { x: 0, y: -7, z: noseZ },
-    { x: 0, y: -5.5, z: noseZ },
+    { x: 0, y: -6, z: noseZ },
   ],
   color: colors.eye,
   lineWidth: 3,
@@ -82,29 +81,6 @@ new Shape({
   color: colors.fur,
   lineWidth: 12,
 });
-
-// mouth
-// new Shape({
-//   points: [
-//     { x: -2, y: -5, z: -15 },
-//   ],
-//   color: colors.inner,
-//   lineWidth: 8,
-// });
-// new Shape({
-//   points: [
-//     { x: 2, y: -5, z: -15 },
-//   ],
-//   color: colors.inner,
-//   lineWidth: 8,
-// });
-// new Shape({
-//   points: [
-//     { x: 0, y: -3, z: -14 },
-//   ],
-//   color: colors.inner,
-//   lineWidth: 8,
-// });
 
 
 [ -1, 1 ].forEach( function( xSide ) {
@@ -164,16 +140,16 @@ new Shape({
 
   // whiskers
   [ -0, -6 ].forEach( function( yShift ) {
-    var whiskerX0 = 9*xSide;
-    var whiskerX1 = 16*xSide;
+    var whiskerX0 = 10*xSide;
+    var whiskerX1 = 17*xSide;
     var whiskerY0 = -6+yShift;
     var whiskerY1 = -2+yShift;
 
     new Shape({
       points: [
-        { x: whiskerX0, y: whiskerY0, z: -7 },
-        { x: whiskerX0, y: whiskerY1, z: -7 },
-        { x: whiskerX1, y: whiskerY1, z: -7 },
+        { x: whiskerX0, y: whiskerY0, z: -6 },
+        { x: whiskerX0, y: whiskerY1, z: -6 },
+        { x: whiskerX1, y: whiskerY1, z: -6 },
       ],
       fill: true,
       color: colors.fur,
@@ -213,11 +189,23 @@ new Shape({
   new Shape({
     points: [
       { x: 6*xSide, y: 20, z: 0 },
-      { x: 6*xSide, y: 26, z: 0 },
+      { x: 6*xSide, y: 28, z: 0 },
     ],
     color: colors.armor,
     lineWidth: 8,
   });
+  // foot
+  // new Shape({
+  //   points: [
+  //     // { x: 6*xSide, y: 28, z: 0 },
+  //     { x: 5*xSide, y: 29, z: 1 },
+  //     { x: 7*xSide, y: 29, z: 1 },
+  //     { x: 7*xSide, y: 29, z: -3 },
+  //     { x: 5*xSide, y: 29, z: -3 },
+  //   ],
+  //   color: colors.fur,
+  //   lineWidth: 7,
+  // });
 
 });
 
@@ -228,7 +216,7 @@ var cloakX1 = 5;
 var cloakY0 = 4;
 var cloakY1 = 6;
 var cloakY2 = 13;
-var cloakY3 = 20;
+var cloakY3 = 22;
 
 var cloakZ0 = 0;
 var cloakZ1 = 6;
