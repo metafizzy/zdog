@@ -17,7 +17,7 @@ var colors = {
   cloak: '#F18',
   // cloak: 'hsla(0, 100%, 50%, 0.2)',
   armor: '#915',
-  hair: '#521',
+  hair: '#631',
   overalls: '#24D',
   cloth: '#E11',
   skin: '#FCA',
@@ -41,7 +41,7 @@ new Shape({
     { x: 0, y: -12, z: -1 },
   ],
   color: colors.skin,
-  lineWidth: 24,
+  lineWidth: 23,
 });
 
 // nose
@@ -53,22 +53,12 @@ new Shape({
   lineWidth: 7,
 });
 
-// eyes
-[ -1, 1 ].forEach( function( xSide ) {
-  new Shape({
-    points: [
-      { x: 5*xSide, y: -10, z: -10 },
-      { x: 5*xSide, y: -8, z: -10 },
-    ],
-    color: colors.eye,
-    lineWidth: 3,
-  });
-});
+
 
 // chin
-var chinSide = { x: -5, y: -6, z: -3 };
-var chinCenter = { x: 0, y: -5, z: -6 };
-var chinWidth = 5;
+var chinSide = { x: -5, y: -6, z: -5 };
+var chinCenter = { x: 0, y: -4.5, z: -7 };
+var chinWidth = 7;
 new Shape({
   points: [
     chinSide,
@@ -89,8 +79,8 @@ new Shape({
 });
 
 // hat front
-var hatFrontA = { x: -8, y: -20, z: -8 };
-var hatFrontB = { x: -4, y: -22, z: -10 };
+var hatFrontA = { x: -8, y: -20, z: -6 };
+var hatFrontB = { x: -4, y: -23, z: -8 };
 var hatFrontC = { x: -hatFrontB.x, y: hatFrontB.y, z: hatFrontB.z };
 
 new Shape({
@@ -115,7 +105,7 @@ new Shape({
   fill: false,
   lineWidth: 11,
 });
-
+// hatFrontD
 hatFrontA.x = -hatFrontA.x;
 new Shape({
   points: [
@@ -128,22 +118,223 @@ new Shape({
   lineWidth: 11,
 });
 
-// brim
-// brim has left & right side
+
+var hatTopFrontX = 10;
+var hatTopFrontY = -19;
+var hatTopFrontZ = -6;
+var hatTopBackX = 7;
+var hatTopBackY = -17;
+var hatTopBackZ = 9;
+
+var hatTopBackA = { x:  hatTopBackX, y: hatTopBackY, z: hatTopBackZ };
+var hatTopBackB = { x: -hatTopBackX, y: hatTopBackY, z: hatTopBackZ };
+
+// hat top
+new Shape({
+  points: [
+    { x: -hatTopFrontX, y: hatTopFrontY, z: hatTopFrontZ },
+    { x:  hatTopFrontX, y: hatTopFrontY, z: hatTopFrontZ },
+    hatTopBackA,
+    hatTopBackB,
+  ],
+  color: colors.cloth,
+  fill: true,
+  lineWidth: 9,
+});
+// hat top back
+new Shape({
+  points: [
+    hatTopBackA,
+    hatTopBackB,
+  ],
+  color: colors.cloth,
+  lineWidth: 9,
+});
+
+// hat top cover
+new Shape({
+  points: [
+    { x: -3, y: -20, z: 7 },
+    { x:  3, y: -20, z: 7 },
+    { x:  3, y: -23, z: -5 },
+    { x: -3, y: -23, z: -5 },
+  ],
+  color: colors.cloth,
+  lineWidth: 6,
+});
+
+
+
 [ -1, 1 ].forEach( function( xSide ) {
+  // eyes pupil
   new Shape({
     points: [
-      { x: 10*xSide, y: -16, z: -6 },
-      { x: 8*xSide, y: -16, z: -18 },
-      { x: 0, y: -18, z: -20 },
-      { x: 0, y: -19, z: -8 },
+      { x: 5*xSide, y: -10, z: -10 },
+      { x: 5*xSide, y: -8, z: -10 },
+    ],
+    color: colors.eye,
+    lineWidth: 3,
+  });
+  // eye white
+  // new Shape({
+  //   points: [
+  //     { x: 5.5*xSide, y: -10, z: -8 },
+  //     { x: 5.5*xSide, y: -8, z: -8 },
+  //   ],
+  //   color: colors.inner,
+  //   lineWidth: 4,
+  // });
+  // eye highlight
+  new Shape({
+    points: [
+      { x: 5*xSide, y: -10, z: -10.7 },
+    ],
+    color: colors.inner,
+    lineWidth: 1.5,
+  });
+
+  // eye brow
+  new Shape({
+    points: [
+      { x: 7*xSide, y: -13.5, z: -10 },
+      { x: 5.5*xSide, y: -14, z: -11 },
+      { x: 4*xSide, y: -13.5, z: -11 },
+    ],
+    color: colors.hair,
+    closed: false,
+    lineWidth: 2.5,
+  });
+
+
+  // hat brim
+  // brim has left & right side
+  new Shape({
+    points: [
+      { x: 10*xSide, y: -16, z: -8 },
+      { x: 8*xSide, y: -16, z: -13 },
+      { x: 0, y: -18, z: -17 },
+      { x: 0, y: -19, z: -10 },
     ],
     color: colors.cloth,
     fill: true,
     lineWidth: 4,
   });
+
+  // hat top side
+  new Shape({
+    points: [
+      { x:  hatTopFrontX*xSide, y: hatTopFrontY, z: hatTopFrontZ },
+      { x:  hatTopBackX*xSide, y: hatTopBackY, z: hatTopBackZ },
+    ],
+    color: colors.cloth,
+    lineWidth: 9,
+  });
+  new Shape({
+    points: [
+      { x: 3*xSide, y: -20, z: 7 },
+      { x: 3*xSide, y: -23, z: -5 },
+    ],
+    color: colors.cloth,
+    lineWidth: 6,
+  });
+
+  // mustache
+  new Shape({
+    points: [
+      { x: 2*xSide, y: -4.5, z: -12 },
+      { x: 6.5*xSide, y: -5.5, z: -10 },
+    ],
+    color: colors.hair,
+    fill: true,
+    lineWidth: 3,
+  });
+  // mustache sections
+  new Shape({
+    points: [
+      { x: 1.75*xSide, y: -4, z: -11.5 },
+    ],
+    color: colors.hair,
+    fill: true,
+    lineWidth: 4,
+  });
+  new Shape({
+    points: [
+      { x: 4.5*xSide, y: -4.5, z: -11 },
+    ],
+    color: colors.hair,
+    fill: true,
+    lineWidth: 4,
+  });
+  // side burns
+  new Shape({
+    points: [
+      { x: 10*xSide, y: -9, z: -3 },
+      { x: 10*xSide, y: -13, z: -1.5 },
+      { x: 10*xSide, y: -13, z: -4 },
+      { x: 10*xSide, y: -10, z: -5 },
+    ],
+    color: colors.hair,
+    closed: false,
+    fill: true,
+    lineWidth: 3,
+  });
+
+  // ears
+  new Shape({
+    points: [
+      { x: 10*xSide, y: -8, z: 1 },
+      { x: 10*xSide, y: -12, z: 1 },
+      { x: 11*xSide, y: -12, z: 3 },
+      { x: 10*xSide, y: -8, z: 2 },
+    ],
+    color: colors.skin,
+    fill: true,
+    lineWidth: 4,
+  });
+
+  // hair side panel
+  new Shape({
+    points: [
+      { x: 9*xSide, y: -12, z: 5 },
+      { x: 8*xSide, y: -5, z: 4 },
+      { x: 5*xSide, y: -5, z: 9 },
+      { x: 6*xSide, y: -11.5, z: 10 },
+    ],
+    color: colors.hair,
+    fill: true,
+    lineWidth: 3,
+  });
+  // hair balls
+  new Shape({
+    points: [
+      { x: 6*xSide, y: -4, z: 7 },
+    ],
+    color: colors.hair,
+    lineWidth: 6,
+  });
+  new Shape({
+    points: [
+      { x: 2*xSide, y: -4, z: 9 },
+    ],
+    color: colors.hair,
+    lineWidth: 6,
+  });
+
+
 });
 
+// hair back panel
+new Shape({
+  points: [
+    { x: 5, y: -5, z: 9 },
+    { x: 6, y: -11.5, z: 10 },
+    { x: -6, y: -11.5, z: 10 },
+    { x: -5, y: -5, z: 9 },
+  ],
+  color: colors.hair,
+  fill: true,
+  lineWidth: 3,
+});
 
 
 
@@ -173,7 +364,7 @@ new Shape({
 
 new Shape({
   points: [
-    { x: 0, y: 10, z: 2 },
+    { x: 0, y: 10, z: -1 },
   ],
   color: colors.overalls,
   lineWidth: 20,
