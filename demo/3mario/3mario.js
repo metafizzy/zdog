@@ -4,24 +4,20 @@
 var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-var w = 64;
-var h = 64;
+var w = 72;
+var h = 72;
 var zoom = 6;
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
 // colors
 var colors = {
-  fur: '#EA0',
-  eye: '#444',
-  inner: '#FFF',
-  cloak: '#F18',
-  // cloak: 'hsla(0, 100%, 50%, 0.2)',
-  armor: '#915',
+  eye: '#333',
+  white: '#FFF',
   hair: '#631',
   overalls: '#24D',
   cloth: '#E11',
   skin: '#FC9',
-  button: '#FE0',
+  leather: '#A63',
 };
 
 var rZSpeed = 0;
@@ -58,7 +54,6 @@ new Shape({
 // chin
 var chinSide = { x: -5, y: -6, z: -5 };
 var chinCenter = { x: 0, y: -3.5, z: -7 };
-var chinWidth = 7;
 new Shape({
   points: [
     chinSide,
@@ -80,25 +75,16 @@ new Shape({
 // mouth
 new Shape({
   points: [
-    { x: -3, y: -3, z: -11 },
-    { x: -2, y: -1, z: -11 },
-    { x:  2, y: -1, z: -11 },
-    { x:  3, y: -3, z: -11 },
+    { x: -3, y: -3, z: -10 },
+    { x: -1, y: -1, z: -10 },
+    { x:  1, y: -1, z: -10 },
+    { x:  3, y: -3, z: -10 },
   ],
-  color: colors.eye,
+  color: colors.cloth,
   fill: true,
   lineWidth: 2,
 });
-// teeth
-new Shape({
-  points: [
-    { x: -2.5, y: -2.5, z: -11.1 },
-    { x: 2.5, y: -2.5, z: -11.1 },
-  ],
-  color: colors.inner,
-  fill: true,
-  lineWidth: 1,
-});
+
 
 
 // hat front
@@ -186,11 +172,6 @@ new Shape({
   lineWidth: 6,
 });
 
-// shoulders & upper body
-var shoulderY = 3;
-var neckBottom = { x: 0, y: shoulderY, z: 1 };
-
-
 [ -1, 1 ].forEach( function( xSide ) {
   // eyes pupil
   new Shape({
@@ -201,29 +182,7 @@ var neckBottom = { x: 0, y: shoulderY, z: 1 };
     color: colors.eye,
     lineWidth: 3,
   });
-  // eye white
-  new Shape({
-    points: [
-      { x: 4*xSide, y: -11, z: -8 },
-      { x: 5*xSide, y: -11.5, z: -8 },
-      { x: 6*xSide, y: -11.5, z: -8 },
-      { x: 7*xSide, y: -11, z: -8 },
-      { x: 7*xSide, y: -7.5, z: -8 },
-      { x: 4*xSide, y: -7.5, z: -8 },
-    ],
-    color: colors.inner,
-    fill: true,
-    // closed: false,
-    lineWidth: 1,
-  });
-  // eye highlight
-  new Shape({
-    points: [
-      { x: 5*xSide, y: -10, z: -10.7 },
-    ],
-    color: colors.inner,
-    lineWidth: 1.5,
-  });
+
 
   // eye brow
   new Shape({
@@ -352,16 +311,14 @@ var neckBottom = { x: 0, y: shoulderY, z: 1 };
     lineWidth: 6,
   });
 
-  // shoulder
-  new Shape({
-    points: [
-      // neckBottom,
-      { x: 4*xSide, y: shoulderY, z: 3 },
-    ],
-    color: colors.cloth,
-    lineWidth: 10,
-  });
-
+  // overall buttons
+  // new Shape({
+  //   points: [
+  //     { x: 5*xSide, y: 4, z: -6 },
+  //   ],
+  //   color: colors.button,
+  //   lineWidth: 4,
+  // });
 
 });
 
@@ -393,46 +350,49 @@ new Shape({
 });
 
 // right arm
-var rightElbow = { x: -14, y: -7, z: 0 };
+// shoulder
+// new Shape({
+//   points: [
+//     // neckBottom,
+//     { x: -6, y: 2, z: 3 },
+//   ],
+//   color: colors.cloth,
+//   lineWidth: 10,
+// });
+var rightShoulder = { x: -8, y: 2, z: 2 };
 new Shape({
   points: [
-    { x: -10, y: 2, z: 1 },
-    rightElbow,
+    rightShoulder,
+    { x: -16, y: -10, z: -1 },
   ],
   color: colors.cloth,
   lineWidth: 8,
 });
-new Shape({
-  points: [
-    rightElbow,
-    { x: -16, y: -14, z: -1 },
-  ],
-  color: colors.cloth,
-  lineWidth: 8,
-});
+
 // right hand
 new Shape({
   points: [
-    { x: -17, y: -21, z: -2 },
+    { x: -17, y: -13, z: -2 },
   ],
-  color: colors.inner,
+  color: colors.white,
   lineWidth: 12,
 });
 
 // left arm
-var rightElbow = { x: 8, y: 6, z: 8 };
+var leftShoulder = { x: 6, y: 3, z: 3 };
+var leftElbow = { x: 8, y: 6, z: 7 };
 new Shape({
   points: [
-    { x: 6, y: 3, z: 3 },
-    rightElbow,
+    leftShoulder,
+    leftElbow,
   ],
   color: colors.cloth,
   lineWidth: 8,
 });
 new Shape({
   points: [
-    rightElbow,
-    { x: 12, y: 9, z: 9 },
+    leftElbow,
+    { x: 12, y: 8, z: 8 },
   ],
   color: colors.cloth,
   lineWidth: 8,
@@ -440,10 +400,85 @@ new Shape({
 // left hand
 new Shape({
   points: [
-    { x: 17, y: 12, z: 9 },
+    { x: 17, y: 11, z: 7 },
   ],
-  color: colors.inner,
+  color: colors.white,
   lineWidth: 12,
+});
+
+new Shape({
+  points: [
+    leftShoulder,
+    rightShoulder,
+  ],
+  color: colors.cloth,
+  lineWidth: 8,
+});
+
+// right leg
+new Shape({
+  points: [
+    { x: -5, y: 14, z: -3 },
+    { x: -5, y: 20, z: -2 },
+    { x: -5, y: 22, z: -1 }
+  ],
+  closed: false,
+  color: colors.overalls,
+  lineWidth: 10,
+});
+// right foot toe
+new Shape({
+  points: [
+    { x: -5, y: 28, z: 1.5 }
+  ],
+  color: colors.leather,
+  lineWidth: 11,
+});
+// right foot sole
+new Shape({
+  points: [
+    { x: -3, y: 22, z: 4 },
+    { x: -7, y: 22, z: 4 },
+    { x: -7, y: 29, z: 4 },
+    { x: -3, y: 29, z: 4 },
+  ],
+  fill: true,
+  color: colors.leather,
+  lineWidth: 6,
+});
+
+
+// left leg
+new Shape({
+  points: [
+    { x: 5, y: 14, z: -3 },
+    { x: 5, y: 12, z: -8 },
+    { x: 5, y: 13, z: -12 },
+    // { x: 5, y: 22, z: 0 }
+  ],
+  closed: false,
+  color: colors.overalls,
+  lineWidth: 10,
+});
+// left foot toe
+new Shape({
+  points: [
+    { x: 5, y: 9, z: -17 }
+  ],
+  color: colors.leather,
+  lineWidth: 11,
+});
+// left foot sole
+new Shape({
+  points: [
+    { x: 3, y: 8, z:  -19.5 },
+    { x: 7, y: 8, z:  -19.5 },
+    { x: 7, y: 15, z: -18 },
+    { x: 3, y: 15, z: -18 },
+  ],
+  fill: true,
+  color: colors.leather,
+  lineWidth: 6,
 });
 
 // -- animate --- //
