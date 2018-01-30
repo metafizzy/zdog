@@ -189,23 +189,11 @@ new Shape({
   new Shape({
     points: [
       { x: 6*xSide, y: 20, z: 0 },
-      { x: 6*xSide, y: 28, z: 0 },
+      { x: 6*xSide, y: 27, z: 0 },
     ],
     color: colors.armor,
     lineWidth: 8,
   });
-  // foot
-  // new Shape({
-  //   points: [
-  //     // { x: 6*xSide, y: 28, z: 0 },
-  //     { x: 5*xSide, y: 29, z: 1 },
-  //     { x: 7*xSide, y: 29, z: 1 },
-  //     { x: 7*xSide, y: 29, z: -3 },
-  //     { x: 5*xSide, y: 29, z: -3 },
-  //   ],
-  //   color: colors.fur,
-  //   lineWidth: 7,
-  // });
 
 });
 
@@ -216,7 +204,7 @@ var cloakX1 = 5;
 var cloakY0 = 4;
 var cloakY1 = 6;
 var cloakY2 = 13;
-var cloakY3 = 22;
+var cloakY3 = 21;
 
 var cloakZ0 = 0;
 var cloakZ1 = 6;

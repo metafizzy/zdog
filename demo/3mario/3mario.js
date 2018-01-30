@@ -13,14 +13,14 @@ var canvasHeight = canvas.height = h * zoom;
 var colors = {
   fur: '#EA0',
   eye: '#444',
-  inner: '#FEE',
+  inner: '#FFF',
   cloak: '#F18',
   // cloak: 'hsla(0, 100%, 50%, 0.2)',
   armor: '#915',
   hair: '#631',
   overalls: '#24D',
   cloth: '#E11',
-  skin: '#FCA',
+  skin: '#FC9',
   button: '#FE0',
 };
 
@@ -57,7 +57,7 @@ new Shape({
 
 // chin
 var chinSide = { x: -5, y: -6, z: -5 };
-var chinCenter = { x: 0, y: -4.5, z: -7 };
+var chinCenter = { x: 0, y: -3.5, z: -7 };
 var chinWidth = 7;
 new Shape({
   points: [
@@ -77,6 +77,29 @@ new Shape({
   color: colors.skin,
   lineWidth: 10,
 });
+// mouth
+new Shape({
+  points: [
+    { x: -3, y: -3, z: -11 },
+    { x: -2, y: -1, z: -11 },
+    { x:  2, y: -1, z: -11 },
+    { x:  3, y: -3, z: -11 },
+  ],
+  color: colors.eye,
+  fill: true,
+  lineWidth: 2,
+});
+// teeth
+new Shape({
+  points: [
+    { x: -2.5, y: -2.5, z: -11.1 },
+    { x: 2.5, y: -2.5, z: -11.1 },
+  ],
+  color: colors.inner,
+  fill: true,
+  lineWidth: 1,
+});
+
 
 // hat front
 var hatFrontA = { x: -8, y: -20, z: -6 };
@@ -163,6 +186,9 @@ new Shape({
   lineWidth: 6,
 });
 
+// shoulders & upper body
+var shoulderY = 3;
+var neckBottom = { x: 0, y: shoulderY, z: 1 };
 
 
 [ -1, 1 ].forEach( function( xSide ) {
@@ -176,14 +202,20 @@ new Shape({
     lineWidth: 3,
   });
   // eye white
-  // new Shape({
-  //   points: [
-  //     { x: 5.5*xSide, y: -10, z: -8 },
-  //     { x: 5.5*xSide, y: -8, z: -8 },
-  //   ],
-  //   color: colors.inner,
-  //   lineWidth: 4,
-  // });
+  new Shape({
+    points: [
+      { x: 4*xSide, y: -11, z: -8 },
+      { x: 5*xSide, y: -11.5, z: -8 },
+      { x: 6*xSide, y: -11.5, z: -8 },
+      { x: 7*xSide, y: -11, z: -8 },
+      { x: 7*xSide, y: -7.5, z: -8 },
+      { x: 4*xSide, y: -7.5, z: -8 },
+    ],
+    color: colors.inner,
+    fill: true,
+    // closed: false,
+    lineWidth: 1,
+  });
   // eye highlight
   new Shape({
     points: [
@@ -241,8 +273,8 @@ new Shape({
   // mustache
   new Shape({
     points: [
-      { x: 2*xSide, y: -4.5, z: -12 },
-      { x: 6.5*xSide, y: -5.5, z: -10 },
+      { x: 2*xSide, y: -4.5, z: -12.5 },
+      { x: 6.5*xSide, y: -5.5, z: -11 },
     ],
     color: colors.hair,
     fill: true,
@@ -251,7 +283,7 @@ new Shape({
   // mustache sections
   new Shape({
     points: [
-      { x: 1.75*xSide, y: -4, z: -11.5 },
+      { x: 1.75*xSide, y: -4, z: -12 },
     ],
     color: colors.hair,
     fill: true,
@@ -259,7 +291,7 @@ new Shape({
   });
   new Shape({
     points: [
-      { x: 4.5*xSide, y: -4.5, z: -11 },
+      { x: 4.5*xSide, y: -4.5, z: -11.75 },
     ],
     color: colors.hair,
     fill: true,
@@ -320,6 +352,16 @@ new Shape({
     lineWidth: 6,
   });
 
+  // shoulder
+  new Shape({
+    points: [
+      // neckBottom,
+      { x: 4*xSide, y: shoulderY, z: 3 },
+    ],
+    color: colors.cloth,
+    lineWidth: 10,
+  });
+
 
 });
 
@@ -338,26 +380,6 @@ new Shape({
 
 
 
-// shoulders & upper body
-var shoulderY = 3;
-var neckBottom = { x: 0, y: shoulderY, z: 1 };
-
-new Shape({
-  points: [
-    { x: 4, y: shoulderY, z:  2 },
-    neckBottom,
-  ],
-  color: colors.cloth,
-  lineWidth: 10,
-});
-new Shape({
-  points: [
-    neckBottom,
-    { x: -4, y: shoulderY, z:  2 },
-  ],
-  color: colors.cloth,
-  lineWidth: 10,
-});
 
 
 // belly/butt
@@ -370,6 +392,59 @@ new Shape({
   lineWidth: 20,
 });
 
+// right arm
+var rightElbow = { x: -14, y: -7, z: 0 };
+new Shape({
+  points: [
+    { x: -10, y: 2, z: 1 },
+    rightElbow,
+  ],
+  color: colors.cloth,
+  lineWidth: 8,
+});
+new Shape({
+  points: [
+    rightElbow,
+    { x: -16, y: -14, z: -1 },
+  ],
+  color: colors.cloth,
+  lineWidth: 8,
+});
+// right hand
+new Shape({
+  points: [
+    { x: -17, y: -21, z: -2 },
+  ],
+  color: colors.inner,
+  lineWidth: 12,
+});
+
+// left arm
+var rightElbow = { x: 8, y: 6, z: 8 };
+new Shape({
+  points: [
+    { x: 6, y: 3, z: 3 },
+    rightElbow,
+  ],
+  color: colors.cloth,
+  lineWidth: 8,
+});
+new Shape({
+  points: [
+    rightElbow,
+    { x: 12, y: 9, z: 9 },
+  ],
+  color: colors.cloth,
+  lineWidth: 8,
+});
+// left hand
+new Shape({
+  points: [
+    { x: 17, y: 12, z: 9 },
+  ],
+  color: colors.inner,
+  lineWidth: 12,
+});
 
 // -- animate --- //
 
