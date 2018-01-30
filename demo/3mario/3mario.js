@@ -22,9 +22,7 @@ var colors = {
 
 var rZSpeed = 0;
 
-var angleX = 0;
-var angleY = 0;
-var angleZ = 0;
+var cameraRotation = { x: 0, y: 0, z: 0 };
 
 // collection of shapes
 var shapes = [];
@@ -517,14 +515,14 @@ animate();
 
 function update() {
   // rotate
-  angleZ += rZSpeed;
+  cameraRotation.z += rZSpeed;
   // perspective sort
   shapes.sort( function( a, b ) {
-    return ( b.sortValue ) - ( a.sortValue );
+    return b.sortValue - a.sortValue;
   });
   // render shapes
   shapes.forEach( function( shape ) {
-    shape.update( angleX, angleY, angleZ );
+    shape.update( cameraRotation );
   });
 }
 
@@ -560,8 +558,8 @@ var dragStartAngleX, dragStartAngleY;
 document.addEventListener( 'mousedown', function( event ) {
   dragStartX = event.pageX;
   dragStartY = event.pageY;
-  dragStartAngleX = angleX;
-  dragStartAngleY = angleY;
+  dragStartAngleX = cameraRotation.x;
+  dragStartAngleY = cameraRotation.y;
 
   window.addEventListener( 'mousemove', onMousemoveDrag );
   window.addEventListener( 'mouseup', onMouseupDrag );
@@ -572,8 +570,8 @@ function onMousemoveDrag( event ) {
   var dy = event.pageY - dragStartY;
   var angleXMove = dy * TAU/360;
   var angleYMove = dx * TAU/360;
-  angleX = dragStartAngleX + angleXMove;
-  angleY = dragStartAngleY + angleYMove;
+  cameraRotation.x = dragStartAngleX + angleXMove;
+  cameraRotation.y = dragStartAngleY + angleYMove;
 }
 
 function onMouseupDrag() {

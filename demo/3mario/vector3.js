@@ -10,29 +10,35 @@ function Vector3( x, y, z ) {
   this.z = z;
 }
 
-Vector3.prototype.update = function( angleX, angleY, angleZ ) {
+Vector3.rotate = function( vec, rotation ) {
   // rotate Z
-  var rZSin = Math.sin( angleZ );
-  var rZCos = Math.cos( angleZ );
-  var x1 = this.x*rZCos - this.y*rZSin;
-  var y1 = this.y*rZCos + this.x*rZSin;
-  var z1 = this.z;
+  var rZSin = Math.sin( rotation.z );
+  var rZCos = Math.cos( rotation.z );
+  var x1 = vec.x*rZCos - vec.y*rZSin;
+  var y1 = vec.y*rZCos + vec.x*rZSin;
+  var z1 = vec.z;
 
   // rotate Y
-  var rYSin = Math.sin( angleY );
-  var rYCos = Math.cos( angleY );
+  var rYSin = Math.sin( rotation.y );
+  var rYCos = Math.cos( rotation.y );
   var x2 = x1*rYCos - z1*rYSin;
   var y2 = y1;
   var z2 = z1*rYCos + x1*rYSin;
 
   // rotateX
-  var rXSin = Math.sin( angleX );
-  var rXCos = Math.cos( angleX );
+  var rXSin = Math.sin( rotation.x );
+  var rXCos = Math.cos( rotation.x );
   var x3 = x2;
   var y3 = y2*rXCos - z2*rXSin;
   var z3 = z2*rXCos + y2*rXSin;
 
-  this.renderX = x3;
-  this.renderY = y3;
-  this.renderZ = z3;
+  return new Vector3( x3, y3, z3 );
+};
+
+Vector3.prototype.update = function( rotation ) {
+  this.renderPosition = this.getRotate( rotation );
+};
+
+Vector3.prototype.getRotate = function( rotation ) {
+  return Vector3.rotate( this, rotation );
 };

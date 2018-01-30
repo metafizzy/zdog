@@ -26,11 +26,11 @@ function Shape( properties ) {
 
 }
 
-Shape.prototype.update = function( angleX, angleY, angleZ ) {
+Shape.prototype.update = function( rotation ) {
   var sortValueTotal = 0;
   this.points.forEach( function( point ) {
-    point.update( angleX, angleY, angleZ );
-    sortValueTotal += point.renderZ;
+    point.update( rotation );
+    sortValueTotal += point.renderPosition.z;
   });
 
   // average sort value of all points
@@ -48,19 +48,20 @@ Shape.prototype.render = function( ctx ) {
 
   // render points
   ctx.beginPath();
+  var position;
   this.points.forEach( function( point, i ) {
     // moveTo first point, lineTo others
     var renderMethod = i ? 'lineTo' : 'moveTo';
-    ctx[ renderMethod ]( point.renderX, point.renderY );
-    // console.log( renderMethod, point.renderX, point.renderY );
+    position = point.renderPosition;
+    ctx[ renderMethod ]( position.x, position.y );
   });
   // close path by return to first point
   var length = this.points.length;
   var isOnePoint = length == 1;
   var isClosed = this.closed && length > 2;
   if ( isOnePoint || isClosed ) {
-    var point0 = this.points[0];
-    ctx.lineTo( point0.renderX, point0.renderY );
+    position = this.points[0].renderPosition;
+    ctx.lineTo( position.x, position.y );
   }
   if ( this.stroke ) {
     ctx.stroke();
