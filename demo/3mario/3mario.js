@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape */
+/* globals Shape, Group */
 
 var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
@@ -38,6 +38,7 @@ new Shape({
   ],
   color: colors.skin,
   lineWidth: 23,
+  addTo: shapes,
 });
 
 // nose
@@ -47,6 +48,7 @@ new Shape({
   ],
   color: colors.skin,
   lineWidth: 7,
+  addTo: shapes,
 });
 
 
@@ -61,6 +63,7 @@ new Shape({
   ],
   color: colors.skin,
   lineWidth: 10,
+  addTo: shapes,
 });
 // reverse
 chinSide.x = -chinSide.x;
@@ -71,6 +74,7 @@ new Shape({
   ],
   color: colors.skin,
   lineWidth: 10,
+  addTo: shapes,
 });
 // mouth
 new Shape({
@@ -83,6 +87,7 @@ new Shape({
   color: colors.cloth,
   fill: true,
   lineWidth: 2,
+  addTo: shapes,
 });
 
 
@@ -103,6 +108,7 @@ new Shape({
   closed: false,
   fill: false,
   lineWidth: 11,
+  addTo: shapes,
 });
 new Shape({
   points: [
@@ -113,6 +119,7 @@ new Shape({
   closed: false,
   fill: false,
   lineWidth: 11,
+  addTo: shapes,
 });
 // hatFrontD
 hatFrontA.x = -hatFrontA.x;
@@ -125,6 +132,7 @@ new Shape({
   closed: false,
   fill: false,
   lineWidth: 11,
+  addTo: shapes,
 });
 
 
@@ -149,6 +157,7 @@ new Shape({
   color: colors.cloth,
   fill: true,
   lineWidth: 9,
+  addTo: shapes,
 });
 // hat top back
 new Shape({
@@ -158,6 +167,7 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 9,
+  addTo: shapes,
 });
 
 // hat top cover
@@ -170,6 +180,7 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 6,
+  addTo: shapes,
 });
 
 [ -1, 1 ].forEach( function( xSide ) {
@@ -181,6 +192,7 @@ new Shape({
     ],
     color: colors.eye,
     lineWidth: 3,
+    addTo: shapes,
   });
 
 
@@ -194,6 +206,7 @@ new Shape({
     color: colors.hair,
     closed: false,
     lineWidth: 2.5,
+    addTo: shapes,
   });
 
 
@@ -209,6 +222,7 @@ new Shape({
     color: colors.cloth,
     fill: true,
     lineWidth: 4,
+    addTo: shapes,
   });
 
   // hat top side
@@ -219,6 +233,7 @@ new Shape({
     ],
     color: colors.cloth,
     lineWidth: 9,
+    addTo: shapes,
   });
   new Shape({
     points: [
@@ -227,6 +242,11 @@ new Shape({
     ],
     color: colors.cloth,
     lineWidth: 6,
+    addTo: shapes,
+  });
+
+  var mustacheGroup = new Group({
+    addTo: shapes,
   });
 
   // mustache
@@ -238,6 +258,7 @@ new Shape({
     color: colors.hair,
     fill: true,
     lineWidth: 3,
+    addTo: mustacheGroup,
   });
   // mustache sections
   new Shape({
@@ -247,6 +268,7 @@ new Shape({
     color: colors.hair,
     fill: true,
     lineWidth: 4,
+    addTo: mustacheGroup,
   });
   new Shape({
     points: [
@@ -255,7 +277,9 @@ new Shape({
     color: colors.hair,
     fill: true,
     lineWidth: 4,
+    addTo: mustacheGroup,
   });
+
   // side burns
   new Shape({
     points: [
@@ -268,6 +292,7 @@ new Shape({
     closed: false,
     fill: true,
     lineWidth: 3,
+    addTo: shapes,
   });
 
   // ears
@@ -281,6 +306,7 @@ new Shape({
     color: colors.skin,
     fill: true,
     lineWidth: 4,
+    addTo: shapes,
   });
 
   // hair side panel
@@ -294,6 +320,7 @@ new Shape({
     color: colors.hair,
     fill: true,
     lineWidth: 3,
+    addTo: shapes,
   });
   // hair balls
   new Shape({
@@ -302,6 +329,7 @@ new Shape({
     ],
     color: colors.hair,
     lineWidth: 6,
+    addTo: shapes,
   });
   new Shape({
     points: [
@@ -309,16 +337,8 @@ new Shape({
     ],
     color: colors.hair,
     lineWidth: 6,
+    addTo: shapes,
   });
-
-  // overall buttons
-  // new Shape({
-  //   points: [
-  //     { x: 5*xSide, y: 4, z: -6 },
-  //   ],
-  //   color: colors.button,
-  //   lineWidth: 4,
-  // });
 
 });
 
@@ -333,40 +353,30 @@ new Shape({
   color: colors.hair,
   fill: true,
   lineWidth: 3,
+  addTo: shapes,
 });
 
 
-
-
-
 // belly/butt
-
 new Shape({
   points: [
     { x: 0, y: 10, z: -1 },
   ],
   color: colors.overalls,
   lineWidth: 20,
+  addTo: shapes,
 });
 
 // right arm
-// shoulder
-// new Shape({
-//   points: [
-//     // neckBottom,
-//     { x: -6, y: 2, z: 3 },
-//   ],
-//   color: colors.cloth,
-//   lineWidth: 10,
-// });
 var rightShoulder = { x: -8, y: 2, z: 2 };
 new Shape({
   points: [
     rightShoulder,
-    { x: -16, y: -10, z: -1 },
+    { x: -14, y: -7, z: -1 },
   ],
   color: colors.cloth,
   lineWidth: 8,
+  addTo: shapes,
 });
 
 // right hand
@@ -376,6 +386,7 @@ new Shape({
   ],
   color: colors.white,
   lineWidth: 12,
+  addTo: shapes,
 });
 
 // left arm
@@ -388,6 +399,7 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 8,
+  addTo: shapes,
 });
 new Shape({
   points: [
@@ -396,6 +408,7 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 8,
+  addTo: shapes,
 });
 // left hand
 new Shape({
@@ -404,6 +417,7 @@ new Shape({
   ],
   color: colors.white,
   lineWidth: 12,
+  addTo: shapes,
 });
 
 new Shape({
@@ -413,6 +427,7 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 8,
+  addTo: shapes,
 });
 
 // right leg
@@ -425,6 +440,7 @@ new Shape({
   closed: false,
   color: colors.overalls,
   lineWidth: 10,
+  addTo: shapes,
 });
 // right foot toe
 new Shape({
@@ -433,6 +449,7 @@ new Shape({
   ],
   color: colors.leather,
   lineWidth: 11,
+  addTo: shapes,
 });
 // right foot sole
 new Shape({
@@ -445,6 +462,7 @@ new Shape({
   fill: true,
   color: colors.leather,
   lineWidth: 6,
+  addTo: shapes,
 });
 
 
@@ -459,6 +477,7 @@ new Shape({
   closed: false,
   color: colors.overalls,
   lineWidth: 10,
+  addTo: shapes,
 });
 // left foot toe
 new Shape({
@@ -467,6 +486,7 @@ new Shape({
   ],
   color: colors.leather,
   lineWidth: 11,
+  addTo: shapes,
 });
 // left foot sole
 new Shape({
@@ -479,6 +499,7 @@ new Shape({
   fill: true,
   color: colors.leather,
   lineWidth: 6,
+  addTo: shapes,
 });
 
 // -- animate --- //

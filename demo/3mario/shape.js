@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Vector3, shapes */
+/* globals Vector3 */
 
 // -- Shape class -- //
 
@@ -20,8 +20,10 @@ function Shape( properties ) {
     return new Vector3( point.x, point.y, point.z );
   });
 
-  // add to collection
-  shapes.push( this );
+  if ( this.addTo ) {
+    this.addTo.push( this );
+  }
+
 }
 
 Shape.prototype.update = function( angleX, angleY, angleZ ) {
