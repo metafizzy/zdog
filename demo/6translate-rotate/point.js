@@ -19,5 +19,5 @@ Point.prototype.rotate = function( rotation ) {
 };
 
 Point.prototype.translate = function( translation ) {
-  this.renderPosition.translate( translation );
+  this.renderPosition.add( translation );
 };

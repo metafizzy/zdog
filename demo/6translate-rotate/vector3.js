@@ -1,5 +1,7 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
 
+var TAU = Math.PI * 2;
+
 // -- Pseudo Vector3 class -- //
 
 function Vector3( position ) {
@@ -14,37 +16,46 @@ Vector3.prototype.set = function( pos ) {
 };
 
 Vector3.prototype.rotate = function( rotation ) {
-  // rotate Z
-  var rZSin = Math.sin( rotation.z );
-  var rZCos = Math.cos( rotation.z );
-  var x1 = this.x*rZCos - this.y*rZSin;
-  var y1 = this.y*rZCos + this.x*rZSin;
-  var z1 = this.z;
-
-  // rotate Y
-  var rYSin = Math.sin( rotation.y );
-  var rYCos = Math.cos( rotation.y );
-  var x2 = x1*rYCos - z1*rYSin;
-  var y2 = y1;
-  var z2 = z1*rYCos + x1*rYSin;
-
-  // rotateX
-  var rXSin = Math.sin( rotation.x );
-  var rXCos = Math.cos( rotation.x );
-  var x3 = x2;
-  var y3 = y2*rXCos - z2*rXSin;
-  var z3 = z2*rXCos + y2*rXSin;
-
-  this.x = x3;
-  this.y = y3;
-  this.z = z3;
+  if ( !rotation ) {
+    return;
+  }
+  this.rotateZ( rotation.z );
+  this.rotateY( rotation.y );
+  this.rotateX( rotation.x );
 };
 
-Vector3.prototype.translate = function( translation ) {
-  translation = Vector3.sanitize( translation );
-  this.x += translation.x;
-  this.y += translation.y;
-  this.z += translation.z;
+Vector3.prototype.rotateZ = function( angle ) {
+  rotateProperty( this, angle, 'x', 'y' );
+};
+
+Vector3.prototype.rotateX = function( angle ) {
+  rotateProperty( this, angle, 'y', 'z' );
+};
+
+Vector3.prototype.rotateY = function( angle ) {
+  rotateProperty( this, angle, 'x', 'z' );
+};
+
+function rotateProperty( vec, angle, propA, propB ) {
+  if ( angle % TAU === 0 ) {
+    return;
+  }
+  var cos = Math.cos( angle );
+  var sin = Math.sin( angle );
+  var a = vec[ propA ];
+  var b = vec[ propB ];
+  vec[ propA ] = a*cos - b*sin;
+  vec[ propB ] = b*cos + a*sin;
+}
+
+Vector3.prototype.add = function( vec ) {
+  if ( !vec ) {
+    return;
+  }
+  vec = Vector3.sanitize( vec );
+  this.x += vec.x;
+  this.y += vec.y;
+  this.z += vec.z;
 };
 
 // ----- utils ----- //
