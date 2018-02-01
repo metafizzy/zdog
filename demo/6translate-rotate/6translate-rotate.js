@@ -12,14 +12,11 @@ var canvasHeight = canvas.height = h * zoom;
 
 var rZSpeed = 0;
 
-var cameraRotation = { x: 0, y: 0, z: 0 };
-
-// collection of shapes
-var shapes = [];
+var camera = new Shape();
 
 // -- illustration shapes --- //
 
-new Shape({
+var rect1 = new Shape({
   points: [
     { x: -6, y: -8 },
     { x:  6, y: -8 },
@@ -27,31 +24,54 @@ new Shape({
     { x: -6, y:  8 },
   ],
   translate: { z: -6 },
-  rotate: { z: 0.5 },
+  // rotate: { z: 1 },
   lineWidth: 2,
-  fill: true,
+  // fill: true,
   color: '#08D',
-  addTo: shapes,
+  addTo: camera,
 });
 
-new Shape({
+var moon1 = new Shape({
   points: [
-    { x: -6, y: 0, z: -4, },
-    { x:  6, y: 0, z: -4, },
-    { x:  6, y: 0, z:  4, },
-    { x: -6, y: 0, z:  4, },
+    { y: -11, z: 0 },
+    { y: -11, z: 6 }
+  ],
+  lineWidth: 3,
+  color: 'white',
+  addTo: rect1,
+});
+
+var rect2 = new Shape({
+  points: [
+    { x: -6, z: -4, },
+    { x:  6, z: -4, },
+    { x:  6, z:  4, },
+    { x: -6, z:  4, },
   ],
   translate: { y: 8 },
   // rotate: { y: 1 },
   lineWidth: 2,
   fill: true,
   color: '#E21',
-  addTo: shapes,
+  addTo: camera,
 });
 
+new Shape({
+  points: [
+    { y: -6, z: 4 },
+    { y:  6, z: 4 },
+    { y:  6, z: 0 },
+    { y: -6, z: 0 },
+  ],
+  lineWidth: 1,
+  fill: true,
+  color: '#F80',
+  addTo: camera,
+});
+
+var shapes = camera.getShapes();
 
 // -- animate --- //
-
 
 function animate() {
   update();
@@ -65,14 +85,16 @@ animate();
 
 function update() {
   // rotate
-  cameraRotation.z += rZSpeed;
+  moon1.rotate.y += 0.03;
+  rect1.rotate.z -= 0.02;
+  camera.rotate.z += rZSpeed;
+  camera.update();
+  shapes.forEach( function( shape ) {
+    shape.updateSortValue();
+  });
   // perspective sort
   shapes.sort( function( a, b ) {
     return b.sortValue - a.sortValue;
-  });
-  // render shapes
-  shapes.forEach( function( shape ) {
-    shape.update( cameraRotation );
   });
 }
 
@@ -108,8 +130,8 @@ var dragStartAngleX, dragStartAngleY;
 document.addEventListener( 'mousedown', function( event ) {
   dragStartX = event.pageX;
   dragStartY = event.pageY;
-  dragStartAngleX = cameraRotation.x;
-  dragStartAngleY = cameraRotation.y;
+  dragStartAngleX = camera.rotate.x;
+  dragStartAngleY = camera.rotate.y;
 
   window.addEventListener( 'mousemove', onMousemoveDrag );
   window.addEventListener( 'mouseup', onMouseupDrag );
@@ -120,8 +142,8 @@ function onMousemoveDrag( event ) {
   var dy = event.pageY - dragStartY;
   var angleXMove = dy * TAU/360;
   var angleYMove = dx * TAU/360;
-  cameraRotation.x = dragStartAngleX + angleXMove;
-  cameraRotation.y = dragStartAngleY + angleYMove;
+  camera.rotate.x = dragStartAngleX + angleXMove;
+  camera.rotate.y = dragStartAngleY + angleYMove;
 }
 
 function onMouseupDrag() {

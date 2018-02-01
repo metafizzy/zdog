@@ -13,42 +13,78 @@ function Shape( properties ) {
   for ( var propName in properties ) {
     this[ propName ] = properties[ propName ];
   }
-  // convert plain ol' object to Vector3 object
+  this.points = this.points || [];
+  // convert plain ol' object to Point object
   this.points = this.points.map( function( position ) {
     return new Point( position );
   });
-
+  // transform
   this.translate = Vector3.sanitize( this.translate );
   this.rotate = Vector3.sanitize( this.rotate );
-
+  // children
+  this.children = [];
   if ( this.addTo ) {
-    this.addTo.push( this );
+    this.addTo.addChild( this );
+    // delete this.addTo; // HACK for perf?
   }
-
 }
 
-Shape.prototype.update = function( cameraRotation ) {
-  var sortValueTotal = 0;
-  var translation = this.translate;
-  var rotation = this.rotate;
+Shape.prototype.addChild = function( shape ) {
+  this.children.push( shape );
+};
+
+// ----- update ----- //
+
+Shape.prototype.update = function() {
+  // update self
+  this.reset();
+  // update children
+  this.children.forEach( function( child ) {
+    child.update();
+  });
+  this.transform( this.translate, this.rotate );
+};
+
+Shape.prototype.reset = function() {
+  this.points.forEach( resetEach );
+};
+
+function resetEach( item ) {
+  item.reset();
+}
+
+Shape.prototype.transform = function( translation, rotation ) {
+  // transform points
   this.points.forEach( function( point ) {
-    point.reset();
     point.rotate( rotation );
     point.translate( translation );
-    point.rotate( cameraRotation );
+  });
+  // transform children
+  this.children.forEach( function( child ) {
+    child.transform( translation, rotation );
+  });
+};
+
+Shape.prototype.updateSortValue = function() {
+  var sortValueTotal = 0;
+  this.points.forEach( function( point ) {
     sortValueTotal += point.renderPosition.z;
   });
-
   // average sort value of all points
   // def not geometrically correct, but works for me
   this.sortValue = sortValueTotal / this.points.length;
 };
 
+// ----- render ----- //
+
 Shape.prototype.render = function( ctx ) {
-  // set default color
+  var length = this.points.length;
+  if ( !this.points.length ) {
+    return;
+  }
+  // set render properties
   ctx.fillStyle = this.color;
   ctx.strokeStyle = this.color;
-  // set any render properties
   ctx.lineWidth = this.lineWidth;
   ctx.lineCap = 'round';
 
@@ -61,13 +97,10 @@ Shape.prototype.render = function( ctx ) {
     position = point.renderPosition;
     ctx[ renderMethod ]( position.x, position.y );
   });
-  // close path by return to first point
-  var length = this.points.length;
+  // close path
   var isOnePoint = length == 1;
-  var isClosed = this.closed && length > 2;
-  if ( isOnePoint || isClosed ) {
-    position = this.points[0].renderPosition;
-    ctx.lineTo( position.x, position.y );
+  if ( isOnePoint || this.closed  ) {
+    ctx.closePath();
   }
   if ( this.stroke ) {
     ctx.stroke();
@@ -75,6 +108,14 @@ Shape.prototype.render = function( ctx ) {
   if ( this.fill ) {
     ctx.fill();
   }
-  // debugger;
-  ctx.closePath();
+};
+
+// return Array of self & all child shapes
+Shape.prototype.getShapes = function() {
+  var shapes = [ this ];
+  this.children.forEach( function( child ) {
+    var childShapes = child.getShapes();
+    shapes = shapes.concat( childShapes );
+  });
+  return shapes;
 };
