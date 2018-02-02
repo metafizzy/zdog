@@ -17,7 +17,9 @@ var skin = '#FCA';
 
 var rZSpeed = 0;
 
-var camera = new Shape();
+var camera = new Shape({
+  rendering: false,
+});
 
 // -- illustration shapes --- //
 
@@ -54,16 +56,104 @@ var head = new Shape({
 var upperBody = new Shape({
   points: [
     { x: -2, y: -1 },
-    { x:  0, y: -1.5 },
+    { x:  0, y: -1.25 },
     { x:  2, y: -1 },
-    { x:  1, y: 2 },
-    { x: -1, y: 2 },
+    { x:  1, y: 0.5 },
+    { x: -1, y: 0.5 },
   ],
   translate: { y: -4 },
   lineWidth: 11,
   color: lightBlue,
   fill: true,
   addTo: camera,
+});
+
+// undies
+
+var undieX = 4;
+var undieY0 = -1;
+var undieY1 = 0;
+var undieZ = 3;
+
+var undiePoints = [
+  { x: -undieX, y: undieY0 },
+  { x:  undieX, y: undieY0 },
+  { x:  undieX, y: undieY1 },
+  { x:  0, y: 1 },
+  { x: -undieX, y: undieY1 },
+];
+
+var frontUndiePanel = new Shape({
+  points: undiePoints,
+  translate: { y: 4, z: -undieZ },
+  lineWidth: 5,
+  color: darkBlue,
+  fill: true,
+  addTo: camera,
+});
+
+var backUndiePanel = new Shape({
+  points: undiePoints,
+  translate: { y: 4, z: undieZ },
+  lineWidth: 5,
+  color: darkBlue,
+  fill: true,
+  addTo: camera,
+});
+
+
+var sideUndiePoints = [
+  { y: undieY0, z: -undieZ },
+  { y: undieY0, z:  undieZ },
+  { y: undieY1, z:  undieZ },
+  { y: undieY1, z: -undieZ },
+];
+
+// right undie panel
+new Shape({
+  points: sideUndiePoints,
+  translate: { x: -undieX, y: 4, },
+  lineWidth: 5,
+  color: darkBlue,
+  fill: true,
+  addTo: camera,
+});
+// left
+new Shape({
+  points: sideUndiePoints,
+  translate: { x: undieX, y: 4, },
+  lineWidth: 5,
+  color: darkBlue,
+  fill: true,
+  addTo: camera,
+});
+
+//
+var shoulderX = 4;
+var shoulderY = -7;
+
+// right upper arm
+var rightArmP1 = { x: -5, y: 4, z: -2 };
+var rightUpperArm = new Shape({
+  points: [
+    { x: 0, y: 0 },
+    rightArmP1,
+  ],
+  translate: { x: -shoulderX, y: shoulderY },
+  lineWidth: 6,
+  color: lightBlue,
+  addTo: camera,
+});
+
+var rightForeArm = new Shape({
+  points: [
+    { x: -2, y: -1, z: -3 },
+    { x: -4, y: -4, z: -4 },
+  ],
+  translate: rightArmP1,
+  lineWidth: 9,
+  color: darkBlue,
+  addTo: rightUpperArm,
 });
 
 [ -1, 1 ].forEach( function( xSide ) {
@@ -88,43 +178,39 @@ var upperBody = new Shape({
   // eye white
   // var eyeWhite = new Shape({
   //   points: [
-  //     // { x: -2, y: -2 },
-  //     // { x:  2, y: -2 },
-  //     // { x:  2, y:  2 },
-  //     // { x: -2, y:  2 },
-  //     { x: -2.5,   y: -1.7 },
-  //     { x: -1.2, y: -2.5 },
-  //     { x:  1.2, y: -2.5 },
-  //     { x:  2.5,   y: -1.7 },
-  //     { x:  2.5,   y: 1.7 },
-  //     { x:  1.2, y: 2.5 },
-  //     { x: -1.2, y: 2.5 },
-  //     { x: -2.5,   y: 1.7 },
+  //     { x:  1.7*xSide, y: -1.5 },
+  //     { x:  1.2*xSide, y: -2.5 },
+  //     { x: -1.2*xSide, y: -2.5 },
+  //     { x: -1.7*xSide, y: -1.5 },
+  //     { x: -1.7*xSide, y:  1.5 },
+  //     { x: -1.2*xSide, y:  2.5 },
+  //     { x:  1.7*xSide, y:  2.5 },
   //   ],
-  //   translate: { x: 4*xSide, y: 1.6, z: -7.5 },
-  //   rotate: { y: 0.2*xSide },
-  //   stroke: false,
+  //   translate: { x: -4*xSide, y: 2.0, z: -7 },
+  //   lineWidth: 1.5,
   //   fill: true,
   //   color: 'white',
   //   addTo: head,
   // });
+  //
+  // new Shape({
+  //   points: [
+  //     { x: 0, y: -1.3 },
+  //     { x: 0, y:  1.3 },
+  //   ],
+  //   translate: { x: 0.5*xSide, y: -0.2, z: -1 },
+  //   lineWidth: 2.5,
+  //   color: '#127',
+  //   addTo: eyeWhite,
+  // });
 
   new Shape({
     points: [
-      // { x: -1,   y: -1 },
-      // { x: -0.5, y: -2 },
-      // { x:  0.5, y: -2 },
-      // { x:  1,   y: -1 },
-      // { x:  1,   y: 1 },
-      // { x:  0.5, y: 2 },
-      // { x: -0.5, y: 2 },
-      // { x: -1,   y: 1 },
-      { x: 0, y: -1.1 },
-      { x: 0, y: 1.1 },
+      { x: 0, y: -1.3 },
+      { x: 0, y:  1.3 },
     ],
-    translate: { x: 4*xSide, y: 2, z: -8},
+    translate: { x: 4*xSide, y: 2, z: -8 },
     lineWidth: 2.5,
-    fill: true,
     color: '#127',
     addTo: head,
   });

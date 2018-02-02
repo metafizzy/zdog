@@ -9,9 +9,16 @@ function Shape( properties ) {
   this.fill = false;
   this.lineWidth = 1;
   this.closed = true;
+  this.rendering = true;
   // extend properties
   for ( var propName in properties ) {
     this[ propName ] = properties[ propName ];
+  }
+  // default to zero point
+
+  var length = this.points && this.points.length;
+  if ( !length ) {
+    this.points = [ {} ];
   }
   this.points = this.points || [];
   // convert plain ol' object to Point object
@@ -78,8 +85,11 @@ Shape.prototype.updateSortValue = function() {
 // ----- render ----- //
 
 Shape.prototype.render = function( ctx ) {
+  if ( !this.rendering ) {
+    return;
+  }
   var length = this.points.length;
-  if ( !this.points.length ) {
+  if ( !length ) {
     return;
   }
   // set render properties
