@@ -35,7 +35,7 @@ var head = new Shape({
 });
 
 // helmet details
-[ 1, 3, 4, 5, 6, 7, 8 ].forEach( function( i ) {
+[ 1, 3, 4, 5, 6, 7, 8, 9 ].forEach( function( i ) {
   new Shape({
     points: [
       { x: -1.25, y: -1.5, z: -11.25 },
@@ -43,7 +43,7 @@ var head = new Shape({
       { x:  1.25, y:  1.5, z: -11.25 },
       { x: -1.25, y:  1.5, z: -11.25 },
     ],
-    rotate: { x: -TAU/20 * (i+0.5) },
+    rotate: { x: -TAU/20 * (i) },
     lineWidth: 2,
     fill: true,
     color: lightBlue,
@@ -59,8 +59,8 @@ var upperBody = new Shape({
     { x: -2, y: -1.25 },
     { x:  0, y: -1.5 },
     { x:  2, y: -1.25 },
-    { x:  1.5, y: 0.5 },
-    { x: -1.5, y: 0.5 },
+    { x:  1.7, y: 0.5 },
+    { x: -1.7, y: 0.5 },
   ],
   translate: { y: -4 },
   lineWidth: 11,
@@ -71,16 +71,16 @@ var upperBody = new Shape({
 
 // undies
 
-var undieX = 4;
+var undieX = 4.5;
 var undieY0 = -1;
 var undieY1 = 0;
-var undieZ = 3;
+var undieZ = 2.5;
 
 var undiePoints = [
   { x: -undieX, y: undieY0 },
   { x:  undieX, y: undieY0 },
   { x:  undieX, y: undieY1 },
-  { x:  0, y: 1 },
+  { x:  0, y: 1.5 },
   { x: -undieX, y: undieY1 },
 ];
 
@@ -149,11 +149,11 @@ var rightUpperArm = new Shape({
 var rightForeArm = new Shape({
   points: [
     { x: -4 },
-    { x: -6 },
+    { x: -8 },
   ],
   translate: rightUpperArm.points[1],
   rotate: { z: 1.4 },
-  lineWidth: 9,
+  lineWidth: 10,
   color: darkBlue,
   addTo: rightUpperArm,
 });
@@ -164,7 +164,7 @@ var rightHand = new Shape({
   ],
   translate: rightForeArm.points[1],
   rotate: { z: 0.3 },
-  lineWidth: 10,
+  lineWidth: 11,
   color: darkBlue,
   addTo: rightForeArm,
 });
@@ -176,7 +176,7 @@ var leftUpperArm = new Shape({
     { x: 11 },
   ],
   translate: { x: shoulderX, y: shoulderY-0.5 },
-  rotate: { z: -0.2, y: -0.5 },
+  rotate: { z: -0.2, y: -0.3 },
   lineWidth: 6,
   color: lightBlue,
   addTo: camera,
@@ -206,12 +206,11 @@ var blasterNozzle = new Shape({
   // face panel
   new Shape({
     points: [
-      { x: 6*xSide, y: -5, z: 2 },
-      { x: 3*xSide, y: -5, z: 1 },
-      { x: 0*xSide, y: -3, z: 0  },
+      { x: 6*xSide, y: -4, z: 4 },
+      { x: 3*xSide, y: -4, z: 1 },
+      { x: 0*xSide, y: -2, z: 0  },
       { x: 0*xSide, y: 1, z: -1  }, // nose
-      { x: 0*xSide, y: 5, z: 2  }, // chin front
-      // { x: 0*xSide, y: 5, z: 5  }, // chin back
+      { x: 0*xSide, y: 5, z: 1  }, // chin front
       { x: 5*xSide, y: 4, z: 5 },
       { x: 7*xSide, y: 0, z: 5 },
     ],
@@ -223,31 +222,35 @@ var blasterNozzle = new Shape({
   });
 
   // eye whites
-  // new Shape({
-  //   points: [
-  //     { x: -1, y: -2 },
-  //     { x:  1, y: -2 },
-  //     { x:  1, y:  2 },
-  //     { x: -1, y:  2 },
-  //   ],
-  //   translate: { x: 4*xSide, y: 1.75, z: -7 },
-  //   rotate: { y: 0.5*xSide },
-  //   lineWidth: 3,
-  //   fill: true,
-  //   color: 'white',
-  //   addTo: head,
-  // });
+  var eyeWhite = new Shape({
+    points: [
+      { x: -1, y: -1.5 },
+      { x:  1, y: -1.5 },
+      { x:  1, y:  1.5 },
+      { x: -1, y:  1.5 },
+    ],
+    translate: { x: 4*xSide, y: 3, z: -7 },
+    rotate: { y: 0.5*xSide },
+    lineWidth: 3,
+    fill: true,
+    color: 'white',
+    addTo: head,
+  });
 
   // pupils
   new Shape({
     points: [
-      { x: 0, y: -1.5 },
-      { x: 0, y:  1.5 },
+      { x: -0.4, y: -1.9 },
+      { x:  0.4, y: -1.9 },
+      { x:  0.4, y:  1.9 },
+      { x: -0.4, y:  1.9 },
     ],
-    translate: { x: 3.75*xSide, y: 2, z: -8 },
-    lineWidth: 3,
-    color: '#127',
-    addTo: head,
+    // translate: { x: 3.75*xSide, y: 3, z: -8 },
+    translate: { x: -0.2*xSide + 0.2, y: -0.2, z: -0.5 },
+    lineWidth: 1.5,
+    fill: true,
+    color: '#128',
+    addTo: eyeWhite,
   });
 
   // ear cone outer
@@ -259,13 +262,53 @@ var blasterNozzle = new Shape({
       { z: earSize, y: earSize },
       { z: -earSize, y: earSize },
     ],
-    translate: { x: 9.5*xSide, y: 3, z: 2 },
-    rotate: { z: 0.2*xSide },
+    translate: { x: 9.5*xSide, y: 3, z: 1 },
+    rotate: { z: 0.1*xSide },
     fill: true,
     lineWidth: 3,
     color: lightBlue,
     addTo: head,
   });
+
+  // thigh
+  var thigh = new Shape({
+    points: [ { y: 0 }, { y: 3 } ],
+    translate: { x: 4.5*xSide, y: 8 },
+    rotate: { z: -0.35*xSide, x: 0.1 },
+    lineWidth: 6,
+    color: lightBlue,
+    addTo: camera,
+  });
+
+  // shin
+  var shin = new Shape({
+    points: [
+      { y: 5, z: 0 },
+      { y: 14, z: -2 },
+      { y: 14, z: 1 },
+    ],
+    translate: thigh.points[1],
+    rotate: { y: 0.3*xSide },
+    fill: true,
+    lineWidth: 11,
+    color: darkBlue,
+    addTo: thigh,
+  });
+
+  // sole
+  new Shape({
+    points: [
+      { y: 2.5, x: 3*xSide, z: 3 },
+      { y: 2.5, x: -1*xSide, z: 3 },
+      { y: 2.5, x: 1*xSide, z: -5 },
+    ],
+    translate: shin.points[1],
+    rotate: { z: 0.4*xSide, x: 0 },
+    fill: true,
+    lineWidth: 7,
+    color: darkBlue,
+    addTo: shin,
+  })
 
 });
 
