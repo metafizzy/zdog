@@ -288,7 +288,7 @@ var blasterNozzle = new Shape({
       { y: 14, z: 1 },
     ],
     translate: thigh.points[1],
-    rotate: { y: 0.3*xSide },
+    rotate: { y: 0.5*xSide },
     fill: true,
     lineWidth: 11,
     color: darkBlue,
@@ -298,17 +298,18 @@ var blasterNozzle = new Shape({
   // sole
   new Shape({
     points: [
-      { y: 2.5, x: 3*xSide, z: 3 },
-      { y: 2.5, x: -1*xSide, z: 3 },
-      { y: 2.5, x: 1*xSide, z: -5 },
+      { y: 2.5, x: (0.5 + 2)*xSide, z: 3 },
+      { y: 2.5, x: (0.5 + -2)*xSide, z: 3 },
+      { y: 2.5, x: (0.5 + -1)*xSide, z: -5 },
+      { y: 2.5, x: (0.5 + 1)*xSide, z: -5 },
     ],
     translate: shin.points[1],
-    rotate: { z: 0.4*xSide, x: 0 },
+    rotate: { z: 0.4*xSide, x: 0.1 },
     fill: true,
     lineWidth: 7,
     color: darkBlue,
     addTo: shin,
-  })
+  });
 
 });
 
