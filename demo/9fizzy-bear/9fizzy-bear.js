@@ -12,6 +12,9 @@ var canvasHeight = canvas.height = h * zoom;
 
 // colors
 var magenta = '#C25';
+var orange = '#E62';
+var gold = '#EA0';
+var blue = '#19F';
 var black = '#333';
 
 var camera = new Shape({
@@ -33,6 +36,40 @@ var unibody = new Shape({
   lineWidth: 28,
   fill: true,
 });
+
+// body lines
+// var bodyLinePoints = [
+//   { x: -3 },
+//   { x:  3 },
+// ];
+// new Shape({
+//   points: bodyLinePoints,
+//   addTo: unibody,
+//   translate: { y: -8 },
+//   color: magenta,
+//   lineWidth: 28,
+// });
+// new Shape({
+//   points: bodyLinePoints,
+//   addTo: unibody,
+//   translate: { y: -3.33 },
+//   color: orange,
+//   lineWidth: 28,
+// });
+// new Shape({
+//   points: bodyLinePoints,
+//   addTo: unibody,
+//   translate: { y: 1.33 },
+//   color: gold,
+//   lineWidth: 28,
+// });
+// new Shape({
+//   points: bodyLinePoints,
+//   addTo: unibody,
+//   translate: { y: 6 },
+//   color: blue,
+//   lineWidth: 28,
+// });
 
 // right ear
 new Shape({
@@ -125,16 +162,31 @@ var rightArm = new Shape({
   ],
   addTo: unibody,
   translate: { x: -17, y: 4 },
+  rotate: { y: -0.25 },
   color: magenta,
   lineWidth: 12,
 });
-var leftArm = new Shape({
+// left arm
+var leftShoulder = new Shape({
   points: [
     { x: 0 },
-    { x: 8 },
+    { x: 7 },
   ],
   addTo: unibody,
-  translate: { x: 17, y: 4 },
+  translate: { x: 15, y: 4 },
+  rotate: { z: -35/360 * TAU, x: 0.4 },
+  color: magenta,
+  lineWidth: 12,
+});
+// left forearm
+new Shape({
+  points: [
+    { x: 0 },
+    { x: 11 },
+  ],
+  addTo: leftShoulder,
+  translate: leftShoulder.points[1],
+  rotate: { z: -35/360 * TAU },
   color: magenta,
   lineWidth: 12,
 });
@@ -143,20 +195,35 @@ var leftArm = new Shape({
 var rightLeg = new Shape({
   points: [
     { y: 0 },
-    { y: 14 },
+    { y: 15 },
   ],
   addTo: unibody,
   translate: { x: -10, y: 12 },
+  rotate: { z: 49/360 * TAU, x: 0.3 },
   color: magenta,
   lineWidth: 12,
 });
-var leftLeg = new Shape({
+// left leg
+var leftThigh = new Shape({
   points: [
     { y: 0 },
-    { y: 14 },
+    { y: 13 },
   ],
   addTo: unibody,
-  translate: { x: 10, y: 12 },
+  translate: { x: 9, y: 12 },
+  rotate: { z: 49/360 * TAU, x: 0.2 },
+  color: magenta,
+  lineWidth: 12,
+});
+// left shin
+new Shape({
+  points: [
+    { y: 0 },
+    { y: 12 },
+  ],
+  addTo: leftThigh,
+  translate: leftThigh.points[1],
+  rotate: { z: 0.2, x: 0.8 },
   color: magenta,
   lineWidth: 12,
 });
@@ -234,3 +301,19 @@ function onMouseupDrag() {
   window.removeEventListener( 'mousemove', onMousemoveDrag );
   window.removeEventListener( 'mouseup', onMouseupDrag );
 }
+
+document.querySelector('.flat-button').onclick = function() {
+  camera.rotate = {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
+};
+
+document.querySelector('.jump-button').onclick = function() {
+  camera.rotate = {
+    x: 0,
+    y: 25/360 * TAU,
+    z: -31/360 * TAU,
+  };
+};
