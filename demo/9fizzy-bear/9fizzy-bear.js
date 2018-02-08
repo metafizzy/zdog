@@ -3,12 +3,22 @@
 
 var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
+// unibody canvas for compositing
+var unibodyCanvas = document.createElement('canvas');
+var bodyLinesCanvas = document.createElement('canvas');
 var ctx = canvas.getContext('2d');
+var unibodyCtx = unibodyCanvas.getContext('2d');
+var bodyLinesCtx = bodyLinesCanvas.getContext('2d');
+// document.body.appendChild( unibodyCanvas );
+// document.body.appendChild( bodyLinesCanvas );
 var w = 88;
 var h = 88;
 var zoom = 6;
-var canvasWidth = canvas.width = w * zoom;
+var canvasWidth = canvas.width =  w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
+unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
+
 
 // colors
 var magenta = '#C25';
@@ -26,50 +36,58 @@ var camera = new Shape({
 // unibody
 var unibody = new Shape({
   points: [
+    // {},
     { x: -3, y: -8 },
     { x:  3, y: -8 },
     { x:  3, y:  6 },
     { x: -3, y:  6 },
   ],
   addTo: camera,
+  // rendering: false,
   color: magenta,
   lineWidth: 28,
   fill: true,
 });
 
 // body lines
-// var bodyLinePoints = [
-//   { x: -3 },
-//   { x:  3 },
-// ];
-// new Shape({
-//   points: bodyLinePoints,
-//   addTo: unibody,
-//   translate: { y: -8 },
-//   color: magenta,
-//   lineWidth: 28,
-// });
-// new Shape({
-//   points: bodyLinePoints,
-//   addTo: unibody,
-//   translate: { y: -3.33 },
-//   color: orange,
-//   lineWidth: 28,
-// });
-// new Shape({
-//   points: bodyLinePoints,
-//   addTo: unibody,
-//   translate: { y: 1.33 },
-//   color: gold,
-//   lineWidth: 28,
-// });
-// new Shape({
-//   points: bodyLinePoints,
-//   addTo: unibody,
-//   translate: { y: 6 },
-//   color: blue,
-//   lineWidth: 28,
-// });
+var bodyLines = [ magenta, orange, gold, blue ].map( function( color, i ) {
+  return new Shape({
+    points: [
+      { x: -15, z: 0 }, 
+      { x: -9, z: -12 }, 
+      { x:  9, z: -12 },
+      { x:  15, z: 0 }, 
+      { x:  9, z:  12 }, 
+      { x: -9, z:  12 }, 
+    ],
+    addTo: unibody,
+    translate: { y: -16.75 + 10.5*i },
+    color: color,
+    lineWidth: 11,
+    fill: true,
+  });
+});
+
+// unibody composited rendering
+var unibodyRender = unibody.render;
+unibody.render = function( ctx ) {
+  // render unibody on its own canvas, so we can use lineWidth
+  unibodyRender.call( unibody, unibodyCtx );
+  // render body lines separately, on its own canvas
+  bodyLinesCtx.globalCompositeOperation = 'source-over';
+  bodyLines.forEach( function( bodyLine ) {
+    bodyLine.render( bodyLinesCtx );
+  });
+  // composite bodyLines in unibody
+  bodyLinesCtx.restore();
+  bodyLinesCtx.globalCompositeOperation = 'destination-in';
+  bodyLinesCtx.drawImage( unibodyCanvas, 0, 0 );
+  zoomContext( bodyLinesCtx );
+  // draw unibody composite on to canvas
+  ctx.restore();
+  ctx.drawImage( bodyLinesCanvas, 0, 0 );
+  zoomContext( ctx );
+};
 
 // right ear
 new Shape({
@@ -163,19 +181,19 @@ var rightArm = new Shape({
   addTo: unibody,
   translate: { x: -17, y: 4 },
   rotate: { y: -0.25 },
-  color: magenta,
+  color: gold,
   lineWidth: 12,
 });
 // left arm
 var leftShoulder = new Shape({
   points: [
     { x: 0 },
-    { x: 7 },
+    { x: 6 },
   ],
   addTo: unibody,
-  translate: { x: 15, y: 4 },
+  translate: { x: 16, y: 4 },
   rotate: { z: -35/360 * TAU, x: 0.4 },
-  color: magenta,
+  color: gold,
   lineWidth: 12,
 });
 // left forearm
@@ -187,7 +205,7 @@ new Shape({
   addTo: leftShoulder,
   translate: leftShoulder.points[1],
   rotate: { z: -35/360 * TAU },
-  color: magenta,
+  color: gold,
   lineWidth: 12,
 });
 
@@ -200,7 +218,7 @@ var rightLeg = new Shape({
   addTo: unibody,
   translate: { x: -10, y: 12 },
   rotate: { z: 49/360 * TAU, x: 0.3 },
-  color: magenta,
+  color: blue,
   lineWidth: 12,
 });
 // left leg
@@ -212,7 +230,7 @@ var leftThigh = new Shape({
   addTo: unibody,
   translate: { x: 9, y: 12 },
   rotate: { z: 49/360 * TAU, x: 0.2 },
-  color: magenta,
+  color: blue,
   lineWidth: 12,
 });
 // left shin
@@ -224,11 +242,14 @@ new Shape({
   addTo: leftThigh,
   translate: leftThigh.points[1],
   rotate: { z: 0.2, x: 0.8 },
-  color: magenta,
+  color: blue,
   lineWidth: 12,
 });
 
 var shapes = camera.getShapes();
+var positveShapes = shapes.filter( function( shape ) {
+  return !bodyLines.includes( shape );
+});
 
 // -- animate --- //
 
@@ -248,28 +269,43 @@ function update() {
     shape.updateSortValue();
   });
   // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  positveShapes.sort( sortBySortValue );
+  bodyLines.sort( sortBySortValue );
+}
+
+function sortBySortValue( a, b ) {
+  return b.sortValue - a.sortValue;
 }
 
 // -- render -- //
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+unibodyCtx.lineCap = bodyLinesCtx.lineCap = 'round';
+unibodyCtx.lineJoin = bodyLinesCtx.lineJoin  = 'round';
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
+  unibodyCtx.clearRect( 0, 0, canvasWidth, canvasHeight );
+  bodyLinesCtx.clearRect( 0, 0, canvasWidth, canvasHeight );
+  zoomContext( ctx );
+  zoomContext( unibodyCtx );
+  zoomContext( bodyLinesCtx );
 
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  shapes.forEach( function( shape ) {
+  positveShapes.forEach( function( shape ) {
     shape.render( ctx );
   });
 
   ctx.restore();
+  unibodyCtx.restore();
+  bodyLinesCtx.restore();
 }
+
+function zoomContext( context ) {
+  context.save();
+  context.scale( zoom, zoom );
+  context.translate( w/2, h/2 );
+}
+
 
 // ----- inputs ----- //
 

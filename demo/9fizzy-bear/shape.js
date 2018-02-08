@@ -96,7 +96,6 @@ Shape.prototype.render = function( ctx ) {
   ctx.fillStyle = this.color;
   ctx.strokeStyle = this.color;
   ctx.lineWidth = this.lineWidth;
-  ctx.lineCap = 'round';
 
   // render points
   ctx.beginPath();
