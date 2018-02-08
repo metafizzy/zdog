@@ -37,32 +37,16 @@ new Shape({
 });
 
 // unibody
-// new Shape({
-//   points: [
-//     { x: -1, y: 11 },
-//     { x: -14.25, y: -11 },
-//     { x: -4, y: -19 },
-//     { x: 5, y: -19 },
-//     { x: 14, y: -4 },
-//     { x: 14, y: 2 },
-//     { x: 13, y: 8 },
-//   ],
-//   addTo: camera,
-//   color: magenta,
-//   lineWidth: 12,
-//   fill: true,
-// });
-
-
-// unibody, FAT PILL
 new Shape({
   points: [
-    { x: -2, y: -10 },
-    { x: 4, y: 0 },
+    { x: 0, y: -16 },
+    { x: 9, y: -1 },
+    { x: 2, y: 4 },
+    { x: -7, y: -11 },
   ],
   addTo: camera,
   color: magenta,
-  lineWidth: 32,
+  lineWidth: 24,
   fill: true,
 });
 
@@ -133,13 +117,13 @@ new Shape({
 var face = new Shape({
   rendering: false,
   translate: { y: -5 },
-  rotate: { y: 0.2, z: -31/360 * TAU },
+  rotate: { y: 0, z: -31/360 * TAU },
   addTo: camera,
 });
 
 var faceRotor = new Shape({
   rendering: false,
-  translate: { z: -16 },
+  translate: { z: -12 },
   // rotate: { y: 1 },
   addTo: face,
   
@@ -188,8 +172,8 @@ var eyePoints = [
 new Shape({
   points: eyePoints,
   addTo: faceRotor,
-  translate: { y: -5, x: -7.5, z: 1 },
-  rotate: { y: -0.3 },
+  translate: { y: -5, x: -7.5, z: 0 },
+  rotate: { y: -0.2 },
   color: black,
   lineWidth: 3,
   closed: false,
@@ -198,8 +182,8 @@ new Shape({
 new Shape({
   points: eyePoints,
   addTo: faceRotor,
-  translate: { y: -5, x: 7.5, z: 1 },
-  rotate: { y: 0.3 },
+  translate: { y: -5, x: 7.5, z: 0 },
+  rotate: { y: 0.2 },
   // rotate: { y: TAU/2 },
   color: black,
   lineWidth: 3,
