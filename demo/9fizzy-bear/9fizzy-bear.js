@@ -39,14 +39,14 @@ new Shape({
 // unibody
 new Shape({
   points: [
-    { x: 0, y: -16 },
-    { x: 9, y: -1 },
-    { x: 2, y: 4 },
-    { x: -7, y: -11 },
+    { x: -1, y: -12 },
+    { x: 6.5, y: 0.5 },
+    { x: 3, y: 2 },
+    { x: -4.5, y: -10.5 },
   ],
   addTo: camera,
   color: magenta,
-  lineWidth: 24,
+  lineWidth: 28,
   fill: true,
 });
 
@@ -116,14 +116,14 @@ new Shape({
 // face container
 var face = new Shape({
   rendering: false,
-  translate: { y: -5 },
-  rotate: { y: 0, z: -31/360 * TAU },
+  translate: { y: -7 },
+  rotate: { y: 0.2, z: -31/360 * TAU },
   addTo: camera,
 });
 
 var faceRotor = new Shape({
   rendering: false,
-  translate: { z: -12 },
+  translate: { z: -14 },
   // rotate: { y: 1 },
   addTo: face,
   
@@ -173,7 +173,7 @@ new Shape({
   points: eyePoints,
   addTo: faceRotor,
   translate: { y: -5, x: -7.5, z: 0 },
-  rotate: { y: -0.2 },
+  rotate: { y: -0.3 },
   color: black,
   lineWidth: 3,
   closed: false,
@@ -183,8 +183,7 @@ new Shape({
   points: eyePoints,
   addTo: faceRotor,
   translate: { y: -5, x: 7.5, z: 0 },
-  rotate: { y: 0.2 },
-  // rotate: { y: TAU/2 },
+  rotate: { y: 0.3 },
   color: black,
   lineWidth: 3,
   closed: false,
