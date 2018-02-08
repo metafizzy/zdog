@@ -20,29 +20,13 @@ var camera = new Shape({
 
 // -- illustration shapes --- //
 
-// right ear
-new Shape({
-  points: [ { x: -20, y: -14 } ],
-  addTo: camera,
-  color: magenta,
-  lineWidth: 12,
-});
-
-// left ear
-new Shape({
-  points: [ { x: 0, y: -26 } ],
-  addTo: camera,
-  color: magenta,
-  lineWidth: 12,
-});
-
 // unibody
-new Shape({
+var unibody = new Shape({
   points: [
-    { x: -1, y: -12 },
-    { x: 6.5, y: 0.5 },
-    { x: 3, y: 2 },
-    { x: -4.5, y: -10.5 },
+    { x: -3, y: -8 },
+    { x:  3, y: -8 },
+    { x:  3, y:  6 },
+    { x: -3, y:  6 },
   ],
   addTo: camera,
   color: magenta,
@@ -50,83 +34,27 @@ new Shape({
   fill: true,
 });
 
-// right arm
+// right ear
 new Shape({
-  points: [
-    { x: -8, y: 4 },
-    { x: -18, y: 10, z: 2 },
-  ],
-  addTo: camera,
+  points: [ { x: -14, y: -20, z: 2 } ],
+  addTo: unibody,
   color: magenta,
   lineWidth: 12,
-  fill: true,
 });
-
-// right leg
+// left ear
 new Shape({
-  points: [
-    { x: -1, y: 11, z: -4 },
-    { x: -6, y: 26 },
-  ],
-  addTo: camera,
+  points: [ { x: 14, y: -20, z: 2 } ],
+  addTo: unibody,
   color: magenta,
   lineWidth: 12,
-  fill: true,
 });
 
-var leftKnee = { x: 11, y: 14, z: 3 };
-
-// left thigh/hip
-new Shape({
-  points: [
-    { x: 14, y: 2 },
-    leftKnee,
-  ],
-  addTo: camera,
-  color: magenta,
-  lineWidth: 12,
-  fill: true,
-});
-
-// left leg
-new Shape({
-  points: [
-    leftKnee,
-    { x: 1, y: 20, z: 10 },
-  ],
-  addTo: camera,
-  color: magenta,
-  lineWidth: 12,
-  fill: true,
-});
-
-// left arm
-new Shape({
-  points: [
-    { x: 14, y: -8 },
-    { x: 17, y: -13, z: -2 },
-    { x: 18, y: -22, z: -6 },
-  ],
-  addTo: camera,
-  color: magenta,
-  lineWidth: 12,
-  fill: true,
-});
 
 // face container
 var face = new Shape({
   rendering: false,
-  translate: { y: -7 },
-  rotate: { y: 0.2, z: -31/360 * TAU },
-  addTo: camera,
-});
-
-var faceRotor = new Shape({
-  rendering: false,
-  translate: { z: -14 },
-  // rotate: { y: 1 },
-  addTo: face,
-  
+  translate: { y: -3, z: -14 },
+  addTo: unibody,
 });
 
 // snout
@@ -139,7 +67,7 @@ new Shape({
     { x: -2, y: 2 },
     { x: -4, y: 0 },
   ],
-  addTo: faceRotor,
+  addTo: face,
   translate: { y: 4, z: -1 },
   color: 'white',
   lineWidth: 6,
@@ -153,7 +81,7 @@ new Shape({
     { x: 1.5, y: 0 },
     { x: 0, y: 0.5 },
   ],
-  addTo: faceRotor,
+  addTo: face,
   translate: { y: 1.5, z: -4 },
   color: black,
   lineWidth: 3,
@@ -171,9 +99,9 @@ var eyePoints = [
 // right eye
 new Shape({
   points: eyePoints,
-  addTo: faceRotor,
+  addTo: face,
   translate: { y: -5, x: -7.5, z: 0 },
-  rotate: { y: -0.3 },
+  // rotate: { y: -0.3 },
   color: black,
   lineWidth: 3,
   closed: false,
@@ -181,12 +109,56 @@ new Shape({
 // left eye
 new Shape({
   points: eyePoints,
-  addTo: faceRotor,
+  addTo: face,
   translate: { y: -5, x: 7.5, z: 0 },
-  rotate: { y: 0.3 },
+  // rotate: { y: 0.3 },
   color: black,
   lineWidth: 3,
   closed: false,
+});
+
+// right arm
+var rightArm = new Shape({
+  points: [
+    { x: 0 },
+    { x: -8 },
+  ],
+  addTo: unibody,
+  translate: { x: -17, y: 4 },
+  color: magenta,
+  lineWidth: 12,
+});
+var leftArm = new Shape({
+  points: [
+    { x: 0 },
+    { x: 8 },
+  ],
+  addTo: unibody,
+  translate: { x: 17, y: 4 },
+  color: magenta,
+  lineWidth: 12,
+});
+
+// right leg
+var rightLeg = new Shape({
+  points: [
+    { y: 0 },
+    { y: 14 },
+  ],
+  addTo: unibody,
+  translate: { x: -10, y: 12 },
+  color: magenta,
+  lineWidth: 12,
+});
+var leftLeg = new Shape({
+  points: [
+    { y: 0 },
+    { y: 14 },
+  ],
+  addTo: unibody,
+  translate: { x: 10, y: 12 },
+  color: magenta,
+  lineWidth: 12,
 });
 
 var shapes = camera.getShapes();
