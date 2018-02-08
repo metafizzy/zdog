@@ -9,8 +9,6 @@ var bodyLinesCanvas = document.createElement('canvas');
 var ctx = canvas.getContext('2d');
 var unibodyCtx = unibodyCanvas.getContext('2d');
 var bodyLinesCtx = bodyLinesCanvas.getContext('2d');
-// document.body.appendChild( unibodyCanvas );
-// document.body.appendChild( bodyLinesCanvas );
 var w = 88;
 var h = 88;
 var zoom = 6;
@@ -36,7 +34,7 @@ var outlineCamera = new Shape({
 });
 
 // -- illustration shapes --- //
-var positiveUnibody;
+var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
 
 [ false, true ].forEach( function( isOutline ) {
@@ -61,6 +59,36 @@ var positiveUnibody;
 
   if ( !isOutline ) {
     positiveUnibody = unibody;
+
+    bodyLeftCutIn = new Shape({
+      points: [
+        { z: -15.5, y: -12 },
+        { z: -16, y: -9 },
+        { z: -16, y: 7 },
+        { z: -15.5, y: 10 },
+      ],
+      translate: { x: 3 },
+      rotate: { y: 1.1 },
+      addTo: unibody,
+      color: black,
+      closed: false,
+      lineWidth: 4,
+    });
+    bodyRightCutIn = new Shape({
+      points: [
+        { z: -15.5, y: -12 },
+        { z: -16, y: -9 },
+        { z: -16, y: 7 },
+        { z: -15.5, y: 10 },
+      ],
+      translate: { x: -3 },
+      rotate: { y: -1.1 },
+      addTo: unibody,
+      color: black,
+      closed: false,
+      lineWidth: 4,
+    });
+
   }
 
   // right ear
@@ -199,6 +227,22 @@ var positiveUnibody;
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
   });
+
+  // right leg cut-in
+  if ( !isOutline ) {
+    rightLegCutIn = new Shape({
+      points: [
+        { z: -8, y: 4 },
+        { z: -8, y: 15 },
+      ],
+      addTo: rightLeg,
+      // rotate: { y: 1 },
+      color: black,
+      lineWidth: 4,
+    });
+  }
+
+
   // left leg
   var leftThigh = new Shape({
     points: [
@@ -212,7 +256,7 @@ var positiveUnibody;
     lineWidth: 12 + outlineWidth,
   });
   // left shin
-  new Shape({
+  var leftShin = new Shape({
     points: [
       { y: 0 },
       { y: 12 },
@@ -223,6 +267,19 @@ var positiveUnibody;
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
   });
+
+  if ( !isOutline ) {
+    backLegCutIn = new Shape({
+      points: [
+        { z: -8, y: 6 },
+        { z: -8, y: 13 },
+      ],
+      addTo: leftShin,
+      // rotate: { y: 1 },
+      color: black,
+      lineWidth: 4,
+    });
+  }
 
 });
 
@@ -290,6 +347,16 @@ animate();
 function update() {
   camera.update();
   outlineCamera.update();
+  // normalize angle y
+  camera.rotate.y = ( ( camera.rotate.y % TAU ) + TAU ) % TAU;
+  // update cut-in rotates
+  rightLegCutIn.rotate.y = 1.2 - camera.rotate.y;
+  backLegCutIn.rotate.y = 1.4 - camera.rotate.y;
+  bodyLeftCutIn.rotate.y = 1.5 - camera.rotate.y;
+  bodyRightCutIn.rotate.y = -1.5 - camera.rotate.y;
+  var isCameraYRight = camera.rotate.y < TAU/4 || camera.rotate.y > TAU *3/4;
+  bodyLeftCutIn.translate.x = isCameraYRight ? 3 : -3;
+  bodyRightCutIn.translate.x = isCameraYRight ? -3 : 3;
   positiveShapes.forEach( updateEachSortValue );
   bodyLines.forEach( updateEachSortValue );
   // perspective sort
@@ -310,6 +377,7 @@ ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 unibodyCtx.lineCap = bodyLinesCtx.lineCap = 'round';
 unibodyCtx.lineJoin = bodyLinesCtx.lineJoin  = 'round';
+setJumpRotate();
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
@@ -363,6 +431,7 @@ function onMousemoveDrag( event ) {
   camera.rotate.x = dragStartAngleX + angleXMove;
   camera.rotate.y = dragStartAngleY + angleYMove;
   syncCameras();
+  // console.log( ~~(camera.rotate.y/TAU * 360) );
 }
 
 function onMouseupDrag() {
@@ -379,15 +448,19 @@ document.querySelector('.flat-button').onclick = function() {
   syncCameras();
 };
 
-document.querySelector('.jump-button').onclick = function() {
+document.querySelector('.jump-button').onclick = setJumpRotate;
+
+function setJumpRotate() {
   camera.rotate = {
-    x: 0,
-    y: 25/360 * TAU,
+    x: -15/360 * TAU,
+    y: 17/360 * TAU,
     z: -31/360 * TAU,
   };
   syncCameras();
-};
+
+}
 
 function syncCameras() {
+  camera.rotate.y = ((camera.rotate.y % TAU) + TAU) % TAU;
   outlineCamera.rotate = camera.rotate;
 }
