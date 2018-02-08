@@ -11,7 +11,7 @@ var unibodyCtx = unibodyCanvas.getContext('2d');
 var bodyLinesCtx = bodyLinesCanvas.getContext('2d');
 var w = 88;
 var h = 88;
-var zoom = 6;
+var zoom = 5;
 var canvasWidth = canvas.width =  w * zoom;
 var canvasHeight = canvas.height = h * zoom;
 unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
@@ -426,8 +426,8 @@ document.addEventListener( 'mousedown', function( event ) {
 function onMousemoveDrag( event ) {
   var dx = event.pageX - dragStartX;
   var dy = event.pageY - dragStartY;
-  var angleXMove = dy * TAU/360;
-  var angleYMove = dx * TAU/360;
+  var angleXMove = dy / ( zoom * 100 ) * TAU;
+  var angleYMove = dx / ( zoom * 100 ) * TAU;
   camera.rotate.x = dragStartAngleX + angleXMove;
   camera.rotate.y = dragStartAngleY + angleYMove;
   syncCameras();
@@ -452,8 +452,8 @@ document.querySelector('.jump-button').onclick = setJumpRotate;
 
 function setJumpRotate() {
   camera.rotate = {
-    x: -15/360 * TAU,
-    y: 17/360 * TAU,
+    x: -10/360 * TAU,
+    y: 18/360 * TAU,
     z: -31/360 * TAU,
   };
   syncCameras();
