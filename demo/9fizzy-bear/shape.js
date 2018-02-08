@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Point, Vector3 */
+/* globals Vector3 */
 
 // -- Shape class -- //
 
@@ -21,10 +21,11 @@ function Shape( properties ) {
     this.points = [ {} ];
   }
   this.points = this.points || [];
-  // convert plain ol' object to Point object
-  this.points = this.points.map( function( position ) {
-    return new Point( position );
-  });
+  // convert plain ol' object to Vector3 object
+  // points are relative position
+  this.points = this.points.map( mapVectorPoint );
+  // renderPoint are absolute for rendering
+  this.renderPoints = this.points.map( mapVectorPoint );
   // transform
   this.translate = Vector3.sanitize( this.translate );
   this.rotate = Vector3.sanitize( this.rotate );
@@ -34,6 +35,10 @@ function Shape( properties ) {
     this.addTo.addChild( this );
     // delete this.addTo; // HACK for perf?
   }
+}
+
+function mapVectorPoint( point ) {
+  return new Vector3( point );
 }
 
 Shape.prototype.addChild = function( shape ) {
@@ -53,18 +58,18 @@ Shape.prototype.update = function() {
 };
 
 Shape.prototype.reset = function() {
-  this.points.forEach( resetEach );
+  // reset renderPoints back to orignal points position
+  this.renderPoints.forEach( function( renderPoint, i ) {
+    var point = this.points[i];
+    renderPoint.set( point );
+  }, this );
 };
-
-function resetEach( item ) {
-  item.reset();
-}
 
 Shape.prototype.transform = function( translation, rotation ) {
   // transform points
-  this.points.forEach( function( point ) {
-    point.rotate( rotation );
-    point.translate( translation );
+  this.renderPoints.forEach( function( renderPoint ) {
+    renderPoint.rotate( rotation );
+    renderPoint.add( translation );
   });
   // transform children
   this.children.forEach( function( child ) {
@@ -74,8 +79,8 @@ Shape.prototype.transform = function( translation, rotation ) {
 
 Shape.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
-  this.points.forEach( function( point ) {
-    sortValueTotal += point.renderPosition.z;
+  this.renderPoints.forEach( function( point ) {
+    sortValueTotal += point.z;
   });
   // average sort value of all points
   // def not geometrically correct, but works for me
@@ -99,12 +104,10 @@ Shape.prototype.render = function( ctx ) {
 
   // render points
   ctx.beginPath();
-  var position;
-  this.points.forEach( function( point, i ) {
+  this.renderPoints.forEach( function( renderPoint, i ) {
     // moveTo first point, lineTo others
     var renderMethod = i ? 'lineTo' : 'moveTo';
-    position = point.renderPosition;
-    ctx[ renderMethod ]( position.x, position.y );
+    ctx[ renderMethod ]( renderPoint.x, renderPoint.y );
   });
   // close path
   var isOnePoint = length == 1;
