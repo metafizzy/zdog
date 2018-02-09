@@ -35,7 +35,7 @@ var outlineCamera = new Shape({
 });
 
 // -- illustration shapes --- //
-var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
+var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
 
 
 [ false, true ].forEach( function( isOutline ) {
@@ -76,19 +76,10 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
       { bezier: [ bottomPoints[2], bottomPoints[1], bottomPoints[0] ] },
     ];
 
-    bodyLeftCutIn = new Shape({
+    bodyCutIn = new Shape({
       path: cutInPath,
       translate: { x: 3 },
       // rotate: { y: 1.1 },
-      addTo: unibody,
-      color: black,
-      closed: false,
-      lineWidth: 4,
-    });
-    bodyRightCutIn = new Shape({
-      path: cutInPath,
-      translate: { x: -3 },
-      // rotate: { y: -1.1 },
       addTo: unibody,
       color: black,
       closed: false,
@@ -402,15 +393,17 @@ function update() {
   camera.update();
   outlineCamera.update();
   // normalize angle y
-  camera.rotate.y = ( ( camera.rotate.y % TAU ) + TAU ) % TAU;
+  var cameraRY = camera.rotate.y = ( ( camera.rotate.y % TAU ) + TAU ) % TAU;
   // update cut-in rotates
-  rightLegCutIn.rotate.y = 1.2 - camera.rotate.y;
-  backLegCutIn.rotate.y = 1.4 - camera.rotate.y;
-  bodyLeftCutIn.rotate.y = 1.5 - camera.rotate.y;
-  bodyRightCutIn.rotate.y = -1.5 - camera.rotate.y;
-  var isCameraYRight = camera.rotate.y < TAU/4 || camera.rotate.y > TAU *3/4;
-  bodyLeftCutIn.translate.x = isCameraYRight ? 3 : -3;
-  bodyRightCutIn.translate.x = isCameraYRight ? -3 : 3;
+  rightLegCutIn.rotate.y = 1.2 - cameraRY;
+  backLegCutIn.rotate.y = 1.4 - cameraRY;
+  var isCameraYFront = cameraRY < TAU/4 || cameraRY > TAU *3/4;
+  var isCameraYRight = cameraRY < TAU/2;
+  bodyCutIn.rotate.y = isCameraYFront == isCameraYRight ? 1.5 : -1.5;
+  bodyCutIn.rotate.y -= cameraRY;
+  bodyCutIn.translate.x = isCameraYRight ? 3 : -3;
+
+  // render shapes
   positiveShapes.forEach( updateEachSortValue );
   bodyLines.forEach( updateEachSortValue );
   // perspective sort
