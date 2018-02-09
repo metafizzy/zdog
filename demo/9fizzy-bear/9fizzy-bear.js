@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape */
+/* globals Shape, lerp, Vector3 */
 
 var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
@@ -60,30 +60,35 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   if ( !isOutline ) {
     positiveUnibody = unibody;
+    // cut-in points
+    var ciA = new Vector3({ z: 0, y: -24 });
+    var ciB = new Vector3({ z: -16, y: -8 });
+    var ciC = new Vector3({ z: -16, y: 6 });
+    var ciD = new Vector3({ z: 0, y: 22 });
+    // 45 degree points
+    var topPoints = getQuarterArcPoints( ciA, ciB );
+    var bottomPoints = getQuarterArcPoints( ciD, ciC );
+
+    var cutInPath = [
+      topPoints[0],
+      { bezier: [ topPoints[1], topPoints[2], ciB ] },
+      ciC,
+      { bezier: [ bottomPoints[2], bottomPoints[1], bottomPoints[0] ] },
+    ];
 
     bodyLeftCutIn = new Shape({
-      path: [
-        { z: -15.5, y: -12 },
-        { z: -16, y: -9 },
-        { z: -16, y: 7 },
-        { z: -15.5, y: 10 },
-      ],
+      path: cutInPath,
       translate: { x: 3 },
-      rotate: { y: 1.1 },
+      // rotate: { y: 1.1 },
       addTo: unibody,
       color: black,
       closed: false,
       lineWidth: 4,
     });
     bodyRightCutIn = new Shape({
-      path: [
-        { z: -15.5, y: -12 },
-        { z: -16, y: -9 },
-        { z: -16, y: 7 },
-        { z: -15.5, y: 10 },
-      ],
+      path: cutInPath,
       translate: { x: -3 },
-      rotate: { y: -1.1 },
+      // rotate: { y: -1.1 },
       addTo: unibody,
       color: black,
       closed: false,
@@ -170,10 +175,10 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     // eyes
     var eyePath = [
       { x: -2.5, y: 0 },
-      { 
+      {
         arc: [ { x: -2.5, y: -1.5 }, { x: 0, y: -1.5 } ]
       },
-      { 
+      {
         arc: [ { x: 2.5, y: -1.5 }, { x: 2.5, y: 0 } ]
       },
     ];
@@ -512,4 +517,23 @@ function setJumpRotate() {
 function syncCameras() {
   camera.rotate.y = ((camera.rotate.y % TAU) + TAU) % TAU;
   outlineCamera.rotate = camera.rotate;
+}
+
+
+function getQuarterArcPoints( a, b ) {
+  var start = new Vector3({
+    z: lerp( a.z, b.z, 5/7 ),
+    y: lerp( a.y, b.y, 2/7 ),
+  });
+  // control points
+  var cp0 = new Vector3({
+    z: lerp( a.z, b.z, 25/28 ),
+    y: lerp( a.y, b.y, 13/28 ),
+  });
+  var cp1 = new Vector3({
+    z: b.z,
+    y: lerp( a.y, b.y, 5/7 ),
+  });
+
+  return [ start, cp0, cp1 ];
 }
