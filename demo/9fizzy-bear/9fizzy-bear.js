@@ -520,8 +520,8 @@ function getQuarterArcPoints( a, b ) {
   });
   // control points
   var cp0 = new Vector3({
-    z: lerp( a.z, b.z, 25/28 ),
-    y: lerp( a.y, b.y, 13/28 ),
+    z: lerp( a.z, b.z, 24/28 ),
+    y: lerp( a.y, b.y, 12/28 ),
   });
   var cp1 = new Vector3({
     z: b.z,
