@@ -43,7 +43,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   // unibody
   var unibody = new Shape({
-    points: [
+    path: [
       // {},
       { x: -3, y: -8 },
       { x:  3, y: -8 },
@@ -61,7 +61,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     positiveUnibody = unibody;
 
     bodyLeftCutIn = new Shape({
-      points: [
+      path: [
         { z: -15.5, y: -12 },
         { z: -16, y: -9 },
         { z: -16, y: 7 },
@@ -75,7 +75,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
       lineWidth: 4,
     });
     bodyRightCutIn = new Shape({
-      points: [
+      path: [
         { z: -15.5, y: -12 },
         { z: -16, y: -9 },
         { z: -16, y: 7 },
@@ -93,14 +93,14 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   // right ear
   new Shape({
-    points: [ { x: -14, y: -20, z: 2 } ],
+    path: [ { x: -14, y: -20, z: 2 } ],
     addTo: unibody,
     color: isOutline ? black : magenta,
     lineWidth: 12 + outlineWidth,
   });
   // left ear
   new Shape({
-    points: [ { x: 14, y: -20, z: 2 } ],
+    path: [ { x: 14, y: -20, z: 2 } ],
     addTo: unibody,
     color: isOutline ? black : magenta,
     lineWidth: 12 + outlineWidth,
@@ -116,7 +116,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   // snout
   new Shape({
-    points: [
+    path: [
       { x: -2, y: -2 },
       { x: 2, y: -2 },
       { x: 4, y: 0 },
@@ -134,7 +134,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
   if ( !isOutline ) {
     // nose
     new Shape({
-      points: [
+      path: [
         { x: -1.5, y: 0 },
         { x: 1.5, y: 0 },
         { x: 0, y: 0.5 },
@@ -156,7 +156,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
     // right eye
     new Shape({
-      points: eyePoints,
+      path: eyePoints,
       addTo: face,
       translate: { y: -5, x: -7.5, z: 0 },
       // rotate: { y: -0.3 },
@@ -166,7 +166,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     });
     // left eye
     new Shape({
-      points: eyePoints,
+      path: eyePoints,
       addTo: face,
       translate: { y: -5, x: 7.5, z: 0 },
       // rotate: { y: 0.3 },
@@ -180,7 +180,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   // right arm
   var rightArm = new Shape({
-    points: [
+    path: [
       { x: 0 },
       { x: -8 },
     ],
@@ -192,7 +192,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
   });
   // left arm
   var leftShoulder = new Shape({
-    points: [
+    path: [
       { x: 0 },
       { x: 6 },
     ],
@@ -204,12 +204,12 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
   });
   // left forearm
   new Shape({
-    points: [
+    path: [
       { x: 0 },
       { x: 11 },
     ],
     addTo: leftShoulder,
-    translate: leftShoulder.points[1],
+    translate: leftShoulder.path[1],
     rotate: { z: -35/360 * TAU },
     color: isOutline ? black : gold,
     lineWidth: 12 + outlineWidth,
@@ -217,7 +217,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   // right leg
   var rightLeg = new Shape({
-    points: [
+    path: [
       { y: 4 },
       { y: 15 },
     ],
@@ -231,7 +231,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
   // right leg cut-in
   if ( !isOutline ) {
     rightLegCutIn = new Shape({
-      points: [
+      path: [
         { z: -8, y: 4 },
         { z: -8, y: 15 },
       ],
@@ -245,7 +245,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   // left leg
   var leftThigh = new Shape({
-    points: [
+    path: [
       { y: 2 },
       { y: 13 },
     ],
@@ -257,12 +257,12 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
   });
   // left shin
   var leftShin = new Shape({
-    points: [
+    path: [
       { y: 0 },
       { y: 12 },
     ],
     addTo: leftThigh,
-    translate: leftThigh.points[1],
+    translate: leftThigh.path[1],
     rotate: { z: 0.2, x: 0.8 },
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
@@ -270,7 +270,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
   if ( !isOutline ) {
     backLegCutIn = new Shape({
-      points: [
+      path: [
         { z: -8, y: 6 },
         { z: -8, y: 13 },
       ],
@@ -288,7 +288,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 // body lines
 var bodyLines = [ magenta, orange, gold, blue ].map( function( color, i ) {
   return new Shape({
-    points: [
+    path: [
       { x: -15, z: 0 },
       { x: -9, z: -12 },
       { x:  9, z: -12 },

@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Vector3 */
+/* globals Vector3, PathAction */
 
 // -- Shape class -- //
 
@@ -14,18 +14,9 @@ function Shape( properties ) {
   for ( var propName in properties ) {
     this[ propName ] = properties[ propName ];
   }
-  // default to zero point
 
-  var length = this.points && this.points.length;
-  if ( !length ) {
-    this.points = [ {} ];
-  }
-  this.points = this.points || [];
-  // convert plain ol' object to Vector3 object
-  // points are relative position
-  this.points = this.points.map( mapVectorPoint );
-  // renderPoint are absolute for rendering
-  this.renderPoints = this.points.map( mapVectorPoint );
+  this.updatePathActions();
+
   // transform
   this.translate = Vector3.sanitize( this.translate );
   this.rotate = Vector3.sanitize( this.rotate );
@@ -37,9 +28,34 @@ function Shape( properties ) {
   }
 }
 
-function mapVectorPoint( point ) {
-  return new Vector3( point );
-}
+// parse path into PathActions
+Shape.prototype.updatePathActions = function() {
+  if ( !this.path || !this.path.length ) {
+    // empty path -> default to single zero point
+    this.path = [ {} ];
+  }
+
+  var previousPoint;
+  this.pathActions = this.path.map( function( pathPart, i ) {
+    var method;
+    if ( i === 0 ) {
+      // first action is alwoys move to
+      method = 'move';
+    } else {
+      // default to lineTo if no action provided
+      method = pathPart.action || 'line';
+    }
+    var points = pathPart.points || [ pathPart ];
+    // arcs require previous last point
+    var pathAction = new PathAction( method, points, previousPoint );
+    // update previousLastPoint
+    var renderPoints = pathAction.renderPoints;
+    previousPoint = renderPoints[ renderPoints.length - 1 ];
+    return pathAction;
+  });
+};
+
+
 
 Shape.prototype.addChild = function( shape ) {
   this.children.push( shape );
@@ -58,18 +74,16 @@ Shape.prototype.update = function() {
 };
 
 Shape.prototype.reset = function() {
-  // reset renderPoints back to orignal points position
-  this.renderPoints.forEach( function( renderPoint, i ) {
-    var point = this.points[i];
-    renderPoint.set( point );
-  }, this );
+  // reset pathAction render points
+  this.pathActions.forEach( function( pathAction ) {
+    pathAction.reset();
+  });
 };
 
 Shape.prototype.transform = function( translation, rotation ) {
   // transform points
-  this.renderPoints.forEach( function( renderPoint ) {
-    renderPoint.rotate( rotation );
-    renderPoint.add( translation );
+  this.pathActions.forEach( function( pathAction ) {
+    pathAction.transform( translation, rotation );
   });
   // transform children
   this.children.forEach( function( child ) {
@@ -79,22 +93,20 @@ Shape.prototype.transform = function( translation, rotation ) {
 
 Shape.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
-  this.renderPoints.forEach( function( point ) {
-    sortValueTotal += point.z;
+  this.pathActions.forEach( function( pathAction ) {
+    var renderPoints = pathAction.renderPoints;
+    var lastRenderPoint = renderPoints[ renderPoints.length - 1 ];
+    sortValueTotal += lastRenderPoint.z;
   });
   // average sort value of all points
   // def not geometrically correct, but works for me
-  this.sortValue = sortValueTotal / this.points.length;
+  this.sortValue = sortValueTotal / this.pathActions.length;
 };
 
 // ----- render ----- //
 
 Shape.prototype.render = function( ctx ) {
-  if ( !this.rendering ) {
-    return;
-  }
-  var length = this.points.length;
-  if ( !length ) {
+  if ( !this.rendering || !this.pathActions.length ) {
     return;
   }
   // set render properties
@@ -104,10 +116,8 @@ Shape.prototype.render = function( ctx ) {
 
   // render points
   ctx.beginPath();
-  this.renderPoints.forEach( function( renderPoint, i ) {
-    // moveTo first point, lineTo others
-    var renderMethod = i ? 'lineTo' : 'moveTo';
-    ctx[ renderMethod ]( renderPoint.x, renderPoint.y );
+  this.pathActions.forEach( function( pathAction ) {
+    pathAction.render( ctx );
   });
   // close path
   var isOnePoint = length == 1;
