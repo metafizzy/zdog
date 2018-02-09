@@ -120,29 +120,25 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     path: [
       { x: 0, y: -2 },
       {
-        action: 'arc',
-        points: [
+        arc: [
           { x: 4, y: -2 },
           { x: 4, y: 0 },
         ]
       },
       {
-        action: 'arc',
-        points: [
+        arc: [
           { x: 4, y: 2 },
           { x: 0, y: 2 },
         ]
       },
       {
-        action: 'arc',
-        points: [
+        arc: [
           { x: -4, y: 2 },
           { x: -4, y: 0 },
         ]
       },
       {
-        action: 'arc',
-        points: [
+        arc: [
           { x: -4, y: -2 },
           { x: 0, y: -2 },
         ]
@@ -175,12 +171,10 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     var eyePath = [
       { x: -2.5, y: 0 },
       { 
-        action: 'arc',
-        points: [ { x: -2.5, y: -1.5 }, { x: 0, y: -1.5 } ]
+        arc: [ { x: -2.5, y: -1.5 }, { x: 0, y: -1.5 } ]
       },
       { 
-        action: 'arc',
-        points: [ { x: 2.5, y: -1.5 }, { x: 2.5, y: 0 } ]
+        arc: [ { x: 2.5, y: -1.5 }, { x: 2.5, y: 0 } ]
       },
     ];
 
@@ -225,8 +219,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     path: [
       { x: 0 },
       {
-        action: 'bezier',
-        points: [
+        bezier: [
           { x: 0, y: 0 },
           { x: 5, y: 0 },
           { x: 9, y: -12 },
@@ -261,8 +254,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
         { z: -8, y: 4 },
         { z: -8, y: 15 },
         // {
-        //   action: 'arc',
-        //   points: [
+        //   arc: [
         //     { z: -8, y: 23 },
         //     { z: 0, y: 23 },
         //   ]
@@ -308,8 +300,7 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
         { z: -8, y: 6 },
         { z: -8, y: 12 },
         {
-          action: 'arc',
-          points: [
+          arc: [
             { z: -8, y: 20 },
             { z: 0, y: 20 },
           ]
@@ -339,22 +330,18 @@ var bodyLines = [ magenta, orange, gold, blue ].map( function( color, i ) {
     path: [
       { x: -blXA, z: 0 },
       {
-        action: 'arc',
-        points: [ { x: -blXA, z: -blZ }, { x: -blXB, z: -blZ } ]
+        arc: [ { x: -blXA, z: -blZ }, { x: -blXB, z: -blZ } ]
       },
       { x: blXB, z: -blZ },
       {
-        action: 'arc',
-        points: [ { x: blXA, z: -blZ }, { x: blXA, z: 0 } ]
+        arc: [ { x: blXA, z: -blZ }, { x: blXA, z: 0 } ]
       },
       {
-        action: 'arc',
-        points: [ { x: blXA, z: blZ }, { x: blXB, z: blZ },  ]
+        arc: [ { x: blXA, z: blZ }, { x: blXB, z: blZ },  ]
       },
       { x: -blXB, z: blZ },
       {
-        action: 'arc',
-        points: [ { x: -blXA, z: blZ }, { x: -blXA, z: 0 },  ]
+        arc: [ { x: -blXA, z: blZ }, { x: -blXA, z: 0 },  ]
       },
     ],
     addTo: positiveUnibody,

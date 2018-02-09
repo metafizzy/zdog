@@ -28,6 +28,13 @@ function Shape( properties ) {
   }
 }
 
+var actionNames = [
+  'move',
+  'line',
+  'bezier',
+  'arc',
+];
+
 // parse path into PathActions
 Shape.prototype.updatePathActions = function() {
   if ( !this.path || !this.path.length ) {
@@ -37,15 +44,19 @@ Shape.prototype.updatePathActions = function() {
 
   var previousPoint;
   this.pathActions = this.path.map( function( pathPart, i ) {
-    var method;
-    if ( i === 0 ) {
-      // first action is alwoys move to
-      method = 'move';
-    } else {
-      // default to lineTo if no action provided
-      method = pathPart.action || 'line';
+    // pathPart can be just vector coordinates -> { x, y, z }
+    // or path instruction -> { arc: [ {x0,y0,z0}, {x1,y1,z1} ] }
+    var keys = Object.keys( pathPart );
+    var method = keys[0];
+    var points = pathPart[ method ];
+    var isInstruction = keys.length === 1 && actionNames.includes( method ) &&
+      Array.isArray( points );
+    if ( !isInstruction ) {
+      method = 'line';
+      points = [ pathPart ];
     }
-    var points = pathPart.points || [ pathPart ];
+    // first action is always move
+    method = i === 0 ? 'move' : method;
     // arcs require previous last point
     var pathAction = new PathAction( method, points, previousPoint );
     // update previousLastPoint
@@ -53,8 +64,6 @@ Shape.prototype.updatePathActions = function() {
     return pathAction;
   });
 };
-
-
 
 Shape.prototype.addChild = function( shape ) {
   this.children.push( shape );
