@@ -13,6 +13,7 @@ Vector3.prototype.set = function( pos ) {
   this.x = pos.x;
   this.y = pos.y;
   this.z = pos.z;
+  return this;
 };
 
 Vector3.prototype.rotate = function( rotation ) {
@@ -22,6 +23,7 @@ Vector3.prototype.rotate = function( rotation ) {
   this.rotateZ( rotation.z );
   this.rotateY( rotation.y );
   this.rotateX( rotation.x );
+  return this;
 };
 
 Vector3.prototype.rotateZ = function( angle ) {
@@ -56,7 +58,19 @@ Vector3.prototype.add = function( vec ) {
   this.x += vec.x;
   this.y += vec.y;
   this.z += vec.z;
+  return this;
 };
+
+Vector3.prototype.lerp = function( vec, t ) {
+  this.x = lerp( this.x, vec.x, t );
+  this.y = lerp( this.y, vec.y, t );
+  this.z = lerp( this.z, vec.z, t );
+  return this;
+};
+
+function lerp( a, b, t ) {
+  return ( b - a ) * t + a;
+}
 
 // ----- utils ----- //
 

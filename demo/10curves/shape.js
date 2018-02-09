@@ -35,6 +35,7 @@ Shape.prototype.updatePathActions = function() {
     this.path = [ {} ];
   }
 
+  var previousPoint;
   this.pathActions = this.path.map( function( pathPart, i ) {
     var method;
     if ( i === 0 ) {
@@ -45,9 +46,16 @@ Shape.prototype.updatePathActions = function() {
       method = pathPart.action || 'line';
     }
     var points = pathPart.points || [ pathPart ];
-    return new PathAction( method, points );
+    // arcs require previous last point
+    var pathAction = new PathAction( method, points, previousPoint );
+    // update previousLastPoint
+    var renderPoints = pathAction.renderPoints;
+    previousPoint = renderPoints[ renderPoints.length - 1 ];
+    return pathAction;
   });
 };
+
+
 
 Shape.prototype.addChild = function( shape ) {
   this.children.push( shape );

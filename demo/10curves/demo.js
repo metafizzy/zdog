@@ -45,6 +45,23 @@ var rect = new Shape({
   color: '#19F',
 });
 
+var quarterCircle = new Shape({
+  path: [
+    { x: 10, y: 0 },
+    {
+      action: 'arc',
+      points: [
+        { x: 20, y: 0 },
+        { x: 20, y: 10 }
+      ]
+    },
+    { x: 10, y: 10 }
+  ],
+  addTo: camera,
+  lineWidth: 2,
+  color: '#A00',
+});
+
 var shapes = camera.getShapes();
 
 
