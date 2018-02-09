@@ -9,6 +9,7 @@ var bodyLinesCanvas = document.createElement('canvas');
 var ctx = canvas.getContext('2d');
 var unibodyCtx = unibodyCanvas.getContext('2d');
 var bodyLinesCtx = bodyLinesCanvas.getContext('2d');
+// document.body.appendChild( bodyLinesCanvas );
 var w = 88;
 var h = 88;
 var zoom = 5;
@@ -117,18 +118,42 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
   // snout
   new Shape({
     path: [
-      { x: -2, y: -2 },
-      { x: 2, y: -2 },
-      { x: 4, y: 0 },
-      { x: 2, y: 2 },
-      { x: -2, y: 2 },
-      { x: -4, y: 0 },
+      { x: 0, y: -2 },
+      {
+        action: 'arc',
+        points: [
+          { x: 4, y: -2 },
+          { x: 4, y: 0 },
+        ]
+      },
+      {
+        action: 'arc',
+        points: [
+          { x: 4, y: 2 },
+          { x: 0, y: 2 },
+        ]
+      },
+      {
+        action: 'arc',
+        points: [
+          { x: -4, y: 2 },
+          { x: -4, y: 0 },
+        ]
+      },
+      {
+        action: 'arc',
+        points: [
+          { x: -4, y: -2 },
+          { x: 0, y: -2 },
+        ]
+      },
     ],
     addTo: face,
     translate: { y: 4, z: -1 },
     color: isOutline ? black : 'white',
     lineWidth: 6 + outlineWidth,
-    fill: true,
+    fill: false,
+    closed: false,
   });
 
   if ( !isOutline ) {
@@ -147,18 +172,23 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     });
 
     // eyes
-    var eyePoints = [
-      { x: -2.5, y: 1, },
-      { x: -1, y: -0.5 },
-      { x: 1, y: -0.5 },
-      { x: 2.5, y: 1, },
+    var eyePath = [
+      { x: -2.5, y: 0 },
+      { 
+        action: 'arc',
+        points: [ { x: -2.5, y: -1.5 }, { x: 0, y: -1.5 } ]
+      },
+      { 
+        action: 'arc',
+        points: [ { x: 2.5, y: -1.5 }, { x: 2.5, y: 0 } ]
+      },
     ];
 
     // right eye
     new Shape({
-      path: eyePoints,
+      path: eyePath,
       addTo: face,
-      translate: { y: -5, x: -7.5, z: 0 },
+      translate: { y: -4, x: -7.5, z: 0 },
       // rotate: { y: -0.3 },
       color: black,
       lineWidth: 3,
@@ -166,9 +196,9 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     });
     // left eye
     new Shape({
-      path: eyePoints,
+      path: eyePath,
       addTo: face,
-      translate: { y: -5, x: 7.5, z: 0 },
+      translate: { y: -4, x: 7.5, z: 0 },
       // rotate: { y: 0.3 },
       color: black,
       lineWidth: 3,
@@ -179,9 +209,9 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
 
   // right arm
-  var rightArm = new Shape({
+  new Shape({
     path: [
-      { x: 0 },
+      { x: -1 },
       { x: -8 },
     ],
     addTo: unibody,
@@ -191,28 +221,24 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     lineWidth: 12 + outlineWidth,
   });
   // left arm
-  var leftShoulder = new Shape({
-    path: [
-      { x: 0 },
-      { x: 6 },
-    ],
-    addTo: unibody,
-    translate: { x: 16, y: 4 },
-    rotate: { z: -35/360 * TAU, x: 0.4 },
-    color: isOutline ? black : gold,
-    lineWidth: 12 + outlineWidth,
-  });
-  // left forearm
   new Shape({
     path: [
       { x: 0 },
-      { x: 11 },
+      {
+        action: 'bezier',
+        points: [
+          { x: 0, y: 0 },
+          { x: 5, y: 0 },
+          { x: 9, y: -12 },
+        ]
+      }
     ],
-    addTo: leftShoulder,
-    translate: leftShoulder.path[1],
-    rotate: { z: -35/360 * TAU },
+    addTo: unibody,
+    translate: { x: 18, y: 4 },
+    rotate: {  x: 0.4 },
     color: isOutline ? black : gold,
     lineWidth: 12 + outlineWidth,
+    closed: false,
   });
 
   // right leg
@@ -234,9 +260,17 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
       path: [
         { z: -8, y: 4 },
         { z: -8, y: 15 },
+        // {
+        //   action: 'arc',
+        //   points: [
+        //     { z: -8, y: 23 },
+        //     { z: 0, y: 23 },
+        //   ]
+        // }
       ],
       addTo: rightLeg,
       // rotate: { y: 1 },
+      closed: false,
       color: black,
       lineWidth: 4,
     });
@@ -272,9 +306,17 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
     backLegCutIn = new Shape({
       path: [
         { z: -8, y: 6 },
-        { z: -8, y: 13 },
+        { z: -8, y: 12 },
+        {
+          action: 'arc',
+          points: [
+            { z: -8, y: 20 },
+            { z: 0, y: 20 },
+          ]
+        }
       ],
       addTo: leftShin,
+      closed: false,
       // rotate: { y: 1 },
       color: black,
       lineWidth: 4,
@@ -283,24 +325,44 @@ var positiveUnibody, rightLegCutIn, bodyLeftCutIn, bodyRightCutIn, backLegCutIn;
 
 });
 
+var bodyFillWidth = 34;
+var bodyFillDepth = 28;
+var bodyLineWidth = 10.5;
 
+var blXA = (bodyFillWidth - bodyLineWidth) / 2 + 2.75;
+var blXB = (bodyFillWidth - bodyFillDepth) / 2 + 2.75;
+var blZ  = (bodyFillDepth - bodyLineWidth) / 2 + 2.75;
 
 // body lines
 var bodyLines = [ magenta, orange, gold, blue ].map( function( color, i ) {
   return new Shape({
     path: [
-      { x: -15, z: 0 },
-      { x: -9, z: -12 },
-      { x:  9, z: -12 },
-      { x:  15, z: 0 },
-      { x:  9, z:  12 },
-      { x: -9, z:  12 },
+      { x: -blXA, z: 0 },
+      {
+        action: 'arc',
+        points: [ { x: -blXA, z: -blZ }, { x: -blXB, z: -blZ } ]
+      },
+      { x: blXB, z: -blZ },
+      {
+        action: 'arc',
+        points: [ { x: blXA, z: -blZ }, { x: blXA, z: 0 } ]
+      },
+      {
+        action: 'arc',
+        points: [ { x: blXA, z: blZ }, { x: blXB, z: blZ },  ]
+      },
+      { x: -blXB, z: blZ },
+      {
+        action: 'arc',
+        points: [ { x: -blXA, z: blZ }, { x: -blXA, z: 0 },  ]
+      },
     ],
     addTo: positiveUnibody,
     translate: { y: -16.75 + 10.5*i },
     color: color,
     lineWidth: 11,
     fill: true,
+    closed: false,
   });
 });
 
