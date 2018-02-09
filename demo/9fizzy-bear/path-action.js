@@ -6,6 +6,7 @@ function PathAction( method, points, previousPoint ) {
   this.points = points.map( mapVectorPoint );
   this.renderPoints = points.map( mapVectorPoint );
   this.previousPoint = previousPoint;
+  this.endRenderPoint = this.renderPoints[ this.renderPoints.length - 1 ];
   // arc actions come with previous point & corner point
   // but require bezier control points
   if ( method == 'arc' ) {

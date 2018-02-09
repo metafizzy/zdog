@@ -49,8 +49,7 @@ Shape.prototype.updatePathActions = function() {
     // arcs require previous last point
     var pathAction = new PathAction( method, points, previousPoint );
     // update previousLastPoint
-    var renderPoints = pathAction.renderPoints;
-    previousPoint = renderPoints[ renderPoints.length - 1 ];
+    previousPoint = pathAction.endRenderPoint;
     return pathAction;
   });
 };
@@ -94,9 +93,7 @@ Shape.prototype.transform = function( translation, rotation ) {
 Shape.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
   this.pathActions.forEach( function( pathAction ) {
-    var renderPoints = pathAction.renderPoints;
-    var lastRenderPoint = renderPoints[ renderPoints.length - 1 ];
-    sortValueTotal += lastRenderPoint.z;
+    sortValueTotal += pathAction.endRenderPoint.z;
   });
   // average sort value of all points
   // def not geometrically correct, but works for me
