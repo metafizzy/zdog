@@ -3,17 +3,11 @@
 
 // -- Shape class -- //
 
-function Shape( properties ) {
+function Shape( options ) {
   // default
-  this.stroke = true;
-  this.fill = false;
-  this.lineWidth = 1;
-  this.closed = true;
-  this.rendering = true;
-  // extend properties
-  for ( var propName in properties ) {
-    this[ propName ] = properties[ propName ];
-  }
+  extend( this, Shape.defaults );
+  // set options
+  setOptions( this, options );
 
   this.updatePathActions();
 
@@ -24,7 +18,30 @@ function Shape( properties ) {
   this.children = [];
   if ( this.addTo ) {
     this.addTo.addChild( this );
-    // delete this.addTo; // HACK for perf?
+  }
+}
+
+Shape.defaults = {
+  stroke: true,
+  fill: false,
+  color: 'black',
+  lineWidth: 1,
+  closed: true,
+  rendering: true,
+  path: [ {} ],
+};
+
+var optionKeys = Object.keys( Shape.defaults ).concat([
+  'rotate',
+  'translate',
+  'addTo',
+]);
+
+function setOptions( shape, options ) {
+  for ( var key in options ) {
+    if ( optionKeys.includes( key ) ) {
+      shape[ key ] = options[ key ];
+    }
   }
 }
 
@@ -148,3 +165,24 @@ Shape.prototype.getShapes = function() {
   });
   return shapes;
 };
+
+Shape.prototype.copy = function( options ) {
+  // copy options
+  var shapeOptions = {};
+  optionKeys.forEach( function( key ) {
+    shapeOptions[ key ] = this[ key ];
+  }, this );
+  // add set options
+  setOptions( shapeOptions, options );
+  return new Shape( shapeOptions );
+};
+
+
+// ----- utils ----- //
+
+function extend( a, b ) {
+  for ( var prop in b ) {
+    a[ prop ] = b[ prop ];
+  }
+  return a;
+}

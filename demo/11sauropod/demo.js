@@ -22,24 +22,21 @@ var camera = new Shape({
 
 // -- illustration shapes --- //
 
-var legPath = [
-  { x: -8*antiTwist, y: 0 },
-  { arc: [
-    { x: 0, y: 0 },
-    { x: 0, y: 8 }
-  ]},
-  { arc: [
-    { z: 0, y: 0 },
-    { z: 8*antiTwist, y: 0 }
-  ]},
-  { move: [ { y: -4 } ] },
-  { line: [ { y: 12 } ] },
-  
-];
-
 // front right leg
-new Shape({
-  path: legPath,
+var leg = new Shape({
+  path: [
+    { x: -8*antiTwist, y: 0 },
+    { arc: [
+      { x: 0, y: 0 },
+      { x: 0, y: 8 }
+    ]},
+    { arc: [
+      { z: 0, y: 0 },
+      { z: 8*antiTwist, y: 0 }
+    ]},
+    { move: [ { y: -4 } ] },
+    { line: [ { y: 12 } ] },
+  ],
   addTo: camera,
   translate: { x: 16*antiTwist, y: 16, z: -8*antiTwist },
   lineWidth: 8,
@@ -47,54 +44,33 @@ new Shape({
   closed: false,
 });
 // front left leg
-new Shape({
-  path: legPath,
-  addTo: camera,
+leg.copy({
   translate: { x: 16*antiTwist, y: 16, z: 8*antiTwist },
   rotate: { y: TAU/4 },
-  lineWidth: 8,
-  color: blue,
-  closed: false,
 });
 // back right leg
-new Shape({
-  path: legPath,
-  addTo: camera,
+leg.copy({
   translate: { x: -16*antiTwist, y: 16, z: -8*antiTwist },
   rotate: { y: -TAU/4 },
-  lineWidth: 8,
-  color: blue,
-  closed: false,
 });
 // back left leg
-new Shape({
-  path: legPath,
-  addTo: camera,
+leg.copy({
   translate: { x: -16*antiTwist, y: 16, z: 8*antiTwist },
   rotate: { y: TAU/2 },
-  lineWidth: 8,
-  color: blue,
-  closed: false,
 });
 
-// leg connectors
-var legConnectorPath = [ { x: -8*antiTwist }, { x: 8*antiTwist } ];
 
-new Shape({
-  path: legConnectorPath,
+// leg connectors
+var legConnector = new Shape({
+  path: [ { x: -8*antiTwist }, { x: 8*antiTwist } ],
   addTo: camera,
   translate: { y: 16, z: -8*antiTwist },
   lineWidth: 8,
   color: blue,
   closed: false,
 });
-new Shape({
-  path: legConnectorPath,
-  addTo: camera,
+legConnector.copy({
   translate: { y: 16, z: 8*antiTwist },
-  lineWidth: 8,
-  color: blue,
-  closed: false,
 });
 
 // body
@@ -165,8 +141,8 @@ var head = new Shape({
   color: blue,
 });
 
-new Shape({
-  path: [{}],
+// eyes
+var eye = new Shape({
   addTo: head,
   translate: { z: 1, x: 0 },
   color: 'white',
@@ -174,16 +150,11 @@ new Shape({
   fill: true,
   closed: false,
 });
-new Shape({
-  path: [{}],
-  addTo: head,
+eye.copy({
   translate: { z: -1, x: 0 },
-  color: 'white',
-  lineWidth: 4,
-  fill: true,
-  closed: false,
 });
 
+// tail
 new Shape({
   path: [
     { x: -22, z: 0 },
@@ -242,10 +213,6 @@ function update() {
     return b.sortValue - a.sortValue;
   });
 }
-
-
-
-
 
 // -- render -- //
 ctx.lineCap = 'round';
