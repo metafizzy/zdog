@@ -1,7 +1,6 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape */
+/* globals Shape, TAU */
 
-var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 72;
@@ -26,7 +25,7 @@ var camera = new Shape({
 // head
 
 var head = new Shape({
-  points: [ { x: 0, y: 0 } ],
+  path: [ { x: 0, y: 0 } ],
   translate: { y: -20 },
   rotate: { y: 0.5 },
   lineWidth: 21,
@@ -37,7 +36,7 @@ var head = new Shape({
 // helmet details
 [ 1, 3, 4, 5, 6, 7, 8, 9 ].forEach( function( i ) {
   new Shape({
-    points: [
+    path: [
       { x: -1.25, y: -1.5, z: -11.25 },
       { x:  1.25, y: -1.5, z: -11.25 },
       { x:  1.25, y:  1.5, z: -11.25 },
@@ -55,7 +54,7 @@ var head = new Shape({
 // upper body
 
 var upperBody = new Shape({
-  points: [
+  path: [
     { x: -2, y: -1.25 },
     { x:  0, y: -1.5 },
     { x:  2, y: -1.25 },
@@ -76,16 +75,15 @@ var undieY0 = -1;
 var undieY1 = 0;
 var undieZ = 2.5;
 
-var undiePoints = [
-  { x: -undieX, y: undieY0 },
-  { x:  undieX, y: undieY0 },
-  { x:  undieX, y: undieY1 },
-  { x:  0, y: 1.5 },
-  { x: -undieX, y: undieY1 },
-];
-
-var frontUndiePanel = new Shape({
-  points: undiePoints,
+// front undie panel
+var undiePanel = new Shape({
+  path: [
+    { x: -undieX, y: undieY0 },
+    { x:  undieX, y: undieY0 },
+    { x:  undieX, y: undieY1 },
+    { x:  0, y: 1.5 },
+    { x: -undieX, y: undieY1 },
+  ],
   translate: { y: 4, z: -undieZ },
   lineWidth: 5,
   color: darkBlue,
@@ -93,26 +91,18 @@ var frontUndiePanel = new Shape({
   addTo: camera,
 });
 
-var backUndiePanel = new Shape({
-  points: undiePoints,
+undiePanel.copy({
   translate: { y: 4, z: undieZ },
-  lineWidth: 5,
-  color: darkBlue,
-  fill: true,
-  addTo: camera,
 });
 
-
-var sideUndiePoints = [
-  { y: undieY0, z: -undieZ },
-  { y: undieY0, z:  undieZ },
-  { y: undieY1, z:  undieZ },
-  { y: undieY1, z: -undieZ },
-];
-
 // right undie panel
-new Shape({
-  points: sideUndiePoints,
+var sideUndiePanel = new Shape({
+  path: [
+    { y: undieY0, z: -undieZ },
+    { y: undieY0, z:  undieZ },
+    { y: undieY1, z:  undieZ },
+    { y: undieY1, z: -undieZ },
+  ],
   translate: { x: -undieX, y: 4, },
   lineWidth: 5,
   color: darkBlue,
@@ -120,13 +110,8 @@ new Shape({
   addTo: camera,
 });
 // left
-new Shape({
-  points: sideUndiePoints,
+sideUndiePanel.copy({
   translate: { x: undieX, y: 4, },
-  lineWidth: 5,
-  color: darkBlue,
-  fill: true,
-  addTo: camera,
 });
 
 //
@@ -135,7 +120,7 @@ var shoulderY = -7;
 
 // right upper arm
 var rightUpperArm = new Shape({
-  points: [
+  path: [
     { x: 0 },
     { x: -7 },
   ],
@@ -147,11 +132,11 @@ var rightUpperArm = new Shape({
 });
 
 var rightForeArm = new Shape({
-  points: [
+  path: [
     { x: -4 },
     { x: -8 },
   ],
-  translate: rightUpperArm.points[1],
+  translate: rightUpperArm.path[1],
   rotate: { z: 1.4 },
   lineWidth: 10,
   color: darkBlue,
@@ -159,10 +144,10 @@ var rightForeArm = new Shape({
 });
 
 var rightHand = new Shape({
-  points: [
+  path: [
     { x: -4 },
   ],
-  translate: rightForeArm.points[1],
+  translate: rightForeArm.path[1],
   rotate: { z: 0.3 },
   lineWidth: 11,
   color: darkBlue,
@@ -171,7 +156,7 @@ var rightHand = new Shape({
 
 // left arm, the gun arm
 var leftUpperArm = new Shape({
-  points: [
+  path: [
     { x: 0 },
     { x: 11 },
   ],
@@ -183,11 +168,11 @@ var leftUpperArm = new Shape({
 });
 
 var leftForeArm = new Shape({
-  points: [
+  path: [
     { x: 5 },
     { x: 10 },
   ],
-  translate: leftUpperArm.points[1],
+  translate: leftUpperArm.path[1],
   rotate: { z: -TAU/4 - leftUpperArm.rotate.z },
   lineWidth: 11,
   color: darkBlue,
@@ -195,8 +180,8 @@ var leftForeArm = new Shape({
 });
 
 var blasterNozzle = new Shape({
-  points: [ { x: 4 } ],
-  translate: leftForeArm.points[1],
+  path: [ { x: 4 } ],
+  translate: leftForeArm.path[1],
   lineWidth: 7,
   color: darkBlue,
   addTo: leftForeArm,
@@ -205,7 +190,7 @@ var blasterNozzle = new Shape({
 [ -1, 1 ].forEach( function( xSide ) {
   // face panel
   new Shape({
-    points: [
+    path: [
       { x: 6*xSide, y: -4, z: 4 },
       { x: 3*xSide, y: -4, z: 1 },
       { x: 0*xSide, y: -2, z: 0  },
@@ -223,7 +208,7 @@ var blasterNozzle = new Shape({
 
   // eye whites
   var eyeWhite = new Shape({
-    points: [
+    path: [
       { x: -1, y: -1.5 },
       { x:  1, y: -1.5 },
       { x:  1, y:  1.5 },
@@ -239,7 +224,7 @@ var blasterNozzle = new Shape({
 
   // pupils
   new Shape({
-    points: [
+    path: [
       { x: -0.4, y: -1.9 },
       { x:  0.4, y: -1.9 },
       { x:  0.4, y:  1.9 },
@@ -256,7 +241,7 @@ var blasterNozzle = new Shape({
   // ear cone outer
   var earSize = 2;
   var earCone = new Shape({
-    points: [
+    path: [
       { z: -earSize, y: -earSize },
       { z: earSize, y: -earSize },
       { z: earSize, y: earSize },
@@ -272,7 +257,7 @@ var blasterNozzle = new Shape({
 
   // thigh
   var thigh = new Shape({
-    points: [ { y: 0 }, { y: 3 } ],
+    path: [ { y: 0 }, { y: 3 } ],
     translate: { x: 4.5*xSide, y: 8 },
     rotate: { z: -0.35*xSide, x: 0.1 },
     lineWidth: 6,
@@ -282,12 +267,12 @@ var blasterNozzle = new Shape({
 
   // shin
   var shin = new Shape({
-    points: [
+    path: [
       { y: 5, z: 0 },
       { y: 14, z: -2 },
       { y: 14, z: 1 },
     ],
-    translate: thigh.points[1],
+    translate: thigh.path[1],
     rotate: { y: 0.5*xSide },
     fill: true,
     lineWidth: 11,
@@ -297,13 +282,13 @@ var blasterNozzle = new Shape({
 
   // sole
   new Shape({
-    points: [
+    path: [
       { y: 2.5, x: (0.5 + 2)*xSide, z: 3 },
       { y: 2.5, x: (0.5 + -2)*xSide, z: 3 },
       { y: 2.5, x: (0.5 + -1)*xSide, z: -5 },
       { y: 2.5, x: (0.5 + 1)*xSide, z: -5 },
     ],
-    translate: shin.points[1],
+    translate: shin.path[1],
     rotate: { z: 0.4*xSide, x: 0.1 },
     fill: true,
     lineWidth: 7,
