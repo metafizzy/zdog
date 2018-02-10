@@ -14,19 +14,13 @@ var antiTwist = 1 / Math.cos( TAU/8 );
 // var antiTwist = 1;
 
 // colors
-var magenta = '#C25';
-// var orange = '#E62';
-// var gold = '#EA0';
 var blue = '#19F';
-// var black = '#333';
 
 var camera = new Shape({
   rendering: false,
 });
 
 // -- illustration shapes --- //
-
-var x = 16 * antiTwist;
 
 var legPath = [
   { x: -8*antiTwist, y: 0 },
@@ -110,8 +104,6 @@ var bodyZ = ( ( 8*antiTwist + 4 ) - 10 );
 var bodyX = 20.5;
 new Shape({
   path: [
-    // { x: -bodyX, z: -0 },
-    // { x:  bodyX, z: -0 },
     { x: -bodyX, z: -bodyZ },
     { x:  bodyX, z: -bodyZ },
     { x:  bodyX, z:  bodyZ },
@@ -173,42 +165,52 @@ var head = new Shape({
   color: blue,
 });
 
-var eyePath = [
-  { x: 0, y: -1 },
-  { arc: [
-    { x: 1*antiTwist, y: -1 },
-    { x: 1*antiTwist, y: 0 },
-  ]},
-  { arc: [
-    { x: 1*antiTwist, y: 1 },
-    { x: 0, y: 1 },
-  ]},
-  { arc: [
-    { x: -1*antiTwist, y: 1 },
-    { x: -1*antiTwist, y: 0 },
-  ]},
-  { arc: [
-    { x: -1*antiTwist, y: -1 },
-    { x: 0, y: -1 },
-  ]},
-];
-
 new Shape({
-  path: eyePath,
+  path: [{}],
   addTo: head,
-  translate: { z: 1, x: 0*antiTwist },
+  translate: { z: 1, x: 0 },
   color: 'white',
-  lineWidth: 2,
+  lineWidth: 4,
   fill: true,
   closed: false,
 });
 new Shape({
-  path: eyePath,
+  path: [{}],
   addTo: head,
-  translate: { z: -1, x: 0*antiTwist },
+  translate: { z: -1, x: 0 },
   color: 'white',
-  lineWidth: 2,
+  lineWidth: 4,
   fill: true,
+  closed: false,
+});
+
+new Shape({
+  path: [
+    { x: -22, z: 0 },
+    { arc: [
+      { x: -34, z: 0 },
+      { x: -34, z: 12 },
+    ]},
+    { arc: [
+      { x: -34, z: 24 },
+      { x: -22, z: 24 },
+    ]},
+    { x: -14, z: 24 },
+    { arc: [
+      { x: -6, z: 24 },
+      { x: -6, z: 32 },
+    ]},
+    { arc: [
+      { x: -6, z: 40 },
+      { x: -14, z: 40 },
+    ]},
+    { x: -26, z: 40 },
+  ],
+  addTo: camera,
+  translate: { y: 4 },
+  // rotate: { x: -0.25 },
+  color: blue,
+  lineWidth: 8,
   closed: false,
 });
 
@@ -248,6 +250,8 @@ function update() {
 // -- render -- //
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
+
+viewQuarterTwist();
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
@@ -295,8 +299,11 @@ function onMouseupDrag() {
   window.removeEventListener( 'mouseup', onMouseupDrag );
 }
 
-document.querySelector('.quarter-twist-button').onclick = function() {
+document.querySelector('.quarter-twist-button').onclick = viewQuarterTwist;
+
+
+function viewQuarterTwist() {
   camera.rotate.x = 0;
   camera.rotate.z = 0;
   camera.rotate.y = -TAU/8;
-};
+}

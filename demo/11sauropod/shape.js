@@ -112,7 +112,8 @@ Shape.prototype.updateSortValue = function() {
 // ----- render ----- //
 
 Shape.prototype.render = function( ctx ) {
-  if ( !this.rendering || !this.pathActions.length ) {
+  var length = this.pathActions.length;
+  if ( !this.rendering || !length ) {
     return;
   }
   // set render properties
