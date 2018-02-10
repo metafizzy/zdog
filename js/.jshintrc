@@ -1,0 +1,6 @@
+{
+  "browser": true,
+  "devel": true,
+  "undef": true,
+  "unused": true
+}

@@ -1,7 +1,6 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape, lerp, Vector3 */
+/* globals Shape, lerp, Vector3, TAU */
 
-var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 // unibody canvas for compositing
 var unibodyCanvas = document.createElement('canvas');
@@ -89,18 +88,15 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
   }
 
   // right ear
-  new Shape({
+  var ear = new Shape({
     path: [ { x: -14, y: -20, z: 2 } ],
     addTo: unibody,
     color: isOutline ? black : magenta,
     lineWidth: 12 + outlineWidth,
   });
   // left ear
-  new Shape({
-    path: [ { x: 14, y: -20, z: 2 } ],
-    addTo: unibody,
-    color: isOutline ? black : magenta,
-    lineWidth: 12 + outlineWidth,
+  ear.copy({
+    path: [ { x: 14, y: -20, z: 2 } ]
   });
 
 
@@ -175,7 +171,7 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
     ];
 
     // right eye
-    new Shape({
+    var eye = new Shape({
       path: eyePath,
       addTo: face,
       translate: { y: -4, x: -7.5, z: 0 },
@@ -185,14 +181,8 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
       closed: false,
     });
     // left eye
-    new Shape({
-      path: eyePath,
-      addTo: face,
+    eye.copy({
       translate: { y: -4, x: 7.5, z: 0 },
-      // rotate: { y: 0.3 },
-      color: black,
-      lineWidth: 3,
-      closed: false,
     });
 
   }
