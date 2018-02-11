@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape, TAU */
+/* globals Shape, Ellipse, TAU */
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
@@ -25,7 +25,7 @@ var camera = new Shape({
 // head
 
 var head = new Shape({
-  path: [ { x: 0, y: 0 } ],
+  path: [ {} ],
   translate: { y: -20 },
   rotate: { y: 0.5 },
   lineWidth: 21,
@@ -189,70 +189,77 @@ var blasterNozzle = new Shape({
 
 [ -1, 1 ].forEach( function( xSide ) {
   // face panel
-  new Shape({
+  var facePanel = new Shape({
     path: [
-      { x: 6*xSide, y: -4, z: 4 },
-      { x: 3*xSide, y: -4, z: 1 },
-      { x: 0*xSide, y: -2, z: 0  },
+      { x: 4*xSide, y: -4, z: 1 }, // top inside brow
+      { arc: [
+        { x: 0*xSide, y: -4, z: -0.5 },
+        { x: 0*xSide, y: 1, z: -1  }, // widows peak
+      ]},
       { x: 0*xSide, y: 1, z: -1  }, // nose
-      { x: 0*xSide, y: 5, z: 1  }, // chin front
-      { x: 5*xSide, y: 4, z: 5 },
-      { x: 7*xSide, y: 0, z: 5 },
+      { x: 0*xSide, y: 5.5, z: 1  }, // chin front
+      { arc: [
+        { x: 7*xSide, y: 5.5, z: 4 }, // jaw
+        { x: 7*xSide, y: 0, z: 4 }, // far side
+      ]},
+      { arc: [
+        { x: 7*xSide, y: -4, z: 4 }, // top back brow
+        { x: 4*xSide, y: -4, z: 1 }, // top inside brow
+      ]},
     ],
-    translate: { y: 4, z: -8 },
+    translate: { y: 4, z: -8.5 },
     fill: true,
-    lineWidth: 2,
+    lineWidth: 1,
+    // stroke: false,
     color: skin,
     addTo: head,
   });
 
   // eye whites
-  var eyeWhite = new Shape({
-    path: [
-      { x: -1, y: -1.5 },
-      { x:  1, y: -1.5 },
-      { x:  1, y:  1.5 },
-      { x: -1, y:  1.5 },
-    ],
-    translate: { x: 4*xSide, y: 3, z: -7 },
-    rotate: { y: 0.5*xSide },
-    lineWidth: 3,
+  var eyeWhite = new Ellipse({
+    width: 4,
+    height: 5,
+    addTo: facePanel,
+    translate: { x: 3.75*xSide, y: -0.5, z: -0.5 },
+    rotate: { y: 0.2*xSide },
+    lineWidth: 1,
     fill: true,
     color: 'white',
-    addTo: head,
   });
 
   // pupils
-  new Shape({
-    path: [
-      { x: -0.4, y: -1.9 },
-      { x:  0.4, y: -1.9 },
-      { x:  0.4, y:  1.9 },
-      { x: -0.4, y:  1.9 },
-    ],
-    // translate: { x: 3.75*xSide, y: 3, z: -8 },
-    translate: { x: -0.2*xSide + 0.2, y: -0.2, z: -0.5 },
-    lineWidth: 1.5,
+  new Ellipse({
+    width: 1,
+    height: 4,
+    translate: { x: -0.4*xSide, y: -0.2, z: -1 },
+    rotate: { y: -0.2*xSide },
+    lineWidth: 1,
     fill: true,
     color: '#128',
     addTo: eyeWhite,
   });
 
   // ear cone outer
-  var earSize = 2;
-  var earCone = new Shape({
-    path: [
-      { z: -earSize, y: -earSize },
-      { z: earSize, y: -earSize },
-      { z: earSize, y: earSize },
-      { z: -earSize, y: earSize },
-    ],
-    translate: { x: 9.5*xSide, y: 3, z: 1 },
-    rotate: { z: 0.1*xSide },
-    fill: true,
-    lineWidth: 3,
+  var earCone = new Ellipse({
+    width:  5.5,
+    height: 5.5,
+    translate: { x: 10*xSide, y: 3, z: 1 },
+    rotate: { y: (TAU/4-0.2)*xSide, x: TAU/4, z: 1 },
+    fill: false,
+    lineWidth: 2.5,
     color: lightBlue,
     addTo: head,
+  });
+  
+  // ear cone inner inner
+  new Ellipse({
+    width: 5,
+    height: 5,
+    addTo: earCone,
+    translate: { z: 1 },
+    color: '#C11',
+    stroke: false,
+    fill: true,
   });
 
   // thigh

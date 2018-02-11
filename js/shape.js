@@ -4,6 +4,10 @@
 // -- Shape class -- //
 
 function Shape( options ) {
+  this.create( options );
+}
+
+Shape.prototype.create = function( options ) {
   // default
   extend( this, Shape.defaults );
   // set options
@@ -19,7 +23,7 @@ function Shape( options ) {
   if ( this.addTo ) {
     this.addTo.addChild( this );
   }
-}
+};
 
 Shape.defaults = {
   stroke: true,
