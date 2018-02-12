@@ -1,12 +1,13 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape, Group */
+/* globals Shape, Group, Dragger */
 
 var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
-var zoom = 6;
+var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
+var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
 // colors
@@ -19,8 +20,6 @@ var colors = {
   skin: '#FC9',
   leather: '#A63',
 };
-
-var rZSpeed = 0;
 
 var cameraRotation = { x: 0, y: 0, z: 0 };
 
@@ -470,7 +469,6 @@ new Shape({
     { x: 5, y: 14, z: -3 },
     { x: 5, y: 12, z: -8 },
     { x: 5, y: 13, z: -12 },
-    // { x: 5, y: 22, z: 0 }
   ],
   closed: false,
   color: colors.overalls,
@@ -514,8 +512,6 @@ animate();
 // -- update -- //
 
 function update() {
-  // rotate
-  cameraRotation.z += rZSpeed;
   // perspective sort
   shapes.sort( function( a, b ) {
     return b.sortValue - a.sortValue;
@@ -546,35 +542,19 @@ function render() {
 
 // ----- inputs ----- //
 
-document.querySelector('.toggle-z-rotation-button').onclick = function() {
-  rZSpeed = rZSpeed ? 0 : TAU/360;
-};
-
 // click drag to rotate
-
-var dragStartX, dragStartY;
 var dragStartAngleX, dragStartAngleY;
 
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = cameraRotation.x;
-  dragStartAngleY = cameraRotation.y;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    dragStartAngleX = cameraRotation.x;
+    dragStartAngleY = cameraRotation.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / ( zoom * 100 ) * TAU;
+    var angleYMove = moveX / ( zoom * 100 ) * TAU;
+    cameraRotation.x = dragStartAngleX + angleXMove;
+    cameraRotation.y = dragStartAngleY + angleYMove;
+  },
 });
-
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy * TAU/360;
-  var angleYMove = dx * TAU/360;
-  cameraRotation.x = dragStartAngleX + angleXMove;
-  cameraRotation.y = dragStartAngleY + angleYMove;
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}
