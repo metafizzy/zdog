@@ -58,10 +58,8 @@ var actionNames = [
 
 // parse path into PathActions
 Shape.prototype.updatePathActions = function() {
-  if ( !this.path || !this.path.length ) {
-    // empty path -> default to single zero point
-    this.path = [ {} ];
-  }
+  // default to empty array
+  this.path = this.path || [];
 
   var previousPoint;
   this.pathActions = this.path.map( function( pathPart, i ) {

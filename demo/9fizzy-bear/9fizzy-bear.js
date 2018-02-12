@@ -25,13 +25,9 @@ var gold = '#EA0';
 var blue = '#19F';
 var black = '#333';
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Shape();
 
-var outlineCamera = new Shape({
-  rendering: false,
-});
+var outlineCamera = new Shape();
 
 // -- illustration shapes --- //
 var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
