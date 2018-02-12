@@ -32,7 +32,7 @@ Shape.defaults = {
   lineWidth: 1,
   closed: true,
   rendering: true,
-  path: [ {} ],
+  path: [],
 };
 
 var optionKeys = Object.keys( Shape.defaults ).concat([
@@ -58,9 +58,6 @@ var actionNames = [
 
 // parse path into PathActions
 Shape.prototype.updatePathActions = function() {
-  // default to empty array
-  this.path = this.path || [];
-
   var previousPoint;
   this.pathActions = this.path.map( function( pathPart, i ) {
     // pathPart can be just vector coordinates -> { x, y, z }
