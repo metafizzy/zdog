@@ -72,10 +72,12 @@ Shape.prototype.updatePathActions = function() {
     var points = pathPart[ method ];
     var isInstruction = keys.length === 1 && actionNames.includes( method ) &&
       Array.isArray( points );
+
     if ( !isInstruction ) {
       method = 'line';
       points = [ pathPart ];
     }
+
     // first action is always move
     method = i === 0 ? 'move' : method;
     // arcs require previous last point
