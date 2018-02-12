@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Vector3, PathAction */
+/* globals Vector3, PathAction, TAU */
 
 // -- Shape class -- //
 
@@ -137,6 +137,25 @@ Shape.prototype.render = function( ctx ) {
   if ( !this.rendering || !length ) {
     return;
   }
+  var isDot = length == 1;
+  if ( isDot ) {
+    this.renderDot( ctx );
+  } else {
+    this.renderPath( ctx );
+  }
+};
+
+// Safari does not render lines with no size, have to render circle instead
+Shape.prototype.renderDot = function( ctx ) {
+  ctx.fillStyle = this.color;
+  var point = this.pathActions[0].endRenderPoint;
+  ctx.beginPath();
+  var radius = this.lineWidth/2;
+  ctx.arc( point.x, point.y, radius, 0, TAU );
+  ctx.fill();
+};
+
+Shape.prototype.renderPath = function( ctx ) {
   // set render properties
   ctx.fillStyle = this.color;
   ctx.strokeStyle = this.color;
@@ -147,9 +166,9 @@ Shape.prototype.render = function( ctx ) {
   this.pathActions.forEach( function( pathAction ) {
     pathAction.render( ctx );
   });
-  // close path
-  var isOnePoint = length == 1;
-  if ( isOnePoint || this.closed  ) {
+  var isTwoPoints = this.pathActions.length == 2 &&
+    this.pathActions[1].method == 'line';
+  if ( !isTwoPoints && this.closed ) {
     ctx.closePath();
   }
   if ( this.stroke ) {
