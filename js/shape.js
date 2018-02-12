@@ -1,7 +1,7 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
 /* globals Vector3, PathAction, TAU */
 
-// -- Shape class -- //
+// -------------------------- Shape -------------------------- //
 
 function Shape( options ) {
   this.create( options );

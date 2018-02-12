@@ -2,7 +2,7 @@
 
 var TAU = Math.PI * 2;
 
-// -- Pseudo Vector3 class -- //
+// -------------------------- Vector3 -------------------------- //
 
 function Vector3( position ) {
   this.set( position );

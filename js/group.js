@@ -1,7 +1,7 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
 /* globals Vector3 */
 
-// -- Group class -- //
+// -------------------------- Group -------------------------- //
 
 function Group( options ) {
   this.create( options );
@@ -85,5 +85,3 @@ Group.prototype.render = function( ctx ) {
 Group.prototype.getShapes = function() {
   return [ this ];
 };
-
-// ----- utils ----- //

@@ -1,3 +1,5 @@
+// -------------------------- Dragger -------------------------- //
+
 // quick & dirty drag event stuff
 // messes up if multiple pointers/touches
 
@@ -35,13 +37,17 @@ Dragger.prototype.handleEvent = function( event ) {
   }
 };
 
-Dragger.prototype.ontouchstart = function( event ) {
-  this.pointerDown( event.changedTouches[0] );
+Dragger.prototype.onmousedown =
+Dragger.prototype.onpointerdown = function( event ) {
+  this.pointerDown( event, event );
 };
 
-Dragger.prototype.onmousedown =
-Dragger.prototype.onpointerdown =
-Dragger.prototype.pointerDown = function( pointer ) {
+Dragger.prototype.ontouchstart = function( event ) {
+  this.pointerDown( event, event.changedTouches[0] );
+};
+
+Dragger.prototype.pointerDown = function( event, pointer ) {
+  event.preventDefault();
   this.dragStartX = pointer.pageX;
   this.dragStartY = pointer.pageY;
   window.addEventListener( moveEvent, this );
@@ -51,12 +57,16 @@ Dragger.prototype.pointerDown = function( pointer ) {
 
 Dragger.prototype.ontouchmove = function( event ) {
   // HACK, moved touch may not be first
-  this.pointerMove( event.changedTouches[0] );
+  this.pointerMove( event, event.changedTouches[0] );
 };
 
 Dragger.prototype.onmousemove =
-Dragger.prototype.onpointermove =
-Dragger.prototype.pointerMove = function( pointer ) {
+Dragger.prototype.onpointermove = function( event ) {
+  this.pointerMove( event, event );
+};
+
+Dragger.prototype.pointerMove = function( event, pointer ) {
+  event.preventDefault();
   var moveX = pointer.pageX - this.dragStartX;
   var moveY = pointer.pageY - this.dragStartY;
   this.onPointerMove( pointer, moveX, moveY );

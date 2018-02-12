@@ -1,14 +1,20 @@
 /* jshint browser: true, devel: true, unused: true, undef: true */
 /* globals TAU, Shape, Group, Dragger */
 
+// -------------------------- demo -------------------------- //
+
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
+var pixelRatio = window.devicePixelRatio || 1;
+zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+canvas.style.width = canvasWidth / pixelRatio + 'px';
+canvas.style.height = canvasHeight / pixelRatio + 'px';
 // colors
 var colors = {
   eye: '#333',
@@ -509,7 +515,10 @@ animate();
 
 // -- update -- //
 
+var isRotating = true;
+
 function update() {
+  camera.rotate.y += isRotating ? -0.03 : 0;
   camera.update();
   // sort
   shapes.forEach( function updateEachSortValue( shape ) {
@@ -547,12 +556,13 @@ var dragStartAngleX, dragStartAngleY;
 new Dragger({
   startElement: canvas,
   onPointerDown: function() {
+    isRotating = false;
     dragStartAngleX = camera.rotate.x;
     dragStartAngleY = camera.rotate.y;
   },
   onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / ( zoom * 100 ) * TAU;
-    var angleYMove = moveX / ( zoom * 100 ) * TAU;
+    var angleXMove = moveY / ( zoom/pixelRatio * 100 ) * TAU;
+    var angleYMove = moveX / ( zoom/pixelRatio * 100 ) * TAU;
     camera.rotate.x = dragStartAngleX + angleXMove;
     camera.rotate.y = dragStartAngleY + angleYMove;
   },
