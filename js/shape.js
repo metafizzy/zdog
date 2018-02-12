@@ -32,7 +32,7 @@ Shape.defaults = {
   lineWidth: 1,
   closed: true,
   rendering: true,
-  path: [],
+  path: [ {} ],
 };
 
 var optionKeys = Object.keys( Shape.defaults ).concat([
