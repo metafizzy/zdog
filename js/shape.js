@@ -39,6 +39,8 @@ var optionKeys = Object.keys( Shape.defaults ).concat([
   'rotate',
   'translate',
   'addTo',
+  'width',
+  'height',
 ]);
 
 function setOptions( shape, options ) {
@@ -194,7 +196,8 @@ Shape.prototype.copy = function( options ) {
   }, this );
   // add set options
   setOptions( shapeOptions, options );
-  return new Shape( shapeOptions );
+  var ShapeClass = this.constructor;
+  return new ShapeClass( shapeOptions );
 };
 
 

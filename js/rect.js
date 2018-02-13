@@ -6,6 +6,7 @@ function Rect( options ) {
 }
 
 Rect.prototype = Object.create( Shape.prototype );
+Rect.prototype.constructor = Rect;
 
 Rect.prototype.setPath = function( options ) {
   var w = options.width/2;

@@ -9,6 +9,7 @@ function Ellipse( options ) {
 }
 
 Ellipse.prototype = Object.create( Shape.prototype );
+Ellipse.prototype.constructor = Ellipse;
 
 Ellipse.prototype.setPath = function( options ) {
   var w = options.width/2;
