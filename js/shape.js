@@ -18,6 +18,8 @@ Shape.prototype.create = function( options ) {
   // transform
   this.translate = Vector3.sanitize( this.translate );
   this.rotate = Vector3.sanitize( this.rotate );
+  this.scale = extend( { x: 1, y: 1, z: 1 }, this.scale );
+  this.scale = Vector3.sanitize( this.scale );
   // children
   this.children = [];
   if ( this.addTo ) {
@@ -38,6 +40,7 @@ Shape.defaults = {
 var optionKeys = Object.keys( Shape.defaults ).concat([
   'rotate',
   'translate',
+  'scale',
   'addTo',
   'width',
   'height',
@@ -98,7 +101,7 @@ Shape.prototype.update = function() {
   this.children.forEach( function( child ) {
     child.update();
   });
-  this.transform( this.translate, this.rotate );
+  this.transform( this.translate, this.rotate, this.scale );
 };
 
 Shape.prototype.reset = function() {
@@ -108,14 +111,14 @@ Shape.prototype.reset = function() {
   });
 };
 
-Shape.prototype.transform = function( translation, rotation ) {
+Shape.prototype.transform = function( translation, rotation, scale ) {
   // transform points
   this.pathActions.forEach( function( pathAction ) {
-    pathAction.transform( translation, rotation );
+    pathAction.transform( translation, rotation, scale );
   });
   // transform children
   this.children.forEach( function( child ) {
-    child.transform( translation, rotation );
+    child.transform( translation, rotation, scale );
   });
 };
 

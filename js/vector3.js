@@ -61,6 +61,17 @@ Vector3.prototype.add = function( vec ) {
   return this;
 };
 
+Vector3.prototype.multiply = function( vec ) {
+  if ( !vec ) {
+    return;
+  }
+  vec = Vector3.sanitize( vec );
+  this.x *= vec.x;
+  this.y *= vec.y;
+  this.z *= vec.z;
+  return this;
+};
+
 Vector3.prototype.lerp = function( vec, t ) {
   this.x = lerp( this.x, vec.x, t );
   this.y = lerp( this.y, vec.y, t );

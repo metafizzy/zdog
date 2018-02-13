@@ -36,9 +36,19 @@ var bgStripe = new Rect({
   width: 192,
   height: 44,
   addTo: background,
-  translate: { y: -40, z: 12 },
+  translate: { y: -40, z: 24 },
   color: magenta,
   lineWidth: 12,
+  fill: true,
+});
+// magenta circle
+var bgCircle = new Ellipse({
+  width: 96,
+  height: 96,
+  addTo: background,
+  translate: { y: -16, z: 24 },
+  color: magenta,
+  lineWidth: 24,
   fill: true,
 });
 
@@ -48,14 +58,11 @@ bgStripe.copy({
   color: amber,
 });
 // amber circle
-var bgCircle = new Ellipse({
-  width: 76,
-  height: 76,
-  addTo: background,
+bgCircle.copy({
+  width: 64,
+  height: 64,
   translate: { y: -16, },
   color: amber,
-  lineWidth: 12,
-  fill: true,
 });
 
 // gold bg stripe
@@ -63,23 +70,23 @@ new Rect({
   width: 192,
   height: 60,
   addTo: background,
-  translate: { y: 32, z: -12 },
+  translate: { y: 32, z: -24 },
   color: gold,
   lineWidth: 12,
   fill: true,
 });
 // gold circle
 bgCircle.copy({
-  width: 44,
-  height: 44,
-  translate: { y: -16, z: -12 },
+  width: 32,
+  height: 32,
+  translate: { y: -16, z: -24 },
   color: gold,
 });
 
 // sun
 new Shape({
   addTo: background,
-  translate: { y: -16, z: -32 },
+  translate: { y: -16, z: -48 },
   lineWidth: 24,
   color: white,
 });
@@ -129,6 +136,11 @@ midBGBigDot.copy({
 // ----- midground ----- //
 
 var midground = new Shape({
+  rendering: false,
+  addTo: camera,
+});
+
+var midgroundGroundA = new Shape({
   path: [
     { x: -96, y: 10 },
     { x: -86, y: 10 },
@@ -136,17 +148,24 @@ var midground = new Shape({
       { x: -60, y: 42 },
       { x: -26, y: 42 },
     ]},
+    { x: -26, y: 74 },
+    { x: -96, y: 74 },
+  ],
+  addTo: midground,
+  color: magenta,
+  lineWidth: 48,
+  fill: true,
+});
+midgroundGroundA.copy({
+  path: [
+    { x: -26, y: 42 },
     { arc: [
       { x: -8, y: 74 },
       { x: 36, y: 74 },
     ]},
     { x: 96, y: 74 },
-    { x: -96, y: 74 },
+    { x: -26, y: 74 },
   ],
-  addTo: camera,
-  color: magenta,
-  lineWidth: 48,
-  fill: true,
 });
 
 function tree( groupOptions, options ) {
@@ -253,6 +272,13 @@ tree( midgroundTree, {
 // ----- midForeground ----- //
 
 var midForeground = new Shape({
+  rendering: false,
+  addTo: camera,
+  translate: { z: -layerSpace },
+});
+
+// midForeground ground part A
+var midForegroundGround = new Shape({
   path: [
     { x: 96, y: 26 },
     { x: 72, y: 26 },
@@ -260,6 +286,17 @@ var midForeground = new Shape({
       { x: 56, y: 50 },
       { x: 18, y: 50 },
     ]},
+    { x: 18, y: 90 },
+    { x: 96, y: 90 },
+  ],
+  addTo: midForeground,
+  color: eggplant,
+  lineWidth: 48,
+  fill: true,
+});
+midForegroundGround.copy({
+  path: [
+    { x: 18, y: 50 },
     { arc: [
       { x: -16, y: 90 },
       { x: -48, y: 90 },
@@ -267,13 +304,8 @@ var midForeground = new Shape({
     { x: -64, y: 90 },
     { x: -96, y: 64 },
     { x: -96, y: 90 },
-    { x: 96, y: 90 },
+    { x: 18, y: 90 },
   ],
-  addTo: camera,
-  translate: { z: -layerSpace },
-  color: eggplant,
-  lineWidth: 48,
-  fill: true,
 });
 
 var midForeBall = new Shape({
@@ -345,11 +377,10 @@ var foregroundA = new Shape({
       { x: -32, y: 90 },
       { x: 0, y: 90 },
     ]},
-    { x: 96, y: 90 },
     { x: -96, y: 90 },
   ],
   addTo: camera,
-  translate: { z: -layerSpace*1.8 },
+  translate: { z: -layerSpace*1.9 },
   color: midnight,
   lineWidth: 48,
   fill: true,
@@ -490,7 +521,7 @@ var twoCloud = new Shape({
       { x: -10, y: -4 },
     ]},
     { bezier: [
-      { x: -8, y: 0 },
+      { x: -8, y: -4 },
       { x: -8, y: -2 },
       { x: -4, y: -2 },
     ]},
@@ -506,10 +537,130 @@ var twoCloud = new Shape({
     ]},
   ],
   addTo: camera,
-  lineWidth: 2,
+  translate: { x: -84, y: -38, z: layerSpace*1 },
+  rotate: { y: TAU*1/16 },
+  scale: { x: 1/Math.cos(TAU*1/16) },
+  lineWidth: 4,
   color: white,
   fill: true,
 });
+
+twoCloud.copy({
+  translate: { x: -38, y: -22, z: layerSpace*0.5 },
+  rotate: { y: TAU*1/8 },
+  scale: { x: 1/Math.cos(TAU*1/8) * -1 },
+});
+
+// triple cloud
+new Shape({
+  path: [
+    { x: -32, y: 0 },
+    { x: -28, y: 0 },
+    { bezier: [
+      { x: -22, y: 0 },
+      { x: -20, y: -6 },
+      { x: -16, y: -6 },
+    ]},
+    { bezier: [
+      { x: -12, y: -6 },
+      { x: -12, y: -2 },
+      { x: -8, y: -2 },
+    ]},
+    { bezier: [
+      { x: -4, y: -2 },
+      { x: -4, y: -6 },
+      { x: 0, y: -6 },
+    ]},
+    { bezier: [
+      { x: 4, y: -6 },
+      { x: 4, y: -2 },
+      { x: 8, y: -2 },
+    ]},
+    { bezier: [
+      { x: 12, y: -2 },
+      { x: 12, y: -6 },
+      { x: 16, y: -6 },
+    ]},
+    { bezier: [
+      { x: 20, y: -6 },
+      { x: 22, y: 0 },
+      { x: 28, y: 0 },
+    ]},
+    { x: 32, y: 0 },
+  ],
+  addTo: camera,
+  translate: { x: 72, y: -52, z: layerSpace*1 },
+  rotate: { y: TAU * -1/16 },
+  scale: { x: 1/Math.cos(TAU * -1/16) },
+  lineWidth: 4,
+  color: white,
+  fill: true,
+});
+
+// ----- stars ----- //
+
+var starA = new Shape({
+  path: [
+    { x: 0, y: -4 },
+    { arc: [
+      { x: 0, y: 0 },
+      { x: 4, y: 0 },
+    ]},
+    { arc: [
+      { x: 0, y: 0 },
+      { x: 0, y: 4 },
+    ]},
+    { arc: [
+      { x: 0, y: 0 },
+      { x: -4, y: 0 },
+    ]},
+    { arc: [
+      { x: 0, y: 0 },
+      { x: 0, y: -4 },
+    ]},
+  ],
+  addTo: camera,
+  translate: { x: -50, y: -50, z: layerSpace*1.5 },
+  color: gold,
+  lineWidth: 2,
+  fill: true,
+});
+starA.copy({
+  rotate: { y: TAU/4 },
+});
+
+var starB = starA.copy({
+  translate: { x: 42, y: -20, z: layerSpace*0.5 },
+});
+starB.copy({
+  rotate: { y: TAU/4 },
+});
+
+// ----- bird ----- //
+
+var bird = new Shape({
+  path: [
+    { x: -6, y: -4 },
+    { x: -4, y: -4 },
+    { arc: [
+      { x: 0, y: -4 },
+      { x: 0, y: 0 },
+    ]},
+    { arc: [
+      { x: 0, y: -4 },
+      { x: 4, y: -4 },
+    ]},
+    { x: 6, y: -4 },
+    { move: [{ z: -2, y: 0 }] },
+    { z: 3, y: 0 },
+  ],
+  addTo: camera,
+  translate: { x: 18, y: -30, z: layerSpace*1 },
+  lineWidth: 3,
+  color: midnight,
+  closed: false,
+});
+
 
 // -----  ----- //
 
@@ -581,8 +732,8 @@ document.addEventListener( 'mousedown', function( event ) {
 function onMousemoveDrag( event ) {
   var dx = event.pageX - dragStartX;
   var dy = event.pageY - dragStartY;
-  var angleXMove = dy / ( zoom * 100 ) * TAU;
-  var angleYMove = dx / ( zoom * 100 ) * TAU;
+  var angleXMove = dy / canvasWidth * TAU;
+  var angleYMove = dx / canvasHeight * TAU;
   camera.rotate.x = dragStartAngleX + angleXMove;
   camera.rotate.y = dragStartAngleY + angleYMove;
 }
