@@ -1,5 +1,4 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape, lerp, Vector3, TAU */
+// -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
 // unibody canvas for compositing

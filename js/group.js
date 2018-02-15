@@ -1,6 +1,3 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Vector3 */
-
 // -------------------------- Group -------------------------- //
 
 function Group( options ) {

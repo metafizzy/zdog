@@ -1,4 +1,4 @@
-/* globals Shape */
+// -------------------------- Rect -------------------------- //
 
 function Rect( options ) {
   options = this.setPath( options );

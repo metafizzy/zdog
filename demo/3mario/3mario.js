@@ -1,6 +1,3 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals TAU, Shape, Group, Dragger */
-
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');

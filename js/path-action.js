@@ -1,6 +1,3 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Vector3 */
-
 // -------------------------- PathAction -------------------------- //
 
 function PathAction( method, points, previousPoint ) {

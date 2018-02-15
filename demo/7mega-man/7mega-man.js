@@ -1,20 +1,20 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape, Ellipse, TAU */
-
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
-var zoom = 6;
+var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
+var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
+var pixelRatio = window.devicePixelRatio || 1;
+zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+
+var isRotating = true;
 
 // colors
 var lightBlue = '#7CF';
 var darkBlue = '#25C';
 var skin = '#FCA';
-
-var rZSpeed = 0;
 
 var camera = new Shape({
   rendering: false,

@@ -1,0 +1,19 @@
+{
+  "browser": true,
+  "devel": true,
+  "unused": true,
+  "undef": true,
+  "globals": {
+    "Dragger": false,
+    "Ellipse": false,
+    "extend": false,
+    "Group": false,
+    "lerp": false,
+    "modulo": false,
+    "PathAction": false,
+    "Rect": false,
+    "Shape": false,
+    "TAU": false,
+    "Vector3": false
+  }
+}

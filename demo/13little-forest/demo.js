@@ -1,5 +1,4 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape, Ellipse, Rect, Group, extend, TAU */
+// -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');

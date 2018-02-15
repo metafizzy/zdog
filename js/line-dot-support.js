@@ -1,5 +1,3 @@
-/* browser: true, undef: true, unused: true */
-
 ( function() {
 
   var canvas = document.createElement('canvas');

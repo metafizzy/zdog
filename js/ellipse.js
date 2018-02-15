@@ -1,4 +1,4 @@
-/* globals Shape */
+// -------------------------- Ellipse -------------------------- //
 
 function Ellipse( options ) {
   options = this.setPath( options );

@@ -1,7 +1,5 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape, Ellipse, Rect, Group, extend */
+// -------------------------- demo -------------------------- //
 
-var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 88;

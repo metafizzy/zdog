@@ -1,6 +1,3 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Vector3, PathAction, TAU */
-
 // -------------------------- Shape -------------------------- //
 
 function Shape( options ) {
@@ -203,12 +200,3 @@ Shape.prototype.copy = function( options ) {
   return new ShapeClass( shapeOptions );
 };
 
-
-// ----- utils ----- //
-
-function extend( a, b ) {
-  for ( var prop in b ) {
-    a[ prop ] = b[ prop ];
-  }
-  return a;
-}

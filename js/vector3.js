@@ -1,8 +1,4 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-
-var TAU = Math.PI * 2;
-
-// -- Pseudo Vector3 class -- //
+// -------------------------- Vector3 -------------------------- //
 
 function Vector3( position ) {
   this.set( position );
@@ -78,10 +74,6 @@ Vector3.prototype.lerp = function( vec, t ) {
   this.z = lerp( this.z, vec.z, t );
   return this;
 };
-
-function lerp( a, b, t ) {
-  return ( b - a ) * t + a;
-}
 
 // ----- utils ----- //
 
