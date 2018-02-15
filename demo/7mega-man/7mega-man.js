@@ -1,13 +1,20 @@
+// -------------------------- demo -------------------------- //
+
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
+var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+// set canvas screen size
+if ( pixelRatio > 1 ) {
+  canvas.style.width = canvasWidth / pixelRatio + 'px';
+  canvas.style.height = canvasHeight / pixelRatio + 'px';
+}
 
 var isRotating = true;
 
@@ -21,6 +28,9 @@ var camera = new Shape({
 });
 
 // -- illustration shapes --- //
+
+// keep track of pupils to change position
+var pupils = {};
 
 // head
 
@@ -42,7 +52,7 @@ var head = new Shape({
       { x:  1.25, y:  1.5, z: -11.25 },
       { x: -1.25, y:  1.5, z: -11.25 },
     ],
-    rotate: { x: -TAU/20 * (i) },
+    rotate: { x: -TAU/20 * i },
     lineWidth: 2,
     fill: true,
     color: lightBlue,
@@ -52,8 +62,7 @@ var head = new Shape({
 
 
 // upper body
-
-var upperBody = new Shape({
+new Shape({
   path: [
     { x: -2, y: -1.25 },
     { x:  0, y: -1.5 },
@@ -143,7 +152,7 @@ var rightForeArm = new Shape({
   addTo: rightUpperArm,
 });
 
-var rightHand = new Shape({
+new Shape({
   path: [
     { x: -4 },
   ],
@@ -179,7 +188,7 @@ var leftForeArm = new Shape({
   addTo: leftUpperArm,
 });
 
-var blasterNozzle = new Shape({
+new Shape({
   path: [ { x: 4 } ],
   translate: leftForeArm.path[1],
   lineWidth: 7,
@@ -227,8 +236,10 @@ var blasterNozzle = new Shape({
     color: 'white',
   });
 
+
+
   // pupils
-  new Ellipse({
+  var pupil = new Ellipse({
     width: 1,
     height: 4,
     translate: { x: -0.4*xSide, y: -0.2, z: -1 },
@@ -238,6 +249,8 @@ var blasterNozzle = new Shape({
     color: '#128',
     addTo: eyeWhite,
   });
+  // add to hash
+  pupils[ xSide ] = pupil;
 
   // ear cone outer
   var earCone = new Ellipse({
@@ -320,8 +333,25 @@ animate();
 // -- update -- //
 
 function update() {
+  camera.rotate.y += isRotating ? -TAU/150 : 0;
+  camera.rotate.x = modulo( camera.rotate.x, TAU );
+  // change pupil position
+  var isAngleXFlip = camera.rotate.x > TAU/4 && camera.rotate.x < TAU * 3/4;
+  var angleXOffset = isAngleXFlip ? 0 : TAU/2;
+  // angleXFlip *= 
+  var headAngleY = modulo( camera.rotate.y + head.rotate.y + angleXOffset, TAU );
+  var headAngleX = modulo( camera.rotate.x + angleXOffset, TAU );
+  var stareX = (headAngleY / TAU * 2 - 1) * -8;
+  var stareY = (headAngleX / TAU * 2 - 1) * -8;
+  stareX = Math.max( -2, Math.min( 2, stareX ) );
+  stareY = Math.max( -1, Math.min( 1, stareY ) );
+  stareY = isAngleXFlip ? -stareY : stareY;
+  // console.log( stareX );
+  pupils[-1].translate.x = 0.4 + stareX;
+  pupils[1].translate.x = -0.4 + stareX;
+  pupils[-1].translate.y = -0.2 + stareY;
+  pupils[1].translate.y = -0.2 + stareY;
   // rotate
-  camera.rotate.z += rZSpeed;
   camera.update();
   shapes.forEach( function( shape ) {
     shape.updateSortValue();
@@ -352,35 +382,20 @@ function render() {
 
 // ----- inputs ----- //
 
-document.querySelector('.toggle-z-rotation-button').onclick = function() {
-  rZSpeed = rZSpeed ? 0 : TAU/360;
-};
-
 // click drag to rotate
-
-var dragStartX, dragStartY;
 var dragStartAngleX, dragStartAngleY;
 
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = camera.rotate.x;
-  dragStartAngleY = camera.rotate.y;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    isRotating = false;
+    dragStartAngleX = camera.rotate.x;
+    dragStartAngleY = camera.rotate.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    camera.rotate.x = dragStartAngleX + angleXMove;
+    camera.rotate.y = dragStartAngleY + angleYMove;
+  },
 });
-
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy * TAU/360;
-  var angleYMove = dx * TAU/360;
-  camera.rotate.x = dragStartAngleX + angleXMove;
-  camera.rotate.y = dragStartAngleY + angleYMove;
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}

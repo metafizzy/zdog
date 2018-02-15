@@ -10,8 +10,10 @@ var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
-canvas.style.width = canvasWidth / pixelRatio + 'px';
-canvas.style.height = canvasHeight / pixelRatio + 'px';
+if ( pixelRatio > 1 ) {
+  canvas.style.width = canvasWidth / pixelRatio + 'px';
+  canvas.style.height = canvasHeight / pixelRatio + 'px';
+}
 // colors
 var colors = {
   eye: '#333',
@@ -515,7 +517,7 @@ animate();
 var isRotating = true;
 
 function update() {
-  camera.rotate.y += isRotating ? -0.03 : 0;
+  camera.rotate.y += isRotating ? -0.05 : 0;
   camera.update();
   // sort
   shapes.forEach( function updateEachSortValue( shape ) {
@@ -558,8 +560,8 @@ new Dragger({
     dragStartAngleY = camera.rotate.y;
   },
   onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / ( zoom/pixelRatio * 100 ) * TAU;
-    var angleYMove = moveX / ( zoom/pixelRatio * 100 ) * TAU;
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
     camera.rotate.x = dragStartAngleX + angleXMove;
     camera.rotate.y = dragStartAngleY + angleYMove;
   },

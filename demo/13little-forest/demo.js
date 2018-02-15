@@ -731,8 +731,8 @@ document.addEventListener( 'mousedown', function( event ) {
 function onMousemoveDrag( event ) {
   var dx = event.pageX - dragStartX;
   var dy = event.pageY - dragStartY;
-  var angleXMove = dy / canvasWidth * TAU;
-  var angleYMove = dx / canvasHeight * TAU;
+  var angleXMove = dy / (canvasWidth*2) * TAU;
+  var angleYMove = dx / (canvasWidth*2) * TAU;
   camera.rotate.x = dragStartAngleX + angleXMove;
   camera.rotate.y = dragStartAngleY + angleYMove;
 }
@@ -741,4 +741,3 @@ function onMouseupDrag() {
   window.removeEventListener( 'mousemove', onMousemoveDrag );
   window.removeEventListener( 'mouseup', onMouseupDrag );
 }
-

@@ -1,6 +1,8 @@
 /* jshint unused: false */
 /* globals TAU: true */
 
+// -------------------------- utils -------------------------- //
+
 var TAU = Math.PI * 2;
 
 function extend( a, b ) {
