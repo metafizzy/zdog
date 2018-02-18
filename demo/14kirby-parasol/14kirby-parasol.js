@@ -2,8 +2,8 @@
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-var w = 72;
-var h = 72;
+var w = 80;
+var h = 80;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 var pixelRatio = window.devicePixelRatio || 1;
@@ -164,7 +164,7 @@ var rightFoot = new Shape({
     ]},
   ],
   addTo: body,
-  translate: { x: -1, y: 12, z: 4 },
+  translate: { x: -1, y: 9, z: 9 },
   rotate: { z: -0.2 },
   lineWidth: 6,
   color: shoe,
@@ -173,7 +173,7 @@ var rightFoot = new Shape({
 });
 
 rightFoot.copy({
-  translate: { x: 9.5, y: 6, z: 4 },
+  translate: { x: 9.5, y: 6, z: 6 },
   rotate: { z: -1.1, y: -0.8 }
 });
 
@@ -187,8 +187,9 @@ var umbrella = new Shape({
   ],
   addTo: rightArm,
   translate: { y: -33, z: -2 },
+  rotate: { y: -0.5 },
   color: yellow,
-  lineWeight: 1,
+  lineWidth: 1,
 });
 
 // star
@@ -208,7 +209,7 @@ var starPath = ( function() {
   return path;
 })();
 // star shape
-new Shape({
+var star = new Shape({
   path: starPath,
   addTo: umbrella,
   translate: { y: -4.5 },
@@ -266,6 +267,25 @@ new Shape({
   }
 })();
 
+// ----- floater stars ----- //
+
+( function() {
+  for ( var i=0; i < 6; i++ ) {
+    var starHolder = new Shape({
+      rendering: false,
+      addTo: umbrella,
+      translate: { y: 10 },
+      rotate: { y: TAU/6 * i + TAU/24 },
+    });
+    star.copy({
+      addTo: starHolder,
+      translate: { z: 28 },
+    });
+  }
+})();
+
+// -----  ----- //
+
 var shapes = camera.getShapes();
 
 // -- animate --- //
@@ -281,7 +301,7 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.rotate.y += isRotating ? -TAU/150 : 0;
+  camera.rotate.y += isRotating ? +TAU/150 : 0;
 
   // rotate
   camera.update();
