@@ -55,11 +55,12 @@ new Ellipse({
   color: madColor.skin,
 });
 
-// back head
+// hair ball
 new Shape({
   path: [
     { x: -1 },
     { x: 1 },
+    { z: 4 },
   ],
   addTo: head,
   translate: { y: -4, z: 1 },
@@ -105,7 +106,6 @@ bang.copy({
   rotate: { y: -0.7, z: 1 },
 });
 
-
 // hair cover
 new Shape({
   path: [
@@ -118,26 +118,42 @@ new Shape({
   color: madColor.hair,
 });
 
-var lock = new Shape({
+// trail locks
+
+var trailLock = new Shape({
   path: [
-    { y: 0 },
-    { y: 25 },
+    { y: -4, z: 0 },
+    { bezier: [
+      { y: -10, z: 14 },
+      { y: 0, z: 16 },
+      { y: 0, z: 26 }
+    ]},
   ],
   addTo: head,
-  translate: { y: -4, z: 6 },
-  rotate: { x: TAU/4 },
-  lineWidth: 8,
+  translate: { z: 4, y: 0 },
+  lineWidth: 10,
   color: madColor.hair,
+  closed: false,
 });
-lock.copy({
-  translate: { x: -6, y: -4, z: 6 },
+
+trailLock.copy({
+  translate: { x: -3, z: 4 },
+  rotate: { z: -TAU/8 },
+  lineWidth: 8,
 });
-lock.copy({
-  translate: { x: 6, y: -4, z: 6 },
+trailLock.copy({
+  translate: { x: 3, z: 4 },
+  rotate: { z: TAU/8 },
+  lineWidth: 8,
+});
+trailLock.copy({
+  translate: { y: 2 },
+  // rotate: { z: TAU/2 },
+  scale: { y: 0.5 },
+  lineWidth: 8,
 });
 
 // ----- torso ----- //
-
 
 // 2nd rib
 var torsoRib = new Ellipse({
