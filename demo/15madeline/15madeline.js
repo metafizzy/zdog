@@ -22,7 +22,7 @@ var madColor = {
   skin: '#FD9',
   hair: '#D64',
   parkaLight: '#ACC',
-  parkaDark: '#688',
+  parkaDark: '#799',
   tight: '#434',
 };
 
@@ -69,23 +69,53 @@ new Shape({
 
 var bang = new Shape({
   path: [
-    { y: -2 },
-    { y: 2 },
+    {},
+    { arc: [
+      { z: -4, y: 4 },
+      { z: 0, y: 8 },
+    ]},
   ],
   addTo: head,
-  translate: { x: -2, y: -5, z: -8 },
+  translate: { x: 2, y: -7.5, z: -6 },
+  rotate: { x: -0.5, z: -0.5 },
   lineWidth: 4,
   color: madColor.hair,
   closed: false,
 });
 bang.copy({
-  translate: { x: 2, y: -5, z: -8 },
+  translate: { x: 5, y: -6, z: -5 },
+  rotate: { x: 0.3, z: -0.5 },
 });
 bang.copy({
-  translate: { x: -6, y: -5, z: -7 },
+  translate: { x: 5, y: -6, z: -3 },
+  rotate: { y: 0.7, z: -1 },
+});
+
+// left side
+bang.copy({
+  translate: { x: -2, y: -7.5, z: -6 },
+  rotate: { x: 0, z: TAU/16*6 },
 });
 bang.copy({
-  translate: { x: 6, y: -5, z: -7 },
+  translate: { x: -5, y: -6, z: -5 },
+  rotate: { x: 0, z: TAU/4 },
+});
+bang.copy({
+  translate: { x: -5, y: -6, z: -3 },
+  rotate: { y: -0.7, z: 1 },
+});
+
+
+// hair cover
+new Shape({
+  path: [
+    { x: -3 },
+    { x:  3 },
+  ],
+  addTo: head,
+  lineWidth: 7,
+  translate: { y: -8, z: -5 },
+  color: madColor.hair,
 });
 
 var lock = new Shape({
@@ -133,7 +163,7 @@ torsoRib.copy({
 // 4th rib
 torsoRib.copy({
   translate: { y: 7 },
-  color: madColor.parkaLight,
+  color: madColor.parkaDark,
 });
 // waist
 new Ellipse({
@@ -184,6 +214,7 @@ new Ellipse({
   armRib.copy({
     addTo: elbowJoint,
     translate: { y: 4 },
+    color: madColor.parkaDark,
   });
 
   // hand
@@ -223,7 +254,7 @@ new Ellipse({
 
   if ( xSide == -1 ) {
     // bend right leg
-    thigh.rotate = Vector3.sanitize({ x: -TAU/16*3 });
+    thigh.rotate = Vector3.sanitize({ x: -TAU/16*3, z: TAU/16 });
     shin.rotate = Vector3.sanitize({ x: TAU/16*5 });
   }
 
