@@ -35,12 +35,14 @@ var camera = new Shape({
 var body = new Shape({
   rendering: false,
   addTo: camera,
+  rotate: { x: TAU/8 },
 });
 
 var head = new Shape({
   rendering: false,
-  translate: { y: -13 },
   addTo: body,
+  translate: { y: -11, z: 2 },
+  rotate: { x: -TAU/8 },
 });
 
 // face
@@ -65,20 +67,6 @@ new Shape({
   color: madColor.hair,
 });
 
-// var bang = new Shape({
-//   path: [
-//     { z: 0, y: 0 },
-//     { arc: [
-//       { z: -4, y: 0 },
-//       { z: -4, y: 4 },
-//     ]}
-//   ],
-//   addTo: head,
-//   translate: { x: -2, y: -7, z: -4 },
-//   lineWidth: 4,
-//   color: madColor.hair,
-//   closed: false,
-// });
 var bang = new Shape({
   path: [
     { y: -2 },
@@ -107,6 +95,7 @@ var lock = new Shape({
   ],
   addTo: head,
   translate: { y: -4, z: 6 },
+  rotate: { x: TAU/4 },
   lineWidth: 8,
   color: madColor.hair,
 });
@@ -144,12 +133,20 @@ torsoRib.copy({
 // 4th rib
 torsoRib.copy({
   translate: { y: 7 },
+  color: madColor.parkaLight,
 });
-// bottom elastic
-torsoRib.copy({
+// waist
+new Ellipse({
+  width: 10,
+  height: 10,
+  addTo: body,
+  rotate: { x: TAU/4 },
   translate: { y: 11 },
-  color: madColor.parkaDark,
+  lineWidth: 4,
+  color: madColor.tight,
+  fill: true,
 });
+
 
 // arms
 [ -1, 1 ].forEach( function( xSide ) {
@@ -160,15 +157,15 @@ torsoRib.copy({
   });
 
   // top shoulder rib
-  var armRib = new Shape({
-    path: [
-      { z: 1 },
-      { z: -1 },
-    ],
+  var armRib = new Ellipse({
+    width: 2,
+    height: 2,
+    rotate: { x: TAU/4 },
     addTo: shoulderJoint,
-    translate: { x: -2*xSide },
+    translate: { x: 0*xSide },
     lineWidth: 6,
-    color: madColor.parkaDark,
+    color: madColor.parkaLight,
+    fill: true,
   });
   armRib.copy({
     translate: { y: 4 },
@@ -193,20 +190,31 @@ torsoRib.copy({
   new Shape({
     addTo: elbowJoint,
     translate: { y: 9, z: -1 },
-    lineWidth: 7,
+    lineWidth: 8,
     color: madColor.skin,
   });
 
+  if ( xSide == 1 ) {
+    // extend left hand
+    shoulderJoint.rotate = Vector3.sanitize({ x: -TAU/8*3, z: -TAU/32 });
+  } else {
+    // back right hand
+    shoulderJoint.rotate = Vector3.sanitize({ z: TAU/16*2, x: TAU/16*2 });
+    elbowJoint.rotate = Vector3.sanitize({ z: TAU/8 });
+  }
+
   // ----- legs ----- //
-  var knee = { x: 4*xSide, y: 19, z: 0 };
+  var knee = { x: 2*xSide, y: 7, z: 0 };
   var thigh = new Shape({
     path: [
-      { x: 2*xSide, y: 12, z: -2 },
+      { x: 0*xSide, y: 0, z: -2 },
       knee,
-      { x: 6*xSide, y: 19, z: 2 },
-      { x: 6*xSide, y: 12, z: 2 },
+      { x: 4*xSide, y: 7, z: 2 },
+      { x: 4*xSide, y: 0, z: 2 },
     ],
     addTo: body,
+    translate: { x: 2*xSide, y: 12 },
+    // rotate: { x: TAU/16 },
     lineWidth: 4,
     color: madColor.tight,
     fill: true,
@@ -235,6 +243,12 @@ torsoRib.copy({
     translate: ankle,
     rotate: { y: 0.2*xSide },
   });
+
+  if ( xSide == -1 ) {
+    // bend right leg
+    thigh.rotate = Vector3.sanitize({ x: -TAU/16*3 });
+    shin.rotate = Vector3.sanitize({ x: TAU/4 });
+  }
 
 });
 
