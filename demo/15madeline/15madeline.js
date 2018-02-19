@@ -138,7 +138,7 @@ torsoRib.copy({
 // waist
 new Ellipse({
   width: 10,
-  height: 10,
+  height: 8,
   addTo: body,
   rotate: { x: TAU/4 },
   translate: { y: 11 },
@@ -204,50 +204,27 @@ new Ellipse({
   }
 
   // ----- legs ----- //
-  var knee = { x: 2*xSide, y: 7, z: 0 };
+  var knee = { y: 7 };
   var thigh = new Shape({
-    path: [
-      { x: 0*xSide, y: 0, z: -2 },
-      knee,
-      { x: 4*xSide, y: 7, z: 2 },
-      { x: 4*xSide, y: 0, z: 2 },
-    ],
+    path: [ { y: 0 }, knee ],
     addTo: body,
-    translate: { x: 2*xSide, y: 12 },
-    // rotate: { x: TAU/16 },
-    lineWidth: 4,
+    translate: { x: 4.5*xSide, y: 13 },
+    lineWidth: 7,
     color: madColor.tight,
-    fill: true,
   });
 
-  var ankle = { x: 2*xSide, y: 7, z: 2 };
-  var shin = thigh.copy({
-    path: [
-      { x: 0, y: 0, z: 0 },
-      ankle,
-      { x: 2*xSide, y: 0, z: 2 },
-    ],
+  var shin = new Shape({
+    path: [ { y: 0 }, { y: 8 } ],
     addTo: thigh,
+    lineWidth: 6,
     translate: knee,
-  });
-
-  // foot
-  thigh.copy({
-    rendering: false,
-    path: [
-      { y: 0, z: 0 },
-      { y: 0, z: -2 },
-      { y: -1, z: 0 },
-    ],
-    addTo: shin,
-    translate: ankle,
-    rotate: { y: 0.2*xSide },
+    color: madColor.tight,
   });
 
   if ( xSide == -1 ) {
     // bend right leg
     thigh.rotate = Vector3.sanitize({ x: -TAU/16*3 });
-    shin.rotate = Vector3.sanitize({ x: TAU/4 });
+    shin.rotate = Vector3.sanitize({ x: TAU/16*5 });
   }
 
 });
@@ -258,9 +235,10 @@ new Shape({
     { x: -3 },
     { x: 3 },
   ],
+  rendering: false,
   addTo: body,
-  translate: { y: 11, z: 3 },
-  lineWidth: 9,
+  translate: { y: 11, z: 2 },
+  lineWidth: 8,
   color: madColor.tight,
 });
 
