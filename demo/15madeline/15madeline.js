@@ -1,9 +1,11 @@
+/* globals makeMadeline: false */
+
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-var w = 64;
-var h = 64;
+var w = 160;
+var h = 160;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 var pixelRatio = window.devicePixelRatio || 1;
@@ -25,270 +27,111 @@ var madColor = {
   parkaDark: '#799',
   tight: '#434',
 };
+var badColor = {
+  skin: '#DBC',
+  hair: '#A57',
+  parkaLight: '#756',
+  parkaDark: '#534',
+  tight: '#332',
+};
+
+var featherGold = '#FE5';
 
 var camera = new Shape({
   rendering: false,
+  rotate: { y: TAU/4 },
 });
 
 // -- illustration shapes --- //
 
-var body = new Shape({
+makeMadeline( camera, madColor );
+makeMadeline( camera, badColor, { y: TAU/2 } );
+
+
+// ----- feather ----- //
+
+var feather = new Shape({
   rendering: false,
   addTo: camera,
-  rotate: { x: TAU/8 },
+  rotate: { y: -TAU/4 },
 });
 
-var head = new Shape({
-  rendering: false,
-  addTo: body,
-  translate: { y: -11, z: 2 },
-  rotate: { x: -TAU/8 },
-});
+( function() {
 
-// face
-new Ellipse({
-  width: 6,
-  height: 6,
-  addTo: head,
-  translate: { z: -4 },
-  lineWidth: 8,
-  color: madColor.skin,
-});
+  var featherPartCount = 8;
+  var radius = 12;
+  var angleX = (TAU/featherPartCount) / 2;
+  var sector = (TAU * radius)/2 / featherPartCount;
 
-// hair ball
-new Shape({
-  path: [
-    { x: -1 },
-    { x: 1 },
-    { z: 4 },
-  ],
-  addTo: head,
-  translate: { y: -4, z: 1 },
-  lineWidth: 18,
-  color: madColor.hair,
-});
+  for ( var i=0; i < featherPartCount; i++ ) {
+    var curve = Math.cos( (i/featherPartCount) * TAU*3/4 + TAU*1/4 );
+    var x = 4 - curve*2;
+    var y0 = sector/2;
+    var isLast = i == featherPartCount - 1;
+    var y2 = isLast ? sector * -1 : -y0;
+    var z1 = -radius + 2 + curve*-1.5;
+    var z2 = isLast ? -radius : -radius;
+    var barb = new Shape({
+      path: [
+        { x: 0, y: y0, z: -radius },
+        { x: x, y: -sector/2, z: z1 },
+        { x: 0, y: y2, z: z2 },
+      ],
+      addTo: feather,
+      rotate: { x: angleX * -i + TAU/8 },
+      lineWidth: 2,
+      color: featherGold,
+      fill: true,
+    });
+    barb.copy({
+      scale: { x: -1 },
+    });
+  }
 
-var bang = new Shape({
-  path: [
-    {},
-    { arc: [
-      { z: -4, y: 4 },
-      { z: 0, y: 8 },
-    ]},
-  ],
-  addTo: head,
-  translate: { x: 2, y: -7.5, z: -6 },
-  rotate: { x: -0.5, z: -0.5 },
-  lineWidth: 4,
-  color: madColor.hair,
-  closed: false,
-});
-bang.copy({
-  translate: { x: 5, y: -6, z: -5 },
-  rotate: { x: 0.3, z: -0.5 },
-});
-bang.copy({
-  translate: { x: 5, y: -6, z: -3 },
-  rotate: { y: 0.7, z: -1 },
-});
-
-// left side
-bang.copy({
-  translate: { x: -2, y: -7.5, z: -6 },
-  rotate: { x: 0, z: TAU/16*6 },
-});
-bang.copy({
-  translate: { x: -5, y: -6, z: -5 },
-  rotate: { x: 0, z: TAU/4 },
-});
-bang.copy({
-  translate: { x: -5, y: -6, z: -3 },
-  rotate: { y: -0.7, z: 1 },
-});
-
-// hair cover
-new Shape({
-  path: [
-    { x: -3 },
-    { x:  3 },
-  ],
-  addTo: head,
-  lineWidth: 7,
-  translate: { y: -8, z: -5 },
-  color: madColor.hair,
-});
-
-// trail locks
-
-var trailLock = new Shape({
-  path: [
-    { y: -4, z: 0 },
-    { bezier: [
-      { y: -10, z: 14 },
-      { y: 0, z: 16 },
-      { y: 0, z: 26 }
-    ]},
-  ],
-  addTo: head,
-  translate: { z: 4, y: 0 },
-  lineWidth: 10,
-  color: madColor.hair,
-  closed: false,
-});
-
-trailLock.copy({
-  translate: { x: -3, z: 4 },
-  rotate: { z: -TAU/8 },
-  lineWidth: 8,
-});
-trailLock.copy({
-  translate: { x: 3, z: 4 },
-  rotate: { z: TAU/8 },
-  lineWidth: 8,
-});
-trailLock.copy({
-  translate: { y: 2 },
-  // rotate: { z: TAU/2 },
-  scale: { y: 0.5 },
-  lineWidth: 8,
-});
-
-// ----- torso ----- //
-
-// 2nd rib
-var torsoRib = new Ellipse({
-  width: 10,
-  height: 10,
-  addTo: body,
-  rotate: { x: TAU/4 },
-  translate: { y: -1 },
-  lineWidth: 6,
-  color: madColor.parkaLight,
-  fill: true,
-});
-// neck rib
-torsoRib.copy({
-  width: 6,
-  height: 6,
-  translate: { y: -5 },
-});
-// 3rd rib
-torsoRib.copy({
-  translate: { y: 3 },
-});
-// 4th rib
-torsoRib.copy({
-  translate: { y: 7 },
-  color: madColor.parkaDark,
-});
-// waist
-new Ellipse({
-  width: 10,
-  height: 8,
-  addTo: body,
-  rotate: { x: TAU/4 },
-  translate: { y: 11 },
-  lineWidth: 4,
-  color: madColor.tight,
-  fill: true,
-});
-
-
-// arms
-[ -1, 1 ].forEach( function( xSide ) {
-  var shoulderJoint = new Shape({
-    rendering: false,
-    addTo: body,
-    translate: { x: 9*xSide, y: -3, z: 2 },
-  });
-
-  // top shoulder rib
-  var armRib = new Ellipse({
-    width: 2,
-    height: 2,
-    rotate: { x: TAU/4 },
-    addTo: shoulderJoint,
-    translate: { x: 0*xSide },
-    lineWidth: 6,
-    color: madColor.parkaLight,
-    fill: true,
-  });
-  armRib.copy({
-    translate: { y: 4 },
-  });
-
-  var elbowJoint = new Shape({
-    rendering: false,
-    addTo: shoulderJoint,
-    translate: { y: 8 },
-  });
-
-  armRib.copy({
-    addTo: elbowJoint,
-    translate: { x: 0, y: 0 },
-  });
-  armRib.copy({
-    addTo: elbowJoint,
-    translate: { y: 4 },
-    color: madColor.parkaDark,
-  });
-
-  // hand
+  // rachis
   new Shape({
-    addTo: elbowJoint,
-    translate: { y: 9, z: -1 },
-    lineWidth: 8,
-    color: madColor.skin,
+    path: [
+      { y: radius },
+      { arc: [
+        { y: radius, z: -radius },
+        { y: 0, z: -radius },
+      ]},
+    ],
+    addTo: feather,
+    lineWidth: 2,
+    color: featherGold,
+    closed: false,
   });
+})();
 
-  if ( xSide == 1 ) {
-    // extend left hand
-    shoulderJoint.rotate = Vector3.sanitize({ x: -TAU/8*3, z: -TAU/32 });
-  } else {
-    // back right hand
-    shoulderJoint.rotate = Vector3.sanitize({ z: TAU/16*2, x: TAU/16*2 });
-    elbowJoint.rotate = Vector3.sanitize({ z: TAU/8 });
+// ----- rods ----- //
+
+( function() {
+
+  var rodCount = 16;
+  for ( var i=0; i < rodCount; i++ ) {
+    var zRotor = new Shape({
+      rendering: false,
+      addTo: camera,
+      rotate: { z: TAU/rodCount * i },
+    });
+
+    var y0 = 32;
+    var y1 = y0 + 2 + Math.random()*24;
+    new Shape({
+      path: [
+        { y: y0 },
+        { y: y1 },
+      ],
+      addTo: zRotor,
+      rotate: { x: ( Math.random() * 2 - 1 ) * TAU/8 },
+
+      color: 'white',
+      lineWidth: 2,
+    });
   }
 
-  // ----- legs ----- //
-  var knee = { y: 7 };
-  var thigh = new Shape({
-    path: [ { y: 0 }, knee ],
-    addTo: body,
-    translate: { x: 4.5*xSide, y: 13 },
-    lineWidth: 7,
-    color: madColor.tight,
-  });
-
-  var shin = new Shape({
-    path: [ { y: 0 }, { y: 8 } ],
-    addTo: thigh,
-    lineWidth: 6,
-    translate: knee,
-    color: madColor.tight,
-  });
-
-  if ( xSide == -1 ) {
-    // bend right leg
-    thigh.rotate = Vector3.sanitize({ x: -TAU/16*3, z: TAU/16 });
-    shin.rotate = Vector3.sanitize({ x: TAU/16*5 });
-  }
-
-});
-
-// butt
-new Shape({
-  path: [
-    { x: -3 },
-    { x: 3 },
-  ],
-  rendering: false,
-  addTo: body,
-  translate: { y: 11, z: 2 },
-  lineWidth: 8,
-  color: madColor.tight,
-});
-
+})();
 
 // -----  ----- //
 
@@ -307,7 +150,7 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.rotate.y += isRotating ? +TAU/150 : 0;
+  camera.rotate.y += isRotating ? -TAU/150 : 0;
 
   // rotate
   camera.update();
