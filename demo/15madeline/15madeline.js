@@ -139,6 +139,9 @@ var shapes = camera.getShapes();
 
 // -- animate --- //
 
+var rotateSpeed = TAU/150;
+var xClock = 0;
+
 function animate() {
   update();
   render();
@@ -150,7 +153,12 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.rotate.y += isRotating ? -TAU/150 : 0;
+  // auto rotate
+  if ( isRotating ) {
+    camera.rotate.y += rotateSpeed;
+    xClock += rotateSpeed/4;
+    camera.rotate.x = Math.sin( xClock ) * TAU/8;
+  }
 
   // rotate
   camera.update();
