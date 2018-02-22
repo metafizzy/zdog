@@ -1,17 +1,25 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape */
+// -------------------------- demo -------------------------- //
 
-var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 104;
 var h = 104;
-var zoom = 4;
-var canvasWidth = canvas.width =  w * zoom;
+var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
+var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
+var pixelRatio = window.devicePixelRatio || 1;
+zoom *= pixelRatio;
+var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+// set canvas screen size
+if ( pixelRatio > 1 ) {
+  canvas.style.width = canvasWidth / pixelRatio + 'px';
+  canvas.style.height = canvasHeight / pixelRatio + 'px';
+}
+
+var isRotating = true;
+
 // ratio to make things look square when rotated a quarter
 var antiTwist = 1 / Math.cos( TAU/8 );
-// var antiTwist = 1;
 
 // colors
 var blue = '#19F';
@@ -185,9 +193,10 @@ new Shape({
   closed: false,
 });
 
-var shapes = camera.getShapes();
-
 // -- animate --- //
+
+var shapes = camera.getShapes();
+var t = 0;
 
 function animate() {
   update();
@@ -199,10 +208,26 @@ animate();
 
 // -- update -- //
 
+// i, 0->1
+function easeOut( i ) {
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
+}
+
 function update() {
+  if ( isRotating ) {
+    t += TAU/210;
+    var easeT = easeOut( ( t/TAU) % 1 );
+    camera.rotate.y = easeT*TAU - TAU/8;
+    camera.rotate.x = ( Math.cos( easeT * TAU ) * -0.5 + 0.5 ) * TAU/12;
+  }
+
   camera.update();
-  // normalize angle y
-  camera.rotate.y = ( ( camera.rotate.y % TAU ) + TAU ) % TAU;
 
   // sort
   shapes.forEach( function updateEachSortValue( shape ) {
@@ -237,40 +262,34 @@ function eachShapeRender( shape ) {
 
 // ----- inputs ----- //
 
-// click drag to rotate
-
-var dragStartX, dragStartY;
-var dragStartAngleX, dragStartAngleY;
-
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = camera.rotate.x;
-  dragStartAngleY = camera.rotate.y;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
-});
-
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy / ( zoom * 100 ) * TAU;
-  var angleYMove = dx / ( zoom * 100 ) * TAU;
-  camera.rotate.x = dragStartAngleX + angleXMove;
-  camera.rotate.y = dragStartAngleY + angleYMove;
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}
-
-document.querySelector('.quarter-twist-button').onclick = viewQuarterTwist;
-
+document.querySelector('.reset-button').onclick = function() {
+  viewQuarterTwist();
+  isRotating = false;
+};
 
 function viewQuarterTwist() {
-  camera.rotate.x = 0;
-  camera.rotate.z = 0;
-  camera.rotate.y = -TAU/8;
+  camera.rotate.set({ x: 0, y: -TAU/8, z: 0 });
 }
+
+document.querySelector('.rotate-button').onclick = function() {
+  isRotating = true;
+  t = 0;
+};
+
+// click drag to rotate
+var dragStartAngleX, dragStartAngleY;
+
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    isRotating = false;
+    dragStartAngleX = camera.rotate.x;
+    dragStartAngleY = camera.rotate.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    camera.rotate.x = dragStartAngleX + angleXMove;
+    camera.rotate.y = dragStartAngleY + angleYMove;
+  },
+});

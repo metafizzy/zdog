@@ -13,10 +13,10 @@ Shape.prototype.create = function( options ) {
   this.updatePathActions();
 
   // transform
-  this.translate = Vector3.sanitize( this.translate );
-  this.rotate = Vector3.sanitize( this.rotate );
-  this.scale = extend( { x: 1, y: 1, z: 1 }, this.scale );
-  this.scale = Vector3.sanitize( this.scale );
+  this.translate = new Vector3( options.translate );
+  this.rotate = new Vector3( options.rotate );
+  var scale = extend( { x: 1, y: 1, z: 1 }, options.scale );
+  this.scale = new Vector3( scale );
   // children
   this.children = [];
   if ( this.addTo ) {
