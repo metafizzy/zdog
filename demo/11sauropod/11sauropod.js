@@ -33,19 +33,20 @@ var camera = new Shape({
 // front right leg
 var leg = new Shape({
   path: [
-    { x: -8*antiTwist, y: 0 },
+    { x: -8, y: 0 },
     { arc: [
       { x: 0, y: 0 },
       { x: 0, y: 8 }
     ]},
     { arc: [
       { z: 0, y: 0 },
-      { z: 8*antiTwist, y: 0 }
+      { z: 8, y: 0 }
     ]},
     { move: [ { y: -4 } ] },
     { line: [ { y: 12 } ] },
   ],
   addTo: camera,
+  scale: { x: antiTwist, z: antiTwist },
   translate: { x: 16*antiTwist, y: 16, z: -8*antiTwist },
   lineWidth: 8,
   color: blue,
@@ -70,9 +71,10 @@ leg.copy({
 
 // leg connectors
 var legConnector = new Shape({
-  path: [ { x: -8*antiTwist }, { x: 8*antiTwist } ],
+  path: [ { x: -8 }, { x: 8 } ],
   addTo: camera,
   translate: { y: 16, z: -8*antiTwist },
+  scale: { x: antiTwist },
   lineWidth: 8,
   color: blue,
   closed: false,
@@ -102,27 +104,28 @@ new Shape({
 // neck squiggle
 new Shape({
   path: [
-    { x: 16*antiTwist, y: 4 },
+    { x: 16, y: 4 },
     { arc: [
-      { x: 24*antiTwist, y: 4 },
-      { x: 24*antiTwist, y: -4 }
+      { x: 24, y: 4 },
+      { x: 24, y: -4 }
     ]},
     { arc: [
-      { x: 24*antiTwist, y: -12 },
-      { x: 16*antiTwist, y: -12 }
+      { x: 24, y: -12 },
+      { x: 16, y: -12 }
     ]},
-    { x: -16*antiTwist, y: -12 },
+    { x: -16, y: -12 },
     { arc: [
-      { x: -24*antiTwist, y: -12 },
-      { x: -24*antiTwist, y: -20 }
+      { x: -24, y: -12 },
+      { x: -24, y: -20 }
     ]},
     { arc: [
-      { x: -24*antiTwist, y: -28 },
-      { x: -16*antiTwist, y: -28 }
+      { x: -24, y: -28 },
+      { x: -16, y: -28 }
     ]},
-    { x: 24*antiTwist, y: -28 },
+    { x: 24, y: -28 },
   ],
   addTo: camera,
+  scale: { x: antiTwist },
   lineWidth: 8,
   color: blue,
   closed: false,
@@ -131,10 +134,11 @@ new Shape({
 // neck 
 new Shape({
   path: [
-    { x: -16*antiTwist, y: -28 },
-    { x: 24*antiTwist, y: -28 },
+    { x: -16, y: -28 },
+    { x: 24, y: -28 },
   ],
   addTo: camera,
+  scale: { x: antiTwist },
   lineWidth: 8,
   color: blue,
   closed: false,
@@ -142,7 +146,6 @@ new Shape({
 
 // head ball
 var head = new Shape({
-  path: [ {} ],
   translate: { x: 16*antiTwist, y: -31 },
   addTo: camera,
   lineWidth: 14,
@@ -251,14 +254,14 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( eachShapeRender );
+  shapes.forEach( function( shape ) {
+    shape.render( ctx );
+  });
 
   ctx.restore();
 }
 
-function eachShapeRender( shape ) {
-  shape.render( ctx );
-}
+
 
 // ----- inputs ----- //
 
