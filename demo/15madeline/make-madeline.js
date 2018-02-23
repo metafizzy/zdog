@@ -1,6 +1,6 @@
 /* jshint unused: false */
 
-function makeMadeline( camera, colors, rotation ) {
+function makeMadeline( camera, isGood, colors, rotation ) {
 
   var rotor = new Shape({
     rendering: false,
@@ -23,7 +23,7 @@ function makeMadeline( camera, colors, rotation ) {
   });
 
   // face
-  new Ellipse({
+  var face = new Ellipse({
     width: 6,
     height: 6,
     addTo: head,
@@ -31,6 +31,55 @@ function makeMadeline( camera, colors, rotation ) {
     lineWidth: 8,
     color: colors.skin,
   });
+
+  var eyeGroup = new Group({
+    addTo: face,
+    translate: { z: -face.lineWidth/2 + 0.5 },
+  });
+
+
+  // eyes
+  [ -1, 1 ].forEach( function( xSide ) {
+    var eyeX = 3.5*xSide;
+
+    // eye
+    var eyeWhite = new Ellipse({
+      width: 1,
+      height: 1,
+      addTo: eyeGroup,
+      color: colors.eye,
+      translate: { x: eyeX },
+      lineWidth: 2,
+      fill: true,
+    });
+
+    // eye brow
+    var browY = isGood ? -3 : -2;
+    var browRotateZ = isGood ? -0.1*xSide : -0.4*xSide;
+    new Shape({
+      path: [
+        { x: -1, y: 0 },
+        { arc: [
+          { x: -1, y: -1 },
+          { x: 0, y: -1 }
+        ]},
+        { arc: [
+          { x: 1, y: -1 },
+          { x: 1, y: 0 }
+        ]},
+      ],
+      addTo: eyeGroup,
+      translate: { x: eyeX, y: browY },
+      scale: { x: 1.5, y: 0.6 },
+      rotate: { z: browRotateZ },
+      color: colors.hair,
+      lineWidth: 1,
+      fill: true,
+    });
+
+
+  });
+
 
   // hair ball
   new Shape({
@@ -134,7 +183,7 @@ function makeMadeline( camera, colors, rotation ) {
 
   // 2nd rib
   var torsoRib = new Ellipse({
-    width: 10,
+    width: 12,
     height: 10,
     addTo: body,
     rotate: { x: TAU/4 },

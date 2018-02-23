@@ -26,6 +26,7 @@ var madColor = {
   parkaLight: '#67F',
   parkaDark: '#458',
   tight: '#732',
+  eye: '#333',
 };
 var badColor = {
   skin: '#DBC',
@@ -33,6 +34,7 @@ var badColor = {
   parkaLight: '#85A',
   parkaDark: '#527',
   tight: '#412',
+  eye: '#D02',
 };
 
 var featherGold = '#FE5';
@@ -44,8 +46,8 @@ var camera = new Shape({
 
 // -- illustration shapes --- //
 
-makeMadeline( camera, madColor );
-makeMadeline( camera, badColor, { y: TAU/2 } );
+makeMadeline( camera, true, madColor );
+makeMadeline( camera, false, badColor, { y: TAU/2 } );
 
 
 // ----- feather ----- //
@@ -159,7 +161,7 @@ function update() {
   if ( isRotating ) {
     camera.rotate.y += rotateSpeed;
     xClock += rotateSpeed/4;
-    camera.rotate.x = Math.sin( xClock ) * TAU/8;
+    camera.rotate.x = Math.sin( xClock ) * TAU/16;
   }
 
   // rotate
