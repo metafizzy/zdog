@@ -54,8 +54,6 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     });
 
     // eye brow
-    var browY = isGood ? -3 : -2;
-    var browRotateZ = isGood ? -0.1*xSide : -0.4*xSide;
     new Shape({
       path: [
         { x: -1, y: 0 },
@@ -69,9 +67,9 @@ function makeMadeline( camera, isGood, colors, rotation ) {
         ]},
       ],
       addTo: eyeGroup,
-      translate: { x: eyeX, y: browY },
+      translate: { x: eyeX, y: -3 },
       scale: { x: 1.5, y: 0.6 },
-      rotate: { z: browRotateZ },
+      rotate: { z: -0.1*xSide },
       color: colors.hair,
       lineWidth: 1,
       fill: true,

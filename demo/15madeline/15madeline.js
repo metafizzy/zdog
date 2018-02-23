@@ -37,6 +37,7 @@ var badColor = {
   eye: '#D02',
 };
 
+var glow = 'hsla(60, 100%, 80%, 0.3)';
 var featherGold = '#FE5';
 
 var camera = new Shape({
@@ -69,7 +70,7 @@ var feather = new Shape({
     var curve = Math.cos( (i/featherPartCount) * TAU*3/4 + TAU*1/4 );
     var x = 4 - curve*2;
     var y0 = sector/2;
-    var y2 = -sector/2;
+    // var y2 = -sector/2;
     var isLast = i == featherPartCount - 1;
     var y3 = isLast ? sector * -1 : -y0;
     var z1 = -radius + 2 + curve*-1.5;
@@ -83,7 +84,7 @@ var feather = new Shape({
       ],
       addTo: feather,
       rotate: { x: angleX * -i + TAU/8 },
-      lineWidth: 1.5,
+      lineWidth: 1,
       color: featherGold,
       fill: true,
     });
@@ -93,18 +94,27 @@ var feather = new Shape({
   }
 
   // rachis
-  new Shape({
+  var rachis = new Shape({
     path: [
-      { y: radius },
+      { y: -radius },
+      { arc: [
+        { y: -radius, z: -radius },
+        { y: 0, z: -radius },
+      ]},
       { arc: [
         { y: radius, z: -radius },
-        { y: 0, z: -radius },
+        { y: radius, z: 0 },
       ]},
     ],
     addTo: feather,
     lineWidth: 2,
     color: featherGold,
     closed: false,
+  });
+  rachis.copy({
+    lineWidth: 8,
+    color: glow,
+    rotate: { x: -0.5 }
   });
 })();
 
@@ -137,13 +147,38 @@ var feather = new Shape({
 
 })();
 
+// dots
+
+( function() {
+  var dotCount = 32;
+
+  for ( var i=0; i < dotCount; i++ ) {
+    var yRotor = new Shape({
+      rendering: false,
+      addTo: camera,
+      rotate: { y: TAU/dotCount * i },
+    });
+
+    new Shape({
+      path: [
+        { z: 40*(1 - Math.random()*Math.random()) + 32 },
+      ],
+      addTo: yRotor,
+      rotate: { x: ( Math.random() * 2 - 1 ) * TAU*3/16 },
+      color: badColor.skin,
+      lineWidth: Math.random() * 2 + 1,
+    });
+  }
+
+})();
+
 // -----  ----- //
 
 var shapes = camera.getShapes();
 
 // -- animate --- //
 
-var rotateSpeed = TAU/150;
+var rotateSpeed = TAU/180;
 var xClock = 0;
 
 function animate() {
