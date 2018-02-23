@@ -22,17 +22,17 @@ var isRotating = true;
 
 var madColor = {
   skin: '#FD9',
-  hair: '#D64',
-  parkaLight: '#ACC',
-  parkaDark: '#799',
-  tight: '#434',
+  hair: '#C53',
+  parkaLight: '#67F',
+  parkaDark: '#458',
+  tight: '#732',
 };
 var badColor = {
   skin: '#DBC',
-  hair: '#A57',
-  parkaLight: '#756',
-  parkaDark: '#534',
-  tight: '#332',
+  hair: '#D5A',
+  parkaLight: '#85A',
+  parkaDark: '#527',
+  tight: '#412',
 };
 
 var featherGold = '#FE5';
@@ -67,19 +67,21 @@ var feather = new Shape({
     var curve = Math.cos( (i/featherPartCount) * TAU*3/4 + TAU*1/4 );
     var x = 4 - curve*2;
     var y0 = sector/2;
+    var y2 = -sector/2;
     var isLast = i == featherPartCount - 1;
-    var y2 = isLast ? sector * -1 : -y0;
+    var y3 = isLast ? sector * -1 : -y0;
     var z1 = -radius + 2 + curve*-1.5;
     var z2 = isLast ? -radius : -radius;
     var barb = new Shape({
       path: [
         { x: 0, y: y0, z: -radius },
         { x: x, y: -sector/2, z: z1 },
-        { x: 0, y: y2, z: z2 },
+        { x: x, y: -sector*3/4, z: z1 },
+        { x: 0, y: y3, z: z2 },
       ],
       addTo: feather,
       rotate: { x: angleX * -i + TAU/8 },
-      lineWidth: 2,
+      lineWidth: 1.5,
       color: featherGold,
       fill: true,
     });
@@ -126,7 +128,7 @@ var feather = new Shape({
       addTo: zRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU/8 },
 
-      color: 'white',
+      color: '#FFC',
       lineWidth: 2,
     });
   }
