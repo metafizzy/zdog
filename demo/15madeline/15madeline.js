@@ -1,4 +1,4 @@
-/* globals makeMadeline: false */
+/* globals makeMadeline, BokehShape */
 
 // -------------------------- demo -------------------------- //
 
@@ -25,7 +25,7 @@ var madColor = {
   hair: '#D53',
   parkaLight: '#67F',
   parkaDark: '#458',
-  tight: '#732',
+  tight: '#742',
   eye: '#333',
 };
 var badColor = {
@@ -132,15 +132,17 @@ var feather = new Shape({
 
     var y0 = 32;
     var y1 = y0 + 2 + Math.random()*24;
-    new Shape({
+    new BokehShape({
       path: [
         { y: y0 },
         { y: y1 },
       ],
       addTo: zRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU/8 },
-      color: 'hsla(60, 100%, 80%, 0.6)',
-      lineWidth: 2,
+      color: madColor.skin,
+      lineWidth: 1,
+      bokehSize: 6,
+      bokehLimit: 70,
     });
   }
 
@@ -149,7 +151,7 @@ var feather = new Shape({
 // dots
 
 ( function() {
-  var dotCount = 48;
+  var dotCount = 64;
 
   for ( var i=0; i < dotCount; i++ ) {
     var yRotor = new Shape({
@@ -158,14 +160,16 @@ var feather = new Shape({
       rotate: { y: TAU/dotCount * i },
     });
 
-    new Shape({
+    new BokehShape({
       path: [
         { z: 40*(1 - Math.random()*Math.random()) + 32 },
       ],
       addTo: yRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU*3/16 },
       color: badColor.skin,
-      lineWidth: Math.random() * 2 + 1,
+      lineWidth: 1 + Math.random(),
+      bokehSize: 6,
+      bokehLimit: 74,
     });
   }
 
