@@ -1,23 +1,25 @@
 function BokehShape( options ) {
   this.create( options );
+  this.bokehSize = options.bokehSize || 5;
+  this.bokehLimit = options.bokehLimit || 64;
 }
 
 BokehShape.prototype = Object.create( Shape.prototype );
 
 BokehShape.prototype.updateBokeh = function() {
   // bokeh 0 -> 1
-  this.bokeh = Math.abs( this.sortValue ) / 60;
+  this.bokeh = Math.abs( this.sortValue ) / this.bokehLimit;
   this.bokeh = Math.max( 0, Math.min( 1, this.bokeh ) );
-  this.bokeh *= this.bokeh;
   return this.bokeh;
 };
 
 BokehShape.prototype.getBokehLineWidth = function() {
-  return this.lineWidth + 10 * this.bokeh;
+  
+  return this.lineWidth + this.bokehSize * this.bokeh * this.bokeh;
 };
 
 BokehShape.prototype.getBokehAlpha = function() {
-  return ( 1 - this.bokeh ) * 0.8 + 0.2;
+  return ( 1 - this.bokeh ) * 0.7 + 0.3;
 };
 
 
