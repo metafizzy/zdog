@@ -139,7 +139,7 @@ var feather = new Shape({
       ],
       addTo: zRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU/8 },
-      color: madColor.skin,
+      color: 'hsla(60, 100%, 80%, 0.6)',
       lineWidth: 2,
     });
   }
@@ -149,7 +149,7 @@ var feather = new Shape({
 // dots
 
 ( function() {
-  var dotCount = 32;
+  var dotCount = 48;
 
   for ( var i=0; i < dotCount; i++ ) {
     var yRotor = new Shape({
