@@ -22,15 +22,15 @@ var isRotating = true;
 
 var madColor = {
   skin: '#FD9',
-  hair: '#C53',
+  hair: '#D53',
   parkaLight: '#67F',
   parkaDark: '#458',
   tight: '#732',
   eye: '#333',
 };
 var badColor = {
-  skin: '#DBC',
-  hair: '#D5A',
+  skin: '#EBC',
+  hair: '#D4B',
   parkaLight: '#85A',
   parkaDark: '#527',
   tight: '#412',
@@ -139,8 +139,7 @@ var feather = new Shape({
       ],
       addTo: zRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU/8 },
-
-      color: '#FFC',
+      color: madColor.skin,
       lineWidth: 2,
     });
   }
@@ -178,7 +177,7 @@ var shapes = camera.getShapes();
 
 // -- animate --- //
 
-var rotateSpeed = TAU/180;
+var rotateSpeed = -TAU/180;
 var xClock = 0;
 
 function animate() {

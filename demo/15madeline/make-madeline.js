@@ -44,8 +44,8 @@ function makeMadeline( camera, isGood, colors, rotation ) {
 
     // eye
     var eyeWhite = new Ellipse({
-      width: 1,
-      height: 1,
+      width: 0.75,
+      height: 1.5,
       addTo: eyeGroup,
       color: colors.eye,
       translate: { x: eyeX },
