@@ -25,7 +25,7 @@ var madColor = {
   hair: '#D53',
   parkaLight: '#67F',
   parkaDark: '#458',
-  tight: '#732',
+  tight: '#742',
   eye: '#333',
 };
 var badColor = {

@@ -40,6 +40,21 @@ function makeMadeline( camera, isGood, colors, rotation ) {
 
   // eyes
   [ -1, 1 ].forEach( function( xSide ) {
+    // cheek blush
+    if ( isGood ) {
+      new Ellipse({
+        width: 2,
+        height: 1.3,
+        addTo: eyeGroup,
+        translate: { x: 4.5*xSide, y: 3, z: 1 },
+        rotate: { y: TAU/16*xSide },
+        lineWidth: 1,
+        color: '#FA8',
+        fill: true,
+      });
+    }
+
+
     var eyeX = 3.5*xSide;
 
     // eye
@@ -69,11 +84,12 @@ function makeMadeline( camera, isGood, colors, rotation ) {
       addTo: eyeGroup,
       translate: { x: eyeX, y: -3 },
       scale: { x: 1.5, y: 0.6 },
-      rotate: { z: -0.1*xSide },
+      rotate: { z: 0.15*xSide * (isGood ? 1 : -1) },
       color: colors.hair,
       lineWidth: 1,
       fill: true,
     });
+
 
 
   });
