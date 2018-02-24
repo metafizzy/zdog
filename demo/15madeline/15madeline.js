@@ -1,4 +1,4 @@
-/* globals makeMadeline: false */
+/* globals makeMadeline, BokehShape */
 
 // -------------------------- demo -------------------------- //
 
@@ -158,14 +158,14 @@ var feather = new Shape({
       rotate: { y: TAU/dotCount * i },
     });
 
-    new Shape({
+    new BokehShape({
       path: [
         { z: 40*(1 - Math.random()*Math.random()) + 32 },
       ],
       addTo: yRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU*3/16 },
       color: badColor.skin,
-      lineWidth: Math.random() * 2 + 1,
+      lineWidth: 2,
     });
   }
 
