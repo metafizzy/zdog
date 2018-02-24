@@ -140,9 +140,9 @@ var feather = new Shape({
       addTo: zRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU/8 },
       color: madColor.skin,
-      lineWidth: 0.5,
+      lineWidth: 1,
       bokehSize: 6,
-      bokehLimit: 48,
+      bokehLimit: 64,
     });
   }
 
