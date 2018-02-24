@@ -142,7 +142,7 @@ var feather = new Shape({
       color: madColor.skin,
       lineWidth: 1,
       bokehSize: 6,
-      bokehLimit: 64,
+      bokehLimit: 70,
     });
   }
 
@@ -158,8 +158,6 @@ var feather = new Shape({
       rendering: false,
       addTo: camera,
       rotate: { y: TAU/dotCount * i },
-      bokehSize: 5,
-      bokehLimit: 64,
     });
 
     new BokehShape({
@@ -169,7 +167,9 @@ var feather = new Shape({
       addTo: yRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU*3/16 },
       color: badColor.skin,
-      lineWidth: 1,
+      lineWidth: 1 + Math.random(),
+      bokehSize: 6,
+      bokehLimit: 74,
     });
   }
 

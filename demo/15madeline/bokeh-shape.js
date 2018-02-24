@@ -19,7 +19,9 @@ BokehShape.prototype.getBokehLineWidth = function() {
 };
 
 BokehShape.prototype.getBokehAlpha = function() {
-  return ( 1 - this.bokeh ) * 0.7 + 0.3;
+  var revBokeh = 1 - this.bokeh;
+  revBokeh *= revBokeh;
+  return revBokeh * 0.8 + 0.2;
 };
 
 
