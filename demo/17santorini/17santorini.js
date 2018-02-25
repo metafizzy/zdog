@@ -1,4 +1,4 @@
-/* globals makeBuilding, makeWindow */
+/* globals makeBuilding */
 
 // -------------------------- demo -------------------------- //
 
@@ -8,6 +8,7 @@ var w = 128;
 var h = 128;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
+// var zoom = 5;
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -21,53 +22,93 @@ if ( pixelRatio > 1 ) {
 var isRotating = true;
 
 // colors
-var white = 'white';
-var southWall = white;
-var westWall = '#CDE';
-var eastWall = '#8AD';
-var roof = '#06B';
-var northWall = roof;
-var navy = '#037';
-var midnight = '#024';
+// var white = 'white';
+// var southWall = white;
+// var westWall = '#CDE';
+// var eastWall = '#8AD';
+// var roof = '#06B';
+// var northWall = roof;
+// var navy = '#037';
+// var midnight = '#024';
 
 var camera = new Shape({
   rendering: false,
 });
 
 Shape.defaults.fill = true;
-// Shape.defaults.stroke = false;
-Shape.defaults.lineWidth = 1/zoom;
+Shape.defaults.stroke = false;
+// Shape.defaults.lineWidth = 1/zoom;
 
 // -- illustration shapes --- //
 
 var buildAnchor0 = new Shape({
   rendering: false,
   addTo: camera,
-  translate: { x: -10 },
+  translate: { x: 17, z: -29 },
 });
 
 makeBuilding({
-  width: 10,
+  width: 8,
   height: 8,
-  depth: 14,
+  depth: 10,
   gable: 'ns',
   addTo: buildAnchor0,
-  nsWindows: function( windowX, wallGroup, isSouth ) {
-    makeWindow({
-      height: 2,
-      addTo: wallGroup,
-      translate: { x: windowX, y: -5 },
-      color: isSouth ? navy : midnight,
-    });
-  },
-  ewWindows: function( windowX, wallGroup, isWest ) {
-    makeWindow({
-      height: 2,
-      addTo: wallGroup,
-      translate: { x: windowX, y: -5 },
-      color: isWest ? navy : midnight,
-    });
-  },
+  nsWindows: [
+    { x: 0 },
+  ],
+  ewWindows: [
+    { x: -2 },
+    { x: 2 },
+  ],
+});
+
+// -----  ----- //
+
+var buildAnchor1 = new Shape({
+  rendering: false,
+  addTo: camera,
+  translate: { x: 39, z: -29 },
+});
+
+makeBuilding({
+  width: 8,
+  height: 8,
+  depth: 10,
+  gable: 'ns',
+  addTo: buildAnchor1,
+  nsWindows: [
+    { x: 0 },
+  ],
+  ewWindows: [
+    { x: -2 },
+    { x: 2 },
+  ],
+});
+
+// -----  ----- //
+
+var buildAnchor2 = new Shape({
+  rendering: false,
+  addTo: camera,
+  translate: { x: 55, z: -17 },
+});
+
+makeBuilding({
+  width: 8,
+  height: 14,
+  depth: 10,
+  gable: 'ns',
+  addTo: buildAnchor2,
+  nsWindows: [
+    { x: 0, y: -5 },
+    { x: 0, y: -11 },
+  ],
+  ewWindows: [
+    { x: -2, y: -5 },
+    { x: 2, y: -5 },
+    { x: -2, y: -11 },
+    { x: 2, y: -11 },
+  ],
 });
 
 

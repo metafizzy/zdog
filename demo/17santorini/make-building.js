@@ -16,8 +16,8 @@ var westWall = '#CDE';
 var eastWall = '#8AD';
 var roof = '#06B';
 var northWall = roof;
-// var navy = '#037';
-// var midnight = '#024';
+var navy = '#037';
+var midnight = '#024';
 
 function makeBuilding( options ) {
 
@@ -54,10 +54,12 @@ function makeBuilding( options ) {
       color: isSouth ? southWall : northWall,
     });
 
-    makeWindows( options.nsWindows, wallGroup, options.width, isSouth );
+    var windowColor = isSouth ? navy : midnight;
+    handleWindows( options.nsWindows, wallGroup, windowColor );
 
   });
 
+  // east/west wall
   [ true, false ].forEach( function( isWest ) {
     var wallGroup = new Group({
       addTo: options.addTo,
@@ -74,7 +76,8 @@ function makeBuilding( options ) {
       translate: { y: -options.height/2 },
     });
 
-    makeWindows( options.ewWindows, wallGroup, options.depth, isWest );
+    var windowColor = isWest ? midnight : navy;
+    handleWindows( options.ewWindows, wallGroup, windowColor );
 
   });
 
@@ -100,15 +103,17 @@ function makeBuilding( options ) {
 }
 
 
-function makeWindows( windowMaker, wallGroup, size, isPositive ) {
-  if ( !windowMaker ) {
-    return;
-  }
-
-  var windowCount = Math.floor( size / 3 ) - 1;
-  for ( var i=0; i < windowCount; i++ ) {
-    var windowX = (i )*4 - ( windowCount-1 ) * 2 ;
-    windowMaker( windowX, wallGroup, isPositive );
-  }
-
+function handleWindows( windows, wallGroup, color ) {
+  windows = windows || [];
+  windows.forEach( function( windowOption ) {
+    var x = windowOption.x || 0;
+    var y = windowOption.y || -5;
+    var height = windowOption.height || 4;
+    makeWindow({
+      addTo: wallGroup,
+      height: height,
+      translate: { x: x, y: y },
+      color: color,
+    });
+  });
 }
