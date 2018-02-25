@@ -1,4 +1,4 @@
-/* globals makeWindow */
+/* globals makeBuilding, makeWindow */
 
 // -------------------------- demo -------------------------- //
 
@@ -25,85 +25,49 @@ var white = 'white';
 var southWall = white;
 var westWall = '#CDE';
 var eastWall = '#8AD';
-var northWall = '#58D';
+var roof = '#06B';
+var northWall = roof;
 var navy = '#037';
 var midnight = '#024';
-var roof = '#06B';
 
 var camera = new Shape({
   rendering: false,
 });
 
+Shape.defaults.fill = true;
+// Shape.defaults.stroke = false;
+Shape.defaults.lineWidth = 1/zoom;
+
 // -- illustration shapes --- //
 
-
-[ true, false ].forEach( function( isSouth ) {
-  var wallZ = isSouth ? -5 : 5;
-  var wallGroup = new Group({
-    addTo: camera,
-    translate: { z: wallZ },
-  });
-
-  // wall
-  new Shape({
-    path: [
-      { x: 0, y: -12 },
-      { x: 4, y: -8 },
-      { x: 4, y: 0 },
-      { x: -4, y: 0 },
-      { x: -4, y: -8 }
-    ],
-    addTo: wallGroup,
-    color: isSouth ? southWall : northWall,
-    fill: true,
-    lineWidth: 1/zoom/2,
-    stroke: false,
-  });
-
-  // window
-  makeWindow( 2, {
-    addTo: wallGroup,
-    translate: { y: -5 },
-    color: isSouth ? navy : midnight,
-    lineWidth: 1/zoom/2,
-  });
-
+var buildAnchor0 = new Shape({
+  rendering: false,
+  addTo: camera,
+  translate: { x: -10 },
 });
 
-[ true, false ].forEach( function( isWest ) {
-  var wallGroup = new Group({
-    addTo: camera,
-    translate: { x: isWest ? -4 : 4 },
-    rotate: { y: TAU/4 },
-  });
-
-  // wall
-  new Rect({
-    width: 10,
-    height: 8,
-    addTo: wallGroup,
-    color: isWest ? westWall : eastWall,
-    translate: { y: -4 },
-    fill: true,
-    lineWidth: 1/zoom/2,
-    stroke: false,
-  });
-
-  // window
-  makeWindow( 2, {
-    addTo: wallGroup,
-    translate: { x: -2, y: -5 },
-    color: isWest ? navy : midnight,
-    lineWidth: 1/zoom/2,
-  });
-
-  makeWindow( 2, {
-    addTo: wallGroup,
-    translate: { x: 2, y: -5 },
-    color: isWest ? navy : midnight,
-    lineWidth: 1/zoom/2,
-  });
-
+makeBuilding({
+  width: 10,
+  height: 8,
+  depth: 14,
+  gable: 'ns',
+  addTo: buildAnchor0,
+  nsWindows: function( windowX, wallGroup, isSouth ) {
+    makeWindow({
+      height: 2,
+      addTo: wallGroup,
+      translate: { x: windowX, y: -5 },
+      color: isSouth ? navy : midnight,
+    });
+  },
+  ewWindows: function( windowX, wallGroup, isWest ) {
+    makeWindow({
+      height: 2,
+      addTo: wallGroup,
+      translate: { x: windowX, y: -5 },
+      color: isWest ? navy : midnight,
+    });
+  },
 });
 
 

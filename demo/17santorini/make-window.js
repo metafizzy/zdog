@@ -1,7 +1,7 @@
 
-function makeWindow( height, options ) {
+function makeWindow( options ) {
 
-  var y2 = height * 2 - 1;
+  var y2 = options.height * 2 - 1;
 
   var windowShape = new Shape( extend( options, {
     path: [
@@ -17,9 +17,11 @@ function makeWindow( height, options ) {
       { x: 1, y: y2 },
       { x: -1, y: y2 },
     ],
-    fill: true,
-    stroke: false,
   }));
+
+
+  // console.log( windowShape.color );
+  // windowShape.addTo
 
   return windowShape;
 
