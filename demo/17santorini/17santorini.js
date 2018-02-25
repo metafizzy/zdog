@@ -26,7 +26,7 @@ var isRotating = false;
 // var southWall = white;
 // var westWall = '#CDE';
 // var eastWall = '#8AD';
-// var roof = '#06B';
+var roof = '#06B';
 // var northWall = roof;
 // var navy = '#037';
 // var midnight = '#024';
@@ -80,7 +80,7 @@ makeBuilding({
 var buildAnchor1 = new Shape({
   rendering: false,
   addTo: island,
-  translate: { x: 47, z: -17 },
+  translate: { x: 47, z: -16 },
 });
 
 makeBuilding({
@@ -100,11 +100,11 @@ makeBuilding({
 
 // -----  ----- //
 
-// 2 story gable, west end
+// 2 story gable, east end
 var buildAnchor2 = new Shape({
   rendering: false,
   addTo: island,
-  translate: { x: 55, z: -5 },
+  translate: { x: 55, z: -4 },
 });
 
 makeBuilding({
@@ -152,7 +152,7 @@ makeBuilding({
 var buildAnchor4 = new Shape({
   rendering: false,
   addTo: island,
-  translate: { x: 42, z: -7 },
+  translate: { x: 42, z: -6 },
 });
 
 makeBuilding({
@@ -176,14 +176,14 @@ makeBuilding({
 var cathBaseAnchor = new Shape({
   rendering: false,
   addTo: island,
-  translate: { x: 28, z: -11 },
+  translate: { x: 28, z: -12 },
 });
 
 // cathedral base
 makeBuilding({
   width: 10,
   height: 12,
-  depth: 20,
+  depth: 18,
   gable: 'cap',
   addTo: cathBaseAnchor,
   nsWindows: [
@@ -193,8 +193,67 @@ makeBuilding({
     { x:  2, y: -9 },
   ],
   ewWindows: [
-    // { x: 0, y: -17 }
+    { style: 'circle', x: -6, y: -9 },
+    { style: 'circle', x: -2, y: -9 },
+    { style: 'circle', x: 2, y: -9 },
+    { style: 'circle', x: 6, y: -9 },
+    { height: 6, x: -6, y: -5 },
+    { height: 6, x: -2, y: -5 },
+    { height: 6, x: 2, y: -5 },
+    { height: 6, x: 6, y: -5 },
   ],
+});
+
+// cathedral 2nd story
+var cath2ndAnchor = new Shape({
+  rendering: false,
+  addTo: cathBaseAnchor,
+  translate: { y: -14 },
+});
+
+makeBuilding({
+  width: 8,
+  height: 8,
+  depth: 8,
+  gable: 'cap',
+  addTo: cath2ndAnchor,
+  nsWindows: [
+    { x: 0, y: -5 },
+  ],
+  ewWindows: [
+    { x: 0, y: -5 },
+  ],
+});
+
+// cathedral 3rd story
+
+var cath3rdAnchor = new Shape({
+  rendering: false,
+  addTo: cathBaseAnchor,
+  translate: { y: -24 },
+});
+
+makeBuilding({
+  width: 6,
+  height: 6,
+  depth: 6,
+  addTo: cath3rdAnchor,
+  gable: 'flat',
+  nsWindows: [
+    { x: 0, y: -3 },
+  ],
+  ewWindows: [
+    { x: 0, y: -3 },
+  ],
+});
+
+new Shape({
+  translate: { y: -30 },
+  lineWidth: 12,
+  addTo: cathBaseAnchor,
+  color: roof,
+  stroke: true,
+  fill: false,
 });
 
 // -----  ----- //

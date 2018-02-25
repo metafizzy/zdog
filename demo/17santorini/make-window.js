@@ -1,6 +1,21 @@
 /*jshint unused: false */
 
 function makeWindow( options ) {
+  if ( options.style == 'circle' ) {
+    makeCircleWindow( options );
+  } else {
+    makeLongWindow( options );
+  }
+}
+
+function makeCircleWindow( options ) {
+  new Ellipse( extend( options, {
+    width: 2,
+    height: 2,
+  }));
+}
+
+function makeLongWindow( options ) {
   var y2 = options.height - 1;
 
   var windowShape = new Shape( extend( options, {

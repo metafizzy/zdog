@@ -155,6 +155,17 @@ function makeBuilding( options ) {
       });
     },
 
+    flat: function() {
+      new Rect({
+        width: options.width,
+        height: options.depth,
+        addTo: options.addTo,
+        translate: { y: -wallY },
+        rotate: { x: TAU/4 },
+        color: roof,
+      });
+    },
+
     cap: function() {
       new Rect({
         width: options.width,
@@ -182,6 +193,7 @@ function handleWindows( windows, wallGroup, color ) {
     var y = windowOption.y || -5;
     var height = windowOption.height || 4;
     makeWindow({
+      style: windowOption.style,
       addTo: wallGroup,
       height: height,
       translate: { x: x, y: y },
