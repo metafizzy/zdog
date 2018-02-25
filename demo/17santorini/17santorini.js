@@ -4,8 +4,8 @@
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-var w = 128;
-var h = 128;
+var w = 192;
+var h = 192;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 // var zoom = 5;
@@ -19,7 +19,7 @@ if ( pixelRatio > 1 ) {
   canvas.style.height = canvasHeight / pixelRatio + 'px';
 }
 
-var isRotating = true;
+var isRotating = false;
 
 // colors
 // var white = 'white';
@@ -31,20 +31,32 @@ var isRotating = true;
 // var navy = '#037';
 // var midnight = '#024';
 
-var camera = new Shape({
-  rendering: false,
-});
-
 Shape.defaults.fill = true;
 Shape.defaults.stroke = false;
+
+var camera = new Shape({
+  rendering: false,
+  rotate: {
+    y: -TAU/8,
+  },
+});
+
+var island = new Shape({
+  rendering: false,
+  addTo: camera,
+  scale: { x: 1/Math.sin(TAU/8), z: 1/Math.sin(TAU/8) }
+});
+
 // Shape.defaults.lineWidth = 1/zoom;
 
 // -- illustration shapes --- //
 
+
+// lil house in front
 var buildAnchor0 = new Shape({
   rendering: false,
-  addTo: camera,
-  translate: { x: 17, z: -29 },
+  addTo: island,
+  translate: { x: 17, z: -24 },
 });
 
 makeBuilding({
@@ -64,10 +76,11 @@ makeBuilding({
 
 // -----  ----- //
 
+// lil house to the west
 var buildAnchor1 = new Shape({
   rendering: false,
-  addTo: camera,
-  translate: { x: 39, z: -29 },
+  addTo: island,
+  translate: { x: 47, z: -17 },
 });
 
 makeBuilding({
@@ -87,10 +100,11 @@ makeBuilding({
 
 // -----  ----- //
 
+// 2 story gable, west end
 var buildAnchor2 = new Shape({
   rendering: false,
-  addTo: camera,
-  translate: { x: 55, z: -17 },
+  addTo: island,
+  translate: { x: 55, z: -5 },
 });
 
 makeBuilding({
@@ -111,6 +125,77 @@ makeBuilding({
   ],
 });
 
+// 1 story slantS, west
+var buildAnchor3 = new Shape({
+  rendering: false,
+  addTo: island,
+  translate: { x: 0, z: -26 },
+});
+
+makeBuilding({
+  width: 14,
+  height: 8,
+  depth: 6,
+  gable: 'slantS',
+  addTo: buildAnchor3,
+  nsWindows: [
+    { x: -4 },
+    { x: 0 },
+    { x: 4 },
+  ],
+  ewWindows: [
+    { x: 0 }
+  ],
+});
+
+// 2.5 story slantS, east
+var buildAnchor4 = new Shape({
+  rendering: false,
+  addTo: island,
+  translate: { x: 42, z: -7 },
+});
+
+makeBuilding({
+  width: 14,
+  height: 20,
+  depth: 6,
+  gable: 'slantS',
+  addTo: buildAnchor4,
+  nsWindows: [
+    { x: -4, y: -17 },
+    { x:  0, y: -17 },
+    { x:  4, y: -17 },
+  ],
+  ewWindows: [
+    { x: 0, y: -17 }
+  ],
+});
+
+// ----- cathedral ----- //
+
+var cathBaseAnchor = new Shape({
+  rendering: false,
+  addTo: island,
+  translate: { x: 28, z: -11 },
+});
+
+// cathedral base
+makeBuilding({
+  width: 10,
+  height: 12,
+  depth: 20,
+  gable: 'cap',
+  addTo: cathBaseAnchor,
+  nsWindows: [
+    { x: -2, y: -3 },
+    { x:  2, y: -3 },
+    { x: -2, y: -9 },
+    { x:  2, y: -9 },
+  ],
+  ewWindows: [
+    // { x: 0, y: -17 }
+  ],
+});
 
 // -----  ----- //
 

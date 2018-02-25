@@ -19,6 +19,7 @@ var northWall = roof;
 var navy = '#037';
 var midnight = '#024';
 
+
 function makeBuilding( options ) {
 
   var wallX = options.width/2;
@@ -39,6 +40,9 @@ function makeBuilding( options ) {
 
     if ( options.gable == 'ns' ) {
       wallPath.push({ x: 0, y: -wallY - wallX });
+    } else if ( options.gable == 'slantS' && !isSouth ) {
+      wallPath.push({ x: -wallX, y: -wallY - wallZ*2 });
+      wallPath.push({ x: wallX, y: -wallY - wallZ*2 });
     }
 
     wallPath = wallPath.concat([
@@ -57,6 +61,17 @@ function makeBuilding( options ) {
     var windowColor = isSouth ? navy : midnight;
     handleWindows( options.nsWindows, wallGroup, windowColor );
 
+    // cap border
+    if ( options.gable == 'cap' ) {
+      new Rect({
+        width: options.width,
+        height: 2,
+        addTo: wallGroup,
+        translate: { y: -wallY - 1 },
+        color: isSouth ? roof : midnight,
+      });
+    }
+
   });
 
   // east/west wall
@@ -67,38 +82,95 @@ function makeBuilding( options ) {
       rotate: { y: TAU/4 },
     });
 
+    var wallPath = [
+      { x: -wallZ, y: -wallY }
+    ];
+
+    if ( options.gable == 'ew' ) {
+      wallPath.push({ x: 0, y: -wallY - wallZ });
+    } else if ( options.gable == 'slantS' ) {
+      wallPath.push({ x: wallZ, y: -wallY - wallZ*2 });
+    }
+
+    wallPath = wallPath.concat([
+      { x: wallZ, y: -wallY },
+      { x: wallZ, y: 0 },
+      { x: -wallZ, y: 0 },
+    ]);
+
     // wall
-    new Rect({
-      width: options.depth,
-      height: options.height,
+    new Shape({
+      path: wallPath,
       addTo: wallGroup,
       color: isWest ? westWall : eastWall,
-      translate: { y: -options.height/2 },
     });
 
     var windowColor = isWest ? midnight : navy;
     handleWindows( options.ewWindows, wallGroup, windowColor );
 
+    // cap border
+    if ( options.gable == 'cap' ) {
+      new Rect({
+        width: options.depth,
+        height: 2,
+        addTo: wallGroup,
+        translate: { y: -wallY - 1 },
+        color: isWest ? roof : midnight,
+      });
+    }
+
   });
 
-  // roof
-  if ( options.gable == 'ns' ) {
-    var y0 = -wallY - wallX;
-    var roofPanel = new Shape({
-      path: [
-        { x: 0, y: y0, z: -wallZ },
-        { x: 0, y: y0, z: wallZ },
-        { x: wallX, y: -wallY, z: wallZ },
-        { x: wallX, y: -wallY, z: -wallZ },
-      ],
-      addTo: options.addTo,
-      color: roof,
-    });
-    roofPanel.copy({
-      scale: { x: -1 },
-    });
-  }
 
+  var roofMakers = {
+    ns: function() {
+      var y0 = -wallY - wallX;
+      var roofPanel = new Shape({
+        path: [
+          { x: 0, y: y0, z: -wallZ },
+          { x: 0, y: y0, z: wallZ },
+          { x: wallX, y: -wallY, z: wallZ },
+          { x: wallX, y: -wallY, z: -wallZ },
+        ],
+        addTo: options.addTo,
+        color: roof,
+      });
+      roofPanel.copy({
+        scale: { x: -1 },
+      });
+    },
+
+    slantS: function() {
+      var roofY0 = -wallY;
+      var roofY1 = -wallY - wallZ*2;
+      new Shape({
+        path: [
+          { x: -wallX, y: roofY0, z: -wallZ },
+          { x:  wallX, y: roofY0, z: -wallZ },
+          { x:  wallX, y: roofY1, z:  wallZ },
+          { x: -wallX, y: roofY1, z:  wallZ },
+        ],
+        addTo: options.addTo,
+        color: roof,
+      });
+    },
+
+    cap: function() {
+      new Rect({
+        width: options.width,
+        height: options.depth,
+        addTo: options.addTo,
+        translate: { y: -wallY - 2 },
+        rotate: { x: TAU/4 },
+        color: roof,
+      });
+    },
+  };
+
+  var roofMaker = roofMakers[ options.gable ];
+  if ( roofMaker ) {
+    roofMaker();
+  }
 
 }
 
