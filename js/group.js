@@ -51,10 +51,10 @@ Group.prototype.update = function() {
 
 Group.prototype.reset = function() {};
 
-Group.prototype.transform = function( translation, rotation ) {
+Group.prototype.transform = function( translation, rotation, scale ) {
   // transform children
   this.children.forEach( function( child ) {
-    child.transform( translation, rotation );
+    child.transform( translation, rotation, scale );
   });
 };
 
