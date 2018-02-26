@@ -7,7 +7,7 @@ var ctx = canvas.getContext('2d');
 var w = 160;
 var h = 160;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
+var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -219,8 +219,9 @@ var shapes = camera.getShapes();
 
 // -- animate --- //
 
-var rotateSpeed = -TAU/180;
+var rotateSpeed = -TAU/60;
 var xClock = 0;
+var then = new Date() - 1/60;
 
 function animate() {
   update();
@@ -233,11 +234,14 @@ animate();
 // -- update -- //
 
 function update() {
+  var now = new Date();
+  var delta = now - then;
   // auto rotate
   if ( isRotating ) {
-    camera.rotate.y += rotateSpeed;
-    xClock += rotateSpeed/4;
-    camera.rotate.x = Math.sin( xClock ) * TAU/16;
+    var theta = rotateSpeed/60 * delta;
+    camera.rotate.y += theta;
+    xClock += theta/4;
+    camera.rotate.x = Math.sin( xClock ) * TAU/12;
   }
 
   // rotate
@@ -249,6 +253,8 @@ function update() {
   shapes.sort( function( a, b ) {
     return b.sortValue - a.sortValue;
   });
+
+  then = now;
 }
 
 // -- render -- //

@@ -233,9 +233,16 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     fill: true,
   });
 
-
   // arms
   [ -1, 1 ].forEach( function( xSide ) {
+    // shoulder ball
+    new Shape({
+      addTo: body,
+      lineWidth: 6,
+      translate: { x: 6*xSide, y: -5, z: 1 },
+      color: colors.parkaLight,
+    });
+
     var shoulderJoint = new Shape({
       rendering: false,
       addTo: body,
