@@ -140,6 +140,23 @@ function makeBuilding( options ) {
       });
     },
 
+    ew: function() {
+      var y0 = -wallY - wallZ;
+      var roofPanel = new Shape({
+        path: [
+          { z: 0, y: y0, x: -wallX },
+          { z: 0, y: y0, x: wallX },
+          { z: wallZ, y: -wallY, x: wallX },
+          { z: wallZ, y: -wallY, x: -wallX },
+        ],
+        addTo: options.addTo,
+        color: roof,
+      });
+      roofPanel.copy({
+        scale: { z: -1 },
+      });
+    },
+
     slantS: function() {
       var roofY0 = -wallY;
       var roofY1 = -wallY - wallZ*2;
