@@ -46,7 +46,7 @@ Group.prototype.update = function() {
   this.children.forEach( function( child ) {
     child.update();
   });
-  this.transform( this.translate, this.rotate );
+  this.transform( this.translate, this.rotate, this.scale );
 };
 
 Group.prototype.reset = function() {};

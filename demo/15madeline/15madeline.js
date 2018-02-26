@@ -1,4 +1,4 @@
-/* globals makeMadeline, BokehShape */
+/* globals makeMadeline, BokehShape, makeBird */
 
 // -------------------------- demo -------------------------- //
 
@@ -24,7 +24,7 @@ var madColor = {
   skin: '#FD9',
   hair: '#D53',
   parkaLight: '#67F',
-  parkaDark: '#458',
+  parkaDark: '#35D',
   tight: '#742',
   eye: '#333',
 };
@@ -122,7 +122,7 @@ var feather = new Shape({
 
 ( function() {
 
-  var rodCount = 16;
+  var rodCount = 14;
   for ( var i=0; i < rodCount; i++ ) {
     var zRotor = new Shape({
       rendering: false,
@@ -174,6 +174,44 @@ var feather = new Shape({
   }
 
 })();
+
+// ----- birds ----- //
+
+var birdRotor = new Shape({
+  rendering: false,
+  addTo: camera,
+  rotate: { y: TAU*1/8 },
+});
+
+makeBird({
+  addTo: birdRotor,
+  color: madColor.parkaLight,
+  spin: TAU/2,
+});
+
+makeBird({
+  addTo: birdRotor,
+  color: featherGold,
+  spin: -TAU * 3/8,
+});
+
+makeBird({
+  addTo: birdRotor,
+  color: 'white',
+  spin: -TAU/4,
+});
+
+makeBird({
+  addTo: birdRotor,
+  color: madColor.hair,
+  spin: -TAU/8,
+});
+
+makeBird({
+  addTo: birdRotor,
+  color: madColor.parkaDark,
+  spin: TAU/8,
+});
 
 // -----  ----- //
 
