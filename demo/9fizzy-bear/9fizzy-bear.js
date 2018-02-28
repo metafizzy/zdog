@@ -10,12 +10,27 @@ var bodyLinesCtx = bodyLinesCanvas.getContext('2d');
 // document.body.appendChild( bodyLinesCanvas );
 var w = 88;
 var h = 88;
-var zoom = 5;
-var canvasWidth = canvas.width =  w * zoom;
+var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
+var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
+var pixelRatio = window.devicePixelRatio || 1;
+zoom *= pixelRatio;
+var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+// set canvas screen size
+if ( pixelRatio > 1 ) {
+  canvas.style.width = canvasWidth / pixelRatio + 'px';
+  canvas.style.height = canvasHeight / pixelRatio + 'px';
+}
 unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
 unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 
+var isRotating = true;
+
+var jumpRotation = new Vector3({
+  x: -10/360 * TAU,
+  y: 18/360 * TAU,
+  z: -31/360 * TAU,
+});
 
 // colors
 var magenta = '#C25';
@@ -29,7 +44,7 @@ var camera = new Shape({ rendering: false });
 var outlineCamera = new Shape({ rendering: false });
 
 // -- illustration shapes --- //
-var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
+var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn, backLegCutIn;
 
 
 [ false, true ].forEach( function( isOutline ) {
@@ -53,7 +68,9 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
   });
 
   if ( !isOutline ) {
+    // set positiveUnibody
     positiveUnibody = unibody;
+    // body cut-in
     // cut-in points
     var ciA = new Vector3({ z: 0, y: -24 });
     var ciB = new Vector3({ z: -16, y: -8 });
@@ -73,7 +90,6 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
     bodyCutIn = new Shape({
       path: cutInPath,
       translate: { x: 3 },
-      // rotate: { y: 1.1 },
       addTo: unibody,
       color: black,
       closed: false,
@@ -83,15 +99,17 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
   }
 
   // right ear
-  var ear = new Shape({
-    path: [ { x: -14, y: -20, z: 2 } ],
+  var ear = new Ellipse({
+    width: 4,
+    height: 4,
     addTo: unibody,
+    translate: { x: -14, y: -20, z: 2 },
     color: isOutline ? black : magenta,
-    lineWidth: 12 + outlineWidth,
+    lineWidth: 8 + outlineWidth,
   });
   // left ear
   ear.copy({
-    path: [ { x: 14, y: -20, z: 2 } ]
+    translate: { x: 14, y: -20, z: 2 },
   });
 
 
@@ -103,40 +121,14 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
   });
 
   // snout
-  new Shape({
-    path: [
-      { x: 0, y: -2 },
-      {
-        arc: [
-          { x: 4, y: -2 },
-          { x: 4, y: 0 },
-        ]
-      },
-      {
-        arc: [
-          { x: 4, y: 2 },
-          { x: 0, y: 2 },
-        ]
-      },
-      {
-        arc: [
-          { x: -4, y: 2 },
-          { x: -4, y: 0 },
-        ]
-      },
-      {
-        arc: [
-          { x: -4, y: -2 },
-          { x: 0, y: -2 },
-        ]
-      },
-    ],
+  new Ellipse({
+    width: 8,
+    height: 4,
     addTo: face,
     translate: { y: 4, z: -1 },
     color: isOutline ? black : 'white',
     lineWidth: 6 + outlineWidth,
-    fill: false,
-    closed: false,
+    fill: true,
   });
 
   if ( !isOutline ) {
@@ -154,30 +146,38 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
       fill: true,
     });
 
-    // eyes
-    var eyePath = [
-      { x: -2.5, y: 0 },
-      {
-        arc: [ { x: -2.5, y: -1.5 }, { x: 0, y: -1.5 } ]
-      },
-      {
-        arc: [ { x: 2.5, y: -1.5 }, { x: 2.5, y: 0 } ]
-      },
-    ];
-
     // right eye
     var eye = new Shape({
-      path: eyePath,
+      path: [
+        { x: -4, y: 0 },
+        { arc: [
+          { x: -4, y: -4 },
+          { x: 0, y: -4 }
+        ]},
+        { arc: [
+          { x: 4, y: -4 },
+          { x: 4, y: 0 } 
+        ]},
+        { arc: [
+          { x: 3, y: -1.5 },
+          { x: 0, y: -1.5 } 
+        ]},
+        { arc: [
+          { x: -3, y: -1.5 },
+          { x: -4, y: 0 } 
+        ]},
+      ],
       addTo: face,
-      translate: { y: -4, x: -7.5, z: 0 },
-      // rotate: { y: -0.3 },
+      translate: { y: -3.25, x: -7.5, z: 0 },
+      scale: { x: 0.6, y: 0.5 },
       color: black,
-      lineWidth: 3,
+      lineWidth: 2,
       closed: false,
+      fill: true,
     });
     // left eye
     eye.copy({
-      translate: { y: -4, x: 7.5, z: 0 },
+      translate: { y: -3.25, x: 7.5, z: 0 },
     });
 
   }
@@ -202,8 +202,8 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
       {
         bezier: [
           { x: 0, y: 0 },
-          { x: 5, y: 0 },
-          { x: 9, y: -12 },
+          { x: 5, y: -3 },
+          { x: 8, y: -11 },
         ]
       }
     ],
@@ -230,7 +230,7 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
 
   // right leg cut-in
   if ( !isOutline ) {
-    rightLegCutIn = new Shape({
+    rightLegCutInA = new Shape({
       path: [
         { z: -8, y: 4 },
         { z: -8, y: 15 },
@@ -246,6 +246,9 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
       closed: false,
       color: black,
       lineWidth: 4,
+    });
+    rightLegCutInB = rightLegCutInA.copy({
+      scale: { z: -1 },
     });
   }
 
@@ -278,16 +281,15 @@ var positiveUnibody, rightLegCutIn, bodyCutIn, backLegCutIn;
   if ( !isOutline ) {
     backLegCutIn = new Shape({
       path: [
-        { z: -8, y: 6 },
-        { z: -8, y: 12 },
-        {
-          arc: [
-            { z: -8, y: 20 },
-            { z: 0, y: 20 },
-          ]
-        }
+        { z: -8, y: -14 },
+        { z: -8, y: -8 },
+        // { arc: [
+        //   { z: -8, y: 0 },
+        //   { z: 0, y: 0 },
+        // ]},
       ],
       addTo: leftShin,
+      translate: { y: 20 },
       closed: false,
       // rotate: { y: 1 },
       color: black,
@@ -310,20 +312,24 @@ var bodyLines = [ magenta, orange, gold, blue ].map( function( color, i ) {
   return new Shape({
     path: [
       { x: -blXA, z: 0 },
-      {
-        arc: [ { x: -blXA, z: -blZ }, { x: -blXB, z: -blZ } ]
-      },
+      { arc: [
+          { x: -blXA, z: -blZ },
+          { x: -blXB, z: -blZ }
+      ]},
       { x: blXB, z: -blZ },
-      {
-        arc: [ { x: blXA, z: -blZ }, { x: blXA, z: 0 } ]
-      },
-      {
-        arc: [ { x: blXA, z: blZ }, { x: blXB, z: blZ },  ]
-      },
+      { arc: [
+        { x: blXA, z: -blZ },
+        { x: blXA, z: 0 }
+      ]},
+      { arc: [
+        { x: blXA, z: blZ },
+        { x: blXB, z: blZ },
+      ]},
       { x: -blXB, z: blZ },
-      {
-        arc: [ { x: -blXA, z: blZ }, { x: -blXA, z: 0 },  ]
-      },
+      { arc: [
+        {x: -blXA, z: blZ },
+        { x: -blXA, z: 0 },
+      ]},
     ],
     addTo: positiveUnibody,
     translate: { y: -16.75 + 10.5*i },
@@ -364,6 +370,8 @@ positiveShapes = positiveShapes.filter( function( shape ) {
 
 // -- animate --- //
 
+var t = 0;
+
 function animate() {
   update();
   render();
@@ -374,13 +382,31 @@ animate();
 
 // -- update -- //
 
+// i, 0->1
+function easeOut( i ) {
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
+}
+
 function update() {
+  if ( isRotating ) {
+    t += TAU/180;
+    var easeT = easeOut( ( t/TAU) % 1 );
+    camera.rotate.y = easeT*TAU*-2 + jumpRotation.y;
+  }
+
   camera.update();
   outlineCamera.update();
   // normalize angle y
-  var cameraRY = camera.rotate.y = ( ( camera.rotate.y % TAU ) + TAU ) % TAU;
+  var cameraRY = camera.rotate.y = modulo( camera.rotate.y, TAU );
   // update cut-in rotates
-  rightLegCutIn.rotate.y = 1.2 - cameraRY;
+  rightLegCutInA.rotate.y = 1.2 - cameraRY;
+  rightLegCutInB.rotate.y = 1.2 - cameraRY;
   backLegCutIn.rotate.y = 1.4 - cameraRY;
   var isCameraYFront = cameraRY < TAU/4 || cameraRY > TAU *3/4;
   var isCameraYRight = cameraRY < TAU/2;
@@ -441,55 +467,33 @@ function zoomContext( context ) {
 // ----- inputs ----- //
 
 // click drag to rotate
-
-var dragStartX, dragStartY;
 var dragStartAngleX, dragStartAngleY;
 
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = camera.rotate.x;
-  dragStartAngleY = camera.rotate.y;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    isRotating = false;
+    dragStartAngleX = camera.rotate.x;
+    dragStartAngleY = camera.rotate.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    camera.rotate.x = dragStartAngleX + angleXMove;
+    camera.rotate.y = dragStartAngleY + angleYMove;
+  },
 });
 
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy / ( zoom * 100 ) * TAU;
-  var angleYMove = dx / ( zoom * 100 ) * TAU;
-  camera.rotate.x = dragStartAngleX + angleXMove;
-  camera.rotate.y = dragStartAngleY + angleYMove;
-  syncCameras();
-  // console.log( ~~(camera.rotate.y/TAU * 360) );
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}
-
 document.querySelector('.flat-button').onclick = function() {
-  camera.rotate = {
-    x: 0,
-    y: 0,
-    z: 0,
-  };
+  camera.rotate.set({ x: 0, y: 0, z: 0 });
   syncCameras();
 };
 
 document.querySelector('.jump-button').onclick = setJumpRotate;
 
 function setJumpRotate() {
-  camera.rotate = {
-    x: -10/360 * TAU,
-    y: 18/360 * TAU,
-    z: -31/360 * TAU,
-  };
+  camera.rotate.set( jumpRotation );
   syncCameras();
-
 }
 
 function syncCameras() {
