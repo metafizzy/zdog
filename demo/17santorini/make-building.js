@@ -15,7 +15,7 @@ var southWall = white;
 var westWall = '#CDE';
 var eastWall = '#8AD';
 var roof = '#06B';
-var northWall = roof;
+var northWall = '#58C';
 var navy = '#037';
 var midnight = '#024';
 

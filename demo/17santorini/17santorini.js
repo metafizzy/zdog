@@ -5,10 +5,10 @@
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 192;
-var h = 192;
+var h = 164;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
-// var zoom = 5;
+var zoom = 5;
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -452,6 +452,104 @@ makeDome({
   size: 4,
   addTo: centralTower2ndAnchor,
   translate: { y: -8 },
+});
+
+// ----- temple ----- //
+
+var templeAnchor = new Shape({
+  rendering: false,
+  addTo: island,
+  translate: { x: -20, y: -14, z: 1 },
+});
+
+makeBuilding({
+  width: 12,
+  depth: 12,
+  height: 8,
+  gable: 'cap',
+  addTo: templeAnchor,
+  nsWindows:[
+    { x: -2, height: 6 },
+    { x:  2, height: 6 },
+  ],
+  ewWindows:[
+    { x: -2, height: 6 },
+    { x:  2, height: 6 },
+  ],
+});
+
+var temple2ndFloor = new Shape({
+  rendering: false,
+  addTo: templeAnchor,
+  translate: { y: -10 },
+});
+
+makeBuilding({
+  width: 8,
+  depth: 8,
+  height: 8,
+  gable: 'cap',
+  addTo: temple2ndFloor,
+  nsWindows:[
+    { height: 6 },
+  ],
+  ewWindows:[
+    { height: 6 },
+  ],
+});
+
+var temple3rdFloor = new Shape({
+  rendering: false,
+  addTo: temple2ndFloor,
+  translate: { y: -10 },
+});
+
+makeBuilding({
+  width: 6,
+  depth: 6,
+  height: 6,
+  gable: 'flat',
+  addTo: temple3rdFloor,
+  nsWindows:[
+    { y: -3 },
+  ],
+  ewWindows:[
+    { y: -3 },
+  ],
+});
+
+makeDome({
+  size: 4,
+  addTo: temple3rdFloor,
+  translate: { y: -6 },
+});
+
+// ----- west perch ----- //
+
+var westPerchAnchor = new Shape({
+  rendering: false,
+  addTo: island,
+  translate: { x: -39, z: 11, y: -44 }
+});
+
+makeBuilding({
+  width: 6,
+  depth: 6,
+  height: 6,
+  gable: 'flat',
+  addTo: westPerchAnchor,
+  nsWindows:[
+    { y: -3, style: 'circle', },
+  ],
+  ewWindows:[
+    { y: -3, style: 'circle', },
+  ],
+});
+
+makeDome({
+  size: 6,
+  addTo: westPerchAnchor,
+  translate: { y: -6 },
 });
 
 // -----  ----- //
