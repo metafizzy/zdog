@@ -11,7 +11,7 @@ var bodyLinesCtx = bodyLinesCanvas.getContext('2d');
 var w = 88;
 var h = 88;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
+var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -460,7 +460,8 @@ function eachShapeRender( shape ) {
 function zoomContext( context ) {
   context.save();
   context.scale( zoom, zoom );
-  context.translate( w/2, h/2 );
+  /* nudge up to center (lazy) */
+  context.translate( w/2, h/2 - 4 );
 }
 
 
