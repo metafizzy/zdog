@@ -1,4 +1,4 @@
-/* globals makeBuilding, makeDome */
+/* globals makeBuilding, makeDome, oneStoryBuilding, twoStoryBuilding, oneStorySlanter, makeRock */
 
 // -------------------------- demo -------------------------- //
 
@@ -52,101 +52,53 @@ var island = new Shape({
 // -- illustration shapes --- //
 
 
-// lil house in front
-var buildAnchor0 = new Shape({
-  rendering: false,
+// lil house in front, center
+oneStoryBuilding({
   addTo: island,
   translate: { x: 17, z: -24 },
+  gable: 'ns'
 });
 
-makeBuilding({
-  width: 8,
-  height: 8,
-  depth: 10,
-  gable: 'ns',
-  addTo: buildAnchor0,
-  nsWindows: [
-    { x: 0 },
-  ],
-  ewWindows: [
-    { x: -2 },
-    { x: 2 },
-  ],
-});
-
-// -----  ----- //
-
-// lil house to the west
-var buildAnchor1 = new Shape({
-  rendering: false,
+// lil house to the east
+oneStoryBuilding({
   addTo: island,
   translate: { x: 47, z: -16 },
+  gable: 'ns'
 });
-
-makeBuilding({
-  width: 8,
-  height: 8,
-  depth: 10,
-  gable: 'ns',
-  addTo: buildAnchor1,
-  nsWindows: [
-    { x: 0 },
-  ],
-  ewWindows: [
-    { x: -2 },
-    { x: 2 },
-  ],
-});
-
-// -----  ----- //
 
 // 2 story gable, east end
-var buildAnchor2 = new Shape({
-  rendering: false,
+twoStoryBuilding({
   addTo: island,
   translate: { x: 55, z: -4 },
+  gable: 'ns'
 });
 
-makeBuilding({
-  width: 8,
-  height: 14,
-  depth: 10,
-  gable: 'ns',
-  addTo: buildAnchor2,
-  nsWindows: [
-    { x: 0, y: -5 },
-    { x: 0, y: -11 },
-  ],
-  ewWindows: [
-    { x: -2, y: -5 },
-    { x: 2, y: -5 },
-    { x: -2, y: -11 },
-    { x: 2, y: -11 },
-  ],
+// 2 story gable, center west
+twoStoryBuilding({
+  addTo: island,
+  translate: { x: 14, y: -2, z: -13 },
+  gable: 'ew',
 });
+
+
+// 2 story gable, west end
+twoStoryBuilding({
+  addTo: island,
+  translate: { x: -14, z: -25 },
+  gable: 'ew',
+});
+
 
 // 1 story slantS, west
-var buildAnchor3 = new Shape({
-  rendering: false,
+oneStorySlanter({
   addTo: island,
   translate: { x: 0, z: -26 },
+  gable: 'slantS',
 });
 
-makeBuilding({
-  width: 14,
-  height: 8,
-  depth: 6,
-  gable: 'slantS',
-  addTo: buildAnchor3,
-  nsWindows: [
-    { x: -4 },
-    { x: 0 },
-    { x: 4 },
-  ],
-  ewWindows: [
-    { x: 0 }
-  ],
-});
+
+
+// -----  ----- //
 
 // 2.5 story slantS, east
 var buildAnchor4 = new Shape({
@@ -283,52 +235,6 @@ makeBuilding({
 
 // ----- west side ----- //
 
-// 2 story gable, center west
-var anchor7 = new Shape({
-  rendering: false,
-  addTo: island,
-  translate: { x: 14, z: -13 },
-});
-
-makeBuilding({
-  width: 10,
-  height: 16,
-  depth: 8,
-  gable: 'ew',
-  addTo: anchor7,
-  ewWindows: [
-    { x: 0, y: -13, style: 'circle', },
-    { x: 0, y: -7, height: 6 },
-  ],
-  nsWindows: [
-    { x: -2, y: -7, height: 6 },
-    { x: 2, y: -7, height: 6 },
-    { x: -2, y: -13 },
-    { x: 2, y: -13 },
-  ],
-});
-
-// 2 story gable, west end
-var anchor8 = new Shape({
-  rendering: false,
-  addTo: island,
-  translate: { x: -14, z: -25 },
-});
-
-makeBuilding({
-  width: 10,
-  height: 14,
-  depth: 8,
-  gable: 'ew',
-  addTo: anchor8,
-  ewWindows: [
-    { x: 0, y: -11, height: 4 },
-  ],
-  nsWindows: [
-    { x: -2, y: -11, height: 4 },
-    { x:  2, y: -11, height: 4 },
-  ],
-});
 
 // shack, west end
 var anchor9 = new Shape({
@@ -404,19 +310,28 @@ makeBuilding({
   ],
 });
 
+// mansion rock
+makeRock({
+  width: 19,
+  depth: 14,
+  height: 8,
+  addTo: island,
+  translate: { x: -13, z: -14, y: 1 },
+  southOffset: -2,
+});
 
 // ----- central tower ----- //
 
 var centralTowerAnchor = new Shape({
   rendering: false,
   addTo: island,
-  translate: { y: -16 },
+  translate: { y: -14 },
 });
 
 makeBuilding({
   width: 6,
   depth: 6,
-  height: 16,
+  height: 18,
   addTo: centralTowerAnchor,
   gable: 'cap',
   nsWindows: [
@@ -431,7 +346,7 @@ makeBuilding({
 var centralTower2ndAnchor = new Shape({
   rendering: false,
   addTo: centralTowerAnchor,
-  translate: { y: -18 },
+  translate: { y: -20 },
 });
 
 makeBuilding({
@@ -550,6 +465,79 @@ makeDome({
   size: 6,
   addTo: westPerchAnchor,
   translate: { y: -6 },
+});
+
+// perch rock
+makeRock({
+  width: 19,
+  depth: 9,
+  height: 10,
+  addTo: island,
+  translate: { x: -36, z: 13, y: -33 },
+  westOffset: -1,
+  eastOffset: -7,
+  northOffset: -3,
+  southOffset: 0,
+});
+
+// beneath perch rock & 2 story
+
+makeRock({
+  width: 24,
+  depth: 22,
+  height: 8,
+  addTo: island,
+  translate: { x: -35, z: 19, y: -25 },
+  westOffset: -1.5,
+  eastOffset: -3,
+  northOffset: -2,
+  // southOffset: 0,
+});
+
+// ----- hill buildings ----- //
+
+// center behind cathedral
+oneStorySlanter({
+  addTo: island,
+  translate: { x: -14, y: -26, z: 18 },
+  gable: 'slantS',
+});
+
+// behind west perch
+twoStoryBuilding({
+  addTo: island,
+  translate: { x: -38, y: -34, z: 23 },
+  gable: 'ns',
+});
+
+oneStoryBuilding({
+  addTo: island,
+  translate: { x: 9, y: -32, z: 24 },
+  gable: 'ew',
+});
+
+// ----- back tower ----- //
+
+var backTowerAnchor = new Shape({
+  rendering: false,
+  addTo: island,
+  translate: { x: -15, y: -18, z: 35 }
+});
+
+makeBuilding({
+  width: 6,
+  height: 30,
+  depth: 6,
+  gable: 'flat',
+  addTo: backTowerAnchor,
+  nsWindows: [ { y: -27 } ],
+  ewWindows: [ { y: -27 } ],
+});
+
+makeDome({
+  addTo: backTowerAnchor,
+  translate: { y: -30 },
+  size: 4,
 });
 
 // -----  ----- //
