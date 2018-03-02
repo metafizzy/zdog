@@ -5,7 +5,7 @@ var ctx = canvas.getContext('2d');
 var w = 96;
 var h = 96;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
+var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -23,8 +23,13 @@ var isRotating = true;
 var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;
 
+var scene = new Shape({
+  rendering: false,
+});
+
 var cameraX = new Shape({
   rendering: false,
+  addTo: scene,
 });
 
 var cameraY = new Shape({
@@ -35,28 +40,9 @@ var cameraY = new Shape({
 
 // -- illustration shapes --- //
 
-// new Rect({
-//   width: 20,
-//   height: 20,
-//   addTo: camera,
-//   translate: { z: -10 },
-//   lineWidth: 2,
-//   color: '#E21',
-// });
-//
-// new Ellipse({
-//   width: 16,
-//   height: 16,
-//   addTo: camera,
-//   translate: { z: 10 },
-//   lineWidth: 4,
-//   color: '#19F',
-// });
-
 // cap top
-new Shape({
+var capTop = new Shape({
   path: [
-    { x: -20, y: 4 },
     { x: -20, y: 0 },
     { arc: [
       { x: -20, y: -20 },
@@ -66,13 +52,25 @@ new Shape({
       { x:  20, y: -20 },
       { x:  20, y:  0 },
     ]},
-    { x: 20, y: 4 },
+  ],
+  addTo: scene,
+  scale: { y: -1},
+});
+
+// cap arc connectors
+new Shape({
+  path: [
+    { x: -20, y: 4 },
+    { x: -20, y: 0 },
+    { move: [ { x: 20, y: 4 } ]},
+    { x: 20, y: 0 },
   ],
   addTo: cameraX,
 });
 
+
 // cap back
-var capBack = new Shape({
+new Shape({
   path: [
     { x: -20, z: 0 },
     { arc: [
@@ -88,11 +86,6 @@ var capBack = new Shape({
   translate: { y: 4 },
 });
 
-// capBack.copy({
-//   scale: { z: -1 },
-//   color: '#19f',
-// });
-
 // brim back arch
 new Shape({
   path: [
@@ -105,7 +98,7 @@ new Shape({
       { x: 1, y: -1 },
       { x: 1, y:  0 },
     ]},
-    
+
   ],
   addTo: cameraY,
   scale: { x: 16, y: 16 },
@@ -231,9 +224,13 @@ glassesArmB.render = function() {
 
 // -----  ----- //
 
-var shapes = cameraX.getShapes();
+var shapes = scene.getShapes();
 
 // -- animate --- //
+
+
+var t = 0;
+var cycleFrame = 240;
 
 function animate() {
   update();
@@ -245,17 +242,43 @@ animate();
 
 // -- update -- //
 
+// i, 0->1
+function easeInOut( i ) {
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
+}
+
+
 function update() {
-  // cameraY.rotate.y += isRotating ? +TAU/150 : 0;
+  if ( isRotating ) {
+    t += 1/cycleFrame;
+    t = t % 1;
+    var isFirstHalf = t < 0.5;
+    var halfT = isFirstHalf ? t : 1 - t;
+    halfT /= 0.5;
+    var easeT = easeInOut( halfT );
+    cameraY.rotate.y = easeT*-TAU/4 + TAU/8;
+    var rxDirection = isFirstHalf ? 1 : 0;
+    cameraX.rotate.x = (Math.cos( halfT * TAU ) * -0.5 + 0.5 ) * TAU/16 * rxDirection;
+  }
+
   // normalize camera angle
   cameraX.normalizeRotate();
   cameraY.normalizeRotate();
 
   var rx = cameraX.rotate.x;
-  isRotateXFlat = rx < TAU/32 || rx > TAU * 15/16;
+  isRotateXFlat = rx < TAU/16 || rx > TAU * 15/16;
+  // flip cap top
+  var isRotateXTopSide = rx < TAU/4 || rx > TAU * 3/4;
+  capTop.scale.y = isRotateXTopSide ? 1 : -1;
 
   // rotate
-  cameraX.update();
+  scene.update();
   shapes.forEach( function( shape ) {
     shape.updateSortValue();
   });
@@ -269,6 +292,7 @@ function update() {
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
+  ctx.globalCompositeOperation = 'source-over';
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
 
@@ -281,6 +305,18 @@ function render() {
   });
 
   ctx.restore();
+
+  ctx.globalCompositeOperation = 'source-in';
+  renderGradient();
+
+}
+
+function renderGradient() {
+  var gradient = ctx.createLinearGradient( 0, 0, 0, canvasHeight );
+  gradient.addColorStop( 0.2, '#F00' );
+  gradient.addColorStop( 0.75, '#19F' );
+  ctx.fillStyle = gradient;
+  ctx.fillRect( 0, 0, canvasWidth, canvasHeight );
 }
 
 // ----- inputs ----- //

@@ -383,7 +383,7 @@ animate();
 // -- update -- //
 
 // i, 0->1
-function easeOut( i ) {
+function easeInOut( i ) {
   var isFirstHalf = i < 0.5;
   var i1 = isFirstHalf ? i : 1 - i;
   i1 = i1 / 0.5;
@@ -396,7 +396,7 @@ function easeOut( i ) {
 function update() {
   if ( isRotating ) {
     t += TAU/180;
-    var easeT = easeOut( ( t/TAU) % 1 );
+    var easeT = easeInOut( ( t/TAU) % 1 );
     camera.rotate.y = easeT*TAU*-2 + jumpRotation.y;
   }
 
