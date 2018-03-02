@@ -105,7 +105,7 @@ function makeBuilding( options ) {
       color: isWest ? westWall : eastWall,
     });
 
-    var windowColor = isWest ? midnight : navy;
+    var windowColor = isWest ? navy : midnight;
     handleWindows( options.ewWindows, wallGroup, windowColor );
 
     // cap border

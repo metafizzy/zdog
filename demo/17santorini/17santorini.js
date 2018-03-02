@@ -494,6 +494,27 @@ makeRock({
   // southOffset: 0,
 });
 
+// perch staircase
+
+var staircaseAnchor = new Shape({
+  addTo: island,
+  rendering: false,
+  translate: { x: -35, y: -14, z: 5 },
+});
+
+makeBuilding({
+  width: 6,
+  depth: 4,
+  height: 22,
+  gable: 'slantS',
+  addTo: staircaseAnchor,
+  nsWindows: [
+    { y: -19 },
+    { y: -12 },
+    { y: -5 },
+  ]
+});
+
 // ----- hill buildings ----- //
 
 // center behind cathedral

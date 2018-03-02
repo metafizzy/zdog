@@ -200,3 +200,8 @@ Shape.prototype.copy = function( options ) {
   return new ShapeClass( shapeOptions );
 };
 
+Shape.prototype.normalizeRotate = function() {
+  this.rotate.x = modulo( this.rotate.x, TAU );
+  this.rotate.y = modulo( this.rotate.y, TAU );
+  this.rotate.z = modulo( this.rotate.z, TAU );
+};
