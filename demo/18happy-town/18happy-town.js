@@ -1,5 +1,4 @@
-/* globals makeBuilding, gold */
-// red, blue, navy, gold, white, 
+/* globals makeBuilding, red, blue, navy, gold, white */
 
 // -------------------------- demo -------------------------- //
 
@@ -24,6 +23,7 @@ var isRotating = false;
 // default to flat, filled shapes
 Shape.defaults.fill = true;
 Shape.defaults.stroke = false;
+// Shape.defaults.lineWidth = 1/zoom;
 
 var camera = new Shape({
   rendering: false,
@@ -82,6 +82,60 @@ makeBuilding({
   northWindows: [ 2, 2 ],
 });
 
+// hill
+
+// east slope
+var leftEWSlope = new Shape({
+  path: [
+    { x: 0, y: 0, z: -11 },
+    { x: 0, y: 0, z:  11 },
+    { x: 6, y: 6, z:  11 },
+    { x: 6, y: 6, z: -11 },
+  ],
+  addTo: leftAnchor,
+  translate: { x: 8 },
+  color: gold,
+});
+// west slope
+leftEWSlope.copy({
+  scale: { x: -1 },
+  translate: { x: -8 },
+  color: navy,
+});
+
+// south slope
+new Shape({
+  path: [
+    { z:  0, y: 0, x: -8 },
+    { z:  0, y: 0, x:  8 },
+    { z: -6, y: 6, x:  8 },
+    { z: -6, y: 6, x: -8 },
+  ],
+  addTo: leftAnchor,
+  translate: { z: -11 },
+  color: navy,
+});
+
+// south east corner
+var leftCorner = new Shape({
+  path: [
+    { x: 0, y: 0, z:  0 },
+    { x: 6, y: 6, z:  0 },
+    { x: 0, y: 6, z: -6 },
+  ],
+  addTo: leftAnchor,
+  translate: { x: 8, z: -11 },
+  color: red,
+});
+// south west corner
+leftCorner.copy({
+  scale: { x: -1 },
+  translate: { x: -8, z: -11 },
+  color: navy,
+});
+
+
+
 // ----- back tower ----- //
 
 var towerAnchor = new Shape({
@@ -100,6 +154,99 @@ makeBuilding({
   eastWindows: [ 2, 3 ],
   westWindows: [ 2, 3 ],
   northWindows: [ 2, 3 ],
+});
+
+// big east slope
+var towerEWSlope = new Shape({
+  path: [
+    { x: 0, y: 0, z: -1 },
+    { x: 0, y: 0, z:  1 },
+    { x: 1, y: 1, z:  1 },
+    { x: 1, y: 1, z: -1 },
+  ],
+  addTo: towerAnchor,
+  translate: { x: 8 },
+  // size by scaling
+  scale: { x: 20, y: 20, z: 8 },
+  color: gold,
+});
+
+// south slope down to left building
+var towerNSSLope = new Shape({
+  path: [
+    { z: 0, y: 0, x: -1 },
+    { z: 0, y: 0, x:  1 },
+    { z: 1, y: 1, x:  1 },
+    { z: 1, y: 1, x: -1 },
+  ],
+  addTo: towerAnchor,
+  translate: { z: -8 },
+  scale: { x: 8, y: 14, z: -8 },
+  color: navy,
+});
+
+// south east corner
+new Shape({
+  path: [
+    { x: 0, y: 0, z: 0 },
+    { x: 20, y: 20, z: 0 },
+    { x: 6, y: 20, z: -8 },
+    { x: 0, y: 14, z: -8 },
+  ],
+  addTo: towerAnchor,
+  translate: { x: 8, z: -8 },
+  color: red,
+});
+
+// north slope
+towerNSSLope.copy({
+  translate: { z: 8 },
+  scale: { x: 8, y: 20, z: 7 },
+  color: gold,
+});
+
+// north east corner
+new Shape({
+  path: [
+    { x: 0, y: 0, z: 0 },
+    { x: 20, y: 20, z: 0 },
+    { x: 0, y: 20, z: 7 },
+  ],
+  addTo: towerAnchor,
+  translate: { x: 8, z: 8 },
+  color: gold,
+});
+
+// west slope
+towerEWSlope.copy({
+  scale: { x: -12, y: 20, z: 8 },
+  translate: { x: -8 },
+  color: navy,
+});
+
+// north west corner
+new Shape({
+  path: [
+    { x: 0, y: 0, z: 0 },
+    { x: -12, y: 20, z: 0 },
+    { x: 0, y: 20, z: 7 },
+  ],
+  addTo: towerAnchor,
+  translate: { x: -8, z: 8 },
+  color: blue,
+});
+
+// south west corner back to left building
+new Shape({
+  path: [
+    { x: 0, y: 0, z: 0 },
+    { x: -12, y: 20, z: 0 },
+    { x: -6, y: 20, z: -8 },
+    { x: 0, y: 14, z: -8 },
+  ],
+  addTo: towerAnchor,
+  translate: { x: -8, z: -8 },
+  color: navy,
 });
 
 // ----- church ----- //
@@ -126,9 +273,9 @@ makeBuilding({
 
 ( function() {
 
-  var townSize = 72;
-  var rows = 3;
-  var cols = 8;
+  var townSize = 80;
+  var rows = 2;
+  var cols = 2;
   var plateW = townSize / cols;
   var plateH = townSize / rows;
 
@@ -150,49 +297,37 @@ makeBuilding({
       });
     }
   }
-})();
+});
+
+// flat earth
+new Ellipse({
+  width: 128,
+  height: 128,
+  addTo: camera,
+  translate: town.translate,
+  rotate: { x: TAU/4 },
+  lineWidth: 8,
+  stroke: true,
+  color: navy,
+});
 
 // ----- hill ----- //
 
-// new Shape({
-//   path: [
-//     { x: 0, y: 0 },
-//     { x: 4, y: 0 },
-//     { x: 10, y: 6 },
-//     { x: 14, y: 6 },
-//     { x: 20, y: 12 },
-//     { x: 28, y: 12 },
-//     { x: 30, y: 14 },
-//   ],
-//   addTo: town,
-//   translate: { x: -6, y: -20, z: 12 },
-//   lineWidth: 8,
-//   fill: false,
-//   stroke: true,
-//   closed: false,
-//   color: gold,
-// });
-
-// var hillPillow = new Rect({
-//   width: 16,
-//   height: 16,
-//   addTo: town,
-//   rotate: { x: TAU/4 },
-//   translate: { y: -8, z: 4, x: 18 },
-//   fill: true,
-//   stroke: true,
-//   lineWidth: 8,
-//   color: gold,
-// });
-// hillPillow.copy({
-//   translate: { y: -8, z: 4, x: 2 },
-// });
-// hillPillow.copy({
-//   translate: { y: -8, z: 4, x: -14 },
-// });
-// hillPillow.copy({
-//   translate: { y: -12, z: 4, x: 2 },
-// });
+new Shape({
+  path: [
+    { x:  0, y: 4 },
+    { x: 12, y: 4 },
+    { x: 20, y: 12 },
+    { x: 33, y: 12 },
+    // bring it back into hill
+    { x: 20, y: 12, z: -8 },
+  ],
+  addTo: town,
+  translate: { x: -6, y: -20, z: 12 },
+  lineWidth: 8,
+  stroke: true,
+  color: gold,
+});
 
 // -----  ----- //
 
