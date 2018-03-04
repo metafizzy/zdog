@@ -6,6 +6,9 @@ function makeBuilding( options ) {
   var wallY = options.height;
   var wallZ = options.depth/2;
 
+  // collect walls
+  var building = {};
+
   // south/noth walls
   [ true, false ].forEach( function( isSouth ) {
     var wallTZ = isSouth ? -wallZ : wallZ;
@@ -38,6 +41,9 @@ function makeBuilding( options ) {
     var windowColor = isSouth ? navy : red;
     var windowProperty = isSouth ? 'southWindows' : 'northWindows';
     handleWindows( options, windowProperty, wallGroup, windowColor );
+
+    var wallProperty = isSouth ? 'southWall' : 'northWall';
+    building[ wallProperty ] = wallGroup;
 
   });
 
@@ -74,6 +80,8 @@ function makeBuilding( options ) {
     var windowProperty = isWest ? 'westWindows' : 'eastWindows';
     handleWindows( options, windowProperty, wallGroup, windowColor );
 
+    var wallProperty = isWest ? 'westWall' : 'eastWall';
+    building[ wallProperty ] = wallGroup;
   });
 
 
@@ -98,17 +106,24 @@ function makeBuilding( options ) {
 
     ew: function() {
       var y0 = -wallY - wallZ;
+      var xA = options.isChurch ? -wallX + 8 : -wallX;
       var roofPanel = new Shape({
+        path: [
+          { z: 0, y: y0, x: xA },
+          { z: 0, y: y0, x: wallX },
+          { z: wallZ, y: -wallY, x: wallX },
+          { z: wallZ, y: -wallY, x: xA },
+        ],
+        addTo: options.addTo,
+        color: red,
+      });
+      roofPanel.copy({
         path: [
           { z: 0, y: y0, x: -wallX },
           { z: 0, y: y0, x: wallX },
           { z: wallZ, y: -wallY, x: wallX },
           { z: wallZ, y: -wallY, x: -wallX },
         ],
-        addTo: options.addTo,
-        color: red,
-      });
-      roofPanel.copy({
         scale: { z: -1 },
         color: navy,
       });
@@ -120,6 +135,7 @@ function makeBuilding( options ) {
     roofMaker();
   }
 
+  return building;
 }
 
 function handleWindows( options, windowProperty, wallGroup, color ) {
