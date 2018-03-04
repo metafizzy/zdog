@@ -12,8 +12,8 @@ Ellipse.prototype = Object.create( Shape.prototype );
 Ellipse.prototype.constructor = Ellipse;
 
 Ellipse.prototype.setPath = function( options ) {
-  var w = options.width/2;
-  var h = options.height/2;
+  var w = ( options.width || 1 ) / 2;
+  var h = ( options.height || 1 ) / 2;
   options.path = [
     { x: 0, y: -h },
     { arc: [ // top right
