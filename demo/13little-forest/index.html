@@ -7,23 +7,49 @@
   <title>13 little forest</title>
 
   <style>
+    html { height: 100%; }
+
     body {
+      min-height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: #313;
+      color: white;
+      font-family: sans-serif;
       text-align: center;
+      cursor: move;
     }
 
     canvas {
       display: block;
-      margin: 0px auto;
+      margin: 0px auto 20px;
+    }
+
+    button {
+      background: #525;
+      color: white;
+      font-size: 14px;
+      font-family: inherit;
+      border: none;
+      border-radius: 3px;
+      padding: 8px 10px;
+    }
+
+    button:hover {
+      background: #936;
+      cursor: pointer;
     }
   </style>
 
 </head>
 <body>
 
-<canvas></canvas>
-
-<p>Click &amp; drag to rotate</p>
+<div class="container">
+  <canvas></canvas>
+  <p><button class="reset-button">Reset</button></p>
+</div>
 
 <script src="../../js/utils.js"></script>
 <script src="../../js/vector3.js"></script>
@@ -32,7 +58,8 @@
 <script src="../../js/ellipse.js"></script>
 <script src="../../js/rect.js"></script>
 <script src="../../js/group.js"></script>
-<script src="demo.js"></script>
+<script src="../../js/dragger.js"></script>
+<script src="13little-forest.js"></script>
 
 </body>
 </html>

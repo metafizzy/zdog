@@ -4,9 +4,17 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 360;
 var h = 360;
-var zoom = 2;
-var canvasWidth = canvas.width =  w * zoom;
+var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
+var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
+var pixelRatio = window.devicePixelRatio || 1;
+zoom *= pixelRatio;
+var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+// set canvas screen size
+if ( pixelRatio > 1 ) {
+  canvas.style.width = canvasWidth / pixelRatio + 'px';
+  canvas.style.height = canvasHeight / pixelRatio + 'px';
+}
 
 // colors
 var midnight = '#313';
@@ -32,7 +40,7 @@ var background = new Shape({
 });
 
 var bgStripe = new Rect({
-  width: 192,
+  width: 180,
   height: 44,
   addTo: background,
   translate: { y: -40, z: 24 },
@@ -65,14 +73,11 @@ bgCircle.copy({
 });
 
 // gold bg stripe
-new Rect({
-  width: 192,
+bgStripe.copy({
   height: 60,
   addTo: background,
   translate: { y: 32, z: -24 },
   color: gold,
-  lineWidth: 12,
-  fill: true,
 });
 // gold circle
 bgCircle.copy({
@@ -99,9 +104,12 @@ var midBackground = new Group({
 
 var midBGDot = new Shape({
   addTo: midBackground,
-  translate: { x: -36, y: 16 },
+  translate: { x: -36, y: 18 },
   lineWidth: 24,
   color: amber,
+});
+midBGDot.copy({
+  translate: { x: -24, y: 24 },
 });
 midBGDot.copy({
   translate: { x: -6, y: 26 },
@@ -298,10 +306,10 @@ midForegroundGround.copy({
     { x: 18, y: 50 },
     { arc: [
       { x: -16, y: 90 },
-      { x: -48, y: 90 },
+      { x: -48, y: 72 },
     ]},
-    { x: -64, y: 90 },
-    { x: -96, y: 64 },
+    { x: -64, y: 56 },
+    { x: -96, y: 48 },
     { x: -96, y: 90 },
     { x: 18, y: 90 },
   ],
@@ -309,12 +317,16 @@ midForegroundGround.copy({
 
 var midForeBall = new Shape({
   addTo: midForeground,
-  translate: { x: -96, y: 16 },
-  lineWidth: 18,
+  translate: { x: -92, y: 18 },
+  lineWidth: 20,
   color: eggplant,
 });
 midForeBall.copy({
-  translate: { x: -84, y: 22 },
+  translate: { x: -104, y: 28 },
+});
+midForeBall.copy({
+  translate: { x: -84, y: 28 },
+  lineWidth: 24,
 });
 midForeBall.copy({
   translate: { x: -74, y: 20 },
@@ -326,7 +338,7 @@ midForeBall.copy({
   translate: { x: -50, y: 36 },
 });
 midForeBall.copy({
-  translate: { x: -42, y: 46 },
+  translate: { x: -44, y: 46 },
 });
 
 var midForeTree = {
@@ -379,7 +391,7 @@ var foregroundA = new Shape({
     { x: -96, y: 90 },
   ],
   addTo: camera,
-  translate: { z: -layerSpace*1.9 },
+  translate: { z: -layerSpace*2 },
   color: midnight,
   lineWidth: 48,
   fill: true,
@@ -423,6 +435,54 @@ tree( foregroundTree, {
   translate: { x: -2, y: 64 },
 });
 
+var grassBlade = new Shape({
+  path: [
+    // semi-circle outside on left
+    { x: 0, y: 1 },
+    { arc: [
+      { x: -1, y: 1 },
+      { x: -1, y: 0 },
+    ]},
+    { arc: [
+      { x: -1, y: -1 },
+      { x:  0, y: -1 },
+    ]},
+    // shallow semi-circle back
+    { arc: [
+      { x: -0.5, y: -0.7 },
+      { x: -0.5, y: 0 },
+    ]},
+    { arc: [
+      { x: -0.5, y: 0.7 },
+      { x: 0, y: 1 },
+    ]},
+  ],
+  addTo: foregroundA,
+  translate: { x: -20, y: 56 },
+  scale: { x: 8, y: 8 },
+  rotate: { z: 0.6 },
+  color: midnight,
+  lineWidth: 1,
+  fill: true,
+  closed: false,
+});
+grassBlade.copy({
+  translate: { x: -33, y: 50 },
+  rotate: { z: TAU/2 + 0.2 }
+});
+
+grassBlade.copy({
+  translate: { x: -62, y: 40 },
+  rotate: { z: 0.8 },
+  scale: { x: 7, y: 7 },
+});
+
+grassBlade.copy({
+  translate: { x: -64, y: 35 },
+  rotate: { z: 0.4 },
+  scale: { x: 7, y: 7 },
+});
+
 // ----- foregroundB ----- //
 
 var foregroundB = new Shape({
@@ -440,7 +500,7 @@ var foregroundB = new Shape({
     { x: 96, y: 90 },
   ],
   addTo: camera,
-  translate: { z: -layerSpace*2.2 },
+  translate: { z: -layerSpace*2 },
   color: midnight,
   lineWidth: 48,
   fill: true,
@@ -478,6 +538,19 @@ tree( foregroundTree, {
   width: 16,
   height: 36,
   translate: { x: 86, y: 26 },
+});
+
+grassBlade.copy({
+  addTo: foregroundB,
+  scale: { x: 12, y: 12 },
+  translate: { x: 46, y: 54 },
+  rotate: { z: 0 },
+});
+grassBlade.copy({
+  addTo: foregroundB,
+  scale: { x: 10, y: 10 },
+  translate: { x: 28, y: 58 },
+  rotate: { z: TAU/2 - 0.4 },
 });
 
 // ----- particles ----- //
@@ -637,7 +710,7 @@ starB.copy({
 
 // ----- bird ----- //
 
-var bird = new Shape({
+new Shape({
   path: [
     { x: -6, y: -4 },
     { x: -4, y: -4 },
@@ -667,6 +740,10 @@ var shapes = camera.getShapes();
 
 // -- animate --- //
 
+var isRotating = true;
+var t = 0;
+var tSpeed = 1/320;
+
 function animate() {
   update();
   render();
@@ -678,10 +755,14 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.update();
-  // normalize angle y
-  // camera.rotate.y = ( ( camera.rotate.y % TAU ) + TAU ) % TAU;
+  if ( isRotating ) {
+    t += tSpeed;
+    var theta = easeInOut( t ) * TAU;
+    camera.rotate.y = Math.sin( theta ) * TAU/32;
+    camera.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU/32;
+  }
 
+  camera.update();
   // sort
   shapes.forEach( function( shape ) {
     shape.updateSortValue();
@@ -690,6 +771,17 @@ function update() {
   shapes.sort( function( a, b ) {
     return b.sortValue - a.sortValue;
   });
+}
+
+function easeInOut( i ) {
+  i = i % 1;
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
 }
 
 // -- render -- //
@@ -709,35 +801,27 @@ function render() {
   ctx.restore();
 }
 
-
-
 // ----- inputs ----- //
 
 // click drag to rotate
-
-var dragStartX, dragStartY;
 var dragStartAngleX, dragStartAngleY;
 
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = camera.rotate.x;
-  dragStartAngleY = camera.rotate.y;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
+new Dragger({
+  startElement: document,
+  onPointerDown: function() {
+    isRotating = false;
+    dragStartAngleX = camera.rotate.x;
+    dragStartAngleY = camera.rotate.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    camera.rotate.x = dragStartAngleX + angleXMove;
+    camera.rotate.y = dragStartAngleY + angleYMove;
+  },
 });
 
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy / (canvasWidth*2) * TAU;
-  var angleYMove = dx / (canvasWidth*2) * TAU;
-  camera.rotate.x = dragStartAngleX + angleXMove;
-  camera.rotate.y = dragStartAngleY + angleYMove;
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}
+document.querySelector('.reset-button').onclick = function() {
+  isRotating = false;
+  camera.rotate.set({ x: 0, y: 0 });
+};
