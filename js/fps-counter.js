@@ -18,6 +18,7 @@ function tick() {
   tickTimeDeltas.push( tickTimeDelta );
 
   var updateTimeDelta = now - prevUpdateTime;
+  // update every half second
   if ( updateTimeDelta > 500 ) {
     update( now );
   }
@@ -32,15 +33,15 @@ function update( now ) {
   // reset
   tickTimeDeltas = [];
   prevUpdateTime = now;
-
 }
 
 function averageArray( ary ) {
   var sum = 0;
-  for ( var i=0, len = ary.length; i < len; i++ ) {
+  var length = ary.length;
+  for ( var i=0; i < length; i++ ) {
     sum += ary[i];
   }
-  return sum / len;
+  return sum / length;
 }
 
 document.body.appendChild( outputElem );

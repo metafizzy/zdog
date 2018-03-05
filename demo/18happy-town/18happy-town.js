@@ -1,4 +1,4 @@
-/* globals makeBuilding, lilPyramid, BGShape, red, blue, navy, gold, white */
+/* globals makeBuilding, lilPyramid, hedge, BGShape, red, blue, navy, gold, white */
 
 // -------------------------- demo -------------------------- //
 
@@ -263,7 +263,7 @@ var leftEWSlope = new Shape({
 leftEWSlope.copy({
   scale: { x: -1 },
   translate: { x: -8 },
-  color: navy,
+  color: gold,
 });
 
 // south slope
@@ -294,7 +294,7 @@ var leftCorner = new Shape({
 leftCorner.copy({
   scale: { x: -1 },
   translate: { x: -8, z: -11 },
-  color: navy,
+  color: blue,
 });
 
 
@@ -438,7 +438,7 @@ new Shape({
 towerEWSlope.copy({
   scale: { x: -12, y: 20, z: 8 },
   translate: { x: -8 },
-  color: navy,
+  color: gold,
 });
 
 // north west corner
@@ -450,7 +450,7 @@ new Shape({
   ],
   addTo: towerAnchor,
   translate: { x: -8, z: 8 },
-  color: blue,
+  color: red,
 });
 
 // south west corner back to left building
@@ -463,7 +463,7 @@ new Shape({
   ],
   addTo: towerAnchor,
   translate: { x: -8, z: -8 },
-  color: navy,
+  color: blue,
 });
 
 // ----- church ----- //
@@ -635,16 +635,24 @@ new Ellipse({
 
 new Shape({
   path: [
-    { x:  0, y: 4 },
-    { x: 12, y: 4 },
-    { x: 20, y: 12 },
-    { x: 33, y: 12 },
+    { x:  0, y: 2 },
+    { x:  10, y: 2 },
+    { bezier: [
+      { x: 14, y: 2 },
+      { x: 20, y: 10 },
+      { x: 24, y: 10 },
+    ]},
+    { x: 30, y: 10 },
+    { arc: [
+      { x: 34, y: 10 },
+      { x: 34, y: 14 },
+    ]},
     // bring it back into hill
-    { x: 20, y: 12, z: -8 },
+    { x: 14, y: 14, z: 0 },
   ],
   addTo: town,
   translate: { x: -6, y: -20, z: 12 },
-  lineWidth: 8,
+  lineWidth: 4,
   stroke: true,
   color: gold,
 });
@@ -675,34 +683,38 @@ lilPyramid({
   addTo: town,
   translate: { x: 31, z: 2, y: -4 },
 });
+// in front of church
+lilPyramid({
+  addTo: town,
+  translate: { x: 22, z: 28, y: -4 },
+});
 
 // ----- hedges ----- //
 
 // to right of front building
-var hedge = new Shape({
-  path: [
-    { y: -2 },
-    { y: -8 },
-  ],
+hedge({
   addTo: town,
   translate: { x: 24, y: -4, z: -4 },
-  stroke: true,
-  lineWidth: 4,
-  color: navy,
 });
 
 // right of church
-hedge.copy({
-  translate: { x: 10, y: -4, z: 40 },
-});
-// behind tower
-hedge.copy({
-  translate: { x: -26, y: -14, z: 3 },
+hedge({
+  addTo: town,
+  translate: { x: -4, y: -4, z: 42 },
 });
 // in between tower & church
-hedge.copy({
+hedge({
+  addTo: town,
   translate: { x: -30, y: -4, z: 18 },
+  // color: gold,
 });
+
+hedge({
+  addTo: town,
+  translate: { x: 9, y: -4, z: 17 },
+  // color: gold,
+});
+
 
 // ----- sun ----- //
 
@@ -820,7 +832,7 @@ var cloud = new Shape({
 cloud.copy({
   translate: { x: -30, y: -57, z: -6 },
 });
-var cloud3 = cloud.copy({
+cloud.copy({
   translate: { x: -30, y: -56, z: -2 },
 });
 
