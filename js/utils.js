@@ -1,6 +1,11 @@
 /* jshint unused: false */
 /* globals TAU: true */
 
+// Hi! This 3D model was built using the <canvas> 2D drawing API.
+// It uses lineWidth to give the illusion of form.
+// I'm working on a library to make these sort of 3D illustrations,
+// But it's not ready for prime-time. Stay tuned! *~ dd ~*
+
 // -------------------------- utils -------------------------- //
 
 var TAU = Math.PI * 2;

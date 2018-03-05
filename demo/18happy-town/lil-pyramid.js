@@ -1,3 +1,5 @@
+// -------------------------- lilPyramid -------------------------- //
+
 function lilPyramid( options ) {
   var anchor = new Shape({
     rendering: false,

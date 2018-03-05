@@ -1,5 +1,7 @@
 /* globals red, blue, navy, gold, white */
 
+// -------------------------- makeBuilding -------------------------- //
+
 function makeBuilding( options ) {
 
   var wallX = options.width/2;
