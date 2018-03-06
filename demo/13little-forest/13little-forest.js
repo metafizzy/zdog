@@ -5,7 +5,7 @@ var ctx = canvas.getContext('2d');
 var w = 360;
 var h = 360;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
+var zoom = Math.min( 3, Math.floor( minWindowSize / (w/2) ) / 2 );
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -742,7 +742,7 @@ var shapes = camera.getShapes();
 
 var isRotating = true;
 var t = 0;
-var tSpeed = 1/320;
+var tSpeed = 1/240;
 
 function animate() {
   update();
@@ -758,8 +758,9 @@ function update() {
   if ( isRotating ) {
     t += tSpeed;
     var theta = easeInOut( t ) * TAU;
-    camera.rotate.y = Math.sin( theta ) * TAU/32;
-    camera.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU/32;
+    var delta = TAU * 3/64;
+    camera.rotate.y = Math.sin( theta ) * delta;
+    camera.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;
   }
 
   camera.update();
