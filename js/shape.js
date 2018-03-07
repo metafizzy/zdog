@@ -17,6 +17,11 @@ Shape.prototype.create = function( options ) {
   this.rotate = new Vector3( options.rotate );
   var scale = extend( { x: 1, y: 1, z: 1 }, options.scale );
   this.scale = new Vector3( scale );
+  // origin & front
+  this.origin = new Vector3();
+  this.front = new Vector3( options.front || this.front );
+  this.renderOrigin = new Vector3();
+  this.renderFront = new Vector3( this.front );
   // children
   this.children = [];
   if ( this.addTo ) {
@@ -32,15 +37,18 @@ Shape.defaults = {
   closed: true,
   rendering: true,
   path: [ {} ],
+  front: { z: -1 },
 };
 
 var optionKeys = Object.keys( Shape.defaults ).concat([
   'rotate',
   'translate',
   'scale',
+  'front',
   'addTo',
   'width',
   'height',
+  'backfaceHidden',
 ]);
 
 function setOptions( shape, options ) {
@@ -102,6 +110,8 @@ Shape.prototype.update = function() {
 };
 
 Shape.prototype.reset = function() {
+  this.renderOrigin.set( this.origin );
+  this.renderFront.set( this.front );
   // reset pathAction render points
   this.pathActions.forEach( function( pathAction ) {
     pathAction.reset();
@@ -109,6 +119,9 @@ Shape.prototype.reset = function() {
 };
 
 Shape.prototype.transform = function( translation, rotation, scale ) {
+  // TODO, only transform these if backfaceHidden for perf?
+  this.renderOrigin.transform( translation, rotation, scale );
+  this.renderFront.transform( translation, rotation, scale );
   // transform points
   this.pathActions.forEach( function( pathAction ) {
     pathAction.transform( translation, rotation, scale );
@@ -136,6 +149,12 @@ Shape.prototype.render = function( ctx ) {
   if ( !this.rendering || !length ) {
     return;
   }
+  // hide backface
+  var isFacingBack = this.renderFront.z > this.renderOrigin.z;
+  if ( this.backfaceHidden && isFacingBack ) {
+    return;
+  }
+  // render dot or path
   var isDot = length == 1;
   if ( isDot ) {
     this.renderDot( ctx );

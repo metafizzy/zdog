@@ -68,6 +68,12 @@ Vector3.prototype.multiply = function( vec ) {
   return this;
 };
 
+Vector3.prototype.transform = function( translation, rotation, scale ) {
+  this.multiply( scale );
+  this.rotate( rotation );
+  this.add( translation );
+};
+
 Vector3.prototype.lerp = function( vec, t ) {
   this.x = lerp( this.x, vec.x, t );
   this.y = lerp( this.y, vec.y, t );

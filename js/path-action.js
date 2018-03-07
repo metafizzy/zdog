@@ -28,9 +28,7 @@ PathAction.prototype.reset = function() {
 
 PathAction.prototype.transform = function( translation, rotation, scale ) {
   this.renderPoints.forEach( function( renderPoint ) {
-    renderPoint.multiply( scale );
-    renderPoint.rotate( rotation );
-    renderPoint.add( translation );
+    renderPoint.transform( translation, rotation, scale );
   });
 };
 
