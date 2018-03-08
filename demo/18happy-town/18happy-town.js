@@ -914,7 +914,8 @@ var sky = new Group({
 // -- animate --- //
 
 var t = 0;
-var tSpeed = 1/360;
+var tSpeed = 1/120;
+var then = new Date() - 1/60;
 
 function animate() {
   update();
@@ -939,20 +940,25 @@ function easeInOut( i ) {
 }
 
 function update() {
+  var now = new Date();
+  var delta = now - then;
 
   if ( isRotating ) {
-    t += tSpeed;
+    t += tSpeed * delta/60;
     var theta = easeInOut( t ) * TAU;
-    var rev = 3/4;
+    var rev = 1;
     var spin = -theta * rev - TAU/8;
     var extraRotation = TAU * rev * Math.floor( ( t % 4 ) );
     camera.rotate.y = spin - extraRotation;
-    camera.rotate.x = t % 2 < 1 ? 0 : ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU * 3/16;
+    var everyOtherCycle = t % 2 < 1;
+    camera.rotate.x = everyOtherCycle ? 0 : ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU * 1/8;
   }
   camera.normalizeRotate();
 
   // rotate
   camera.updateGraph();
+
+  then = now;
 }
 
 // -- render -- //
@@ -1004,5 +1010,6 @@ new Dragger({
 });
 
 document.querySelector('.reset-button').onclick = function() {
+  isRotating = false;
   camera.rotate.set({ x: 0, y: -TAU/8 });
 };

@@ -73,10 +73,11 @@ function update() {
 
 // -- render -- //
 
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
