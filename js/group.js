@@ -39,15 +39,7 @@ Group.prototype.addChild = function( shape ) {
 
 // ----- update ----- //
 
-Group.prototype.update = function() {
-  // update self
-  this.reset();
-  // update children
-  this.children.forEach( function( child ) {
-    child.update();
-  });
-  this.transform( this.translate, this.rotate, this.scale );
-};
+Group.prototype.update = Shape.prototype.update;
 
 Group.prototype.reset = function() {};
 
@@ -60,25 +52,50 @@ Group.prototype.transform = function( translation, rotation, scale ) {
 
 Group.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
-  this.children.forEach( function( child ) {
-    child.updateSortValue();
-    sortValueTotal += child.sortValue;
+  this.checkFlatGraph();
+  this.flatGraph.forEach( function( item ) {
+    item.updateSortValue();
+    sortValueTotal += item.sortValue;
   });
   // TODO sort children?
   // average sort value of all points
   // def not geometrically correct, but works for me
-  this.sortValue = sortValueTotal / this.children.length;
+  this.sortValue = sortValueTotal / this.flatGraph.length;
 };
 
 // ----- render ----- //
 
 Group.prototype.render = function( ctx ) {
-  this.children.forEach( function( child ) {
-    child.render( ctx );
+  this.checkFlatGraph();
+  this.flatGraph.forEach( function( item ) {
+    item.render( ctx );
   });
 };
 
 // do not include children, group handles rendering & sorting internally
 Group.prototype.getFlatGraph = function() {
   return [ this ];
+};
+
+
+Group.prototype.checkFlatGraph = function() {
+  if ( !this.flatGraph ) {
+    this.updateFlatGraph();
+  }
+};
+
+Group.prototype.updateFlatGraph = function() {
+  this.flatGraph = this.getChildFlatGraph();
+};
+
+// get flat graph only used for group
+// do not include in parent flatGraphs
+Group.prototype.getChildFlatGraph = function() {
+  // do not include self
+  var flatGraph = [];
+  this.children.forEach( function( child ) {
+    var childFlatGraph = child.getFlatGraph();
+    flatGraph = flatGraph.concat( childFlatGraph );
+  });
+  return flatGraph;
 };

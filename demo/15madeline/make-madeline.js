@@ -8,8 +8,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     rotate: rotation,
   });
 
-  var body = new Shape({
-    rendering: false,
+  var body = new Group({
     addTo: rotor,
     rotate: { x: TAU/8 },
     translate: { z: 48 },

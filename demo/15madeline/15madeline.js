@@ -53,8 +53,7 @@ makeMadeline( camera, false, badColor, { y: TAU/2 } );
 
 // ----- feather ----- //
 
-var feather = new Shape({
-  rendering: false,
+var feather = new Group({
   addTo: camera,
   rotate: { y: -TAU/4 },
 });
