@@ -18,9 +18,7 @@ if ( pixelRatio > 1 ) {
 
 var isRotating = true;
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 // -- illustration shapes --- //
 
@@ -33,8 +31,7 @@ var camera = new Shape({
   var layerHeight = 4;
   var sector = TAU/slices;
 
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: camera,
     translate: { x: radius*2 },
   });
@@ -74,8 +71,7 @@ var camera = new Shape({
   var radius = 10;
   var sector = TAU/slices;
 
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: camera,
     translate: { y: -radius*2 },
   });
@@ -127,8 +123,7 @@ var camera = new Shape({
   var radius = 10;
   var sector = TAU/slices;
 
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: camera,
     translate: { x: -radius*2 },
   });

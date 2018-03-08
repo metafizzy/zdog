@@ -23,17 +23,13 @@ var isRotating = true;
 var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;
 
-var scene = new Shape({
-  rendering: false,
-});
+var scene = new Anchor();
 
-var cameraX = new Shape({
-  rendering: false,
+var cameraX = new Anchor({
   addTo: scene,
 });
 
-var cameraY = new Shape({
-  rendering: false,
+var cameraY = new Anchor({
   addTo: cameraX,
   rotate: { y: TAU/8 },
 });

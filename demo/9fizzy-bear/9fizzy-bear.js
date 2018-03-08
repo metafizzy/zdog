@@ -39,9 +39,9 @@ var gold = '#EA0';
 var blue = '#19F';
 var black = '#333';
 
-var camera = new Shape({ rendering: false });
+var camera = new Anchor();
 
-var outlineCamera = new Shape({ rendering: false });
+var outlineCamera = new Anchor();
 
 // -- illustration shapes --- //
 var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn, backLegCutIn;
@@ -114,8 +114,7 @@ var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn, backLegCutIn;
 
 
   // face container
-  var face = new Shape({
-    rendering: false,
+  var face = new Anchor({
     translate: { y: -3, z: -14 },
     addTo: unibody,
   });
@@ -307,7 +306,7 @@ var blXA = (bodyFillWidth - bodyLineWidth) / 2 + 2.75;
 var blXB = (bodyFillWidth - bodyFillDepth) / 2 + 2.75;
 var blZ  = (bodyFillDepth - bodyLineWidth) / 2 + 2.75;
 
-var bodyLinesCamera = new Shape({ rendering: false });
+var bodyLinesCamera = new Anchor();
 // body lines
 [ magenta, orange, gold, blue ].map( function( color, i ) {
   // TODO use RoundRect

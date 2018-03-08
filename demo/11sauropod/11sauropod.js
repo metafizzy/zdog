@@ -24,9 +24,7 @@ var antiTwist = 1 / Math.cos( TAU/8 );
 // colors
 var blue = '#19F';
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 // -- illustration shapes --- //
 

@@ -31,18 +31,19 @@ var isRotating = false;
 // var navy = '#037';
 // var midnight = '#024';
 
-Shape.defaults.fill = true;
-Shape.defaults.stroke = false;
+// default to flat, filled shapes
+[ Shape, Rect, Ellipse ].forEach( function( ItemClass ) {
+  ItemClass.defaults.fill = true;
+  ItemClass.defaults.stroke = false;
+});
 
-var camera = new Shape({
-  rendering: false,
+var camera = new Anchor({
   rotate: {
     y: -TAU/8,
   },
 });
 
-var island = new Shape({
-  rendering: false,
+var island = new Anchor({
   addTo: camera,
   scale: { x: 1/Math.sin(TAU/8), z: 1/Math.sin(TAU/8) }
 });
@@ -101,8 +102,7 @@ oneStorySlanter({
 // -----  ----- //
 
 // 2.5 story slantS, east
-var buildAnchor4 = new Shape({
-  rendering: false,
+var buildAnchor4 = new Anchor({
   addTo: island,
   translate: { x: 42, z: -6 },
 });
@@ -125,8 +125,7 @@ makeBuilding({
 
 // ----- cathedral ----- //
 
-var cathBaseAnchor = new Shape({
-  rendering: false,
+var cathBaseAnchor = new Anchor({
   addTo: island,
   translate: { x: 28, z: -12 },
 });
@@ -157,8 +156,7 @@ makeBuilding({
 });
 
 // cathedral 2nd story
-var cath2ndAnchor = new Shape({
-  rendering: false,
+var cath2ndAnchor = new Anchor({
   addTo: cathBaseAnchor,
   translate: { y: -14 },
 });
@@ -179,8 +177,7 @@ makeBuilding({
 
 // cathedral 3rd story
 
-var cath3rdAnchor = new Shape({
-  rendering: false,
+var cath3rdAnchor = new Anchor({
   addTo: cathBaseAnchor,
   translate: { y: -24 },
 });
@@ -210,8 +207,7 @@ makeDome({
 // -----  ----- //
 
 // 2 story gable, east, behind cathdral on hill
-var anchor6 = new Shape({
-  rendering: false,
+var anchor6 = new Anchor({
   addTo: island,
   translate: { x: 27, z: 6, y: -14 },
 });
@@ -237,8 +233,7 @@ makeBuilding({
 
 
 // shack, west end
-var anchor9 = new Shape({
-  rendering: false,
+var anchor9 = new Anchor({
   addTo: island,
   translate: { x: -13, z: -34 },
 });
@@ -258,8 +253,7 @@ makeBuilding({
 });
 
 // 2 story, west center, 1st hill
-var anchor10 = new Shape({
-  rendering: false,
+var anchor10 = new Anchor({
   addTo: island,
   translate: { x: 3, z: -10, y: -8 },
 });
@@ -282,8 +276,7 @@ makeBuilding({
 });
 
 // west mansion
-var mansionAnchor = new Shape({
-  rendering: false,
+var mansionAnchor = new Anchor({
   addTo: island,
   translate: { x: -14, z: -14, y: -8 },
 });
@@ -322,8 +315,7 @@ makeRock({
 
 // ----- central tower ----- //
 
-var centralTowerAnchor = new Shape({
-  rendering: false,
+var centralTowerAnchor = new Anchor({
   addTo: island,
   translate: { y: -14 },
 });
@@ -343,8 +335,7 @@ makeBuilding({
 });
 
 // central tower 2nd story
-var centralTower2ndAnchor = new Shape({
-  rendering: false,
+var centralTower2ndAnchor = new Anchor({
   addTo: centralTowerAnchor,
   translate: { y: -20 },
 });
@@ -371,8 +362,7 @@ makeDome({
 
 // ----- temple ----- //
 
-var templeAnchor = new Shape({
-  rendering: false,
+var templeAnchor = new Anchor({
   addTo: island,
   translate: { x: -20, y: -14, z: 1 },
 });
@@ -393,8 +383,7 @@ makeBuilding({
   ],
 });
 
-var temple2ndFloor = new Shape({
-  rendering: false,
+var temple2ndFloor = new Anchor({
   addTo: templeAnchor,
   translate: { y: -10 },
 });
@@ -413,8 +402,7 @@ makeBuilding({
   ],
 });
 
-var temple3rdFloor = new Shape({
-  rendering: false,
+var temple3rdFloor = new Anchor({
   addTo: temple2ndFloor,
   translate: { y: -10 },
 });
@@ -441,8 +429,7 @@ makeDome({
 
 // ----- west perch ----- //
 
-var westPerchAnchor = new Shape({
-  rendering: false,
+var westPerchAnchor = new Anchor({
   addTo: island,
   translate: { x: -39, z: 11, y: -44 }
 });
@@ -539,8 +526,7 @@ oneStoryBuilding({
 
 // ----- back tower ----- //
 
-var backTowerAnchor = new Shape({
-  rendering: false,
+var backTowerAnchor = new Anchor({
   addTo: island,
   translate: { x: -15, y: -18, z: 35 }
 });

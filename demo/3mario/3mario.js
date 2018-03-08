@@ -25,7 +25,7 @@ var colors = {
   leather: '#A63',
 };
 
-var camera = new Shape({ rendering: false });
+var camera = new Anchor();
 
 // -- illustration shapes --- //
 

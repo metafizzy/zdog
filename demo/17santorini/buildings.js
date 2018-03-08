@@ -2,8 +2,7 @@
 
 function oneStoryBuilding( options ) {
 
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });
@@ -33,8 +32,7 @@ function oneStoryBuilding( options ) {
 
 function twoStoryBuilding( options ) {
 
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });
@@ -70,8 +68,7 @@ function twoStoryBuilding( options ) {
 
 function oneStorySlanter( options ) {
 
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });

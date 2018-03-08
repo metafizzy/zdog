@@ -7,6 +7,7 @@ function Anchor( options ) {
 Anchor.prototype.create = function( options ) {
   // set defaults & options
   extend( this, this.constructor.defaults );
+  options = options || {};
   this.setOptions( this, options );
 
   // transform
@@ -154,8 +155,8 @@ function getSubclass( Super ) {
     Item.prototype = Object.create( Super.prototype );
     Item.prototype.constructor = Item;
 
-    defaults = defaults || {};
-    Item.defaults = extend( defaults, Super.defaults );
+    Item.defaults = extend( {}, Super.defaults );
+    Item.defaults = extend( Item.defaults, defaults );
     Item.optionKeys = Super.optionKeys.slice(0)
       .concat( Object.keys( Item.defaults ) );
     Item.subclass = getSubclass( Item );

@@ -23,9 +23,7 @@ var lightBlue = '#7CF';
 var darkBlue = '#25C';
 var skin = '#FCA';
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 // -- illustration shapes --- //
 
@@ -35,7 +33,6 @@ var pupils = {};
 // head
 
 var head = new Shape({
-  path: [ {} ],
   translate: { y: -20 },
   rotate: { y: 0.5 },
   lineWidth: 21,

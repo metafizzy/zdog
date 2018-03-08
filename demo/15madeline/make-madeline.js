@@ -2,8 +2,7 @@
 
 function makeMadeline( camera, isGood, colors, rotation ) {
 
-  var rotor = new Shape({
-    rendering: false,
+  var rotor = new Anchor({
     addTo: camera,
     rotate: rotation,
   });
@@ -15,8 +14,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     updateSort: true,
   });
 
-  var head = new Shape({
-    rendering: false,
+  var head = new Anchor({
     addTo: body,
     translate: { y: -11, z: 2 },
     rotate: { x: -TAU/8 },
@@ -243,8 +241,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
       color: colors.parkaLight,
     });
 
-    var shoulderJoint = new Shape({
-      rendering: false,
+    var shoulderJoint = new Anchor({
       addTo: body,
       translate: { x: 9*xSide, y: -3, z: 2 },
     });
@@ -264,8 +261,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
       translate: { y: 4 },
     });
 
-    var elbowJoint = new Shape({
-      rendering: false,
+    var elbowJoint = new Anchor({
       addTo: shoulderJoint,
       translate: { y: 8 },
     });

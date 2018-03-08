@@ -26,9 +26,7 @@ var shoe = '#D03';
 var red = '#E10';
 var yellow = '#FD0';
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 // -- illustration shapes --- //
 
@@ -40,8 +38,7 @@ var body = new Shape({
   color: pink,
 });
 
-var face = new Shape({
-  rendering: false,
+var face = new Anchor({
   translate: { z: -10.5 },
   addTo: body,
 });
@@ -73,8 +70,7 @@ var face = new Shape({
   });
 
   // cheek holder
-  var cheekHolder = new Shape({
-    rendering: false,
+  var cheekHolder = new Anchor({
     addTo: body,
     rotate: { y: 0.6*xSide },
   });
@@ -271,8 +267,7 @@ new Shape({
 
 ( function() {
   for ( var i=0; i < 6; i++ ) {
-    var starHolder = new Shape({
-      rendering: false,
+    var starHolder = new Anchor({
       addTo: umbrella,
       translate: { y: 10 },
       rotate: { y: TAU/6 * i + TAU/24 },

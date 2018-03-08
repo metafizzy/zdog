@@ -40,8 +40,7 @@ var badColor = {
 var glow = 'hsla(60, 100%, 80%, 0.3)';
 var featherGold = '#FE5';
 
-var camera = new Shape({
-  rendering: false,
+var camera = new Anchor({
   rotate: { y: TAU/4 },
 });
 
@@ -123,8 +122,7 @@ var feather = new Group({
 
   var rodCount = 14;
   for ( var i=0; i < rodCount; i++ ) {
-    var zRotor = new Shape({
-      rendering: false,
+    var zRotor = new Anchor({
       addTo: camera,
       rotate: { z: TAU/rodCount * i },
     });
@@ -153,8 +151,7 @@ var feather = new Group({
   var dotCount = 64;
 
   for ( var i=0; i < dotCount; i++ ) {
-    var yRotor = new Shape({
-      rendering: false,
+    var yRotor = new Anchor({
       addTo: camera,
       rotate: { y: TAU/dotCount * i },
     });
@@ -176,8 +173,7 @@ var feather = new Group({
 
 // ----- birds ----- //
 
-var birdRotor = new Shape({
-  rendering: false,
+var birdRotor = new Anchor({
   addTo: camera,
   rotate: { y: TAU*1/8 },
 });

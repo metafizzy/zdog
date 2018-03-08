@@ -12,9 +12,7 @@ var canvasHeight = canvas.height = h * zoom;
 // colors
 
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 // -- illustration shapes --- //
 

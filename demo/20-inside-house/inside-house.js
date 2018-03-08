@@ -18,18 +18,19 @@ if ( pixelRatio > 1 ) {
 
 var isRotating = true;
 
-Shape.defaults.stroke = false;
-Shape.defaults.backfaceHidden = true;
-Shape.defaults.front = { z: 1 };
-
-var camera = new Shape({
-  rendering: false,
+// default to flat, filled shapes
+[ Shape, Rect, Ellipse ].forEach( function( ItemClass ) {
+  ItemClass.defaults.fill = true;
+  ItemClass.defaults.stroke = false;
+  ItemClass.defaults.backfaceHidden = true;
+  ItemClass.defaults.front = { z: 1 };
 });
+
+var camera = new Anchor();
 
 // -- house --- //
 
-var house = new Shape({
-  rendering: false,
+var house = new Anchor({
   addTo: camera,
   scale: { x: 10, y: 10, z: 10 },
 });
@@ -106,8 +107,7 @@ roof.copy({
 
 // -- chair --- //
 
-var chair = new Shape({
-  rendering: false,
+var chair = new Anchor({
   addTo: camera,
   scale: { x: 2, y: 2, z: 2 },
   translate: { y: 5 },

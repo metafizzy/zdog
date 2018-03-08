@@ -24,9 +24,7 @@ var amber = '#D65';
 var gold = '#FA6';
 var white = '#FFF';
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 var layerSpace = 56;
 
@@ -142,8 +140,7 @@ midBGBigDot.copy({
 
 // ----- midground ----- //
 
-var midground = new Shape({
-  rendering: false,
+var midground = new Anchor({
   addTo: camera,
 });
 
@@ -278,8 +275,7 @@ tree( midgroundTree, {
 
 // ----- midForeground ----- //
 
-var midForeground = new Shape({
-  rendering: false,
+var midForeground = new Anchor({
   addTo: camera,
   translate: { z: -layerSpace },
 });

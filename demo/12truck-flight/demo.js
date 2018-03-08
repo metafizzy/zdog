@@ -12,9 +12,7 @@ var canvasHeight = canvas.height = h * zoom;
 var light = '#EA0';
 var dark = '#246';
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 var darkStroke = {
   addTo: camera,

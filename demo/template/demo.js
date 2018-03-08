@@ -18,9 +18,7 @@ if ( pixelRatio > 1 ) {
 
 var isRotating = true;
 
-var scene = new Shape({
-  rendering: false,
-});
+var scene = new Anchor();
 
 // -- illustration shapes --- //
 

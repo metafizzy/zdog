@@ -29,8 +29,7 @@ function makeRock( options ) {
   var topEastSouth = { x:  topEastX, y: y, z: -topSouthZ };
   var topWestSouth = { x: -topWestX, y: y, z: -topSouthZ };
 
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });

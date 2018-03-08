@@ -17,9 +17,7 @@ var charcoal = '#333';
 var gunMetal = '#39A';
 var glow = '#DFB';
 
-var camera = new Shape({
-  rendering: false,
-});
+var camera = new Anchor();
 
 // -- illustration shapes --- //
 
