@@ -198,7 +198,6 @@ new Shape({
 
 // -- animate --- //
 
-var shapes = camera.getShapes();
 var t = 0;
 
 function animate() {
@@ -230,16 +229,7 @@ function update() {
     camera.rotate.x = ( Math.cos( easeT * TAU ) * -0.5 + 0.5 ) * TAU/12;
   }
 
-  camera.update();
-
-  // sort
-  shapes.forEach( function updateEachSortValue( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function sortBySortValue( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateGraph();
 }
 
 // -- render -- //
@@ -254,9 +244,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  camera.renderGraph( ctx );
 
   ctx.restore();
 }

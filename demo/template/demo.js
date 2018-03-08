@@ -18,7 +18,7 @@ if ( pixelRatio > 1 ) {
 
 var isRotating = true;
 
-var camera = new Shape({
+var scene = new Shape({
   rendering: false,
 });
 
@@ -27,7 +27,7 @@ var camera = new Shape({
 new Rect({
   width: 20,
   height: 20,
-  addTo: camera,
+  addTo: scene,
   translate: { z: -10 },
   lineWidth: 2,
   color: '#E21',
@@ -36,15 +36,24 @@ new Rect({
 new Ellipse({
   width: 16,
   height: 16,
-  addTo: camera,
+  addTo: scene,
   translate: { z: 10 },
   lineWidth: 4,
   color: '#19F',
 });
 
-// -----  ----- //
-
-var shapes = camera.getShapes();
+new Shape({
+  path: [
+    { x:  0, z:  1 },
+    { x: -1, z: -1 },
+    { x:  1, z: -1 },
+  ],
+  scale: { x: 5, z: 5 },
+  addTo: scene,
+  lineWidth: 2,
+  fill: true,
+  color: '#EA0',
+});
 
 // -- animate --- //
 
@@ -59,17 +68,9 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.rotate.y += isRotating ? +TAU/150 : 0;
+  scene.rotate.y += isRotating ? +TAU/150 : 0;
 
-  // rotate
-  camera.update();
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  scene.updateGraph();
 }
 
 // -- render -- //
@@ -83,9 +84,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  scene.renderGraph( ctx );
 
   ctx.restore();
 }
@@ -99,13 +98,13 @@ new Dragger({
   startElement: canvas,
   onPointerDown: function() {
     isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
+    dragStartAngleX = scene.rotate.x;
+    dragStartAngleY = scene.rotate.y;
   },
   onPointerMove: function( pointer, moveX, moveY ) {
     var angleXMove = moveY / canvasWidth * TAU;
     var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
+    scene.rotate.x = dragStartAngleX + angleXMove;
+    scene.rotate.y = dragStartAngleY + angleYMove;
   },
 });

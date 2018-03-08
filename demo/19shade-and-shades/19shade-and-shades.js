@@ -222,10 +222,6 @@ glassesArmB.render = function() {
   Shape.prototype.render.apply( this, arguments );
 };
 
-// -----  ----- //
-
-var shapes = scene.getShapes();
-
 // -- animate --- //
 
 
@@ -277,32 +273,22 @@ function update() {
   var isRotateXTopSide = rx < TAU/4 || rx > TAU * 3/4;
   capTop.scale.y = isRotateXTopSide ? 1 : -1;
 
-  // rotate
-  scene.update();
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  scene.updateGraph();
 }
 
 // -- render -- //
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
   ctx.globalCompositeOperation = 'source-over';
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  scene.renderGraph( ctx );
 
   ctx.restore();
 

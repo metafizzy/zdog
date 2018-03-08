@@ -133,7 +133,7 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
 };
 
 
-Shape.prototype.updateScene = function() {
+Shape.prototype.updateGraph = function() {
   this.update();
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
@@ -230,7 +230,7 @@ Shape.prototype.renderPath = function( ctx ) {
   }
 };
 
-Shape.prototype.renderScene = function( ctx ) {
+Shape.prototype.renderGraph = function( ctx ) {
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( ctx );

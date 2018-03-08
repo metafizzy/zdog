@@ -239,7 +239,7 @@ function update() {
     camera.rotate.x = Math.sin( xClock ) * TAU/12;
   }
 
-  camera.updateScene();
+  camera.updateGraph();
 
   then = now;
 }
@@ -255,7 +255,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  camera.renderScene( ctx );
+  camera.renderGraph( ctx );
 
   ctx.restore();
 }

@@ -318,8 +318,6 @@ new Shape({
 
 });
 
-var shapes = camera.getShapes();
-
 // -- animate --- //
 
 function animate() {
@@ -334,7 +332,8 @@ animate();
 
 function update() {
   camera.rotate.y += isRotating ? -TAU/150 : 0;
-  camera.rotate.x = modulo( camera.rotate.x, TAU );
+  camera.normalizeRotate();
+
   // change pupil position
   var isAngleXFlip = camera.rotate.x > TAU/4 && camera.rotate.x < TAU * 3/4;
   var angleXOffset = isAngleXFlip ? 0 : TAU/2;
@@ -351,15 +350,9 @@ function update() {
   pupils[1].translate.x = -0.4 + stareX;
   pupils[-1].translate.y = -0.2 + stareY;
   pupils[1].translate.y = -0.2 + stareY;
+
   // rotate
-  camera.update();
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateGraph();
 }
 
 // -- render -- //
@@ -373,9 +366,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  camera.renderGraph( ctx );
 
   ctx.restore();
 }

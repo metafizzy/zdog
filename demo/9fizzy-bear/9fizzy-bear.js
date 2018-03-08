@@ -307,8 +307,10 @@ var blXA = (bodyFillWidth - bodyLineWidth) / 2 + 2.75;
 var blXB = (bodyFillWidth - bodyFillDepth) / 2 + 2.75;
 var blZ  = (bodyFillDepth - bodyLineWidth) / 2 + 2.75;
 
+var bodyLinesCamera = new Shape({ rendering: false });
 // body lines
-var bodyLines = [ magenta, orange, gold, blue ].map( function( color, i ) {
+[ magenta, orange, gold, blue ].map( function( color, i ) {
+  // TODO use RoundRect
   return new Shape({
     path: [
       { x: -blXA, z: 0 },
@@ -331,7 +333,7 @@ var bodyLines = [ magenta, orange, gold, blue ].map( function( color, i ) {
         { x: -blXA, z: 0 },
       ]},
     ],
-    addTo: positiveUnibody,
+    addTo: bodyLinesCamera,
     translate: { y: -16.75 + 10.5*i },
     color: color,
     lineWidth: 11,
@@ -347,9 +349,7 @@ positiveUnibody.render = function( ctx ) {
   unibodyRender.call( positiveUnibody, unibodyCtx );
   // render body lines separately, on its own canvas
   bodyLinesCtx.globalCompositeOperation = 'source-over';
-  bodyLines.forEach( function( bodyLine ) {
-    bodyLine.render( bodyLinesCtx );
-  });
+  bodyLinesCamera.renderGraph( bodyLinesCtx );
   // composite bodyLines in unibody
   bodyLinesCtx.restore();
   bodyLinesCtx.globalCompositeOperation = 'destination-in';
@@ -360,13 +360,6 @@ positiveUnibody.render = function( ctx ) {
   ctx.drawImage( bodyLinesCanvas, 0, 0 );
   zoomContext( ctx );
 };
-
-var outlineShapes = outlineCamera.getShapes();
-var positiveShapes = camera.getShapes();
-// filter out bodyLines
-positiveShapes = positiveShapes.filter( function( shape ) {
-  return !bodyLines.includes( shape );
-});
 
 // -- animate --- //
 
@@ -400,8 +393,11 @@ function update() {
     camera.rotate.y = easeT*TAU*-2 + jumpRotation.y;
   }
 
-  camera.update();
-  outlineCamera.update();
+  camera.normalizeRotate();
+  // sync cameras
+  outlineCamera.rotate.set( camera.rotate );
+  bodyLinesCamera.rotate.set( camera.rotate );
+
   // normalize angle y
   var cameraRY = camera.rotate.y = modulo( camera.rotate.y, TAU );
   // update cut-in rotates
@@ -414,20 +410,10 @@ function update() {
   bodyCutIn.rotate.y -= cameraRY;
   bodyCutIn.translate.x = isCameraYRight ? 3 : -3;
 
-  // render shapes
-  positiveShapes.forEach( updateEachSortValue );
-  bodyLines.forEach( updateEachSortValue );
-  // perspective sort
-  positiveShapes.sort( sortBySortValue );
-  bodyLines.sort( sortBySortValue );
-}
-
-function updateEachSortValue( shape ) {
-  shape.updateSortValue();
-}
-
-function sortBySortValue( a, b ) {
-  return b.sortValue - a.sortValue;
+  // update cameras
+  outlineCamera.updateGraph();
+  camera.updateGraph();
+  bodyLinesCamera.updateGraph();
 }
 
 // -- render -- //
@@ -445,16 +431,12 @@ function render() {
   zoomContext( unibodyCtx );
   zoomContext( bodyLinesCtx );
 
-  outlineShapes.forEach( eachShapeRender );
-  positiveShapes.forEach( eachShapeRender );
+  outlineCamera.renderGraph( ctx );
+  camera.renderGraph( ctx );
 
   ctx.restore();
   unibodyCtx.restore();
   bodyLinesCtx.restore();
-}
-
-function eachShapeRender( shape ) {
-  shape.render( ctx );
 }
 
 function zoomContext( context ) {
@@ -487,21 +469,13 @@ new Dragger({
 
 document.querySelector('.flat-button').onclick = function() {
   camera.rotate.set({ x: 0, y: 0, z: 0 });
-  syncCameras();
 };
 
 document.querySelector('.jump-button').onclick = setJumpRotate;
 
 function setJumpRotate() {
   camera.rotate.set( jumpRotation );
-  syncCameras();
 }
-
-function syncCameras() {
-  camera.rotate.y = ((camera.rotate.y % TAU) + TAU) % TAU;
-  outlineCamera.rotate = camera.rotate;
-}
-
 
 function getQuarterArcPoints( a, b ) {
   var start = new Vector3({

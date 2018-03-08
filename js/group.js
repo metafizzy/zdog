@@ -11,6 +11,8 @@ Group.prototype.create = function( options ) {
   // transform
   this.translate = Vector3.sanitize( this.translate );
   this.rotate = Vector3.sanitize( this.rotate );
+  var scale = extend( { x: 1, y: 1, z: 1 }, options.scale );
+  this.scale = new Vector3( scale );
   // children
   this.children = [];
   if ( this.addTo ) {
@@ -21,6 +23,7 @@ Group.prototype.create = function( options ) {
 var groupOptionKeys = [
   'rotate',
   'translate',
+  'scale',
   'addTo',
   'updateSort',
 ];
@@ -105,3 +108,5 @@ Group.prototype.getChildFlatGraph = function() {
   });
   return flatGraph;
 };
+
+Group.prototype.renderGraph = Shape.prototype.renderGraph;

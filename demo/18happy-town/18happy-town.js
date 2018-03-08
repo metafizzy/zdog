@@ -1,4 +1,4 @@
-/* globals makeBuilding, lilPyramid, hedge, BGShape, red, blue, navy, gold, white */
+/* globals makeBuilding, lilPyramid, hedge, red, blue, navy, gold, white */
 
 // -------------------------- demo -------------------------- //
 
@@ -36,11 +36,11 @@ var camera = new Shape({
 var quarterView = 1/Math.sin(TAU/8);
 
 // anchor
-var town = new Shape({
-  rendering: false,
+var town = new Group({
   addTo: camera,
   translate: { y: 36 },
   scale: { x: quarterView, z: quarterView },
+  updateSort: true,
 });
 
 // ----- front building ----- //
@@ -859,8 +859,7 @@ var flatEarth = new Ellipse({
 
 // ----- sky ----- //
 
-var sky = new Shape({
-  rendering: false,
+var sky = new Group({
   addTo: camera,
   translate: town.translate,
   // translate: { y: 2 },
@@ -920,12 +919,6 @@ var sky = new Shape({
   }
 })();
 
-// -----  ----- //
-
-var shapes = camera.getShapes();
-var townShapes = town.getShapes();
-var skyShapes = sky.getShapes();
-
 // -- animate --- //
 
 var t = 0;
@@ -967,22 +960,16 @@ function update() {
   camera.normalizeRotate();
 
   // rotate
-  camera.update();
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  townShapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateGraph();
 }
 
 // -- render -- //
 
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
@@ -990,23 +977,18 @@ function render() {
 
   var isCameraXUp = camera.rotate.x > 0 && camera.rotate.x < TAU/2;
 
+  sky.renderGraph( ctx );
+
   // HACK sort flat earth & town shapes manually
-
-  skyShapes.forEach( renderShape );
-
   if ( isCameraXUp ) {
     flatEarth.render( ctx );
   }
-  townShapes.forEach( renderShape );
+  town.renderGraph( ctx );
   if ( !isCameraXUp ) {
     flatEarth.render( ctx );
   }
 
   ctx.restore();
-}
-
-function renderShape( shape ) {
-  shape.render( ctx );
 }
 
 // ----- inputs ----- //

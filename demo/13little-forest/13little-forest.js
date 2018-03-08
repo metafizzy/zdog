@@ -734,10 +734,6 @@ new Shape({
 });
 
 
-// -----  ----- //
-
-var shapes = camera.getShapes();
-
 // -- animate --- //
 
 var isRotating = true;
@@ -763,15 +759,7 @@ function update() {
     camera.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;
   }
 
-  camera.update();
-  // sort
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateGraph();
 }
 
 function easeInOut( i ) {
@@ -795,9 +783,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  camera.renderGraph( ctx );
 
   ctx.restore();
 }

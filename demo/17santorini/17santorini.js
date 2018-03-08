@@ -561,10 +561,6 @@ makeDome({
   size: 4,
 });
 
-// -----  ----- //
-
-var shapes = camera.getShapes();
-
 // -- animate --- //
 
 function animate() {
@@ -581,14 +577,7 @@ function update() {
   camera.rotate.y += isRotating ? +TAU/150 : 0;
 
   // rotate
-  camera.update();
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateGraph();
 }
 
 // -- render -- //
@@ -602,9 +591,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  camera.renderGraph( ctx );
 
   ctx.restore();
 }

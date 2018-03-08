@@ -378,8 +378,6 @@ darkWheel.copy({
 
 
 
-var shapes = camera.getShapes();
-
 // -- animate --- //
 
 function animate() {
@@ -393,18 +391,10 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.update();
   // normalize angle y
   camera.rotate.y = ( ( camera.rotate.y % TAU ) + TAU ) % TAU;
 
-  // sort
-  shapes.forEach( function updateEachSortValue( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function sortBySortValue( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateGraph();
 }
 
 // -- render -- //
@@ -419,13 +409,9 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( eachShapeRender );
+  camera.renderGraph( ctx );
 
   ctx.restore();
-}
-
-function eachShapeRender( shape ) {
-  shape.render( ctx );
 }
 
 // ----- inputs ----- //
@@ -463,7 +449,5 @@ document.querySelector('.quarter-twist-button').onclick = viewQuarterTwist;
 
 
 function viewQuarterTwist() {
-  camera.rotate.x = 0;
-  camera.rotate.z = 0;
-  camera.rotate.y = -TAU/8;
+  camera.rotate.set({ x: -TAU/16, y: -TAU/8, z: 0 });
 }
