@@ -22,6 +22,7 @@ var groupOptionKeys = [
   'rotate',
   'translate',
   'addTo',
+  'updateSort',
 ];
 
 function setGroupOptions( shape, options ) {
@@ -57,10 +58,15 @@ Group.prototype.updateSortValue = function() {
     item.updateSortValue();
     sortValueTotal += item.sortValue;
   });
-  // TODO sort children?
   // average sort value of all points
   // def not geometrically correct, but works for me
   this.sortValue = sortValueTotal / this.flatGraph.length;
+
+  if ( this.updateSort ) {
+    this.flatGraph.sort( function( a, b ) {
+      return b.sortValue - a.sortValue;
+    });
+  }
 };
 
 // ----- render ----- //

@@ -12,6 +12,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     addTo: rotor,
     rotate: { x: TAU/8 },
     translate: { z: 48 },
+    updateSort: true,
   });
 
   var head = new Shape({
