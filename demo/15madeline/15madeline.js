@@ -213,10 +213,6 @@ makeBird({
   spin: TAU/8,
 });
 
-// -----  ----- //
-
-var shapes = camera.getShapes();
-
 // -- animate --- //
 
 var rotateSpeed = -TAU/60;
@@ -244,15 +240,7 @@ function update() {
     camera.rotate.x = Math.sin( xClock ) * TAU/12;
   }
 
-  // rotate
-  camera.update();
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateScene();
 
   then = now;
 }
@@ -268,9 +256,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  camera.renderScene( ctx );
 
   ctx.restore();
 }

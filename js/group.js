@@ -79,6 +79,6 @@ Group.prototype.render = function( ctx ) {
 };
 
 // do not include children, group handles rendering & sorting internally
-Group.prototype.getShapes = function() {
+Group.prototype.getFlatGraph = function() {
   return [ this ];
 };

@@ -132,6 +132,39 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   });
 };
 
+
+Shape.prototype.updateScene = function() {
+  this.update();
+  this.checkFlatGraph();
+  this.flatGraph.forEach( function( item ) {
+    item.updateSortValue();
+  });
+  // perspective sort
+  this.flatGraph.sort( function( a, b ) {
+    return b.sortValue - a.sortValue;
+  });
+};
+
+Shape.prototype.checkFlatGraph = function() {
+  if ( !this.flatGraph ) {
+    this.updateFlatGraph();
+  }
+};
+
+Shape.prototype.updateFlatGraph = function() {
+  this.flatGraph = this.getFlatGraph();
+};
+
+// return Array of self & all child graph items
+Shape.prototype.getFlatGraph = function() {
+  var flatGraph = [ this ];
+  this.children.forEach( function( child ) {
+    var childFlatGraph = child.getFlatGraph();
+    flatGraph = flatGraph.concat( childFlatGraph );
+  });
+  return flatGraph;
+};
+
 Shape.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
   this.pathActions.forEach( function( pathAction ) {
@@ -197,15 +230,14 @@ Shape.prototype.renderPath = function( ctx ) {
   }
 };
 
-// return Array of self & all child shapes
-Shape.prototype.getShapes = function() {
-  var shapes = [ this ];
-  this.children.forEach( function( child ) {
-    var childShapes = child.getShapes();
-    shapes = shapes.concat( childShapes );
+Shape.prototype.renderScene = function( ctx ) {
+  this.checkFlatGraph();
+  this.flatGraph.forEach( function( item ) {
+    item.render( ctx );
   });
-  return shapes;
 };
+
+// ----- misc ----- //
 
 Shape.prototype.copy = function( options ) {
   // copy options
