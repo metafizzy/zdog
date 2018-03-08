@@ -8,7 +8,7 @@
     "Dragger": false,
     "Ellipse": true,
     "extend": false,
-    "Group": false,
+    "Group": true,
     "lerp": false,
     "modulo": false,
     "PathAction": false,

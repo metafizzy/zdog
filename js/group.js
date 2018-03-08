@@ -1,58 +1,10 @@
 // -------------------------- Group -------------------------- //
 
-function Group( options ) {
-  this.create( options );
-}
-
-Group.prototype.create = function( options ) {
-  // set options
-  setGroupOptions( this, options );
-
-  // transform
-  this.translate = Vector3.sanitize( this.translate );
-  this.rotate = Vector3.sanitize( this.rotate );
-  var scale = extend( { x: 1, y: 1, z: 1 }, options.scale );
-  this.scale = new Vector3( scale );
-  // children
-  this.children = [];
-  if ( this.addTo ) {
-    this.addTo.addChild( this );
-  }
-};
-
-var groupOptionKeys = [
-  'rotate',
-  'translate',
-  'scale',
-  'addTo',
-  'updateSort',
-];
-
-function setGroupOptions( shape, options ) {
-  for ( var key in options ) {
-    if ( groupOptionKeys.includes( key ) ) {
-      shape[ key ] = options[ key ];
-    }
-  }
-}
-
-
-Group.prototype.addChild = function( shape ) {
-  this.children.push( shape );
-};
+var Group = Anchor.subclass({
+  updateSort: false,
+});
 
 // ----- update ----- //
-
-Group.prototype.update = Shape.prototype.update;
-
-Group.prototype.reset = function() {};
-
-Group.prototype.transform = function( translation, rotation, scale ) {
-  // transform children
-  this.children.forEach( function( child ) {
-    child.transform( translation, rotation, scale );
-  });
-};
 
 Group.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
@@ -108,5 +60,3 @@ Group.prototype.getChildFlatGraph = function() {
   });
   return flatGraph;
 };
-
-Group.prototype.renderGraph = Shape.prototype.renderGraph;
