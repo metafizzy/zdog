@@ -24,6 +24,7 @@ var isRotating = true;
 Shape.defaults.fill = true;
 Shape.defaults.stroke = false;
 // Shape.defaults.lineWidth = 1/zoom;
+// Shape.defaults.backfaceHidden = true;
 
 var camera = new Shape({
   rendering: false,
@@ -894,7 +895,7 @@ var sky = new Shape({
       rotate: { y: angle * -i  + TAU/4 },
       translate: { y: 1 },
     });
-    new BGShape({
+    new Shape({
       path: [
         { x: -panelWidth/2, y: topYA },
         { bezier: [
@@ -914,6 +915,7 @@ var sky = new Shape({
       color: blue,
       stroke: true,
       lineWidth: 1,
+      backfaceHidden: true,
     });
   }
 })();

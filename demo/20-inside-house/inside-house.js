@@ -20,14 +20,19 @@ var isRotating = true;
 
 Shape.defaults.stroke = false;
 Shape.defaults.backfaceHidden = true;
-// Shape.defaults.front = { z: 1 };
+Shape.defaults.front = { z: 1 };
 
 var camera = new Shape({
   rendering: false,
-  scale: { x: 10, y: 10, z: 10 },
 });
 
-// -- illustration shapes --- //
+// -- house --- //
+
+var house = new Shape({
+  rendering: false,
+  addTo: camera,
+  scale: { x: 10, y: 10, z: 10 },
+});
 
 var nsWall = new Shape({
   path: [
@@ -37,10 +42,10 @@ var nsWall = new Shape({
     { x:  1, y:  1 },
     { x: -1, y:  1 },
   ],
-  addTo: camera,
+  addTo: house,
   translate: { z: -1 },
   fill: true,
-  color: 'hsla(45, 100%, 50%, 0.8)',
+  color: 'hsla(45, 100%, 50%, 0.6)',
 });
 
 nsWall.copy({
@@ -51,11 +56,11 @@ nsWall.copy({
 var ewWall = new Rect({
   width: 2,
   height: 2,
-  addTo: camera,
+  addTo: house,
   translate: { x: -1 },
   rotate: { y: -TAU/4 },
   fill: true,
-  color: 'hsla(210, 100%, 50%, 0.8)',
+  color: 'hsla(210, 100%, 50%, 0.6)',
 });
 
 ewWall.copy({
@@ -71,11 +76,11 @@ new Shape({
     { x:  1, z:  1 },
     { x: -1, z:  1 },
   ],
-  addTo: camera,
+  addTo: house,
   translate: { y: 1 },
-  front: { y: 1 },
+  front: { y: Shape.defaults.front.z * -1 },
   fill: true,
-  color: 'hsla(120, 100%, 40%, 0.8)',
+  color: 'hsla(120, 100%, 40%, 0.6)',
 });
 
 // roof
@@ -87,16 +92,64 @@ var roof = new Shape({
     { x: roofLength, y:  1 },
     { x: 0, y:  1 },
   ],
-  addTo: camera,
+  addTo: house,
   translate: { y: -2 },
   rotate: { x: -TAU/4, y: TAU/8 },
   fill: true,
-  color: 'hsla(0, 100%, 60%, 0.8)',
+  color: 'hsla(0, 100%, 60%, 0.6)',
 });
 
 roof.copy({
   scale: { x: -1 },
   rotate: { x: -TAU/4, y: -TAU/8 },
+});
+
+// -- chair --- //
+
+var chair = new Shape({
+  rendering: false,
+  addTo: camera,
+  scale: { x: 2, y: 2, z: 2 },
+  translate: { y: 5 },
+});
+// chair back
+var chairLegs = new Shape({
+  path: [
+    { x: -1, y:  2 },
+    { x: -1, y: -2 },
+    { x:  1, y: -2 },
+    { x:  1, y:  2 },
+  ],
+  addTo: chair,
+  translate: { z: 1 },
+  closed: false,
+  stroke: true,
+  lineWidth: 1,
+  fill: false,
+  color: '#333',
+  backfaceHidden: false,
+});
+// chair front
+chairLegs.copy({
+  path: [
+    { x: -1, y: 2 },
+    { x: -1, y: 0 },
+    { x:  1, y: 0 },
+    { x:  1, y: 2 },
+  ],
+  translate: { z: -1 },
+});
+// chair seat
+new Rect({
+  width: 2,
+  height: 2,
+  addTo: chair,
+  rotate: { x: TAU/4 },
+  stroke: true,
+  lineWidth: 1,
+  fill: true,
+  color: '#333',
+  backfaceHidden: false,
 });
 
 // -----  ----- //
