@@ -4,6 +4,7 @@
   "unused": true,
   "undef": true,
   "globals": {
+    "Anchor": false,
     "Dragger": false,
     "Ellipse": false,
     "extend": false,

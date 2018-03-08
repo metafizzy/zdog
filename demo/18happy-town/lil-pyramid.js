@@ -1,8 +1,7 @@
 // -------------------------- lilPyramid -------------------------- //
 
 function lilPyramid( options ) {
-  var anchor = new Shape({
-    rendering: false,
+  var anchor = new Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });

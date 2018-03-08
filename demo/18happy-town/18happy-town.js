@@ -26,8 +26,7 @@ Shape.defaults.stroke = false;
 // Shape.defaults.lineWidth = 1/zoom;
 // Shape.defaults.backfaceHidden = true;
 
-var camera = new Shape({
-  rendering: false,
+var camera = new Anchor({
   rotate: { y: -TAU/8 },
 });
 
@@ -45,8 +44,7 @@ var town = new Group({
 
 // ----- front building ----- //
 
-var frontAnchor = new Shape({
-  rendering: false,
+var frontAnchor = new Anchor({
   addTo: town,
   translate: { x: 16, y: -4, z: -20 },
 });
@@ -144,8 +142,7 @@ door.copy({
 
 // ----- left building ----- //
 
-var leftAnchor = new Shape({
-  rendering: false,
+var leftAnchor = new Anchor({
   addTo: town,
   translate: { x: -13, y: -10, z: -23 },
 });
@@ -302,8 +299,7 @@ leftCorner.copy({
 
 // ----- back tower ----- //
 
-var towerAnchor = new Shape({
-  rendering: false,
+var towerAnchor = new Anchor({
   addTo: town,
   translate: { x: -13, y: -24, z: 4 },
 });
@@ -469,8 +465,7 @@ new Shape({
 
 // ----- church ----- //
 
-var churchAnchor = new Shape({
-  rendering: false,
+var churchAnchor = new Anchor({
   addTo: town,
   translate: { x: -5, y: -4, z: 27 },
 });
@@ -509,8 +504,7 @@ new Ellipse({
 
 ( function() {
 
-  var bellTowerAnchor = new Shape({
-    rendering: false,
+  var bellTowerAnchor = new Anchor({
     addTo: churchAnchor,
     translate: { x: -7, y: -36, z: 4 },
   });
@@ -530,8 +524,7 @@ new Ellipse({
   var roofColors = [ navy, gold, red, navy ];
 
   for ( var i=0; i < 4; i++ ) {
-    var wallAnchor = new Shape({
-      rendering: false,
+    var wallAnchor = new Anchor({
       addTo: bellTowerAnchor,
       rotate: { y: TAU/4 * i },
     });
@@ -888,8 +881,7 @@ var sky = new Group({
     var topYB = topYs[ nextI ];
     var bottomYA = bottomYs[ i ];
     var bottomYB = bottomYs[ nextI ];
-    var panelAnchor = new Shape({
-      rendering: false,
+    var panelAnchor = new Anchor({
       addTo: sky,
       rotate: { y: angle * -i  + TAU/4 },
       translate: { y: 1 },
