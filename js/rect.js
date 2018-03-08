@@ -1,21 +1,27 @@
 // -------------------------- Rect -------------------------- //
 
-function Rect( options ) {
-  options = this.setPath( options );
-  this.create( options );
-}
+var Rect = Shape.subclass();
 
-Rect.prototype = Object.create( Shape.prototype );
-Rect.prototype.constructor = Rect;
+Rect.optionKeys = Rect.optionKeys.concat([
+  'width',
+  'height',
+]);
 
-Rect.prototype.setPath = function( options ) {
+var protoCreate = Rect.prototype.create;
+
+Rect.prototype.create = function( options ) {
+  options.path = getRectPath( options );
+  protoCreate.call( this, options );
+};
+
+function getRectPath( options ) {
   var w = ( options.width || 1 ) / 2;
   var h = ( options.height || 1 ) / 2;
-  options.path = [
+  var path = [
     { x: -w, y: -h },
     { x:  w, y: -h },
     { x:  w, y:  h },
     { x: -w, y:  h },
   ];
-  return options;
-};
+  return path;
+}

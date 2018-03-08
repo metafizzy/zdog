@@ -1,35 +1,6 @@
 // -------------------------- Shape -------------------------- //
 
-function Shape( options ) {
-  this.create( options );
-}
-
-Shape.prototype.create = function( options ) {
-  // default
-  extend( this, Shape.defaults );
-  // set options
-  setOptions( this, options );
-
-  this.updatePathActions();
-
-  // transform
-  this.translate = new Vector3( options.translate );
-  this.rotate = new Vector3( options.rotate );
-  var scale = extend( { x: 1, y: 1, z: 1 }, options.scale );
-  this.scale = new Vector3( scale );
-  // origin & front
-  this.origin = new Vector3();
-  this.front = new Vector3( options.front || this.front );
-  this.renderOrigin = new Vector3();
-  this.renderFront = new Vector3( this.front );
-  // children
-  this.children = [];
-  if ( this.addTo ) {
-    this.addTo.addChild( this );
-  }
-};
-
-Shape.defaults = {
+var Shape = Anchor.subclass({
   stroke: true,
   fill: false,
   color: 'black',
@@ -38,26 +9,27 @@ Shape.defaults = {
   rendering: true,
   path: [ {} ],
   front: { z: -1 },
+});
+
+var protoCreate = Anchor.prototype.create;
+
+Shape.prototype.create = function( options ) {
+  Anchor.prototype.create.call( this, options );
+
+  this.updatePathActions();
+
+  // front
+  this.front = new Vector3( options.front || this.front );
+  this.renderFront = new Vector3( this.front );
 };
 
-var optionKeys = Object.keys( Shape.defaults ).concat([
-  'rotate',
-  'translate',
-  'scale',
-  'front',
-  'addTo',
+var defaultShapeKeys = Object.keys( Shape.defaults );
+Shape.optionKeys = Shape.optionKeys.concat( defaultShapeKeys ).concat([
   'width',
   'height',
+  'front',
   'backfaceHidden',
 ]);
-
-function setOptions( shape, options ) {
-  for ( var key in options ) {
-    if ( optionKeys.includes( key ) ) {
-      shape[ key ] = options[ key ];
-    }
-  }
-}
 
 var actionNames = [
   'move',
@@ -93,21 +65,7 @@ Shape.prototype.updatePathActions = function() {
   });
 };
 
-Shape.prototype.addChild = function( shape ) {
-  this.children.push( shape );
-};
-
 // ----- update ----- //
-
-Shape.prototype.update = function() {
-  // update self
-  this.reset();
-  // update children
-  this.children.forEach( function( child ) {
-    child.update();
-  });
-  this.transform( this.translate, this.rotate, this.scale );
-};
 
 Shape.prototype.reset = function() {
   this.renderOrigin.set( this.origin );
@@ -132,38 +90,6 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   });
 };
 
-
-Shape.prototype.updateGraph = function() {
-  this.update();
-  this.checkFlatGraph();
-  this.flatGraph.forEach( function( item ) {
-    item.updateSortValue();
-  });
-  // perspective sort
-  this.flatGraph.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
-};
-
-Shape.prototype.checkFlatGraph = function() {
-  if ( !this.flatGraph ) {
-    this.updateFlatGraph();
-  }
-};
-
-Shape.prototype.updateFlatGraph = function() {
-  this.flatGraph = this.getFlatGraph();
-};
-
-// return Array of self & all child graph items
-Shape.prototype.getFlatGraph = function() {
-  var flatGraph = [ this ];
-  this.children.forEach( function( child ) {
-    var childFlatGraph = child.getFlatGraph();
-    flatGraph = flatGraph.concat( childFlatGraph );
-  });
-  return flatGraph;
-};
 
 Shape.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
@@ -228,31 +154,4 @@ Shape.prototype.renderPath = function( ctx ) {
   if ( this.fill ) {
     ctx.fill();
   }
-};
-
-Shape.prototype.renderGraph = function( ctx ) {
-  this.checkFlatGraph();
-  this.flatGraph.forEach( function( item ) {
-    item.render( ctx );
-  });
-};
-
-// ----- misc ----- //
-
-Shape.prototype.copy = function( options ) {
-  // copy options
-  var shapeOptions = {};
-  optionKeys.forEach( function( key ) {
-    shapeOptions[ key ] = this[ key ];
-  }, this );
-  // add set options
-  setOptions( shapeOptions, options );
-  var ShapeClass = this.constructor;
-  return new ShapeClass( shapeOptions );
-};
-
-Shape.prototype.normalizeRotate = function() {
-  this.rotate.x = modulo( this.rotate.x, TAU );
-  this.rotate.y = modulo( this.rotate.y, TAU );
-  this.rotate.z = modulo( this.rotate.z, TAU );
 };

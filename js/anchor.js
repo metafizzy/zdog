@@ -141,3 +141,27 @@ Anchor.prototype.normalizeRotate = function() {
   this.rotate.y = modulo( this.rotate.y, TAU );
   this.rotate.z = modulo( this.rotate.z, TAU );
 };
+
+// ----- subclass ----- //
+
+function getSubclass( Super ) {
+  return function( defaults ) {
+    // create constructor
+    function Item( options ) {
+      this.create( options );
+    }
+
+    Item.prototype = Object.create( Super.prototype );
+    Item.prototype.constructor = Item;
+
+    defaults = defaults || {};
+    Item.defaults = extend( defaults, Super.defaults );
+    Item.optionKeys = Super.optionKeys.slice(0)
+      .concat( Object.keys( Item.defaults ) );
+    Item.subclass = getSubclass( Item );
+
+    return Item;
+  };
+}
+
+Anchor.subclass = getSubclass( Anchor );

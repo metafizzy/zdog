@@ -1,37 +1,44 @@
 // -------------------------- Ellipse -------------------------- //
 
-function Ellipse( options ) {
-  options = this.setPath( options );
-  // always keep open
-  // fixes overlap bug when lineWidth is greater than radius
-  options.closed = false;
-  this.create( options );
-}
+var Ellipse = Shape.subclass({
+  width: 1,
+  height: 1,
+  closed: false,
+});
 
-Ellipse.prototype = Object.create( Shape.prototype );
-Ellipse.prototype.constructor = Ellipse;
+Ellipse.optionKeys = Ellipse.optionKeys.concat([
+  'width',
+  'height',
+]);
 
-Ellipse.prototype.setPath = function( options ) {
-  var w = ( options.width || 1 ) / 2;
-  var h = ( options.height || 1 ) / 2;
-  options.path = [
-    { x: 0, y: -h },
+var protoCreate = Ellipse.prototype.create;
+
+Ellipse.prototype.create = function( options ) {
+  options.path = getEllipsePath( options );
+  protoCreate.call( this, options );
+};
+
+function getEllipsePath( options ) {
+  var x = options.width / 2;
+  var y = options.height / 2;
+  var path = [
+    { x: 0, y: -y },
     { arc: [ // top right
-      { x: w, y: -h },
-      { x: w, y: 0 },
+      { x: x, y: -y },
+      { x: x, y: 0 },
     ]},
     { arc: [ // bottom right
-      { x: w, y: h },
-      { x: 0, y: h },
+      { x: x, y: y },
+      { x: 0, y: y },
     ]},
     { arc: [ // bottom left
-      { x: -w, y: h },
-      { x: -w, y: 0 },
+      { x: -x, y: y },
+      { x: -x, y: 0 },
     ]},
     { arc: [ // bottom left
-      { x: -w, y: -h },
-      { x: 0, y: -h },
+      { x: -x, y: -y },
+      { x: 0, y: -y },
     ]},
   ];
-  return options;
-};
+  return path;
+}

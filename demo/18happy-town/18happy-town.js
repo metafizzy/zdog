@@ -21,10 +21,10 @@ if ( pixelRatio > 1 ) {
 var isRotating = true;
 
 // default to flat, filled shapes
-Shape.defaults.fill = true;
-Shape.defaults.stroke = false;
-// Shape.defaults.lineWidth = 1/zoom;
-// Shape.defaults.backfaceHidden = true;
+[ Shape, Rect, Ellipse ].forEach( function( ItemClass ) {
+  ItemClass.defaults.fill = true;
+  ItemClass.defaults.stroke = false;
+});
 
 var camera = new Anchor({
   rotate: { y: -TAU/8 },
