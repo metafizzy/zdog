@@ -309,31 +309,13 @@ var blZ  = (bodyFillDepth - bodyLineWidth) / 2 + 2.75;
 var bodyLinesCamera = new Anchor();
 // body lines
 [ magenta, orange, gold, blue ].map( function( color, i ) {
-  // TODO use RoundRect
-  return new Shape({
-    path: [
-      { x: -blXA, z: 0 },
-      { arc: [
-          { x: -blXA, z: -blZ },
-          { x: -blXB, z: -blZ }
-      ]},
-      { x: blXB, z: -blZ },
-      { arc: [
-        { x: blXA, z: -blZ },
-        { x: blXA, z: 0 }
-      ]},
-      { arc: [
-        { x: blXA, z: blZ },
-        { x: blXB, z: blZ },
-      ]},
-      { x: -blXB, z: blZ },
-      { arc: [
-        {x: -blXA, z: blZ },
-        { x: -blXA, z: 0 },
-      ]},
-    ],
+  return new RoundedRect({
+    width: blXA * 2,
+    height: blZ * 2,
+    radius: blZ,
     addTo: bodyLinesCamera,
     translate: { y: -16.75 + 10.5*i },
+    rotate: { x: TAU/4 },
     color: color,
     lineWidth: 11,
     fill: true,

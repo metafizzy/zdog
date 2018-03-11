@@ -13,6 +13,7 @@
     "modulo": false,
     "PathAction": false,
     "Rect": true,
+    "RoundedRect": true,
     "Shape": true,
     "TAU": false,
     "Vector3": false
