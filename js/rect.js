@@ -5,21 +5,13 @@ var Rect = Shape.subclass({
   height: 1,
 });
 
-var protoCreate = Rect.prototype.create;
-
-Rect.prototype.create = function( options ) {
-  options.path = getRectPath( options );
-  protoCreate.call( this, options );
-};
-
-function getRectPath( options ) {
-  var x = options.width / 2;
-  var y = options.height / 2;
-  var path = [
+Rect.prototype.updatePath = function() {
+  var x = this.width / 2;
+  var y = this.height / 2;
+  this.path = [
     { x: -x, y: -y },
     { x:  x, y: -y },
     { x:  x, y:  y },
     { x: -x, y:  y },
   ];
-  return path;
-}
+};

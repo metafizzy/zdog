@@ -15,7 +15,7 @@ var protoCreate = Anchor.prototype.create;
 
 Shape.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
-
+  this.updatePath(); // hook for Rect, Ellipse, & other subclasses
   this.updatePathActions();
 
   // front
@@ -37,6 +37,8 @@ var actionNames = [
   'bezier',
   'arc',
 ];
+
+Shape.prototype.updatePath = function() {};
 
 // parse path into PathActions
 Shape.prototype.updatePathActions = function() {

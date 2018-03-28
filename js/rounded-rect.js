@@ -7,18 +7,11 @@ var RoundedRect = Shape.subclass({
   closed: false,
 });
 
-var protoCreate = RoundedRect.prototype.create;
-
-RoundedRect.prototype.create = function( options ) {
-  options.path = getRoundedRectPath( options );
-  protoCreate.call( this, options );
-};
-
-function getRoundedRectPath( options ) {
-  var xA = options.width / 2;
-  var yA = options.height / 2;
+RoundedRect.prototype.updatePath = function() {
+  var xA = this.width / 2;
+  var yA = this.height / 2;
   var shortSide = Math.min( xA, yA );
-  var radius = Math.min( options.radius, shortSide );
+  var radius = Math.min( this.radius, shortSide );
   var xB = xA - radius;
   var yB = yA - radius;
   var path = [
@@ -59,5 +52,5 @@ function getRoundedRectPath( options ) {
     path.push({ x: xB, y: -yA });
   }
 
-  return path;
-}
+  this.path = path;
+};
