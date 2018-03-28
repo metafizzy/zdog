@@ -21,6 +21,7 @@ Shape.prototype.create = function( options ) {
   // front
   this.front = new Vector3( options.front || this.front );
   this.renderFront = new Vector3( this.front );
+  this.renderNormal = new Vector3();
 };
 
 var defaultShapeKeys = Object.keys( Shape.defaults );
@@ -82,6 +83,7 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   // TODO, only transform these if backfaceHidden for perf?
   this.renderOrigin.transform( translation, rotation, scale );
   this.renderFront.transform( translation, rotation, scale );
+  this.renderNormal.set( this.renderOrigin ).subtract( this.renderFront );
   // transform points
   this.pathActions.forEach( function( pathAction ) {
     pathAction.transform( translation, rotation, scale );
@@ -111,7 +113,7 @@ Shape.prototype.render = function( ctx ) {
     return;
   }
   // hide backface
-  var isFacingBack = this.renderFront.z > this.renderOrigin.z;
+  var isFacingBack = this.renderNormal.z > 0;
   if ( this.backfaceHidden && isFacingBack ) {
     return;
   }

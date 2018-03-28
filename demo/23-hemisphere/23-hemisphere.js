@@ -23,6 +23,8 @@ var gold = '#EA0';
 var orange = '#E62';
 var magenta = '#C25';
 var navy = '#249';
+var brown = '#C25';
+var blue = '#EA0';
 
 [ Shape, Rect, Ellipse ].forEach( function( ShapeClass ) {
   ShapeClass.defaults.stroke = false;
@@ -31,74 +33,79 @@ var navy = '#249';
 
 // -- illustration shapes --- //
 
-var scene = new Anchor();
+var scene = new Anchor({
+  rotate: { z: TAU/8 }
+});
 
-var quarterCircle = new Shape({
-  rendering: false,
-  path: [
-    { x: 0, y: -1 },
-    { arc: [
-      { x: 1, y: -1 },
-      { x: 1, y: 0 },
-    ]},
-    { x: 0, y: 0 },
-  ],
+// -----  ----- //
+
+var radius = 12;
+
+hemisphere({
+  size: 16,
   addTo: scene,
-  color: 'transparent',
+  translate: { x: radius },
+  rotate: { y: TAU/4 },
+  insideColor: gold,
+  outsideColor: navy,
+  stroke: false,
+  fill: true,
 });
 
-
-quarterCircle.copy({
-  color: navy,
-  scale: { x: 16, y: 16 },
-});
-quarterCircle.copy({
-  color: orange,
-  scale: { x: 16, y: -16 },
-});
-quarterCircle.copy({
-  color: gold,
-  scale: { x: -16, y: -16 },
-});
-quarterCircle.copy({
-  color: yellow,
-  scale: { x: -16, y: 16 },
+hemisphere({
+  size: 16,
+  addTo: scene,
+  translate: { x: -radius },
+  rotate: { y: -TAU/4 },
+  insideColor: gold,
+  outsideColor: navy,
+  stroke: false,
+  fill: true,
 });
 
-quarterCircle.copy({
-  color: magenta,
-  scale: { x: 16, y: 16 },
+hemisphere({
+  size: 16,
+  addTo: scene,
+  translate: { y: -radius },
+  rotate: { x: -TAU/4 },
+  insideColor: magenta,
+  outsideColor: yellow,
+  stroke: false,
+  fill: true,
+});
+
+hemisphere({
+  size: 16,
+  addTo: scene,
+  translate: { y: radius },
   rotate: { x: TAU/4 },
-});
-quarterCircle.copy({
-  color: orange,
-  scale: { x: 16, y: 16 },
-  rotate: { y: -TAU/4 },
-});
-quarterCircle.copy({
-  color: yellow,
-  scale: { x: 16, y: -16 },
-  rotate: { y: -TAU/4 },
+  insideColor: magenta,
+  outsideColor: yellow,
+  stroke: false,
+  fill: true,
 });
 
-var circle = new Ellipse({
-  width: 32,
-  height: 32,
+hemisphere({
+  size: 16,
   addTo: scene,
-  color: gold,
-  backfaceHidden: true,
+  translate: { z: -radius },
+  // rotate: { x: -TAU/4 },
+  insideColor: yellow,
+  outsideColor: gold,
+  stroke: false,
+  fill: true,
 });
-circle.copy({
+
+hemisphere({
+  size: 16,
+  addTo: scene,
+  translate: { z: radius },
   rotate: { y: TAU/2 },
-  color: magenta,
+  insideColor: yellow,
+  outsideColor: gold,
+  stroke: false,
+  fill: true,
 });
-
-var faceDot = new Shape({
-  path: [{ z: -16 }],
-  addTo: scene,
-});
-
-var faceRenderPoint = faceDot.pathActions[0].endRenderPoint;
 
 // -- animate --- //
 
@@ -112,12 +119,8 @@ animate();
 
 // -- update -- //
 
-var faceTheta = 0;
-
 function update() {
   scene.rotate.y += isRotating ? +TAU/150 : 0;
-  faceTheta = Math.atan2( faceRenderPoint.y, faceRenderPoint.x );
-
   scene.updateGraph();
 }
 
@@ -133,34 +136,14 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  ctx.fillStyle = '#EEE';
-  ctx.beginPath();
-  ctx.arc( 0, 0, 16, 0, TAU );
-  ctx.fill();
+  // ctx.fillStyle = '#EEE';
+  // ctx.beginPath();
+  // ctx.arc( 0, 0, 16, 0, TAU );
+  // ctx.fill();
 
 
-  ctx.save();
-  ctx.rotate( faceTheta );
-
-  ctx.lineWidth = 0.5;
-  ctx.strokeStyle = '#333';
-  ctx.beginPath();
-  ctx.moveTo(0,0);
-  ctx.lineTo(16,0);
-  ctx.stroke();
-
-  ctx.fillStyle = magenta;
-  ctx.beginPath();
-  ctx.arc( 0, 0, 16, TAU/4, -TAU/4 );
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.restore();
 
   scene.renderGraph( ctx );
-
-
-
 
   ctx.restore();
 }
