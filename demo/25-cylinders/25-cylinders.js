@@ -33,19 +33,22 @@ var scene = new Anchor();
 // -----  ----- //
 
 
-new Hemisphere({
-  radius: 6.5,
+new Cylinder({
+  radius: 4,
+  length: 6,
   addTo: scene,
-  translate: { y: -16 },
+  translate: { y: -12 },
   rotate: { x: -TAU/4 },
+  // rotate: { x: -TAU/8 },
   insideColor: navy,
   outsideColor: magenta,
   stroke: false,
 });
-new Hemisphere({
-  radius: 6.5,
+new Cylinder({
+  radius: 4,
+  length: 6,
   addTo: scene,
-  translate: { y: 16 },
+  translate: { y: 12 },
   rotate: { x: TAU/4 },
   insideColor: navy,
   outsideColor: magenta,
@@ -65,16 +68,25 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
       rotate: { x: TAU/6 },
     });
 
-    new Hemisphere({
-      radius: 6.5,
+    new Cylinder({
+      radius: 4,
+      length: 6,
       addTo: rotor2,
-      translate: { y: 16*ySide },
+      translate: { y: 12*ySide },
       rotate: { x: TAU/4*ySide },
       outsideColor: colorWheel[i],
       insideColor: colorWheel[ (i+7) % 5 ],
       stroke: false,
     });
   }
+});
+
+new Shape({
+  rendering: false,
+  addTo: scene,
+  lineWidth: 18,
+  // color: '#FED',
+  color: 'hsla(50, 50%, 90%, 0.8)',
 });
 
 // -- animate --- //

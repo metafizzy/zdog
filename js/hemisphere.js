@@ -1,3 +1,5 @@
+// -------------------------- Hemisphere -------------------------- //
+
 var Hemisphere = Group.subclass({
   radius: 0.5,
   color: '#333',
@@ -9,10 +11,9 @@ var Hemisphere = Group.subclass({
 });
 
 Hemisphere.prototype.create = function( options ) {
-
   // call super
   Group.prototype.create.apply( this, arguments );
-
+  // composite shape, create child shapes
   // outside face
   var face = new Ellipse({
     width: this.radius * 2,
@@ -24,24 +25,21 @@ Hemisphere.prototype.create = function( options ) {
     fill: this.fill,
     backfaceHidden: true,
   });
-  // outside face
+  // inside face
   face.copy({
     color: this.insideColor || this.color,
     rotate: { y: TAU/2 },
   });
-  // console.log( this.addTo );
+  // used for calculating contour angle
   this.renderNormal = face.renderNormal;
 };
 
 Hemisphere.prototype.render = function( ctx ) {
-  // console.log('render');
   this.renderDome( ctx );
   Group.prototype.render.call( this, ctx );
 };
 
 Hemisphere.prototype.renderDome = function( ctx ) {
-  // console.log('render dome');
-  // render dome
   var contourAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x );
   var startAngle = contourAngle + TAU/4;
   var endAngle = contourAngle - TAU/4;
