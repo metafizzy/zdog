@@ -156,9 +156,16 @@ function getSubclass( Super ) {
     Item.prototype.constructor = Item;
 
     Item.defaults = extend( {}, Super.defaults );
-    Item.defaults = extend( Item.defaults, defaults );
-    Item.optionKeys = Super.optionKeys.slice(0)
-      .concat( Object.keys( Item.defaults ) );
+    extend( Item.defaults, defaults );
+    // create optionKeys
+    Item.optionKeys = Super.optionKeys.slice(0);
+    // add defaults keys to optionKeys, dedupe
+    Object.keys( Item.defaults ).forEach( function( key ) {
+      if ( !Item.optionKeys.includes( key ) ) {
+        Item.optionKeys.push( key );
+      }
+    });
+
     Item.subclass = getSubclass( Item );
 
     return Item;
