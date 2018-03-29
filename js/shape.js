@@ -3,7 +3,7 @@
 var Shape = Anchor.subclass({
   stroke: true,
   fill: false,
-  color: 'black',
+  color: '#333',
   lineWidth: 1,
   closed: true,
   rendering: true,

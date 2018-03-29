@@ -16,10 +16,9 @@ if ( pixelRatio > 1 ) {
   canvas.style.height = canvasHeight / pixelRatio + 'px';
 }
 
-var PHI = ( Math.sqrt(5) - 1 ) / 2;
 var isRotating = true;
-var cameraT = 0;
-var cameraSpeed = TAU/180;
+var t = 0;
+var cycleFrame = 360;
 // colors
 var yellow = '#ED0';
 var gold = '#EA0';
@@ -29,67 +28,35 @@ var navy = '#249';
 
 // -- illustration shapes --- //
 
-var scene = new Anchor({
-  // rotate: { z: TAU/8 },
-});
-
-// -----  ----- //
-
-var a = 14;
-var b = a * PHI;
-
-var dot = new Shape({
-  rendering: false,
-  translate: { x: 0, y: a, z: b },
-  addTo: scene,
-  lineWidth: 1,
-  color: navy,
-});
-dot.copy({ translate: { x: 0, y: -a, z: -b } });
-
-dot.copy({ translate: { x:  b, y:  0, z:  a }, color: gold });
-dot.copy({ translate: { x: -b, y:  0, z: -a }, color: gold });
-
-dot.copy({ translate: { x:  a, y:  b, z:  0 }, color: magenta });
-dot.copy({ translate: { x: -a, y: -b, z:  0 }, color: magenta });
-
-dot.copy({ translate: { x:  0, y:  a, z: -b }, color: orange });
-dot.copy({ translate: { x:  0, y: -a, z:  b }, color: orange });
-
-dot.copy({ translate: { x: -b, y:  0, z:  a }, color: yellow });
-dot.copy({ translate: { x:  b, y:  0, z: -a }, color: yellow });
-
-dot.copy({ translate: { x:  a, y: -b, z:  0 } });
-dot.copy({ translate: { x: -a, y:  b, z:  0 } });
+var scene = new Anchor();
 
 // -----  ----- //
 
 
-hemisphere({
-  size: 13,
+new Hemisphere({
+  radius: 6.5,
   addTo: scene,
   translate: { y: -16 },
   rotate: { x: -TAU/4 },
-  insideColor: gold,
-  outsideColor: navy,
+  insideColor: navy,
+  outsideColor: magenta,
   stroke: false,
   fill: true,
 });
-hemisphere({
-  size: 13,
+new Hemisphere({
+  radius: 6.5,
   addTo: scene,
   translate: { y: 16 },
   rotate: { x: TAU/4 },
-  insideColor: gold,
-  outsideColor: navy,
+  insideColor: navy,
+  outsideColor: magenta,
   stroke: false,
   fill: true,
 });
 
-var colorWheel = [ navy, magenta, orange, gold, yellow ];
+var colorWheel = [ navy, magenta, orange, gold, yellow, ];
 
-( function() {
-
+[ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
       addTo: scene,
@@ -100,46 +67,30 @@ var colorWheel = [ navy, magenta, orange, gold, yellow ];
       rotate: { x: TAU/6 },
     });
 
-    hemisphere({
-      size: 13,
+    new Hemisphere({
+      radius: 6.5,
       addTo: rotor2,
-      translate: { y: 16 },
-      rotate: { x: TAU/4 },
+      translate: { y: 16*ySide },
+      rotate: { x: TAU/4*ySide },
       outsideColor: colorWheel[i],
       insideColor: colorWheel[ (i+7) % 5 ],
       stroke: false,
       fill: true,
     });
   }
-
-})();
-( function() {
-
-  for ( var i=0; i < 5; i++ ) {
-    var rotor1 = new Anchor({
-      addTo: scene,
-      rotate: { y: TAU/5 * i },
-    });
-    var rotor2 = new Anchor({
-      addTo: rotor1,
-      rotate: { x: TAU/6 },
-    })
-    hemisphere({
-      size: 13,
-      addTo: rotor2,
-      translate: { y: -16 },
-      rotate: { x: -TAU/4 },
-      outsideColor: colorWheel[i],
-      insideColor: colorWheel[ (i+7) % 5 ],
-      stroke: false,
-      fill: true,
-    });
-  }
-
-
-})();
+});
 
 // -- animate --- //
+
+function easeInOut( i ) {
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
+}
 
 function animate() {
   update();
@@ -153,9 +104,14 @@ animate();
 
 function update() {
   if ( isRotating ) {
-    cameraT += cameraSpeed;
-    scene.rotate.y = cameraT;
-    scene.rotate.x = Math.sin( cameraT/4 ) * TAU/8;
+    t += 1/cycleFrame;
+    t = t % 1;
+    var isFirstHalf = t < 0.5;
+    var halfT = isFirstHalf ? t : t - 0.5;
+    var doubleEaseT = easeInOut( halfT * 2 ) / 2;
+    doubleEaseT += isFirstHalf ? 0 : 0.5;
+    scene.rotate.y = doubleEaseT * TAU;
+    scene.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;
   }
 
   scene.updateGraph();
