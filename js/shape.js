@@ -113,7 +113,7 @@ Shape.prototype.render = function( ctx ) {
     return;
   }
   // hide backface
-  var isFacingBack = this.renderNormal.z > 0;
+  var isFacingBack = this.renderNormal.z < 0;
   if ( this.backfaceHidden && isFacingBack ) {
     return;
   }

@@ -13,12 +13,12 @@ Hemisphere.prototype.create = function( options ) {
   // call super
   Group.prototype.create.apply( this, arguments );
 
-  // inside face
+  // outside face
   var face = new Ellipse({
     width: this.radius * 2,
     height: this.radius * 2,
     addTo: this,
-    color: this.insideColor || this.color,
+    color: this.outsideColor || this.color,
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
@@ -26,7 +26,7 @@ Hemisphere.prototype.create = function( options ) {
   });
   // outside face
   face.copy({
-    color: this.outsideColor || this.color,
+    color: this.insideColor || this.color,
     rotate: { y: TAU/2 },
   });
   // console.log( this.addTo );
