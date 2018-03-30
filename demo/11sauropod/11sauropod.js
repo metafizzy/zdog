@@ -24,7 +24,9 @@ var antiTwist = 1 / Math.cos( TAU/8 );
 // colors
 var blue = '#19F';
 
-var camera = new Anchor();
+var camera = new Anchor({
+  scale: { x: antiTwist, z: antiTwist },
+});
 
 // -- illustration shapes --- //
 
@@ -44,25 +46,24 @@ var leg = new Shape({
     { line: [ { y: 12 } ] },
   ],
   addTo: camera,
-  scale: { x: antiTwist, z: antiTwist },
-  translate: { x: 16*antiTwist, y: 16, z: -8*antiTwist },
+  translate: { x: 16, y: 16, z: -8 },
   lineWidth: 8,
   color: blue,
   closed: false,
 });
 // front left leg
 leg.copy({
-  translate: { x: 16*antiTwist, y: 16, z: 8*antiTwist },
+  translate: { x: 16, y: 16, z: 8 },
   rotate: { y: TAU/4 },
 });
 // back right leg
 leg.copy({
-  translate: { x: -16*antiTwist, y: 16, z: -8*antiTwist },
+  translate: { x: -16, y: 16, z: -8 },
   rotate: { y: -TAU/4 },
 });
 // back left leg
 leg.copy({
-  translate: { x: -16*antiTwist, y: 16, z: 8*antiTwist },
+  translate: { x: -16, y: 16, z: 8 },
   rotate: { y: TAU/2 },
 });
 
@@ -71,28 +72,25 @@ leg.copy({
 var legConnector = new Shape({
   path: [ { x: -8 }, { x: 8 } ],
   addTo: camera,
-  translate: { y: 16, z: -8*antiTwist },
-  scale: { x: antiTwist },
+  translate: { y: 16, z: -8 },
   lineWidth: 8,
   color: blue,
   closed: false,
 });
 legConnector.copy({
-  translate: { y: 16, z: 8*antiTwist },
+  translate: { y: 16, z: 8 },
 });
 
 // body
-var bodyZ = ( ( 8*antiTwist + 4 ) - 10 );
-// var bodyX = ( ( 16*antiTwist + 4 ) - 10 );
-// fudge it
-var bodyX = 20.5;
 new Shape({
   path: [
-    { x: -bodyX, z: -bodyZ },
-    { x:  bodyX, z: -bodyZ },
-    { x:  bodyX, z:  bodyZ },
-    { x: -bodyX, z:  bodyZ },
+    { x: -1, z: -1 },
+    { x:  1, z: -1 },
+    { x:  1, z:  1 },
+    { x: -1, z:  1 },
   ],
+  // fudge these numbers
+  scale: { x: 14.25, z: 3.75 },
   addTo: camera,
   translate: { y: 10 },
   lineWidth: 20,
@@ -123,7 +121,6 @@ new Shape({
     { x: 24, y: -28 },
   ],
   addTo: camera,
-  scale: { x: antiTwist },
   lineWidth: 8,
   color: blue,
   closed: false,
@@ -136,7 +133,6 @@ new Shape({
     { x: 24, y: -28 },
   ],
   addTo: camera,
-  scale: { x: antiTwist },
   lineWidth: 8,
   color: blue,
   closed: false,
@@ -144,7 +140,7 @@ new Shape({
 
 // head ball
 var head = new Shape({
-  translate: { x: 16*antiTwist, y: -31 },
+  translate: { x: 16, y: -31 },
   addTo: camera,
   lineWidth: 14,
   color: blue,
@@ -166,25 +162,25 @@ eye.copy({
 // tail
 new Shape({
   path: [
-    { x: -22, z: 0 },
+    { x: -16, z: 0 },
     { arc: [
-      { x: -34, z: 0 },
-      { x: -34, z: 12 },
+      { x: -24, z: 0 },
+      { x: -24, z: 8 },
     ]},
     { arc: [
-      { x: -34, z: 24 },
-      { x: -22, z: 24 },
+      { x: -24, z: 16 },
+      { x: -16, z: 16 },
     ]},
-    { x: -14, z: 24 },
+    { x: -12, z: 16 },
     { arc: [
-      { x: -6, z: 24 },
-      { x: -6, z: 32 },
+      { x: -6, z: 16 },
+      { x: -6, z: 22 },
     ]},
     { arc: [
-      { x: -6, z: 40 },
-      { x: -14, z: 40 },
+      { x: -6, z: 28 },
+      { x: -12, z: 28 },
     ]},
-    { x: -26, z: 40 },
+    { x: -18, z: 28 },
   ],
   addTo: camera,
   translate: { y: 4 },
