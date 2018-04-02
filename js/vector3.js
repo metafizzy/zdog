@@ -69,11 +69,19 @@ Vector3.prototype.subtract = function( vec ) {
   return this;
 };
 
-Vector3.prototype.multiply = function( vec ) {
-  if ( !vec ) {
+Vector3.prototype.multiply = function( value ) {
+  if ( value === undefined ) {
     return;
   }
-  vec = Vector3.sanitize( vec, 1 );
+  // multiple all values by same number
+  if ( typeof value == 'number' ) {
+    this.x *= value;
+    this.y *= value;
+    this.z *= value;
+    return;
+  }
+  // multiply object
+  var vec = Vector3.sanitize( value, 1 );
   this.x *= vec.x;
   this.y *= vec.y;
   this.z *= vec.z;

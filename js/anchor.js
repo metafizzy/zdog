@@ -13,8 +13,7 @@ Anchor.prototype.create = function( options ) {
   // transform
   this.translate = new Vector3( options.translate );
   this.rotate = new Vector3( options.rotate );
-  var scale = extend( { x: 1, y: 1, z: 1 }, options.scale );
-  this.scale = new Vector3( scale );
+  var scale = Vector3.sanitize( options.scale, 1 );
   // origin
   this.origin = new Vector3();
   this.renderOrigin = new Vector3();
