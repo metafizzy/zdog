@@ -8,6 +8,7 @@
     "Dragger": false,
     "Ellipse": true,
     "extend": false,
+    "getDistance1": false,
     "Group": true,
     "lerp": false,
     "modulo": false,

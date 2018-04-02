@@ -24,3 +24,7 @@ function lerp( a, b, t ) {
 function modulo( num, div ) {
   return ( ( num % div ) + div ) % div;
 }
+
+function getDistance1( x, y ) {
+  return Math.sqrt( x * x + y * y );
+}

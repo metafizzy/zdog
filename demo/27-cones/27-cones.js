@@ -18,7 +18,7 @@ if ( pixelRatio > 1 ) {
   canvas.style.height = canvasHeight / pixelRatio + 'px';
 }
 
-var isRotating = false;
+var isRotating = true;
 var t = 0;
 var cycleFrame = 360;
 // colors
@@ -34,64 +34,54 @@ var scene = new Anchor();
 
 // -----  ----- //
 
-
-// new Cone({
-//   radius: 6.5,
-//   height: 8,
-//   addTo: scene,
-//   translate: { y: 16 },
-//   scale: { x: 2, y: 2 },
-//   rotate: { x: -TAU/4 },
-//   insideColor: navy,
-//   outsideColor: magenta,
-//   stroke: false,
-// });
-// new Cone({
-//   radius: 6.5,
-//   height: 8,
-//   addTo: scene,
-//   translate: { y: -16 },
-//   rotate: { x: TAU/4 },
-//   insideColor: navy,
-//   outsideColor: magenta,
-//   stroke: false,
-// });
+new Cone({
+  radius: 6.5,
+  height: 8,
+  addTo: scene,
+  translate: { y: 16 },
+  // scale: { x: 2, y: 2 },
+  rotate: { x: -TAU/4 },
+  insideColor: navy,
+  outsideColor: magenta,
+  stroke: false,
+});
+new Cone({
+  radius: 6.5,
+  height: 8,
+  addTo: scene,
+  translate: { y: -16 },
+  rotate: { x: TAU/4 },
+  insideColor: navy,
+  outsideColor: magenta,
+  stroke: false,
+});
 
 var colorWheel = [ navy, magenta, orange, gold, yellow, ];
 
-// [ -1, 1 ].forEach( function( ySide ) {
-//   for ( var i=0; i < 5; i++ ) {
-//     var rotor1 = new Anchor({
-//       addTo: scene,
-//       rotate: { y: TAU/5 * i },
-//     });
-//     var rotor2 = new Anchor({
-//       addTo: rotor1,
-//       rotate: { x: TAU/6 },
-//     });
-//
-//     new Cone({
-//       radius: 6.5,
-//       height: 8,
-//       addTo: rotor2,
-//       translate: { y: -16*ySide },
-//       rotate: { x: TAU/4*ySide },
-//       outsideColor: colorWheel[i],
-//       insideColor: colorWheel[ (i+7) % 5 ],
-//       stroke: false,
-//     });
-//   }
-// });
+[ -1, 1 ].forEach( function( ySide ) {
+  for ( var i=0; i < 5; i++ ) {
+    var rotor1 = new Anchor({
+      addTo: scene,
+      rotate: { y: TAU/5 * i },
+    });
+    var rotor2 = new Anchor({
+      addTo: rotor1,
+      rotate: { x: TAU/6 },
+    });
 
     new Cone({
       radius: 6.5,
       height: 8,
-      addTo: scene,
-      translate: { z: -12 },
-      outsideColor: navy,
-      insideColor: orange,
+      addTo: rotor2,
+      translate: { y: -16*ySide },
+      rotate: { x: TAU/4*ySide },
+      outsideColor: colorWheel[i],
+      insideColor: colorWheel[ (i+7) % 5 ],
       stroke: false,
     });
+  }
+});
+
 
 // -- animate --- //
 
