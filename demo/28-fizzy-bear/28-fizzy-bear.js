@@ -46,6 +46,9 @@ var outlineCamera = new Anchor();
 // -- illustration shapes --- //
 var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn, backLegCutIn;
 
+var bodyWidth = 6;
+var bodyHeight = 14;
+var bodyLineWidth = 28;
 
 [ false, true ].forEach( function( isOutline ) {
   var shapeCamera = isOutline ? outlineCamera : camera;
@@ -53,12 +56,12 @@ var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn, backLegCutIn;
 
   // unibody
   var unibody = new Rect({
-    width: 6,
-    height: 14,
+    width: bodyWidth,
+    height: bodyHeight,
     addTo: shapeCamera,
-    translate: { y: -1 },
+    // translate: { y: -1 },
     color: isOutline ? black : magenta,
-    lineWidth: 28 + outlineWidth,
+    lineWidth: bodyLineWidth + outlineWidth,
     fill: true,
   });
 
@@ -293,28 +296,49 @@ var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn, backLegCutIn;
 
 });
 
-var bodyFillWidth = 34;
-var bodyFillDepth = 28;
-var bodyLineWidth = 10.5;
-
-var blXA = (bodyFillWidth - bodyLineWidth) / 2 + 2.75;
-var blXB = (bodyFillWidth - bodyFillDepth) / 2 + 2.75;
-var blZ  = (bodyFillDepth - bodyLineWidth) / 2 + 2.75;
+var unibodyHeight = bodyHeight + bodyLineWidth; // 28 + 14 = 42
+// section size = 42/4 == 10.5
+var sectionSize = unibodyHeight / 4;
 
 var bodyLinesCamera = new Anchor();
 // body lines
-[ magenta, orange, gold, blue ].map( function( color, i ) {
-  return new RoundedRect({
-    width: blXA * 2,
-    height: blZ * 2,
-    radius: blZ,
+[ magenta, orange, gold, blue ].forEach( function( color, i ) {
+  var stripeGroup = new Group({
     addTo: bodyLinesCamera,
-    translate: { y: -16.75 + 10.5*i },
+    translate: { y: ( i - 1.5 ) * 10.5 },
+  });
+  new Cylinder({
+    radius: bodyLineWidth/2,
+    length: sectionSize,
+    addTo: stripeGroup,
+    translate: { x: -bodyWidth/2 },
     rotate: { x: TAU/4 },
     color: color,
-    lineWidth: 11,
     fill: true,
-    closed: false,
+    stroke: false,
+  });
+  new Cylinder({
+    radius: bodyLineWidth/2,
+    length: sectionSize,
+    addTo: stripeGroup,
+    translate: { x: bodyWidth/2 },
+    rotate: { x: TAU/4 },
+    color: color,
+    fill: true,
+    stroke: false,
+  });
+  // panel to cover cylinders overlap
+  var panel = new Rect({
+    width: bodyWidth,
+    height: sectionSize,
+    addTo: stripeGroup,
+    translate: { z: -bodyLineWidth/2 },
+    color: color,
+    fill: true,
+    stroke: false,
+  });
+  panel.copy({
+    translate: { z: bodyLineWidth/2 },
   });
 });
 
