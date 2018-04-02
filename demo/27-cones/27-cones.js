@@ -41,8 +41,8 @@ new Cone({
   translate: { y: 16 },
   // scale: { x: 2, y: 2 },
   rotate: { x: -TAU/4 },
-  insideColor: navy,
-  outsideColor: magenta,
+  baseColor: navy,
+  color: magenta,
   stroke: false,
 });
 new Cone({
@@ -51,8 +51,8 @@ new Cone({
   addTo: scene,
   translate: { y: -16 },
   rotate: { x: TAU/4 },
-  insideColor: navy,
-  outsideColor: magenta,
+  baseColor: navy,
+  color: magenta,
   stroke: false,
 });
 
@@ -75,8 +75,8 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
       addTo: rotor2,
       translate: { y: -16*ySide },
       rotate: { x: TAU/4*ySide },
-      outsideColor: colorWheel[i],
-      insideColor: colorWheel[ (i+7) % 5 ],
+      color: colorWheel[i],
+      baseColor: colorWheel[ (i+7) % 5 ],
       stroke: false,
     });
   }

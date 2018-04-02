@@ -4,8 +4,7 @@ var Cone = Group.subclass({
   radius: 0.5,
   height: 1,
   color: '#333',
-  outsideColor: undefined,
-  insideColor: undefined,
+  baseColor: undefined,
   fill: true,
   stroke: true,
   lineWidth: 1,
@@ -21,25 +20,27 @@ Cone.prototype.create = function( options ) {
     translate: { z: -this.height },
     addTo: this,
   });
-  // outside face
-  var face = new Ellipse({
+  // outside base
+  var base = new Ellipse({
     width: this.radius * 2,
     height: this.radius * 2,
     addTo: this,
-    color: this.outsideColor || this.color,
+    color: this.color,
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backfaceHidden: true,
+    backfaceHidden: this.baseColor ? true : false,
   });
-  // inside face
-  face.copy({
-    color: this.insideColor || this.color,
-    rotate: { y: TAU/2 },
-  });
+  // inside base
+  if ( this.baseColor ) {
+    base.copy({
+      color: this.baseColor,
+      rotate: { y: TAU/2 },
+    });
+  }
 
   // used for calculating contour angle
-  this.renderNormal = face.renderNormal;
+  this.renderNormal = base.renderNormal;
   // vectors used for calculation
   this.renderApex = new Vector3();
   this.tangentA = new Vector3();
@@ -84,7 +85,7 @@ Cone.prototype.renderCone = function( ctx ) {
   tangentA.add( this.renderOrigin );
   tangentB.add( this.renderOrigin );
 
-  ctx.strokeStyle = ctx.fillStyle = this.outsideColor || this.color;
+  ctx.strokeStyle = ctx.fillStyle = this.color;
   ctx.beginPath();
   ctx.moveTo( tangentA.x, tangentA.y );
   ctx.lineTo( this.apex.renderOrigin.x, this.apex.renderOrigin.y );

@@ -4,8 +4,7 @@ var Cylinder = Group.subclass({
   radius: 0.5,
   length: 1,
   color: '#333',
-  outsideColor: undefined,
-  insideColor: undefined,
+  baseColor: undefined,
   fill: true,
   stroke: true,
   lineWidth: 1,
@@ -16,40 +15,44 @@ Cylinder.prototype.create = function() {
   // call super
   Group.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
-  var faceZ = this.length/2;
-  // front inside face
-  var face, frontInsideFace;
-  face = frontInsideFace = new Ellipse({
+  var baseZ = this.length/2;
+  var base, frontBase, backBase;
+  // front outside base
+  base = frontBase = new Ellipse({
     width: this.radius * 2,
     height: this.radius * 2,
     addTo: this,
-    translate: { z: -faceZ },
-    color: this.insideColor || this.color,
+    translate: { z: -baseZ },
+    rotate: { y: TAU/2 },
+    color: this.color,
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backfaceHidden: true,
+    backfaceHidden: this.baseColor ? true : false,
   });
-  // front outisde face
-  var outsideColor = this.outsideColor || this.color;
-  face.copy({
-    color: outsideColor,
-    rotate: { y: TAU/2 },
-  });
-  // back inside face
-  var backInsideFace = face.copy({
-    translate: { z: faceZ },
-    rotate: { y: TAU/2 },
-  });
-  // back outside face
-  face.copy({
-    color: outsideColor,
-    translate: { z: faceZ },
+  // back outside base
+  backBase = base.copy({
+    translate: { z: baseZ },
+    rotate: { y: 0 },
   });
 
+  if ( this.baseColor ) {
+    // front inside base
+    base.copy({
+      rotate: { y: 0 },
+      color: this.baseColor
+    });
+    // back inside base
+    base.copy({
+      translate: { z: baseZ },
+      rotate: { y: TAU/2 },
+      color: this.baseColor
+    });
+  }
+
   // used for rendering ring
-  this.frontRenderOrigin = frontInsideFace.renderOrigin;
-  this.backRenderOrigin = backInsideFace.renderOrigin;
+  this.frontOrigin = frontBase.renderOrigin;
+  this.backOrigin = backBase.renderOrigin;
 };
 
 Cylinder.prototype.render = function( ctx ) {
@@ -58,12 +61,14 @@ Cylinder.prototype.render = function( ctx ) {
 };
 
 Cylinder.prototype.renderRing = function( ctx ) {
-  ctx.strokeStyle = this.outsideColor || this.color;
+  ctx.strokeStyle = this.color;
   ctx.lineWidth = this.radius * 2;
   ctx.lineCap = 'butt'; // nice
 
   ctx.beginPath();
-  ctx.moveTo( this.frontRenderOrigin.x, this.frontRenderOrigin.y );
-  ctx.lineTo( this.backRenderOrigin.x, this.backRenderOrigin.y );
+  ctx.moveTo( this.frontOrigin.x, this.frontOrigin.y );
+  ctx.lineTo( this.backOrigin.x, this.backOrigin.y );
   ctx.stroke();
+
+  ctx.lineCap = 'round'; // reset
 };

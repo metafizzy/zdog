@@ -3,8 +3,7 @@
 var Hemisphere = Group.subclass({
   radius: 0.5,
   color: '#333',
-  outsideColor: undefined,
-  insideColor: undefined,
+  baseColor: undefined,
   fill: true,
   stroke: true,
   lineWidth: 1,
@@ -14,24 +13,26 @@ Hemisphere.prototype.create = function( options ) {
   // call super
   Group.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
-  // outside face
-  var face = new Ellipse({
+  // outside base
+  var base = new Ellipse({
     width: this.radius * 2,
     height: this.radius * 2,
     addTo: this,
-    color: this.outsideColor || this.color,
+    color: this.color,
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backfaceHidden: true,
+    backfaceHidden: this.baseColor ? true : false,
   });
-  // inside face
-  face.copy({
-    color: this.insideColor || this.color,
-    rotate: { y: TAU/2 },
-  });
+  // inside base
+  if ( this.baseColor ) {
+    base.copy({
+      color: this.baseColor,
+      rotate: { y: TAU/2 },
+    });
+  }
   // used for calculating contour angle
-  this.renderNormal = face.renderNormal;
+  this.renderNormal = base.renderNormal;
 };
 
 Hemisphere.prototype.render = function( ctx ) {
@@ -44,8 +45,7 @@ Hemisphere.prototype.renderDome = function( ctx ) {
   var startAngle = contourAngle + TAU/4;
   var endAngle = contourAngle - TAU/4;
 
-  var outsideColor = this.outsideColor || this.color;
-  ctx.strokeStyle = ctx.fillStyle = outsideColor;
+  ctx.strokeStyle = ctx.fillStyle = this.color;
   ctx.lineWidth = this.lineWidth;
   ctx.beginPath();
   var x = this.renderOrigin.x;

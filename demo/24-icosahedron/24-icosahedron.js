@@ -38,8 +38,8 @@ new Hemisphere({
   addTo: scene,
   translate: { y: -16 },
   rotate: { x: -TAU/4 },
-  insideColor: navy,
-  outsideColor: magenta,
+  color: magenta,
+  baseColor: navy,
   stroke: false,
 });
 new Hemisphere({
@@ -47,8 +47,8 @@ new Hemisphere({
   addTo: scene,
   translate: { y: 16 },
   rotate: { x: TAU/4 },
-  insideColor: navy,
-  outsideColor: magenta,
+  color: magenta,
+  baseColor: navy,
   stroke: false,
 });
 
@@ -70,8 +70,8 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
       addTo: rotor2,
       translate: { y: 16*ySide },
       rotate: { x: TAU/4*ySide },
-      outsideColor: colorWheel[i],
-      insideColor: colorWheel[ (i+7) % 5 ],
+      color: colorWheel[i],
+      baseColor: colorWheel[ (i+7) % 5 ],
       stroke: false,
     });
   }

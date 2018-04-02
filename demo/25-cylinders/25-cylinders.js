@@ -32,26 +32,29 @@ var scene = new Anchor();
 
 // -----  ----- //
 
+var radius = 5;
+var length = 5;
+var y = 12;
 
 new Cylinder({
-  radius: 4,
-  length: 6,
+  radius: radius,
+  length: length,
   addTo: scene,
-  translate: { y: -12 },
+  translate: { y: -y },
   rotate: { x: -TAU/4 },
   // rotate: { x: -TAU/8 },
-  insideColor: navy,
-  outsideColor: magenta,
+  color: magenta,
+  baseColor: navy,
   stroke: false,
 });
 new Cylinder({
-  radius: 4,
-  length: 6,
+  radius: radius,
+  length: length,
   addTo: scene,
-  translate: { y: 12 },
+  translate: { y: y },
   rotate: { x: TAU/4 },
-  insideColor: navy,
-  outsideColor: magenta,
+  baseColor: navy,
+  color: magenta,
   stroke: false,
 });
 
@@ -69,13 +72,13 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
     });
 
     new Cylinder({
-      radius: 4,
-      length: 6,
+      radius: radius,
+      length: length,
       addTo: rotor2,
-      translate: { y: 12*ySide },
+      translate: { y: y*ySide },
       rotate: { x: TAU/4*ySide },
-      outsideColor: colorWheel[i],
-      insideColor: colorWheel[ (i+7) % 5 ],
+      color: colorWheel[i],
+      baseColor: colorWheel[ (i+7) % 5 ],
       stroke: false,
     });
   }
