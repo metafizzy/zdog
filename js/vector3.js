@@ -16,6 +16,7 @@ Vector3.prototype.rotate = function( rotation ) {
   if ( !rotation ) {
     return;
   }
+  rotation = Vector3.sanitize( rotation );
   this.rotateZ( rotation.z );
   this.rotateY( rotation.y );
   this.rotateX( rotation.x );
@@ -72,7 +73,7 @@ Vector3.prototype.multiply = function( vec ) {
   if ( !vec ) {
     return;
   }
-  vec = Vector3.sanitize( vec );
+  vec = Vector3.sanitize( vec, 1 );
   this.x *= vec.x;
   this.y *= vec.y;
   this.z *= vec.z;
@@ -95,10 +96,11 @@ Vector3.prototype.lerp = function( vec, t ) {
 // ----- utils ----- //
 
 // add missing properties
-Vector3.sanitize = function( vec ) {
+Vector3.sanitize = function( vec, value ) {
   vec = vec || {};
-  vec.x = vec.x || 0;
-  vec.y = vec.y || 0;
-  vec.z = vec.z || 0;
+  value = value || 0;
+  vec.x = vec.x === undefined ? value : vec.x;
+  vec.y = vec.y === undefined ? value : vec.y;
+  vec.z = vec.z === undefined ? value : vec.z;
   return vec;
 };
