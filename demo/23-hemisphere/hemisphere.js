@@ -30,8 +30,8 @@ function hemisphere( options ) {
   group.render = function( ctx ) {
     // render dome
     var contourAngle = Math.atan2( face.renderNormal.y, face.renderNormal.x );
-    var startAngle = contourAngle + TAU/4;
-    var endAngle = contourAngle - TAU/4;
+    var startAngle = contourAngle - TAU/4;
+    var endAngle = contourAngle + TAU/4;
 
     ctx.strokeStyle = ctx.fillStyle = outsideColor;
     ctx.lineWidth = options.lineWidth;

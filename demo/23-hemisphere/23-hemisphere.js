@@ -45,17 +45,6 @@ hemisphere({
   size: 16,
   addTo: scene,
   translate: { x: radius },
-  rotate: { y: TAU/4 },
-  insideColor: gold,
-  outsideColor: navy,
-  stroke: false,
-  fill: true,
-});
-
-hemisphere({
-  size: 16,
-  addTo: scene,
-  translate: { x: -radius },
   rotate: { y: -TAU/4 },
   insideColor: gold,
   outsideColor: navy,
@@ -66,10 +55,10 @@ hemisphere({
 hemisphere({
   size: 16,
   addTo: scene,
-  translate: { y: -radius },
-  rotate: { x: -TAU/4 },
-  insideColor: magenta,
-  outsideColor: yellow,
+  translate: { x: -radius },
+  rotate: { y: TAU/4 },
+  insideColor: gold,
+  outsideColor: navy,
   stroke: false,
   fill: true,
 });
@@ -77,7 +66,7 @@ hemisphere({
 hemisphere({
   size: 16,
   addTo: scene,
-  translate: { y: radius },
+  translate: { y: -radius },
   rotate: { x: TAU/4 },
   insideColor: magenta,
   outsideColor: yellow,
@@ -88,7 +77,18 @@ hemisphere({
 hemisphere({
   size: 16,
   addTo: scene,
-  translate: { z: -radius },
+  translate: { y: radius },
+  rotate: { x: -TAU/4 },
+  insideColor: magenta,
+  outsideColor: yellow,
+  stroke: false,
+  fill: true,
+});
+
+hemisphere({
+  size: 16,
+  addTo: scene,
+  translate: { z: radius },
   // rotate: { x: -TAU/4 },
   insideColor: yellow,
   outsideColor: gold,
@@ -99,7 +99,7 @@ hemisphere({
 hemisphere({
   size: 16,
   addTo: scene,
-  translate: { z: radius },
+  translate: { z: -radius },
   rotate: { y: TAU/2 },
   insideColor: yellow,
   outsideColor: gold,
