@@ -27,8 +27,8 @@ unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 var isRotating = true;
 
 var jumpRotation = new Vector3({
-  x: -10/360 * TAU,
-  y: 18/360 * TAU,
+  x: -12/360 * TAU,
+  y: 15/360 * TAU,
   z: -31/360 * TAU,
 });
 
@@ -44,7 +44,8 @@ var camera = new Anchor();
 var outlineCamera = new Anchor();
 
 // -- illustration shapes --- //
-var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn, backLegCutIn;
+var positiveUnibody, rightLegCutInA, rightLegCutInB, bodyCutIn,
+  backLegCutIn, crotchCutIn;
 
 var bodyWidth = 6;
 var bodyHeight = 14;
@@ -258,7 +259,7 @@ var bodyLineWidth = 28;
     ],
     addTo: unibody,
     translate: { x: 9, y: 13, z: 1 },
-    rotate: { z: 49/360 * TAU, x: 0.2 },
+    rotate: { z: 0.7, x: 0.4 },
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
   });
@@ -270,7 +271,7 @@ var bodyLineWidth = 28;
     ],
     addTo: leftThigh,
     translate: leftThigh.path[1],
-    rotate: { z: 0.2, x: 0.8 },
+    rotate: { z: 0.2, x: 0.9 },
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
   });
@@ -291,6 +292,19 @@ var bodyLineWidth = 28;
       // rotate: { y: 1 },
       color: black,
       lineWidth: 4,
+    });
+
+    crotchCutIn = new Shape({
+      path: [
+        { x: -1, z: 2 },
+        { x:  1, z: 0 }
+      ],
+      scale: { x: 2 },
+      addTo: unibody,
+      translate: { x: -5, y: 7+14+2 - 1.5 },
+      color: black,
+      lineWidth: 4,
+      closed: false,
     });
   }
 
@@ -409,6 +423,8 @@ function update() {
   bodyCutIn.rotate.y = isCameraYFront == isCameraYRight ? 1.5 : -1.5;
   bodyCutIn.rotate.y -= cameraRY;
   bodyCutIn.translate.x = isCameraYRight ? 3 : -3;
+
+  crotchCutIn.rendering = cameraRY < TAU/4 || cameraRY > TAU *7/8;
 
   // update cameras
   outlineCamera.updateGraph();
