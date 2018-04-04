@@ -255,7 +255,7 @@ var bodyLineWidth = 28;
   var leftThigh = new Shape({
     path: [
       { y: 2 },
-      { y: 13 },
+      { y: 12 },
     ],
     addTo: unibody,
     translate: { x: 9, y: 13, z: 1 },
@@ -296,12 +296,12 @@ var bodyLineWidth = 28;
 
     crotchCutIn = new Shape({
       path: [
-        { x: -1, z: 2 },
+        { x: -1.5, z: 2 },
         { x:  1, z: 0 }
       ],
       scale: { x: 2 },
       addTo: unibody,
-      translate: { x: -5, y: 7+14+2 - 1.5 },
+      translate: { x: -5, y: 7+14+2 - 1.5, z: -2 },
       color: black,
       lineWidth: 4,
       closed: false,
