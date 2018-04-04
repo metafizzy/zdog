@@ -906,7 +906,7 @@ var sky = new Group({
       color: blue,
       stroke: true,
       lineWidth: 1,
-      backfaceHidden: true,
+      backfaceVisible: false,
     });
   }
 })();

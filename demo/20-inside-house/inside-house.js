@@ -22,7 +22,7 @@ var isRotating = true;
 [ Shape, Rect, Ellipse ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
   ItemClass.defaults.stroke = false;
-  ItemClass.defaults.backfaceHidden = true;
+  ItemClass.defaults.backfaceVisible = false;
   ItemClass.defaults.front = { z: 1 };
 });
 
@@ -127,7 +127,7 @@ var chairLegs = new Shape({
   lineWidth: 1,
   fill: false,
   color: '#333',
-  backfaceHidden: false,
+  backfaceVisible: true,
 });
 // chair front
 chairLegs.copy({
@@ -149,7 +149,7 @@ new Rect({
   lineWidth: 1,
   fill: true,
   color: '#333',
-  backfaceHidden: false,
+  backfaceVisible: true,
 });
 
 // -- animate --- //

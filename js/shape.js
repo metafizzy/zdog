@@ -9,9 +9,8 @@ var Shape = Anchor.subclass({
   rendering: true,
   path: [ {} ],
   front: { z: -1 },
+  backfaceVisible: true,
 });
-
-var protoCreate = Anchor.prototype.create;
 
 Shape.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
@@ -24,14 +23,6 @@ Shape.prototype.create = function( options ) {
   this.renderNormal = new Vector3();
 };
 
-var defaultShapeKeys = Object.keys( Shape.defaults );
-Shape.optionKeys = Shape.optionKeys.concat( defaultShapeKeys ).concat([
-  'width',
-  'height',
-  'front',
-  'backfaceHidden',
-]);
-
 var actionNames = [
   'move',
   'line',
@@ -39,6 +30,7 @@ var actionNames = [
   'arc',
 ];
 
+// place holder for Ellipse, Rect, etc.
 Shape.prototype.updatePath = function() {};
 
 // parse path into PathActions
@@ -80,7 +72,7 @@ Shape.prototype.reset = function() {
 };
 
 Shape.prototype.transform = function( translation, rotation, scale ) {
-  // TODO, only transform these if backfaceHidden for perf?
+  // calculate render points backface visibility & cone/hemisphere shapes
   this.renderOrigin.transform( translation, rotation, scale );
   this.renderFront.transform( translation, rotation, scale );
   this.renderNormal.set( this.renderOrigin ).subtract( this.renderFront );
@@ -112,9 +104,9 @@ Shape.prototype.render = function( ctx ) {
   if ( !this.rendering || !length ) {
     return;
   }
-  // hide backface
+  // do not render if hiding backface
   var isFacingBack = this.renderNormal.z < 0;
-  if ( this.backfaceHidden && isFacingBack ) {
+  if ( !this.backfaceVisible && isFacingBack ) {
     return;
   }
   // render dot or path

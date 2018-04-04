@@ -28,7 +28,7 @@ Cylinder.prototype.create = function() {
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backfaceHidden: this.baseColor ? true : false,
+    backfaceVisible: this.baseColor ? false : true,
   });
   // back outside base
   backBase = base.copy({

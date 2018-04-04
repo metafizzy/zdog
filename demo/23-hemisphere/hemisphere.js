@@ -16,7 +16,7 @@ function hemisphere( options ) {
     lineWidth: options.lineWidth,
     stroke: options.stroke,
     fill: options.fill,
-    backfaceHidden: true,
+    backfaceVisible: false,
   });
   // outside face
   var outsideColor = options.outsideColor || options.color;

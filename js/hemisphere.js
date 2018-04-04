@@ -22,7 +22,7 @@ Hemisphere.prototype.create = function( options ) {
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backfaceHidden: this.baseColor ? true : false,
+    backfaceVisible: this.baseColor ? false : true,
   });
   // inside base
   if ( this.baseColor ) {
