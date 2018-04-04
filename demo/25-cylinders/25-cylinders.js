@@ -36,7 +36,7 @@ var radius = 5;
 var length = 5;
 var y = 12;
 
-new Cylinder({
+var cylinder = new Cylinder({
   radius: radius,
   length: length,
   addTo: scene,
@@ -47,15 +47,12 @@ new Cylinder({
   baseColor: navy,
   stroke: false,
 });
-new Cylinder({
-  radius: radius,
-  length: length,
+cylinder.copy({
   addTo: scene,
   translate: { y: y },
   rotate: { x: TAU/4 },
-  baseColor: navy,
   color: magenta,
-  stroke: false,
+  baseColor: navy,
 });
 
 var colorWheel = [ navy, magenta, orange, gold, yellow, ];
@@ -71,15 +68,12 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
       rotate: { x: TAU/6 },
     });
 
-    new Cylinder({
-      radius: radius,
-      length: length,
+    cylinder.copy({
       addTo: rotor2,
       translate: { y: y*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[i],
       baseColor: colorWheel[ (i+7) % 5 ],
-      stroke: false,
     });
   }
 });

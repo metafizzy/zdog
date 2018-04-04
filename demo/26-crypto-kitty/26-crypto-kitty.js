@@ -224,6 +224,10 @@ diamondPanel.copy({
   color: 'hsla(60, 100%, 50%, 0.1)',
 });
 
+// cat.copyGraph({
+//   translate: { x: 10, y: -10 },
+// });
+
 // -- animate --- //
 
 function animate() {

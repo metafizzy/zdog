@@ -321,7 +321,7 @@ var bodyLinesCamera = new Anchor();
     addTo: bodyLinesCamera,
     translate: { y: ( i - 1.5 ) * 10.5 },
   });
-  new Cylinder({
+  var cylinder = new Cylinder({
     radius: bodyLineWidth/2,
     length: sectionSize,
     addTo: stripeGroup,
@@ -331,15 +331,8 @@ var bodyLinesCamera = new Anchor();
     fill: true,
     stroke: false,
   });
-  new Cylinder({
-    radius: bodyLineWidth/2,
-    length: sectionSize,
-    addTo: stripeGroup,
+  cylinder.copyGraph({
     translate: { x: bodyWidth/2 },
-    rotate: { x: TAU/4 },
-    color: color,
-    fill: true,
-    stroke: false,
   });
   // panel to cover cylinders overlap
   var panel = new Rect({

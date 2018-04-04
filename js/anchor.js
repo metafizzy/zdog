@@ -136,6 +136,16 @@ Anchor.prototype.copy = function( options ) {
   return new ItemClass( itemOptions );
 };
 
+Anchor.prototype.copyGraph = function( options ) {
+  var clone = this.copy( options );
+  this.children.forEach( function( child ) {
+    child.copyGraph({
+      addTo: clone,
+    });
+  });
+  return clone;
+};
+
 Anchor.prototype.normalizeRotate = function() {
   this.rotate.x = modulo( this.rotate.x, TAU );
   this.rotate.y = modulo( this.rotate.y, TAU );

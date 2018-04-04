@@ -34,26 +34,22 @@ var scene = new Anchor();
 
 // -----  ----- //
 
-new Cone({
+var cone = new Cone({
   radius: 6.5,
   height: 8,
   addTo: scene,
   translate: { y: 16 },
   // scale: { x: 2, y: 2 },
   rotate: { x: -TAU/4 },
-  baseColor: navy,
   color: magenta,
+  baseColor: navy,
   stroke: false,
 });
-new Cone({
-  radius: 6.5,
-  height: 8,
-  addTo: scene,
+cone.copy({
   translate: { y: -16 },
   rotate: { x: TAU/4 },
-  baseColor: navy,
   color: magenta,
-  stroke: false,
+  baseColor: navy,
 });
 
 var colorWheel = [ navy, magenta, orange, gold, yellow, ];
@@ -69,15 +65,12 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
       rotate: { x: TAU/6 },
     });
 
-    new Cone({
-      radius: 6.5,
-      height: 8,
+    cone.copy({
       addTo: rotor2,
       translate: { y: -16*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[i],
       baseColor: colorWheel[ (i+7) % 5 ],
-      stroke: false,
     });
   }
 });
