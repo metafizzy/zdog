@@ -3,59 +3,50 @@ var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
 var zoom = 6;
-var canvasWidth = canvas.width = w * zoom;
+var canvasWidth = canvas.width =  w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+// colors
 
-var rZSpeed = 0;
 
 var camera = new Anchor();
 
 // -- illustration shapes --- //
 
-var rect1 = new Rect({
-  width: 12,
-  height: 16,
-  translate: { z: -6 },
-  // rotate: { z: 1 },
-  lineWidth: 2,
-  // fill: true,
-  color: '#08D',
-  addTo: camera,
-});
-
-var moon1 = new Shape({
-  path: [
-    { z: 0 },
-    { z: 6 }
-  ],
-  translate: { y: -11 },
-  lineWidth: 3,
-  color: 'white',
-  addTo: rect1,
-});
-
-new Rect({
-  width: 12,
-  height: 8,
-  translate: { y: 8 },
-  rotate: { x: TAU/4 },
-  lineWidth: 2,
-  fill: true,
-  color: '#E21',
-  addTo: camera,
-});
-
+// rectangle with curve
 new Shape({
   path: [
-    { y: -6, z: 4 },
-    { y:  6, z: 4 },
-    { y:  6, z: 0 },
-    { y: -6, z: 0 },
+    { x: -6, y: -8 },
+    { bezier: [
+      { x:  0, y: -12, z: -5 },
+      { x:  0, y: -4 },
+      { x:  6, y: -8 },
+    ]},
+    { x:  6, y:  8 },
+    { bezier: [
+      { x:  0, y: 8, z: -5 },
+      { x:  0, y: 8, z: 5 },
+      { x:  -6, y: 8 },
+    ]},
+    { x: -6, y:  8 },
   ],
-  lineWidth: 1,
-  fill: true,
-  color: '#F80',
   addTo: camera,
+  lineWidth: 2,
+  color: '#19F',
+});
+
+// quarter circle
+new Shape({
+  path: [
+    { x: 10, y: 0 },
+    { arc: [
+      { x: 20, y: 0 },
+      { x: 20, y: 10 }
+    ]},
+    { x: 10, y: 10 }
+  ],
+  addTo: camera,
+  lineWidth: 2,
+  color: '#A00',
 });
 
 // -- animate --- //
@@ -71,22 +62,15 @@ animate();
 // -- update -- //
 
 function update() {
-  // rotate
-  moon1.rotate.y += 0.03;
-  rect1.rotate.z -= 0.02;
-  camera.rotate.z += rZSpeed;
-  
   camera.updateGraph();
 }
 
 // -- render -- //
-
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-
   ctx.save();
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
@@ -96,11 +80,8 @@ function render() {
   ctx.restore();
 }
 
-// ----- inputs ----- //
 
-document.querySelector('.toggle-z-rotation-button').onclick = function() {
-  rZSpeed = rZSpeed ? 0 : TAU/360;
-};
+// ----- inputs ----- //
 
 // click drag to rotate
 var dragStartAngleX, dragStartAngleY;

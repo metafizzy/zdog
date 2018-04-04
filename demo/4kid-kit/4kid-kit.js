@@ -245,53 +245,61 @@ var cloakZ0 = 0;
 var cloakZ1 = 6;
 var cloakZ2 = 8;
 
-[ 1, -1 ].forEach( function( zSide ) {
-  // top straps
-  [ 1, -1 ].forEach( function( xSide ) {
-    new Shape({
-    path: [
-        { x: cloakX0*xSide, y: cloakY0, z: cloakZ0*zSide },
-        { x: cloakX0*xSide, y: cloakY1, z: cloakZ1*zSide },
-        { x: cloakX1*xSide, y: cloakY1, z: cloakZ1*zSide },
-      ],
-      addTo: scene,
-      fill: true,
-      color: colors.cloak,
-      lineWidth: 4,
-    });
-  });
-
-  var vNeckY = ( cloakY1+cloakY2 ) / 2;
-  var vNeckZ = ( cloakZ2+cloakZ1 ) / 2 * zSide;
-  new Shape({
-    path: [
-      { x: -cloakX0, y: cloakY1, z: cloakZ1*zSide },
-      { x: -cloakX1, y: cloakY1, z: cloakZ1*zSide },
-      { x: 0, y: vNeckY, z: vNeckZ },
-      { x: cloakX1, y: cloakY1, z: cloakZ1*zSide },
-      { x: cloakX0, y: cloakY1, z: cloakZ1*zSide },
-      { x: cloakX0, y: cloakY2, z: cloakZ2*zSide },
-      { x: -cloakX0, y: cloakY2, z: cloakZ2*zSide },
-    ],
-    addTo: scene,
-    fill: true,
-    color: colors.cloak,
-    lineWidth: 4,
-  });
-  new Shape({
-    path: [
-      { x: -cloakX0, y: cloakY2, z: cloakZ2*zSide },
-      { x: cloakX0, y: cloakY2, z: cloakZ2*zSide },
-      { x: cloakX0, y: cloakY3, z: cloakZ2*zSide },
-      { x: -cloakX0, y: cloakY3, z: cloakZ2*zSide },
-    ],
-    addTo: scene,
-    fill: true,
-    color: colors.cloak,
-    lineWidth: 4,
-  });
+var cloakSide = new Anchor({
+  addTo: scene,
 });
 
+// top straps
+var topCloakStrap =   new Shape({
+  path: [
+    { x: cloakX0, y: cloakY0, z: cloakZ0 },
+    { x: cloakX0, y: cloakY1, z: cloakZ1 },
+    { x: cloakX1, y: cloakY1, z: cloakZ1 },
+  ],
+  addTo: cloakSide,
+  fill: true,
+  color: colors.cloak,
+  lineWidth: 4,
+});
+
+topCloakStrap.copy({
+  scale: { x: -1 },
+});
+
+var vNeckY = ( cloakY1+cloakY2 ) / 2;
+var vNeckZ = ( cloakZ2+cloakZ1 ) / 2;
+new Shape({
+  path: [
+    { x: -cloakX0, y: cloakY1, z: cloakZ1 },
+    { x: -cloakX1, y: cloakY1, z: cloakZ1 },
+    { x: 0, y: vNeckY, z: vNeckZ },
+    { x: cloakX1, y: cloakY1, z: cloakZ1 },
+    { x: cloakX0, y: cloakY1, z: cloakZ1 },
+    { x: cloakX0, y: cloakY2, z: cloakZ2 },
+    { x: -cloakX0, y: cloakY2, z: cloakZ2 },
+  ],
+  addTo: cloakSide,
+  fill: true,
+  color: colors.cloak,
+  lineWidth: 4,
+});
+new Shape({
+  path: [
+    { x: -cloakX0, y: cloakY2 },
+    { x: cloakX0, y: cloakY2 },
+    { x: cloakX0, y: cloakY3 },
+    { x: -cloakX0, y: cloakY3 },
+  ],
+  addTo: cloakSide,
+  translate: { z: cloakZ2 },
+  fill: true,
+  color: colors.cloak,
+  lineWidth: 4,
+});
+
+cloakSide.copyGraph({
+  scale: { z: -1 },
+});
 
 
 // -- animate --- //

@@ -1,7 +1,3 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape */
-
-var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 72;
@@ -13,8 +9,8 @@ var canvasHeight = canvas.height = h * zoom;
 // colors
 var gold = '#FA4';
 var crimson = '#C44';
-var charcoal = '#333';
-var gunMetal = '#39A';
+// var charcoal = '#333';
+// var gunMetal = '#39A';
 var glow = '#DFB';
 
 var camera = new Anchor();
@@ -23,20 +19,15 @@ var camera = new Anchor();
 
 // head
 var head = new Shape({
-  points: [ { x: 0, y: 0 } ],
   translate: { y: -22.5 },
   lineWidth: 7,
   color: crimson,
   addTo: camera,
 });
 // mouth guard
-new Shape({
-  points: [
-    { x: -0.5, y: -0.5 },
-    { x:  0.5, y: -0.5 },
-    { x:  0.5, y:  0.5 },
-    { x: -0.5, y:  0.5 },
-  ],
+new Rect({
+  width: 1,
+  height: 1,
   addTo: head,
   translate: { y: 2.5, z: -2.75 },
   color: crimson,
@@ -48,7 +39,7 @@ new Shape({
 [ -1, 1 ].forEach( function( xSide ) {
   // visor panel
   new Shape({
-    points: [
+    path: [
       { x: 0, y: -1, },
       { x: 0, y: 1.25, z: 0.25 },
       { x: 2.25*xSide, y: 0, z: 1},
@@ -62,7 +53,7 @@ new Shape({
   });
   // helmet crimson tube
   new Shape({
-    points: [
+    path: [
       { y: -0.5, z: 1 },
       { y: 0.5, z: -1, x: -0.5*xSide },
     ],
@@ -74,7 +65,7 @@ new Shape({
 
   // breast plate top front
   // new Shape({
-  //   points: [
+  //   path: [
   //     { x: 0, y: -2, z: -2 },
   //     { x: 0, y: 2, z: -4 },
   //     { x: 6*xSide, y: 0, z: -2 },
@@ -89,7 +80,7 @@ new Shape({
   //   color: crimson,
   // });
   new Shape({
-    points: [
+    path: [
       { x: 0, y: -1, z: -2 },
       { x: 0, y: 2.5, z: -4 },
       { x: 5*xSide, y: 0, z: -2 },
@@ -107,7 +98,6 @@ new Shape({
 
   // shoulder
   var shoulder = new Shape({
-    points: [ { x: 0, y: 0 } ],
     translate: { x: 10*xSide, y: -19,  },
     lineWidth: 10,
     color: gold,
@@ -115,7 +105,7 @@ new Shape({
   });
   // upper arm
   new Shape({
-    points: [
+    path: [
       { y: 0 },
       { y: 6 },
     ],
@@ -130,8 +120,6 @@ new Shape({
 });
 
 
-var shapes = camera.getShapes();
-
 // -- animate --- //
 
 function animate() {
@@ -145,30 +133,21 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.update();
-  shapes.forEach( function( shape ) {
-    shape.updateSortValue();
-  });
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
+  camera.updateGraph();
 }
 
 // -- render -- //
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  camera.renderGraph( ctx );
 
   ctx.restore();
 }
@@ -176,30 +155,18 @@ function render() {
 // ----- inputs ----- //
 
 // click drag to rotate
-
-var dragStartX, dragStartY;
 var dragStartAngleX, dragStartAngleY;
 
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = camera.rotate.x;
-  dragStartAngleY = camera.rotate.y;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    dragStartAngleX = camera.rotate.x;
+    dragStartAngleY = camera.rotate.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    camera.rotate.x = dragStartAngleX + angleXMove;
+    camera.rotate.y = dragStartAngleY + angleYMove;
+  },
 });
-
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy * TAU/360;
-  var angleYMove = dx * TAU/360;
-  camera.rotate.x = dragStartAngleX + angleXMove;
-  camera.rotate.y = dragStartAngleY + angleYMove;
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}
