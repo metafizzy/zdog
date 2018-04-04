@@ -1,7 +1,3 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape */
-
-var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 72;
@@ -19,182 +15,221 @@ var colors = {
   armor: '#926',
 };
 
-var rZSpeed = 0;
-
-var angleX = 0;
-var angleY = 0;
-var angleZ = 0;
-
-// collection of shapes
-var shapes = [];
 
 // -- illustration shapes --- //
+
+var scene = new Anchor();
+
 // body center
 new Shape({
-  points: [
-    { x: -3, y: 10, z: 0 },
-    { x: 0, y: 14, z: 0 },
-    { x: 3, y: 10, z: 0 },
+  path: [
+    { x: -3, y: 10 },
+    { x: 0, y: 14 },
+    { x: 3, y: 10 },
   ],
+  addTo: scene,
   color: colors.inner,
   lineWidth: 13,
 });
 
 // head circle
 new Shape({
-  points: [
-    { x: 0, y: -12, z: 0 },
-  ],
+  addTo: scene,
+  translate: { y: -12 },
   color: colors.fur,
   lineWidth: 32,
 });
 
 // nose
-
-var noseZ = -17;
-
+var nose = new Anchor({
+  addTo: scene,
+  translate: { y: -7, z: -17 },
+});
 new Shape({
-  points: [
-    { x: -1, y: -7, z: noseZ },
-    { x: 1, y: -7, z: noseZ },
+  path: [
+    { x: -1 },
+    { x: 1 },
   ],
+  addTo: nose,
   color: colors.eye,
   lineWidth: 3,
 });
 new Shape({
-  points: [
-    { x: 0, y: -7, z: noseZ },
-    { x: 0, y: -6, z: noseZ },
+  path: [
+    { y: 0 },
+    { y: 1 },
   ],
+  addTo: nose,
   color: colors.eye,
   lineWidth: 3,
 });
 
 // snout
 new Shape({
-  points: [
+  path: [
     { x: -2, y: -5, z: -11 },
     { x:  2, y: -5, z: -11 },
     { x:  2, y: -3, z: -7 },
     { x: -2, y: -3, z: -7 },
   ],
+  addTo: scene,
   color: colors.fur,
   lineWidth: 12,
 });
 
-
-[ -1, 1 ].forEach( function( xSide ) {
-
-  // eyes
-  new Shape({
-    points: [
-      { x: 8*xSide, y: -12, z: -11 },
-      { x: 8*xSide, y: -9, z: -11 },
-    ],
-    color: colors.eye,
-    lineWidth: 4,
-  });
-
-  // ears
-  var frontEarZ = -4;
-  var topEarY = -30;
-  var earColor = colors.fur;
-
-  var earA = { x: 14*xSide, y: topEarY+12, z: frontEarZ+4 };
-  var earB = { x: 14*xSide, y: topEarY, z: frontEarZ };
-  var earC = { x: 7*xSide, y: topEarY+11, z: frontEarZ+14 };
-  var earD = { x: 10*xSide, y: topEarY, z: frontEarZ };
-  var earE = { x: 3*xSide, y: topEarY+5, z: frontEarZ };
-  // outer ear
-  new Shape({
-    points: [ earA, earB, earC ],
-    color: earColor,
-    fill: true,
-    lineWidth: 4,
-  });
-  new Shape({
-    points: [ earB, earC, earD ],
-    color: earColor,
-    fill: true,
-    lineWidth: 4,
-  });
-  new Shape({
-    points: [ earC, earD, earE ],
-    color: earColor,
-    fill: true,
-    lineWidth: 4,
-  });
-  // inner ear
-  var innerEarXShift = 4*xSide;
-  new Shape({
-    points: [
-      { x: earA.x - innerEarXShift , y: earA.y-3, z: frontEarZ },
-      { x: earD.x, y: earD.y+5, z: frontEarZ },
-      { x: earE.x + innerEarXShift, y: earE.y+2, z: frontEarZ },
-    ],
-    color: colors.inner,
-    fill: true,
-    lineWidth: 3,
-  });
+// eyes
+var eye = new Shape({
+  path: [
+    { y: -12 },
+    { y: -9 },
+  ],
+  addTo: scene,
+  translate: { x: -8, z: -11 },
+  color: colors.eye,
+  lineWidth: 4,
+});
+eye.copy({
+  translate: { x: 8, z: -11 },
+});
 
 
-  // whiskers
-  [ -0, -6 ].forEach( function( yShift ) {
-    var whiskerX0 = 10*xSide;
-    var whiskerX1 = 17*xSide;
-    var whiskerY0 = -6+yShift;
-    var whiskerY1 = -2+yShift;
+// ears
+var frontEarZ = -4;
+var topEarY = -30;
+var earColor = colors.fur;
 
-    new Shape({
-      points: [
-        { x: whiskerX0, y: whiskerY0, z: -6 },
-        { x: whiskerX0, y: whiskerY1, z: -6 },
-        { x: whiskerX1, y: whiskerY1, z: -6 },
-      ],
-      fill: true,
-      color: colors.fur,
-      lineWidth: 3,
-    });
-  });
+var earAnchor = new Anchor({
+  addTo: scene,
+  translate: { y: topEarY, z: frontEarZ },
+});
 
-  // arms
+var earA = { x: 14, y: 12, z: 4 };
+var earB = { x: 14, y: 0, z: 0 };
+var earC = { x: 7, y: 11, z: 14 };
+var earD = { x: 10, y: 0, z: 0 };
+var earE = { x: 3, y: 5, z: 0 };
+// outer ear
+new Shape({
+  path: [ earA, earB, earC ],
+  addTo: earAnchor,
+  color: earColor,
+  fill: true,
+  lineWidth: 4,
+});
+new Shape({
+  path: [ earB, earC, earD ],
+  addTo: earAnchor,
+  color: earColor,
+  fill: true,
+  lineWidth: 4,
+});
+new Shape({
+  path: [ earC, earD, earE ],
+  addTo: earAnchor,
+  color: earColor,
+  fill: true,
+  lineWidth: 4,
+});
+// inner ear
+var innerEarXShift = 4;
+new Shape({
+  path: [
+    { x: earA.x - innerEarXShift , y: earA.y-3 },
+    { x: earD.x, y: earD.y+5 },
+    { x: earE.x + innerEarXShift, y: earE.y+2 },
+  ],
+  addTo: earAnchor,
+  color: colors.inner,
+  fill: true,
+  lineWidth: 3,
+});
 
-  // shoulder
-  new Shape({
-    points: [
-      { x: 11*xSide, y: 6, z: 2 },
-      { x: 12*xSide, y: 9, z: 2.5 },
-    ],
-    closed: true,
-    color: colors.armor,
-    lineWidth: 8,
-  });
-  // forearm
-  new Shape({
-    points: [
-      { x: 12*xSide, y: 12, z: 2.5 },
-      { x: 12*xSide, y: 15, z: 2 },
-    ],
-    color: colors.fur,
-    lineWidth: 8,
-  });
-  // hand
-  new Shape({
-    points: [ { x: 11*xSide, y: 18, z: 1} ],
-    color: colors.armor,
-    lineWidth: 10,
-  });
+earAnchor.copyGraph({
+  scale: { x: -1 },
+});
 
-  // leg
-  new Shape({
-    points: [
-      { x: 6*xSide, y: 20, z: 0 },
-      { x: 6*xSide, y: 27, z: 0 },
-    ],
-    color: colors.armor,
-    lineWidth: 8,
-  });
 
+//var whiskerX0 = 10*xSide;
+//var whiskerX1 = 17*xSide;
+//var whiskerY0 = -6+yShift;
+//var whiskerY1 = -2+yShift;
+
+// whiskers
+var whisker = new Shape({
+  path: [
+    { x: 10, y: -6 },
+    { x: 10, y: -2 },
+    { x: 17, y: -2 },
+  ],
+  addTo: scene,
+  translate: { z: -6 },
+  fill: true,
+  color: colors.fur,
+  lineWidth: 3,
+});
+whisker.copy({
+  translate: { y: -6, z: -6 },
+});
+whisker.copy({
+  scale: { x: -1 },
+});
+whisker.copy({
+  scale: { x: -1 },
+  translate: { y: -6, z: -6 },
+});
+
+// arms
+
+var armAnchor = new Anchor({
+  addTo: scene,
+});
+
+// shoulder
+new Shape({
+  path: [
+    { x: 11, y: 6, z: 2 },
+    { x: 12, y: 9, z: 2.5 },
+  ],
+  addTo: armAnchor,
+  closed: true,
+  color: colors.armor,
+  lineWidth: 8,
+});
+// forearm
+new Shape({
+  path: [
+    { x: 12, y: 12, z: 2.5 },
+    { x: 12, y: 15, z: 2 },
+  ],
+  addTo: armAnchor,
+  color: colors.fur,
+  lineWidth: 8,
+});
+// hand
+new Shape({
+  path: [ { x: 11, y: 18, z: 1} ],
+  addTo: armAnchor,
+  color: colors.armor,
+  lineWidth: 10,
+});
+
+armAnchor.copyGraph({
+  scale: { x: -1 },
+});
+
+// legs
+var leg = new Shape({
+  path: [
+    { y: 20 },
+    { y: 27 },
+  ],
+  addTo: scene,
+  translate: { x: -6 },
+  color: colors.armor,
+  lineWidth: 8,
+});
+leg.copy({
+  translate: { x: 6 },
 });
 
 var cloakX0 = 8;
@@ -214,11 +249,12 @@ var cloakZ2 = 8;
   // top straps
   [ 1, -1 ].forEach( function( xSide ) {
     new Shape({
-    points: [
+    path: [
         { x: cloakX0*xSide, y: cloakY0, z: cloakZ0*zSide },
         { x: cloakX0*xSide, y: cloakY1, z: cloakZ1*zSide },
         { x: cloakX1*xSide, y: cloakY1, z: cloakZ1*zSide },
       ],
+      addTo: scene,
       fill: true,
       color: colors.cloak,
       lineWidth: 4,
@@ -228,7 +264,7 @@ var cloakZ2 = 8;
   var vNeckY = ( cloakY1+cloakY2 ) / 2;
   var vNeckZ = ( cloakZ2+cloakZ1 ) / 2 * zSide;
   new Shape({
-    points: [
+    path: [
       { x: -cloakX0, y: cloakY1, z: cloakZ1*zSide },
       { x: -cloakX1, y: cloakY1, z: cloakZ1*zSide },
       { x: 0, y: vNeckY, z: vNeckZ },
@@ -237,17 +273,19 @@ var cloakZ2 = 8;
       { x: cloakX0, y: cloakY2, z: cloakZ2*zSide },
       { x: -cloakX0, y: cloakY2, z: cloakZ2*zSide },
     ],
+    addTo: scene,
     fill: true,
     color: colors.cloak,
     lineWidth: 4,
   });
   new Shape({
-    points: [
+    path: [
       { x: -cloakX0, y: cloakY2, z: cloakZ2*zSide },
       { x: cloakX0, y: cloakY2, z: cloakZ2*zSide },
       { x: cloakX0, y: cloakY3, z: cloakZ2*zSide },
       { x: -cloakX0, y: cloakY3, z: cloakZ2*zSide },
     ],
+    addTo: scene,
     fill: true,
     color: colors.cloak,
     lineWidth: 4,
@@ -270,67 +308,40 @@ animate();
 // -- update -- //
 
 function update() {
-  // rotate
-  angleZ += rZSpeed;
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return b.sortValue - a.sortValue;
-  });
-  // render shapes
-  shapes.forEach( function( shape ) {
-    shape.update( angleX, angleY, angleZ );
-  });
+  scene.updateGraph();
 }
 
 // -- render -- //
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  scene.renderGraph( ctx );
 
   ctx.restore();
 }
 
 // ----- inputs ----- //
 
-document.querySelector('.toggle-z-rotation-button').onclick = function() {
-  rZSpeed = rZSpeed ? 0 : TAU/360;
-};
-
 // click drag to rotate
-
-var dragStartX, dragStartY;
 var dragStartAngleX, dragStartAngleY;
 
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = angleX;
-  dragStartAngleY = angleY;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    dragStartAngleX = scene.rotate.x;
+    dragStartAngleY = scene.rotate.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    scene.rotate.x = dragStartAngleX + angleXMove;
+    scene.rotate.y = dragStartAngleY + angleYMove;
+  },
 });
-
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy * TAU/360;
-  var angleYMove = dx * TAU/360;
-  angleX = dragStartAngleX + angleXMove;
-  angleY = dragStartAngleY + angleYMove;
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}

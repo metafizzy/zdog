@@ -15,7 +15,7 @@ Anchor.prototype.create = function( options ) {
   this.rotate = new Vector3( options.rotate );
   // scale
   if ( typeof options.scale == 'number' ) {
-    this.scale = Vector3.sanitize( {}, options.scale )
+    this.scale = Vector3.sanitize( {}, options.scale );
   } else {
     this.scale = Vector3.sanitize( options.scale, 1 );
   }
@@ -121,6 +121,10 @@ Anchor.prototype.updateSortValue = function() {
 Anchor.prototype.render = function() {};
 
 Anchor.prototype.renderGraph = function( ctx ) {
+  if ( !ctx ) {
+    throw new Error( 'ctx is ' + ctx + '. ' +
+      'Canvas context required for render. Check .renderGraph( ctx ).' );
+  }
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( ctx );

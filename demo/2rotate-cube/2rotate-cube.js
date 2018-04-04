@@ -1,7 +1,3 @@
-/* jshint browser: true, devel: true, unused: true, undef: true */
-/* globals Shape */
-
-var TAU = Math.PI * 2;
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 48;
@@ -21,59 +17,55 @@ var colors = {
 
 var rZSpeed = 0;
 
-var angleX = 0;
-var angleY = 0;
-var angleZ = 0;
-
-// collection of shapes
-var shapes = [];
+var scene = new Anchor();
 
 // -- illustration shapes --- //
 
 // front square
-new Shape({
-  points: [
-    { x: -10, y: -10, z: -10 },
-    { x: 10, y: -10, z: -10 },
-    { x: 10, y: 10, z: -10 },
-    { x: -10, y: 10, z: -10 },
-  ],
+new Rect({
+  width: 20,
+  height: 20,
+  addTo: scene,
+  translate: { z: -10 },
   color: colors.cloak,
   lineWidth: 2,
-})
+});
 
 // back triangle
 new Shape({
-  points: [
-    { x: -10, y: -10, z: 10 },
-    { x: 10, y: -10, z: 10 },
-    { x: 10, y: 10, z: 10 },
+  path: [
+    { x: -1, y: -1 },
+    { x: 1, y: -1 },
+    { x: 1, y: 1 },
   ],
+  addTo: scene,
+  scale: 10,
+  translate: { z: 10 },
   color: colors.fur,
   lineWidth: 2,
 });
 
 // side diamond
 new Shape({
-  points: [
+  path: [
     { x: -10, y: -8, z: 0 },
     { x: -10, y: 0, z: -8 },
     { x: -10, y: 8, z: 0 },
     { x: -10, y: 0, z: 8 },
   ],
+  addTo: scene,
   color: colors.inner,
   fill: true,
   lineWidth: 1,
 });
 
 // side filled square
-new Shape({
-  points: [
-    { x: 10, y: -6, z: -6 },
-    { x: 10, y: 6, z: -6 },
-    { x: 10, y: 6, z: 6 },
-    { x: 10, y: -6, z: 6 },
-  ],
+new Rect({
+  width: 12,
+  height: 12,
+  addTo: scene,
+  rotate: { y: TAU/4 },
+  translate: { x: 10 },
   color: colors.inner,
   fill: true,
   lineWidth: 1,
@@ -94,31 +86,24 @@ animate();
 
 function update() {
   // rotate
-  angleZ += rZSpeed;
-  // perspective sort
-  shapes.sort( function( a, b ) {
-    return ( b.sortValue ) - ( a.sortValue );
-  });
-  // render shapes
-  shapes.forEach( function( shape ) {
-    shape.update( angleX, angleY, angleZ );
-  });
+  scene.rotate.z += rZSpeed;
+
+  scene.updateGraph();
 }
 
 // -- render -- //
 
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
 
   ctx.save();
   ctx.scale( zoom, zoom );
-  ctx.translate( 24, 30 );
+  ctx.translate( w/2, h/2 );
 
-  shapes.forEach( function( shape ) {
-    shape.render( ctx );
-  });
+  scene.renderGraph( ctx );
 
   ctx.restore();
 }
@@ -130,30 +115,18 @@ document.querySelector('.toggle-z-rotation-button').onclick = function() {
 };
 
 // click drag to rotate
+var dragStartAngleX, dragStartAngleY;
 
-var dragStartX, dragStartY;
-var dragStartAngleX, dragStartAngleX;
-
-document.addEventListener( 'mousedown', function( event ) {
-  dragStartX = event.pageX;
-  dragStartY = event.pageY;
-  dragStartAngleX = angleX;
-  dragStartAngleY = angleY;
-
-  window.addEventListener( 'mousemove', onMousemoveDrag );
-  window.addEventListener( 'mouseup', onMouseupDrag );
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    dragStartAngleX = scene.rotate.x;
+    dragStartAngleY = scene.rotate.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    scene.rotate.x = dragStartAngleX + angleXMove;
+    scene.rotate.y = dragStartAngleY + angleYMove;
+  },
 });
-
-function onMousemoveDrag( event ) {
-  var dx = event.pageX - dragStartX;
-  var dy = event.pageY - dragStartY;
-  var angleXMove = dy * TAU/360;
-  var angleYMove = dx * TAU/360;
-  angleX = dragStartAngleX + angleXMove;
-  angleY = dragStartAngleY + angleYMove;
-}
-
-function onMouseupDrag() {
-  window.removeEventListener( 'mousemove', onMousemoveDrag );
-  window.removeEventListener( 'mouseup', onMouseupDrag );
-}
