@@ -455,7 +455,7 @@ var grassBlade = new Shape({
   ],
   addTo: foregroundA,
   translate: { x: -20, y: 56 },
-  scale: { x: 8, y: 8 },
+  scale: 8,
   rotate: { z: 0.6 },
   color: midnight,
   lineWidth: 1,
@@ -470,13 +470,13 @@ grassBlade.copy({
 grassBlade.copy({
   translate: { x: -62, y: 40 },
   rotate: { z: 0.8 },
-  scale: { x: 7, y: 7 },
+  scale: 7,
 });
 
 grassBlade.copy({
   translate: { x: -64, y: 35 },
   rotate: { z: 0.4 },
-  scale: { x: 7, y: 7 },
+  scale: 7,
 });
 
 // ----- foregroundB ----- //
@@ -538,13 +538,13 @@ tree( foregroundTree, {
 
 grassBlade.copy({
   addTo: foregroundB,
-  scale: { x: 12, y: 12 },
+  scale: 12,
   translate: { x: 46, y: 54 },
   rotate: { z: 0 },
 });
 grassBlade.copy({
   addTo: foregroundB,
-  scale: { x: 10, y: 10 },
+  scale: 10,
   translate: { x: 28, y: 58 },
   rotate: { z: TAU/2 - 0.4 },
 });

@@ -32,7 +32,7 @@ var camera = new Anchor();
 
 var house = new Anchor({
   addTo: camera,
-  scale: { x: 10, y: 10, z: 10 },
+  scale: 10,
 });
 
 var nsWall = new Shape({
@@ -109,7 +109,7 @@ roof.copy({
 
 var chair = new Anchor({
   addTo: camera,
-  scale: { x: 2, y: 2, z: 2 },
+  scale: 2,
   translate: { y: 5 },
 });
 // chair back

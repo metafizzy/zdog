@@ -97,7 +97,7 @@ new Shape({
 
   ],
   addTo: cameraY,
-  scale: { x: 16, y: 16 },
+  scale: 16,
   translate: { y: 4, z: -12 },
 });
 

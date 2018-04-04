@@ -4,7 +4,7 @@ function makeBird( options ) {
 
   var arrow = new Anchor({
     addTo: options.addTo,
-    scale: { x: 2/3, y: 2/3, z: 2/3 },
+    scale: 2/3,
     rotate: { z: spin },
   });
 
