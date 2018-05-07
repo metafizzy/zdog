@@ -24,8 +24,6 @@ if ( pixelRatio > 1 ) {
 unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
 unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 
-var isRotating = true;
-
 var jumpRotation = new Vector3({
   x: -12/360 * TAU,
   y: 15/360 * TAU,
@@ -43,6 +41,8 @@ var camera = new Anchor();
 
 var bearAnchor = new Anchor({
   addTo: camera,
+  // translate: { z: -w/3 },
+  rotate: jumpRotation,
 });
 
 var positiveAnchor = new Group({
@@ -383,8 +383,6 @@ positiveUnibody.render = function( ctx ) {
 
 // -- animate --- //
 
-var t = 0;
-
 function animate() {
   update();
   render();
@@ -395,23 +393,12 @@ animate();
 
 // -- update -- //
 
-// i, 0->1
-function easeInOut( i ) {
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}
-
 function update() {
-  if ( isRotating ) {
-    t += TAU/180;
-    var easeT = easeInOut( ( t/TAU) % 1 );
-    camera.rotate.y = easeT*TAU*-2 + jumpRotation.y;
-  }
+  // if ( isRotating ) {
+  //   t += TAU/180;
+  //   var easeT = easeInOut( ( t/TAU) % 1 );
+  //   camera.rotate.y = easeT*TAU*-2 + jumpRotation.y;
+  // }
 
   camera.normalizeRotate();
   // normalize angle y
@@ -437,7 +424,6 @@ ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 unibodyCtx.lineCap = bodyLinesCtx.lineCap = 'round';
 unibodyCtx.lineJoin = bodyLinesCtx.lineJoin  = 'round';
-setJumpRotate();
 
 function render() {
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
@@ -465,33 +451,15 @@ function zoomContext( context ) {
 
 // ----- inputs ----- //
 
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
+window.addEventListener( 'deviceorientation', function( event ) {
 
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
+  // camera.rotate.z = event.alpha/360 * TAU;
+  camera.rotate.x = event.beta/180 * -TAU/2 + TAU/4;
+  camera.rotate.y = event.gamma/90 * -TAU/4;
+
 });
 
-document.querySelector('.flat-button').onclick = function() {
-  camera.rotate.set({ x: 0, y: 0, z: 0 });
-};
-
-document.querySelector('.jump-button').onclick = setJumpRotate;
-
-function setJumpRotate() {
-  camera.rotate.set( jumpRotation );
-}
+// ----- misc ----- //
 
 function getQuarterArcPoints( a, b ) {
   var start = new Vector3({

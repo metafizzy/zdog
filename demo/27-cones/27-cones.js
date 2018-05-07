@@ -1,11 +1,9 @@
-/* globals Cone */
-
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-var w = 48;
-var h = 48;
+var w = 64;
+var h = 64;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 10, Math.floor( minWindowSize / w ) );
 var pixelRatio = window.devicePixelRatio || 1;
@@ -26,7 +24,12 @@ var yellow = '#ED0';
 var gold = '#EA0';
 var orange = '#E62';
 var magenta = '#C25';
-var navy = '#249';
+// var navy = '#249';
+var beige = '#FEC';
+var blue = '#8AD';
+
+
+var colorWheel = [ beige, magenta, orange, blue, yellow ];
 
 // -- illustration shapes --- //
 
@@ -34,27 +37,27 @@ var scene = new Anchor();
 
 // -----  ----- //
 
+
 var cone = new Cone({
-  radius: 6.5,
-  height: 8,
+  radius: 4,
+  height: 10,
   addTo: scene,
   translate: { y: 16 },
   // scale: { x: 2, y: 2 },
   rotate: { x: -TAU/4 },
-  color: magenta,
-  baseColor: navy,
+  color: colorWheel[1],
+  baseColor: colorWheel[0],
   stroke: false,
 });
 cone.copy({
   translate: { y: -16 },
   rotate: { x: TAU/4 },
-  color: magenta,
-  baseColor: navy,
 });
 
-var colorWheel = [ navy, magenta, orange, gold, yellow, ];
+
 
 [ -1, 1 ].forEach( function( ySide ) {
+  // return;
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
       addTo: scene,
@@ -71,6 +74,50 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
       rotate: { x: TAU/4*ySide },
       color: colorWheel[i],
       baseColor: colorWheel[ (i+7) % 5 ],
+    });
+  }
+});
+
+[ -1, 1 ].forEach( function( ySide ) {
+  for ( var i=0; i < 5; i++ ) {
+    var rotor1 = new Anchor({
+      addTo: scene,
+      rotate: { y: TAU/5 * (i+0.5) },
+    });
+    var rotor2 = new Anchor({
+      addTo: rotor1,
+      rotate: { x: TAU/10 },
+    });
+
+    cone.copy({
+      addTo: rotor2,
+      translate: { y: 16*ySide },
+      rotate: { x: TAU/4*ySide },
+      color: colorWheel[ (i+3) % 5 ],
+      baseColor: colorWheel[i],
+    });
+  }
+});
+
+[ -1, 1 ].forEach( function( ySide ) {
+  // return;
+  for ( var i=0; i < 5; i++ ) {
+    var rotor1 = new Anchor({
+      addTo: scene,
+      rotate: { y: TAU/5 * (i+0.5) },
+    });
+    var rotor2 = new Anchor({
+      addTo: rotor1,
+      rotate: { x: TAU/4.5 },
+    });
+
+    cone.copy({
+      addTo: rotor2,
+      translate: { y: 16*ySide },
+      // scale: { y: -1 },
+      rotate: { x: TAU/4*ySide },
+      color: colorWheel[ (i+1) % 5 ],
+      baseColor: colorWheel[ (i+4) % 5 ],
     });
   }
 });
