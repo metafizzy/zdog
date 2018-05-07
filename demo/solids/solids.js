@@ -18,7 +18,7 @@ if ( pixelRatio > 1 ) {
 
 var ROOT2 = Math.sqrt(2);
 var PHI = ( 1 + Math.sqrt(5) ) / 2;
-var isRotating = true;
+var isRotating = false;
 var viewRotation = new Vector3();
 
 // warm colors
@@ -53,15 +53,22 @@ var solids = [];
 
   var tetrahedron = new Anchor({
     addTo: scene,
-    translate: { x: -2, },
+    translate: { x: -2, y: -z/4 },
     scale: 0.5,
   });
 
   solids.push( tetrahedron );
 
+  // rotate back so pyamid pointing up
+  var rotor = new Anchor({
+    addTo: tetrahedron,
+    // HACK fudge number
+    rotate: { x: -Math.atan( -z ) },
+  });
+
   var tetraTri = new Shape({
     path: [ a, b, c ],
-    addTo: tetrahedron,
+    addTo: rotor,
     fill: true,
     stroke: false,
     color: magenta,
@@ -69,17 +76,17 @@ var solids = [];
 
    tetraTri.copy({
      path: [ a, b, d ],
-     color: yellow,
+     color: violet,
    });
 
    tetraTri.copy({
      path: [ a, c, d ],
-     color: gold,
+     color: orange,
    });
 
    tetraTri.copy({
      path: [ b, c, d ],
-     color: violet,
+     color: yellow,
    });
 
 })();
@@ -207,49 +214,44 @@ var solids = [];
 
   var dodecahedron = new Anchor({
     addTo: scene,
-    translate: { x: -1, y: 1 },
-    scale: 0.5,
+    translate: { x: -2, y: 2 },
+    scale: 3/8,
   });
 
   solids.push( dodecahedron );
 
+  // rotate so z axis is pointing up for y axis
+  var solidRotor = new Anchor({
+    addTo: dodecahedron,
+    rotate: { x: -TAU/4 },
+  });
+
   var pentagonPath = ( function() {
-    // var radius = 0.5 / Math.asin( TAU/10 );
-    var radius = 1;
     var path = [];
     for ( var i=0; i < 5; i++ ) {
-      var theta = i/5 * TAU + TAU/4;
-      var x = Math.cos( theta ) * radius;
-      var y = Math.sin( theta ) * radius;
+      var theta = i/5 * TAU;
+      var x = Math.cos( theta );
+      var y = Math.sin( theta );
       path.push({ x: x, y: y });
     }
     return path;
   })();
 
-
-  // edge length
-  var edge = 2 * Math.asin( TAU/10 );
   // https://en.wikipedia.org/wiki/Regular_dodecahedron#Dimensions
   var midradius = ( PHI * PHI ) / 2;
-  var ROOT5 = Math.sqrt(5);
-  // var inradius = Math.sqrt( 5/2 + 11/10 * ROOT5 ) / 2;
-  var inradius = ( PHI * PHI ) / ( 2 * Math.sqrt( 3 - PHI ) );
-  inradius *= edge;
-  // midradius *= edge;
 
   var face = new Shape({
     path: pentagonPath,
-    addTo: dodecahedron,
-    translate: { y: -midradius },
-    rotate: { x: TAU/4 },
+    addTo: solidRotor,
+    translate: { z: -midradius },
     fill: true,
     stroke: false,
     color: yellow,
   });
 
   face.copy({
-    translate: { y: midradius },
-    rotate: { x: TAU/4*-1 },
+    translate: { z: midradius },
+    rotate: { z: TAU/2 },
     color: violet,
   });
 
@@ -258,19 +260,18 @@ var solids = [];
 
     for ( var i=0; i < 5; i++ ) {
       var rotor1 = new Anchor({
-        addTo: dodecahedron,
-        rotate: { y: TAU/5 * i },
+        addTo: solidRotor,
+        rotate: { z: TAU/5 * (i+0.5) },
       });
       var rotor2 = new Anchor({
         addTo: rotor1,
-        // HACK fudged number
-        rotate: { x: TAU/5.7 },
+        rotate: { y: Math.atan(2) },
       });
 
       face.copy({
         addTo: rotor2,
-        translate: { y: midradius*ySide },
-        rotate: { x: TAU/4*ySide },
+        translate: { z: midradius*-ySide },
+        scale: { x: ySide },
         color: colorWheel[i],
       });
     }
