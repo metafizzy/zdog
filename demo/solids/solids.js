@@ -18,7 +18,7 @@ if ( pixelRatio > 1 ) {
 
 var ROOT2 = Math.sqrt(2);
 var PHI = ( 1 + Math.sqrt(5) ) / 2;
-var isRotating = false;
+var isRotating = true;
 var viewRotation = new Vector3();
 
 // warm colors
@@ -36,13 +36,111 @@ var yellow = '#ED0';
 // var yellow = '#8FF';
 
 var scene = new Anchor({
-  scale: 16,
+  // scale: 16,
 });
 
 var solids = [];
 
+// ----- hourglass ----- //
+
+( function() {
+
+  var hourglass = new Anchor({
+    addTo: scene,
+    translate: { x: -32, y: -32 },
+  });
+
+  solids.push( hourglass );
+
+  new Hemisphere({
+    radius: 8,
+    translate: { z: 8 },
+    addTo: hourglass,
+    color: magenta,
+    baseColor: orange,
+    stroke: false,
+  });
+
+  new Hemisphere({
+    radius: 8,
+    translate: { z: -8 },
+    rotate: { y: TAU/2 },
+    addTo: hourglass,
+    color: violet,
+    baseColor: gold,
+    stroke: false,
+  });
+
+})();
+
+// ----- sphere ----- //
+
+( function() {
+
+  var sphere = new Anchor({
+    addTo: scene,
+    translate: { x: 32, y: 32 },
+  });
+
+  solids.push( sphere );
+
+  new Hemisphere({
+    radius: 8,
+    addTo: sphere,
+    color: orange,
+    baseColor: violet,
+    stroke: false,
+  });
+
+  new Hemisphere({
+    radius: 8,
+    rotate: { y: TAU/2 },
+    addTo: sphere,
+    color: violet,
+    baseColor: orange,
+    stroke: false,
+  });
+
+})();
+
+// ----- cylinder ----- //
+
+var cylinder = new Cylinder({
+  radius: 8,
+  length: 16,
+  addTo: scene,
+  translate: { x: 0, y: -32 },
+  // rotate: { x: TAU/4 },
+  color: gold,
+  baseColor: magenta,
+  stroke: false,
+});
+
+solids.push( cylinder );
+
+// ----- cone ----- //
+
+var cone = new Anchor({
+  addTo: scene,
+  translate: { x: -32, y: 0 },
+});
+
+solids.push( cone );
+
+new Cone({
+  radius: 8,
+  height: 16,
+  addTo: cone,
+  translate: { z: -8 },
+  rotate: { y: TAU/2 },
+  color: magenta,
+  baseColor: gold,
+  stroke: false,
+});
+
 // ----- tetrahedron ----- //
 
+/*
 ( function() {
 
   var z = -1/ROOT2;
@@ -53,8 +151,8 @@ var solids = [];
 
   var tetrahedron = new Anchor({
     addTo: scene,
-    translate: { x: -2, y: -z/4 },
-    scale: 0.5,
+    translate: { x: 0 },
+    scale: 9,
   });
 
   solids.push( tetrahedron );
@@ -62,7 +160,8 @@ var solids = [];
   // rotate back so pyamid pointing up
   var rotor = new Anchor({
     addTo: tetrahedron,
-    // HACK fudge number
+    // HACK fudge numbers
+    translate: { y: -z/2 },
     rotate: { x: -Math.atan( -z ) },
   });
 
@@ -90,6 +189,55 @@ var solids = [];
    });
 
 })();
+*/
+
+// ----- tetrahedron2 ----- //
+
+( function() {
+
+  var tetrahedron = new Anchor({
+    addTo: scene,
+    translate: { x: 0, y: 0 },
+    scale: 20,
+  });
+
+  var inradius = Math.cos(TAU/6)/2;
+
+  solids.push( tetrahedron );
+
+  var ROOT3 = Math.sqrt(3);
+
+  var triangle = new Polygon({
+    sides: 3,
+    radius: 0.5,
+    addTo: tetrahedron,
+    translate: { y: inradius },
+    fill: true,
+    stroke: false,
+    color: violet,
+  });
+
+
+  for ( var i=0; i < 3; i++ ) {
+    var rotor1 = new Anchor({
+      addTo: tetrahedron,
+      rotate: { y: TAU/3 * i },
+    });
+    var rotor2 = new Anchor({
+      addTo: rotor1,
+      translate: { z: inradius, y: inradius },
+      rotate: { x: TAU/4 - Math.acos(1/3)  },
+    });
+    triangle.copy({
+      addTo: rotor2,
+      translate: { y: -inradius },
+      color: [ magenta, orange, gold ][i],
+    });
+  }
+
+  triangle.rotate.set({ x: TAU/4 });
+
+})();
 
 // ----- octahedron ----- //
 
@@ -104,8 +252,8 @@ var solids = [];
 
   var octahedron = new Anchor({
     addTo: scene,
-    // translate: { x: 0, },
-    scale: 0.55,
+    translate: { x: 32, y: 0 },
+    scale: 9,
   });
 
   solids.push( octahedron );
@@ -161,8 +309,8 @@ var solids = [];
 
   var cube = new Anchor({
     addTo: scene,
-    translate: { x: 2, },
-    scale: 0.4,
+    translate: { x: 32, y: -32 },
+    scale: 8,
   });
 
   solids.push( cube );
@@ -214,8 +362,8 @@ var solids = [];
 
   var dodecahedron = new Anchor({
     addTo: scene,
-    translate: { x: -2, y: 2 },
-    scale: 3/8,
+    translate: { x: -32, y: 32 },
+    scale: 6,
   });
 
   solids.push( dodecahedron );
@@ -226,22 +374,12 @@ var solids = [];
     rotate: { x: -TAU/4 },
   });
 
-  var pentagonPath = ( function() {
-    var path = [];
-    for ( var i=0; i < 5; i++ ) {
-      var theta = i/5 * TAU;
-      var x = Math.cos( theta );
-      var y = Math.sin( theta );
-      path.push({ x: x, y: y });
-    }
-    return path;
-  })();
-
   // https://en.wikipedia.org/wiki/Regular_dodecahedron#Dimensions
   var midradius = ( PHI * PHI ) / 2;
 
-  var face = new Shape({
-    path: pentagonPath,
+  var face = new Polygon({
+    sides: 5,
+    radius: 1,
     addTo: solidRotor,
     translate: { z: -midradius },
     fill: true,
@@ -261,7 +399,7 @@ var solids = [];
     for ( var i=0; i < 5; i++ ) {
       var rotor1 = new Anchor({
         addTo: solidRotor,
-        rotate: { z: TAU/5 * (i+0.5) },
+        rotate: { z: TAU/5 * (i+0.25) },
       });
       var rotor2 = new Anchor({
         addTo: rotor1,
@@ -270,8 +408,10 @@ var solids = [];
 
       face.copy({
         addTo: rotor2,
-        translate: { z: midradius*-ySide },
-        scale: { x: ySide },
+        translate: {},
+        translate: { z: midradius*ySide },
+        // scale: { x: -ySide },
+        rotate: { z: TAU/4*-ySide },
         color: colorWheel[i],
       });
     }

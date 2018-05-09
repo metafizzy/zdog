@@ -16,6 +16,7 @@
     "lerp": false,
     "modulo": false,
     "PathAction": false,
+    "Polygon": true,
     "Rect": true,
     "RoundedRect": true,
     "Shape": true,
