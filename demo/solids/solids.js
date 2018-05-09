@@ -351,6 +351,89 @@ new Cone({
 
 })();
 
+// ----- isocahedron ----- //
+
+( function() {
+
+  var isocahedron = new Anchor({
+    addTo: scene,
+    translate: { x: 0, y: 32 },
+    scale: 10,
+  });
+
+  solids.push( isocahedron );
+
+  // geometry
+  // radius of triangle with side length = 1
+  var faceRadius = ROOT3/2 * 2/3;
+  var faceHeight = faceRadius * 3/2;
+  var capApothem = 0.5 / Math.tan( TAU/10 );
+  var capRadius = 0.5 / Math.sin( TAU/10 );
+  var capTilt = Math.asin( capApothem / faceHeight );
+  var capSagitta = capRadius - capApothem;
+  var sideTilt = Math.asin( capSagitta / faceHeight );
+  var sideHeight = Math.sqrt( faceHeight*faceHeight - capSagitta*capSagitta );
+
+  var colorWheel = [ violet, magenta, orange, gold, yellow ];
+
+  [ -1, 1 ].forEach( function( ySide ) {
+    var capColors = {
+      '-1': [ yellow, gold, orange, magenta, gold ],
+      1: [ violet, magenta, orange, gold, magenta ],
+    }[ ySide ];
+
+    var sideColors = {
+      '-1': [ yellow, orange, magenta, magenta, gold ],
+      1: [ violet, orange, orange, gold, magenta ],
+    }[ ySide ];
+
+    for ( var i=0; i < 5; i++ ) {
+      var rotor = new Anchor({
+        addTo: isocahedron,
+        rotate: { y: TAU/5 * i },
+        translate: { y: sideHeight/2 * ySide },
+      });
+
+      var capRotateX = -capTilt;
+      var isYPos = ySide > 0;
+      capRotateX += isYPos ? TAU/2 : 0;
+
+      var capAnchor = new Anchor({
+        addTo: rotor,
+        translate: { z: capApothem * ySide },
+        rotate: { x: capRotateX },
+      });
+
+      // cap face
+      var face = new Polygon({
+        sides: 3,
+        radius: faceRadius,
+        addTo: capAnchor,
+        translate: { y: -faceRadius/2 },
+        stroke: false,
+        fill: true,
+        color: capColors[i],
+        // backfaceVisible: false,
+      });
+
+      var sideRotateX = -sideTilt;
+      sideRotateX += isYPos ? 0 : TAU/2;
+      var sideAnchor = capAnchor.copy({
+        rotate: { x: sideRotateX },
+      });
+
+      face.copy({
+        addTo: sideAnchor,
+        translate: { y: -faceRadius/2 },
+        rotate: { y: TAU/2 },
+        color: sideColors[i]
+      });
+
+    }
+  });
+
+})();
+
 // -- animate --- //
 
 function animate() {
