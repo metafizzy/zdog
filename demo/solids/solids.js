@@ -16,8 +16,10 @@ if ( pixelRatio > 1 ) {
   canvas.style.height = canvasHeight / pixelRatio + 'px';
 }
 
-var ROOT2 = Math.sqrt(2);
-var PHI = ( 1 + Math.sqrt(5) ) / 2;
+
+var ROOT3 = Math.sqrt(3);
+var ROOT5 = Math.sqrt(5);
+var PHI = ( 1 + ROOT5 ) / 2;
 var isRotating = true;
 var viewRotation = new Vector3();
 
@@ -140,59 +142,6 @@ new Cone({
 
 // ----- tetrahedron ----- //
 
-/*
-( function() {
-
-  var z = -1/ROOT2;
-  var a = { x: -1, y:  0, z: -z };
-  var b = { x:  1, y:  0, z: -z };
-  var c = { x:  0, y: -1, z:  z };
-  var d = { x:  0, y:  1, z:  z };
-
-  var tetrahedron = new Anchor({
-    addTo: scene,
-    translate: { x: 0 },
-    scale: 9,
-  });
-
-  solids.push( tetrahedron );
-
-  // rotate back so pyamid pointing up
-  var rotor = new Anchor({
-    addTo: tetrahedron,
-    // HACK fudge numbers
-    translate: { y: -z/2 },
-    rotate: { x: -Math.atan( -z ) },
-  });
-
-  var tetraTri = new Shape({
-    path: [ a, b, c ],
-    addTo: rotor,
-    fill: true,
-    stroke: false,
-    color: magenta,
-  });
-
-   tetraTri.copy({
-     path: [ a, b, d ],
-     color: violet,
-   });
-
-   tetraTri.copy({
-     path: [ a, c, d ],
-     color: orange,
-   });
-
-   tetraTri.copy({
-     path: [ b, c, d ],
-     color: yellow,
-   });
-
-})();
-*/
-
-// ----- tetrahedron2 ----- //
-
 ( function() {
 
   var tetrahedron = new Anchor({
@@ -201,20 +150,21 @@ new Cone({
     scale: 20,
   });
 
-  var inradius = Math.cos(TAU/6)/2;
+  var radius = 0.5;
+  var inradius = Math.cos( TAU/6 ) * radius;
+  var height = radius + inradius;
 
   solids.push( tetrahedron );
 
-  var ROOT3 = Math.sqrt(3);
-
   var triangle = new Polygon({
     sides: 3,
-    radius: 0.5,
+    radius: radius,
     addTo: tetrahedron,
-    translate: { y: inradius },
+    translate: { y: height/2 },
     fill: true,
     stroke: false,
     color: violet,
+    // backfaceVisible: false,
   });
 
 
@@ -225,8 +175,8 @@ new Cone({
     });
     var rotor2 = new Anchor({
       addTo: rotor1,
-      translate: { z: inradius, y: inradius },
-      rotate: { x: TAU/4 - Math.acos(1/3)  },
+      translate: { z: -inradius, y: height/2 },
+      rotate: { x: Math.acos(1/3) - TAU/4  },
     });
     triangle.copy({
       addTo: rotor2,
@@ -235,7 +185,7 @@ new Cone({
     });
   }
 
-  triangle.rotate.set({ x: TAU/4 });
+  triangle.rotate.set({ x: TAU/4, z: TAU/2 });
 
 })();
 
@@ -243,63 +193,49 @@ new Cone({
 
 ( function() {
 
-  var a = { x: -1, y:  0,  z:  0 };
-  var b = { x:  1, y:  0,  z:  0 };
-  var c = { x:  0, y: -1,  z:  0 };
-  var d = { x:  0, y:  1,  z:  0 };
-  var e = { x:  0, y:  0,  z: -1 };
-  var f = { x:  0, y:  0,  z:  1 };
-
   var octahedron = new Anchor({
     addTo: scene,
     translate: { x: 32, y: 0 },
-    scale: 9,
+    scale: 14,
   });
 
   solids.push( octahedron );
 
-  var triangle = new Shape({
-    path: [ a, c, e ],
-    addTo: octahedron,
-    fill: true,
-    stroke: false,
-    color: orange,
+  var colorWheel = [ violet, magenta, orange, gold, yellow ];
+
+  // radius of triangle with side length = 1
+  var radius = ROOT3/2 * 2/3;
+  var height = radius * 3/2;
+  var tilt = Math.asin( 0.5 / height ) * -1;
+
+  [ -1, 1 ].forEach( function( ySide ) {
+    for ( var i=0; i < 4; i++ ) {
+      var rotor = new Anchor({
+        addTo: octahedron,
+        rotate: { y: TAU/4 * i },
+      });
+
+      var anchor = new Anchor({
+        addTo: rotor,
+        translate: { z: -0.5 },
+        rotate: { x: tilt * ySide },
+        // scale: { y: -ySide },
+      });
+
+      new Polygon({
+        sides: 3,
+        radius: radius,
+        addTo: anchor,
+        translate: { y: -radius/2 * ySide },
+        scale: { y: ySide },
+        stroke: false,
+        fill: true,
+        color: colorWheel[ i + 0.5 + 0.5*ySide ],
+        backfaceVisible: false,
+      });
+    }
   });
 
-   triangle.copy({
-     path: [ a, c, f ],
-     color: gold,
-   });
-
-   triangle.copy({
-     path: [ b, c, e ],
-     color: magenta,
-   });
-
-   triangle.copy({
-     path: [ b, c, f ],
-     color: violet,
-   });
-
-  triangle.copy({
-    path: [ a, d, e ],
-    color: gold,
-  });
-
-   triangle.copy({
-     path: [ a, d, f ],
-     color: yellow,
-   });
-
-   triangle.copy({
-     path: [ b, d, e ],
-     color: orange,
-   });
-
-   triangle.copy({
-     path: [ b, d, f ],
-     color: magenta,
-   });
 
 })();
 
@@ -368,50 +304,46 @@ new Cone({
 
   solids.push( dodecahedron );
 
-  // rotate so z axis is pointing up for y axis
-  var solidRotor = new Anchor({
-    addTo: dodecahedron,
-    rotate: { x: -TAU/4 },
-  });
-
   // https://en.wikipedia.org/wiki/Regular_dodecahedron#Dimensions
   var midradius = ( PHI * PHI ) / 2;
 
+  // top & bottom faces
   var face = new Polygon({
     sides: 5,
     radius: 1,
-    addTo: solidRotor,
-    translate: { z: -midradius },
+    addTo: dodecahedron,
+    translate: { y: -midradius },
+    rotate: { x: -TAU/4 },
     fill: true,
     stroke: false,
     color: yellow,
+    // backfaceVisible: false,
   });
 
   face.copy({
-    translate: { z: midradius },
-    rotate: { z: TAU/2 },
+    translate: { y: midradius },
+    rotate: { x: TAU/4 },
     color: violet,
   });
 
+  var colorWheel = [ violet, magenta, orange, gold, yellow ];
+
   [ -1, 1 ].forEach( function( ySide ) {
-    var colorWheel = [ violet, magenta, orange, gold, yellow ];
 
     for ( var i=0; i < 5; i++ ) {
       var rotor1 = new Anchor({
-        addTo: solidRotor,
-        rotate: { z: TAU/5 * (i+0.25) },
+        addTo: dodecahedron,
+        rotate: { y: TAU/5 * (i) },
       });
       var rotor2 = new Anchor({
         addTo: rotor1,
-        rotate: { y: Math.atan(2) },
+        rotate: { x: TAU/4*-ySide + Math.atan(2) },
       });
 
       face.copy({
         addTo: rotor2,
-        translate: {},
-        translate: { z: midradius*ySide },
-        // scale: { x: -ySide },
-        rotate: { z: TAU/4*-ySide },
+        translate: { z: -midradius },
+        rotate: { z: TAU/2 },
         color: colorWheel[i],
       });
     }
