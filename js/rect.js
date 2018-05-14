@@ -1,3 +1,5 @@
+/* globals Rect: true */
+
 // -------------------------- Rect -------------------------- //
 
 var Rect = Shape.subclass({

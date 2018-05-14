@@ -1,3 +1,5 @@
+/* globals RoundedRect: true */
+
 // -------------------------- RoundedRect -------------------------- //
 
 var RoundedRect = Shape.subclass({

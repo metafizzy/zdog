@@ -1,3 +1,5 @@
+/* globals Group: true */
+
 // -------------------------- Group -------------------------- //
 
 var Group = Anchor.subclass({

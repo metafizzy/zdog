@@ -1,3 +1,5 @@
+/* globals Cone: true */
+
 // -------------------------- Cone -------------------------- //
 
 var Cone = Group.subclass({

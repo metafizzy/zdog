@@ -1,3 +1,5 @@
+/* globals Shape: true */
+
 // -------------------------- Shape -------------------------- //
 
 var Shape = Anchor.subclass({

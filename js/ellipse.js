@@ -1,3 +1,5 @@
+/* globals Ellipse: true */
+
 // -------------------------- Ellipse -------------------------- //
 
 var Ellipse = Shape.subclass({

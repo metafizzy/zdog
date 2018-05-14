@@ -1,3 +1,5 @@
+/* globals Cylinder: true */
+
 // -------------------------- Cylinder -------------------------- //
 
 var Cylinder = Group.subclass({

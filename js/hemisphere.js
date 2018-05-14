@@ -1,3 +1,5 @@
+/* globals Hemisphere: true */
+
 // -------------------------- Hemisphere -------------------------- //
 
 var Hemisphere = Group.subclass({

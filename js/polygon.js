@@ -1,3 +1,5 @@
+/* globals Polygon: true */
+
 // -------------------------- Polygon -------------------------- //
 
 var Polygon = Shape.subclass({
