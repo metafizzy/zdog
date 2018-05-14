@@ -13,7 +13,7 @@ var Cylinder = Group.subclass({
   updateSort: true,
 });
 
-Cylinder.prototype.create = function() {
+Cylinder.prototype.create = function(/* options */) {
   // call super
   Group.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
@@ -55,6 +55,7 @@ Cylinder.prototype.create = function() {
   // used for rendering ring
   this.frontOrigin = frontBase.renderOrigin;
   this.backOrigin = backBase.renderOrigin;
+  this.renderNormal = frontBase.renderNormal;
 };
 
 Cylinder.prototype.render = function( ctx ) {
@@ -64,7 +65,8 @@ Cylinder.prototype.render = function( ctx ) {
 
 Cylinder.prototype.renderRing = function( ctx ) {
   ctx.strokeStyle = this.color;
-  ctx.lineWidth = this.radius * 2;
+  // apply scale
+  ctx.lineWidth = this.radius * 2 * this.renderNormal.magnitude();
   ctx.lineCap = 'butt'; // nice
 
   ctx.beginPath();

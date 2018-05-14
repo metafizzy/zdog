@@ -38,7 +38,7 @@ var yellow = '#ED0';
 // var yellow = '#8FF';
 
 var scene = new Anchor({
-  // scale: 16,
+  scale: 8,
 });
 
 var solids = [];
@@ -49,28 +49,25 @@ var solids = [];
 
   var hourglass = new Anchor({
     addTo: scene,
-    translate: { x: -32, y: -32 },
+    translate: { x: -4, y: -4 },
   });
 
   solids.push( hourglass );
 
-  new Hemisphere({
-    radius: 8,
-    translate: { z: 8 },
+  var hemi = new Hemisphere({
+    radius: 1,
+    translate: { z: 1 },
     addTo: hourglass,
     color: magenta,
     baseColor: orange,
     stroke: false,
   });
 
-  new Hemisphere({
-    radius: 8,
-    translate: { z: -8 },
+  hemi.copy({
+    translate: { z: -1 },
     rotate: { y: TAU/2 },
-    addTo: hourglass,
     color: violet,
     baseColor: gold,
-    stroke: false,
   });
 
 })();
@@ -81,26 +78,23 @@ var solids = [];
 
   var sphere = new Anchor({
     addTo: scene,
-    translate: { x: 32, y: 32 },
+    translate: { x: 4, y: 4 },
   });
 
   solids.push( sphere );
 
-  new Hemisphere({
-    radius: 8,
+  var hemi = new Hemisphere({
+    radius: 1,
     addTo: sphere,
     color: orange,
     baseColor: violet,
     stroke: false,
   });
 
-  new Hemisphere({
-    radius: 8,
+  hemi.copy({
     rotate: { y: TAU/2 },
-    addTo: sphere,
     color: violet,
     baseColor: orange,
-    stroke: false,
   });
 
 })();
@@ -108,10 +102,10 @@ var solids = [];
 // ----- cylinder ----- //
 
 var cylinder = new Cylinder({
-  radius: 8,
-  length: 16,
+  radius: 1,
+  length: 2,
   addTo: scene,
-  translate: { x: 0, y: -32 },
+  translate: { x: 0, y: -4 },
   // rotate: { x: TAU/4 },
   color: gold,
   baseColor: magenta,
@@ -124,16 +118,16 @@ solids.push( cylinder );
 
 var cone = new Anchor({
   addTo: scene,
-  translate: { x: -32, y: 0 },
+  translate: { x: -4, y: 0 },
 });
 
 solids.push( cone );
 
 new Cone({
-  radius: 8,
-  height: 16,
+  radius: 1,
+  height: 2,
   addTo: cone,
-  translate: { z: -8 },
+  translate: { z: -1 },
   rotate: { y: TAU/2 },
   color: magenta,
   baseColor: gold,
@@ -147,7 +141,7 @@ new Cone({
   var tetrahedron = new Anchor({
     addTo: scene,
     translate: { x: 0, y: 0 },
-    scale: 20,
+    scale: 2.5,
   });
 
   var radius = 0.5;
@@ -195,8 +189,8 @@ new Cone({
 
   var octahedron = new Anchor({
     addTo: scene,
-    translate: { x: 32, y: 0 },
-    scale: 14,
+    translate: { x: 4, y: 0 },
+    scale: 1.5,
   });
 
   solids.push( octahedron );
@@ -245,8 +239,8 @@ new Cone({
 
   var cube = new Anchor({
     addTo: scene,
-    translate: { x: 32, y: -32 },
-    scale: 8,
+    translate: { x: 4, y: -4 },
+    scale: 1,
   });
 
   solids.push( cube );
@@ -298,8 +292,8 @@ new Cone({
 
   var dodecahedron = new Anchor({
     addTo: scene,
-    translate: { x: -32, y: 32 },
-    scale: 6,
+    translate: { x: -4, y: 4 },
+    scale: 0.75,
   });
 
   solids.push( dodecahedron );
@@ -357,8 +351,8 @@ new Cone({
 
   var isocahedron = new Anchor({
     addTo: scene,
-    translate: { x: 0, y: 32 },
-    scale: 10,
+    translate: { x: 0, y: 4 },
+    scale: 1.2,
   });
 
   solids.push( isocahedron );

@@ -13,7 +13,7 @@ var Cone = Group.subclass({
   updateSort: true,
 });
 
-Cone.prototype.create = function( options ) {
+Cone.prototype.create = function(/* options */) {
   // call super
   Group.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
@@ -57,27 +57,28 @@ Cone.prototype.render = function( ctx ) {
 Cone.prototype.renderCone = function( ctx ) {
   this.renderApex.set( this.apex.renderOrigin )
     .subtract( this.renderOrigin );
+  var scale = this.renderNormal.magnitude();
   var apexDistance = getDistance1( this.renderApex.x, this.renderApex.y );
-  // TODO fix for scale
   var normalDistance = getDistance1( this.renderNormal.x, this.renderNormal.y );
   // eccentricity
-  var eccenAngle = Math.acos( normalDistance );
+  var eccenAngle = Math.acos( normalDistance / scale );
   var eccen = Math.sin( eccenAngle );
+  var radius = this.radius * scale;
   // does apex extend beyond eclipse of face
-  var isApexVisible = this.radius * eccen < apexDistance;
+  var isApexVisible = radius * eccen < apexDistance;
   if ( !isApexVisible ) {
     return;
   }
 
   var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) + TAU/2;
   var projectLength = apexDistance / eccen;
-  var projectAngle = Math.acos( this.radius / projectLength );
+  var projectAngle = Math.acos( radius / projectLength );
   // set tangent points
   var tangentA = this.tangentA;
   var tangentB = this.tangentB;
 
-  tangentA.x = Math.cos( projectAngle ) * this.radius * eccen;
-  tangentA.y = Math.sin( projectAngle ) * this.radius;
+  tangentA.x = Math.cos( projectAngle ) * radius * eccen;
+  tangentA.y = Math.sin( projectAngle ) * radius;
 
   tangentB.set( this.tangentA );
   tangentB.y *= -1;

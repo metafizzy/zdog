@@ -101,6 +101,15 @@ Vector3.prototype.lerp = function( vec, t ) {
   return this;
 };
 
+Vector3.prototype.magnitude = function() {
+  var sum = this.x*this.x + this.y*this.y + this.z*this.z;
+  // PERF: check if sum ~= 1 and skip sqrt
+  if ( Math.abs( sum - 1 ) < 0.00000001 ) {
+    return 1;
+  }
+  return Math.sqrt( sum );
+};
+
 // ----- utils ----- //
 
 // add missing properties

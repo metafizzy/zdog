@@ -11,7 +11,7 @@ var Hemisphere = Group.subclass({
   lineWidth: 1,
 });
 
-Hemisphere.prototype.create = function( options ) {
+Hemisphere.prototype.create = function(/* options */) {
   // call super
   Group.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
@@ -52,7 +52,9 @@ Hemisphere.prototype.renderDome = function( ctx ) {
   ctx.beginPath();
   var x = this.renderOrigin.x;
   var y = this.renderOrigin.y;
-  ctx.arc( x, y, this.radius, startAngle, endAngle );
+  // apply scale
+  var domeRadius = this.radius * this.renderNormal.magnitude();
+  ctx.arc( x, y, domeRadius, startAngle, endAngle );
   ctx.closePath();
   if ( this.stroke ) {
     ctx.stroke();
