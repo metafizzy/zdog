@@ -50,6 +50,9 @@ Cone.prototype.create = function(/* options */) {
 };
 
 Cone.prototype.render = function( ctx ) {
+  if ( !this.rendering ) {
+    return;
+  }
   this.renderCone( ctx );
   Group.prototype.render.call( this, ctx );
 };
@@ -89,6 +92,7 @@ Cone.prototype.renderCone = function( ctx ) {
   tangentB.add( this.renderOrigin );
 
   ctx.strokeStyle = ctx.fillStyle = this.color;
+  ctx.lineWidth = this.lineWidth;
   ctx.beginPath();
   ctx.moveTo( tangentA.x, tangentA.y );
   ctx.lineTo( this.apex.renderOrigin.x, this.apex.renderOrigin.y );

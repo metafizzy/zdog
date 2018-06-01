@@ -95,6 +95,7 @@ Vector3.prototype.transform = function( translation, rotation, scale ) {
 };
 
 Vector3.prototype.lerp = function( vec, t ) {
+  vec = Vector3.sanitize( vec );
   this.x = lerp( this.x, vec.x, t );
   this.y = lerp( this.y, vec.y, t );
   this.z = lerp( this.z, vec.z, t );

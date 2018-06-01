@@ -38,6 +38,9 @@ Hemisphere.prototype.create = function(/* options */) {
 };
 
 Hemisphere.prototype.render = function( ctx ) {
+  if ( !this.rendering ) {
+    return;
+  }
   this.renderDome( ctx );
   Group.prototype.render.call( this, ctx );
 };

@@ -4,6 +4,7 @@
 
 var Group = Anchor.subclass({
   updateSort: false,
+  rendering: true,
 });
 
 // ----- update ----- //
@@ -29,6 +30,10 @@ Group.prototype.updateSortValue = function() {
 // ----- render ----- //
 
 Group.prototype.render = function( ctx ) {
+  if ( !this.rendering ) {
+    return;
+  }
+
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( ctx );

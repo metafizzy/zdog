@@ -59,6 +59,9 @@ Cylinder.prototype.create = function(/* options */) {
 };
 
 Cylinder.prototype.render = function( ctx ) {
+  if ( !this.rendering ) {
+    return;
+  }
   this.renderRing( ctx );
   Group.prototype.render.call( this, ctx );
 };
