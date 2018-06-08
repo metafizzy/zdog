@@ -21,6 +21,8 @@ var ROOT3 = Math.sqrt(3);
 var ROOT5 = Math.sqrt(5);
 var PHI = ( 1 + ROOT5 ) / 2;
 var isRotating = true;
+var t = 0;
+var tSpeed = 1/180;
 var viewRotation = new Vector3();
 
 // warm colors
@@ -190,7 +192,7 @@ new Cone({
   var octahedron = new Anchor({
     addTo: scene,
     translate: { x: 4, y: 0 },
-    scale: 1.5,
+    scale: 1.75,
   });
 
   solids.push( octahedron );
@@ -368,7 +370,7 @@ new Cone({
   var sideTilt = Math.asin( capSagitta / faceHeight );
   var sideHeight = Math.sqrt( faceHeight*faceHeight - capSagitta*capSagitta );
 
-  var colorWheel = [ violet, magenta, orange, gold, yellow ];
+  // var colorWheel = [ violet, magenta, orange, gold, yellow ];
 
   [ -1, 1 ].forEach( function( ySide ) {
     var capColors = {
@@ -440,8 +442,29 @@ animate();
 
 // -- update -- //
 
+function easeInOut( i ) {
+  i = i % 1;
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
+}
+
 function update() {
   viewRotation.y += isRotating ? +TAU/150 : 0;
+
+  if ( isRotating ) {
+    t += tSpeed;
+    var theta = easeInOut( t ) * TAU;
+    var spin = -theta;
+    var extraRotation = TAU * Math.floor( ( t % 4 ) );
+    viewRotation.y = spin - extraRotation;
+    var everyOtherCycle = t % 2 < 1;
+    viewRotation.x = everyOtherCycle ? 0 : Math.sin( theta ) * TAU * 1/8;
+  }
 
   solids.forEach( function( solid ) {
     solid.rotate.set( viewRotation );
