@@ -5,7 +5,8 @@ var ctx = canvas.getContext('2d');
 var w = 96;
 var h = 96;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
+// var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
+zoom = 2.5;
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -51,7 +52,7 @@ var solids = [];
 
   var hourglass = new Anchor({
     addTo: scene,
-    translate: { x: -4, y: -4 },
+    translate: { x: 0, y: -4 },
   });
 
   solids.push( hourglass );
@@ -80,7 +81,7 @@ var solids = [];
 
   var sphere = new Anchor({
     addTo: scene,
-    translate: { x: 4, y: 4 },
+    translate: { x: -4, y: -4 },
   });
 
   solids.push( sphere );
@@ -107,7 +108,7 @@ var cylinder = new Cylinder({
   radius: 1,
   length: 2,
   addTo: scene,
-  translate: { x: 0, y: -4 },
+  translate: { x: 4, y: -4 },
   // rotate: { x: TAU/4 },
   color: gold,
   baseColor: magenta,
@@ -177,7 +178,7 @@ new Cone({
     triangle.copy({
       addTo: rotor2,
       translate: { y: -inradius },
-      color: [ magenta, orange, gold ][i],
+      color: [ gold, magenta, orange ][i],
     });
   }
 
@@ -191,7 +192,7 @@ new Cone({
 
   var octahedron = new Anchor({
     addTo: scene,
-    translate: { x: 4, y: 0 },
+    translate: { x: -4, y: 4 },
     scale: 1.75,
   });
 
@@ -208,7 +209,7 @@ new Cone({
     for ( var i=0; i < 4; i++ ) {
       var rotor = new Anchor({
         addTo: octahedron,
-        rotate: { y: TAU/4 * i },
+        rotate: { y: TAU/4 * (i + 1) },
       });
 
       var anchor = new Anchor({
@@ -241,7 +242,7 @@ new Cone({
 
   var cube = new Anchor({
     addTo: scene,
-    translate: { x: 4, y: -4 },
+    translate: { x: 4, y: 0 },
     scale: 1,
   });
 
@@ -259,13 +260,13 @@ new Cone({
 
   face.copy({
     translate: { z: -1 },
-    color: magenta,
+    color: gold,
   });
 
   face.copy({
     translate: { x: -1 },
     rotate: { y: TAU/4 },
-    color: gold,
+    color: orange,
   });
 
   face.copy({
@@ -294,7 +295,7 @@ new Cone({
 
   var dodecahedron = new Anchor({
     addTo: scene,
-    translate: { x: -4, y: 4 },
+    translate: { x: 0, y: 4 },
     scale: 0.75,
   });
 
@@ -322,9 +323,14 @@ new Cone({
     color: violet,
   });
 
-  var colorWheel = [ violet, magenta, orange, gold, yellow ];
 
   [ -1, 1 ].forEach( function( ySide ) {
+
+
+    var colorWheel = {
+      '-1': [ violet, magenta, gold, orange, magenta ],
+      1: [ yellow, gold, magenta, orange, gold ],
+    }[ ySide ];
 
     for ( var i=0; i < 5; i++ ) {
       var rotor1 = new Anchor({
@@ -353,7 +359,7 @@ new Cone({
 
   var isocahedron = new Anchor({
     addTo: scene,
-    translate: { x: 0, y: 4 },
+    translate: { x: 4, y: 4 },
     scale: 1.2,
   });
 
@@ -459,11 +465,9 @@ function update() {
   if ( isRotating ) {
     t += tSpeed;
     var theta = easeInOut( t ) * TAU;
-    var spin = -theta;
-    var extraRotation = TAU * Math.floor( ( t % 4 ) );
-    viewRotation.y = spin - extraRotation;
     var everyOtherCycle = t % 2 < 1;
-    viewRotation.x = everyOtherCycle ? 0 : Math.sin( theta ) * TAU * 1/8;
+    viewRotation.y = everyOtherCycle ? -theta : 0;
+    viewRotation.x = everyOtherCycle ? 0 : theta;
   }
 
   solids.forEach( function( solid ) {

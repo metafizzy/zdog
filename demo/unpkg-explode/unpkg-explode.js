@@ -4,9 +4,9 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 48;
 var h = 48;
-var minWindowSize = Math.min( window.innerWidth, (window.innerHeight - 100) );
+var minWindowSize = Math.min( window.innerWidth, (window.innerHeight - 200) );
 var zoom = Math.floor( minWindowSize / w );
-var zoom = 6;
+// var zoom = 6;
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -33,33 +33,52 @@ var magenta = '#E2A';
 
 var colors = [ red, blue, gold, magenta, green ];
 
+var panelAnchors = [];
+var panels = [];
+var outlines = [];
 
-var panels = [
+[
   { y: 0 },
   { y: TAU/4 },
   { y: TAU/2 },
   { y: TAU * 3/4 },
   { x: TAU/4 },
-].map( function( rotation, i ) {
+].forEach( function( rotation, i ) {
 
-  var anchor = new Anchor({
+  var rotor = new Anchor({
     addTo: scene,
     rotate: rotation,
   });
+
+  var anchor = new Anchor({
+    addTo: rotor,
+    translate: { z: -8 },
+  });
+  
+  panelAnchors.push( anchor );
 
   var panel = new RoundedRect({
     width: 16,
     height: 16,
     radius: 3,
     addTo: anchor,
-    translate: { z: -8 },
-    // lineWidth: 1,
     stroke: false,
     fill: true,
     color: colors[i],
   });
 
-  return panel;
+  panels.push( panel );
+
+  var outline = panel.copy({
+    rendering: false,
+    stroke: true,
+    fill: false,
+    lineWidth: 1,
+    color: 'black',
+  });
+
+  outlines.push( outline );
+
 });
 
 // -- animate --- //
@@ -148,8 +167,8 @@ function startAnimation() {
     // var negT = 1 - t;
     // var easeT = 1 - negT * negT * negT;
     var easeT = easeInOut( t );
-    panels.forEach( function( panel ) {
-      panel.translate.z = lerp( -8, -11, easeT );
+    panelAnchors.forEach( function( panelAnchor ) {
+      panelAnchor.translate.z = lerp( -8, -11, easeT );
     });
     scene.rotate.x = lerp( TAU/4, TAU * (35/360), easeT );
     scene.rotate.y = lerp( -TAU/2, TAU/8, easeT );
@@ -167,4 +186,42 @@ function easeInOut( i ) {
   var i2 = i1 * i1 * i1;
   i2 = i2 / 2;
   return isFirstHalf ? i2 : i2*-1 + 1;
+}
+
+// ----- more inputs ----- //
+
+var fillP = document.querySelector('.fill-p');
+fillP.onchange = function( event ) {
+  changePanelColor( event.target.value );
+};
+
+// set initial
+changePanelColor( fillP.querySelector(':checked').value );
+
+function changePanelColor( value )  {
+  panels.forEach( function( panel, i ) {
+    if ( value == 'gray' ) {
+      panel.color = '#888';
+    } else if ( value == 'clear' ) {
+      panel.color = 'transparent';
+    } else {
+      panel.color = colors[i];
+    }
+  });
+}
+
+var outlineCheckbox = document.querySelector('.outline-checkbox');
+outlineCheckbox.onchange = function( event ) {
+  outlines.forEach( function( outline ) {
+    outline.rendering = event.target.checked;
+  });
+};
+
+// set initial
+changeOutline( outlineCheckbox.checked );
+
+function changeOutline( isRendering ) {
+  outlines.forEach( function( outline ) {
+    outline.rendering = isRendering;
+  });
 }
