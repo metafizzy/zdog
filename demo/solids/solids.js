@@ -59,7 +59,7 @@ var solids = [];
 
   var hemi = new Hemisphere({
     radius: 1,
-    translate: { z: 1 },
+    translate: { z: -1 },
     addTo: hourglass,
     color: magenta,
     baseColor: orange,
@@ -67,7 +67,7 @@ var solids = [];
   });
 
   hemi.copy({
-    translate: { z: -1 },
+    translate: { z: 1 },
     rotate: { y: TAU/2 },
     color: violet,
     baseColor: gold,
@@ -130,7 +130,7 @@ new Cone({
   radius: 1,
   height: 2,
   addTo: cone,
-  translate: { z: -1 },
+  translate: { z: 1 },
   rotate: { y: TAU/2 },
   color: magenta,
   baseColor: gold,
@@ -168,12 +168,12 @@ new Cone({
   for ( var i=0; i < 3; i++ ) {
     var rotor1 = new Anchor({
       addTo: tetrahedron,
-      rotate: { y: TAU/3 * i },
+      rotate: { y: TAU/3 * -i },
     });
     var rotor2 = new Anchor({
       addTo: rotor1,
-      translate: { z: -inradius, y: height/2 },
-      rotate: { x: Math.acos(1/3) - TAU/4  },
+      translate: { z: inradius, y: height/2 },
+      rotate: { x: Math.acos(1/3) * -1 + TAU/4  },
     });
     triangle.copy({
       addTo: rotor2,
@@ -182,7 +182,7 @@ new Cone({
     });
   }
 
-  triangle.rotate.set({ x: TAU/4, z: TAU/2 });
+  triangle.rotate.set({ x: -TAU/4, z: -TAU/2 });
 
 })();
 
@@ -203,18 +203,18 @@ new Cone({
   // radius of triangle with side length = 1
   var radius = ROOT3/2 * 2/3;
   var height = radius * 3/2;
-  var tilt = Math.asin( 0.5 / height ) * -1;
+  var tilt = Math.asin( 0.5 / height );
 
   [ -1, 1 ].forEach( function( ySide ) {
     for ( var i=0; i < 4; i++ ) {
       var rotor = new Anchor({
         addTo: octahedron,
-        rotate: { y: TAU/4 * (i + 1) },
+        rotate: { y: TAU/4 * (i + 1.5) * -1 },
       });
 
       var anchor = new Anchor({
         addTo: rotor,
-        translate: { z: -0.5 },
+        translate: { z: 0.5 },
         rotate: { x: tilt * ySide },
         // scale: { y: -ySide },
       });
@@ -252,38 +252,38 @@ new Cone({
     width: 2,
     height: 2,
     addTo: cube,
-    translate: { z: 1 },
+    translate: { z: -1 },
     fill: true,
     stroke: false,
     color: magenta,
   });
 
   face.copy({
-    translate: { z: -1 },
+    translate: { z: 1 },
     color: gold,
   });
 
   face.copy({
     translate: { x: -1 },
-    rotate: { y: TAU/4 },
+    rotate: { y: -TAU/4 },
     color: orange,
   });
 
   face.copy({
     translate: { x: 1 },
-    rotate: { y: TAU/4 },
+    rotate: { y: -TAU/4 },
     color: orange,
   });
 
   face.copy({
     translate: { y: -1 },
-    rotate: { x: TAU/4 },
+    rotate: { x: -TAU/4 },
     color: yellow,
   });
 
   face.copy({
     translate: { y: 1 },
-    rotate: { x: TAU/4 },
+    rotate: { x: -TAU/4 },
     color: violet,
   });
 
@@ -310,7 +310,7 @@ new Cone({
     radius: 1,
     addTo: dodecahedron,
     translate: { y: -midradius },
-    rotate: { x: -TAU/4 },
+    rotate: { x: TAU/4 },
     fill: true,
     stroke: false,
     color: yellow,
@@ -319,7 +319,7 @@ new Cone({
 
   face.copy({
     translate: { y: midradius },
-    rotate: { x: TAU/4 },
+    rotate: { x: -TAU/4 },
     color: violet,
   });
 
@@ -339,12 +339,12 @@ new Cone({
       });
       var rotor2 = new Anchor({
         addTo: rotor1,
-        rotate: { x: TAU/4*-ySide + Math.atan(2) },
+        rotate: { x: TAU/4*ySide - Math.atan(2) },
       });
 
       face.copy({
         addTo: rotor2,
-        translate: { z: -midradius },
+        translate: { z: midradius },
         rotate: { z: TAU/2 },
         color: colorWheel[i],
       });
@@ -380,19 +380,19 @@ new Cone({
 
   [ -1, 1 ].forEach( function( ySide ) {
     var capColors = {
-      '-1': [ yellow, gold, orange, magenta, gold ],
-      1: [ violet, magenta, orange, gold, magenta ],
+      '-1': [ magenta, gold, yellow, gold, orange ],
+      1: [ gold, magenta, violet, magenta, orange ],
     }[ ySide ];
 
     var sideColors = {
-      '-1': [ yellow, orange, magenta, magenta, gold ],
-      1: [ violet, orange, orange, gold, magenta ],
+      '-1': [ magenta, gold, yellow, orange, magenta ],
+      1: [ gold, magenta, violet, orange, orange ],
     }[ ySide ];
 
     for ( var i=0; i < 5; i++ ) {
       var rotor = new Anchor({
         addTo: isocahedron,
-        rotate: { y: TAU/5 * i },
+        rotate: { y: TAU/5 * -i },
         translate: { y: sideHeight/2 * ySide },
       });
 
@@ -466,8 +466,8 @@ function update() {
     t += tSpeed;
     var theta = easeInOut( t ) * TAU;
     var everyOtherCycle = t % 2 < 1;
-    viewRotation.y = everyOtherCycle ? -theta : 0;
-    viewRotation.x = everyOtherCycle ? 0 : theta;
+    viewRotation.y = everyOtherCycle ? theta : 0;
+    viewRotation.x = everyOtherCycle ? 0 : -theta;
   }
 
   solids.forEach( function( solid ) {
