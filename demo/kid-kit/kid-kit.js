@@ -43,7 +43,7 @@ new Shape({
 // nose
 var nose = new Anchor({
   addTo: scene,
-  translate: { y: -7, z: -17 },
+  translate: { y: -7, z: 17 },
 });
 new Shape({
   path: [
@@ -67,10 +67,10 @@ new Shape({
 // snout
 new Shape({
   path: [
-    { x: -2, y: -5, z: -11 },
-    { x:  2, y: -5, z: -11 },
-    { x:  2, y: -3, z: -7 },
-    { x: -2, y: -3, z: -7 },
+    { x: -2, y: -5, z: 11 },
+    { x:  2, y: -5, z: 11 },
+    { x:  2, y: -3, z: 7 },
+    { x: -2, y: -3, z: 7 },
   ],
   addTo: scene,
   color: colors.fur,
@@ -84,17 +84,17 @@ var eye = new Shape({
     { y: -9 },
   ],
   addTo: scene,
-  translate: { x: -8, z: -11 },
+  translate: { x: -8, z: 11 },
   color: colors.eye,
   lineWidth: 4,
 });
 eye.copy({
-  translate: { x: 8, z: -11 },
+  translate: { x: 8, z: 11 },
 });
 
 
 // ears
-var frontEarZ = -4;
+var frontEarZ = 4;
 var topEarY = -30;
 var earColor = colors.fur;
 
@@ -103,9 +103,9 @@ var earAnchor = new Anchor({
   translate: { y: topEarY, z: frontEarZ },
 });
 
-var earA = { x: 14, y: 12, z: 4 };
+var earA = { x: 14, y: 12, z: -4 };
 var earB = { x: 14, y: 0, z: 0 };
-var earC = { x: 7, y: 11, z: 14 };
+var earC = { x: 7, y: 11, z: -14 };
 var earD = { x: 10, y: 0, z: 0 };
 var earE = { x: 3, y: 5, z: 0 };
 // outer ear
@@ -162,20 +162,20 @@ var whisker = new Shape({
     { x: 17, y: -2 },
   ],
   addTo: scene,
-  translate: { z: -6 },
+  translate: { z: 6 },
   fill: true,
   color: colors.fur,
   lineWidth: 3,
 });
 whisker.copy({
-  translate: { y: -6, z: -6 },
+  translate: { y: -6, z: 6 },
 });
 whisker.copy({
   scale: { x: -1 },
 });
 whisker.copy({
   scale: { x: -1 },
-  translate: { y: -6, z: -6 },
+  translate: { y: -6, z: 6 },
 });
 
 // arms
@@ -187,8 +187,8 @@ var armAnchor = new Anchor({
 // shoulder
 new Shape({
   path: [
-    { x: 11, y: 6, z: 2 },
-    { x: 12, y: 9, z: 2.5 },
+    { x: 11, y: 6, z: -2 },
+    { x: 12, y: 9, z: -2.5 },
   ],
   addTo: armAnchor,
   closed: true,
@@ -198,8 +198,8 @@ new Shape({
 // forearm
 new Shape({
   path: [
-    { x: 12, y: 12, z: 2.5 },
-    { x: 12, y: 15, z: 2 },
+    { x: 12, y: 12, z: -2.5 },
+    { x: 12, y: 15, z: -2 },
   ],
   addTo: armAnchor,
   color: colors.fur,
@@ -207,7 +207,7 @@ new Shape({
 });
 // hand
 new Shape({
-  path: [ { x: 11, y: 18, z: 1} ],
+  path: [ { x: 11, y: 18, z: -1} ],
   addTo: armAnchor,
   color: colors.armor,
   lineWidth: 10,

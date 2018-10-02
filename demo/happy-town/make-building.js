@@ -16,7 +16,7 @@ function makeBuilding( options ) {
     var wallTZ = isSouth ? -wallZ : wallZ;
     var wallGroup = new Group({
       addTo: options.addTo,
-      translate: { z: wallTZ },
+      translate: { z: -wallTZ },
     });
 
     var wallPath = [
@@ -92,10 +92,10 @@ function makeBuilding( options ) {
       var y0 = -wallY - wallX;
       var roofPanel = new Shape({
         path: [
-          { x: 0, y: y0, z: -wallZ },
           { x: 0, y: y0, z: wallZ },
-          { x: wallX, y: -wallY, z: wallZ },
+          { x: 0, y: y0, z: -wallZ },
           { x: wallX, y: -wallY, z: -wallZ },
+          { x: wallX, y: -wallY, z: wallZ },
         ],
         addTo: options.addTo,
         color: gold,
@@ -113,8 +113,8 @@ function makeBuilding( options ) {
         path: [
           { z: 0, y: y0, x: xA },
           { z: 0, y: y0, x: wallX },
-          { z: wallZ, y: -wallY, x: wallX },
-          { z: wallZ, y: -wallY, x: xA },
+          { z: -wallZ, y: -wallY, x: wallX },
+          { z: -wallZ, y: -wallY, x: xA },
         ],
         addTo: options.addTo,
         color: red,
@@ -123,8 +123,8 @@ function makeBuilding( options ) {
         path: [
           { z: 0, y: y0, x: -wallX },
           { z: 0, y: y0, x: wallX },
-          { z: wallZ, y: -wallY, x: wallX },
-          { z: wallZ, y: -wallY, x: -wallX },
+          { z: -wallZ, y: -wallY, x: wallX },
+          { z: -wallZ, y: -wallY, x: -wallX },
         ],
         scale: { z: -1 },
         color: navy,

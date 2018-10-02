@@ -33,13 +33,13 @@ var camera = new Anchor();
 var body = new Shape({
   lineWidth: 22,
   translate: { y: 11 },
-  rotate: { x: -0.3, z: 0.1 },
+  rotate: { x: 0.3, z: 0.1 },
   addTo: camera,
   color: pink,
 });
 
 var face = new Anchor({
-  translate: { z: -10.5 },
+  translate: { z: 10.5 },
   addTo: body,
 });
 
@@ -63,7 +63,7 @@ var face = new Anchor({
     width: 1,
     height: 2,
     addTo: eyeGroup,
-    translate: { y: -1.5, z: -0.5 },
+    translate: { y: -1.5, z: 0.5 },
     lineWidth: 0.5,
     color: '#FFF',
     fill: true,
@@ -78,7 +78,7 @@ var face = new Anchor({
   new Ellipse({
     width: 2.5,
     height: 1,
-    translate: { y: 1, z: -10.5 },
+    translate: { y: 1, z: 10.5 },
     addTo: cheekHolder,
     color: blush,
     lineWidth: 1,
@@ -112,7 +112,7 @@ new Shape({
     ]},
   ],
   addTo: face,
-  translate: { y: 2, z: 0.5 },
+  translate: { y: 2, z: -0.5 },
   lineWidth: 1,
   color: shoe,
   fill: true,
@@ -160,8 +160,8 @@ var rightFoot = new Shape({
     ]},
   ],
   addTo: body,
-  translate: { x: -1, y: 9, z: 9 },
-  rotate: { z: -0.2 },
+  translate: { x: -1, y: 9, z: -9 },
+  rotate: { z: 0.2 },
   lineWidth: 6,
   color: shoe,
   fill: true,
@@ -169,8 +169,8 @@ var rightFoot = new Shape({
 });
 
 rightFoot.copy({
-  translate: { x: 9.5, y: 6, z: 6 },
-  rotate: { z: -1.1, y: -0.8 }
+  translate: { x: 9.5, y: 6, z: -6 },
+  rotate: { z: -1.1, y: 0.8 }
 });
 
 // ----- umbrella ----- //
@@ -182,8 +182,8 @@ var umbrella = new Shape({
     { y: 22 },
   ],
   addTo: rightArm,
-  translate: { y: -33, z: -2 },
-  rotate: { y: -0.5 },
+  translate: { y: -33, z: 2 },
+  rotate: { y: 0.5 },
   color: yellow,
   lineWidth: 1,
 });
@@ -221,11 +221,11 @@ new Shape({
     { z: 0, y: 1 },
     { arc: [
       { z: 0, y: 4 },
-      { z: -3, y: 4 },
+      { z: 3, y: 4 },
     ]},
     { arc: [
-      { z: -6, y: 4 },
-      { z: -6, y: 1 },
+      { z: 6, y: 4 },
+      { z: 6, y: 1 },
     ]},
   ],
   addTo: umbrella,

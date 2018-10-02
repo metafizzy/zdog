@@ -27,7 +27,7 @@ var isRotating = true;
 });
 
 var camera = new Anchor({
-  rotate: { y: -TAU/8 },
+  rotate: { y: TAU/8 },
 });
 
 // -- illustration shapes --- //
@@ -46,7 +46,7 @@ var town = new Group({
 
 var frontAnchor = new Anchor({
   addTo: town,
-  translate: { x: 16, y: -4, z: -20 },
+  translate: { x: 16, y: -4, z: 20 },
 });
 
 var frontBuilding = makeBuilding({
@@ -101,7 +101,7 @@ door.copy({
 [ -1, 1 ].forEach( function( zSide ) {
   var frontGableGroup = new Group({
     addTo: frontAnchor,
-    translate: { y: -20, z: 8*zSide },
+    translate: { y: -20, z: -8*zSide },
   });
 
   // front building gable
@@ -126,10 +126,10 @@ door.copy({
     path: [
       { x: 0, y: 0, z: 0 },
       { x: 5, y: 5, z: 0 },
-      { x: 0, y: 0, z: -5*zSide },
+      { x: 0, y: 0, z: 5*zSide },
     ],
     addTo: frontAnchor,
-    translate: { y: -25, z: 8*zSide },
+    translate: { y: -25, z: -8*zSide },
     color: gold,
   });
   frontGableSide.copy({
@@ -144,7 +144,7 @@ door.copy({
 
 var leftAnchor = new Anchor({
   addTo: town,
-  translate: { x: -13, y: -10, z: -23 },
+  translate: { x: -13, y: -10, z: 23 },
 });
 
 var leftBuilding = makeBuilding({
@@ -178,10 +178,10 @@ var cupolaNSPanel = new Shape({
     { x: 3, y: 9 },
     { x: -1, y: 5 },
       // HACK add point to sort in front of roof
-      { move: [ { x: 8, z: -4 } ] },
+      { move: [ { x: 8, z: 4 } ] },
   ],
   addTo: leftAnchor,
-  translate: { y: -34, z: -3 },
+  translate: { y: -34, z: 3 },
   color: red,
 });
 cupolaNSPanel.copy({
@@ -189,11 +189,11 @@ cupolaNSPanel.copy({
 });
 cupolaNSPanel.copy({
   scale: { z: -1 },
-  translate: { y: -34, z: 3 },
+  translate: { y: -34, z: -3 },
   color: gold,
 });
 cupolaNSPanel.copy({
-  translate: { y: -34, z: 3 },
+  translate: { y: -34, z: -3 },
   scale: { x: -1, z: -1 },
   color: gold,
 });
@@ -206,11 +206,11 @@ cupolaNSPanel.copy({
   // ew panel
   new Shape({
     path: [
-      { z: -3, y:  0 },
-      { z:  0, y: -3 },
       { z:  3, y:  0 },
-      { z:  3, y:  9 },
+      { z:  0, y: -3 },
+      { z: -3, y:  0 },
       { z: -3, y:  9 },
+      { z:  3, y:  9 },
       // HACK add point to sort in front of roof
       { move: [ { x: 16*xSide } ] },
     ],
@@ -230,8 +230,8 @@ var cupolaRoofPanel = new Shape({
   path: [
     { x: -3, y: -3, z:  0 },
     { x:  3, y: -3, z:  0 },
-    { x:  3, y:  0, z: -3 },
-    { x: -3, y:  0, z: -3 },
+    { x:  3, y:  0, z:  3 },
+    { x: -3, y:  0, z:  3 },
   ],
   addTo: leftAnchor,
   translate: { y: -34 },
@@ -248,10 +248,10 @@ cupolaRoofPanel.copy({
 // east slope
 var leftEWSlope = new Shape({
   path: [
-    { x: 0, y: 0, z: -11 },
     { x: 0, y: 0, z:  11 },
-    { x: 6, y: 6, z:  11 },
+    { x: 0, y: 0, z: -11 },
     { x: 6, y: 6, z: -11 },
+    { x: 6, y: 6, z:  11 },
   ],
   addTo: leftAnchor,
   translate: { x: 8 },
@@ -269,11 +269,11 @@ new Shape({
   path: [
     { z:  0, y: 0, x: -8 },
     { z:  0, y: 0, x:  8 },
-    { z: -6, y: 6, x:  8 },
-    { z: -6, y: 6, x: -8 },
+    { z:  6, y: 6, x:  8 },
+    { z:  6, y: 6, x: -8 },
   ],
   addTo: leftAnchor,
-  translate: { z: -11 },
+  translate: { z: 11 },
   color: navy,
 });
 
@@ -282,16 +282,16 @@ var leftCorner = new Shape({
   path: [
     { x: 0, y: 0, z:  0 },
     { x: 6, y: 6, z:  0 },
-    { x: 0, y: 6, z: -6 },
+    { x: 0, y: 6, z:  6 },
   ],
   addTo: leftAnchor,
-  translate: { x: 8, z: -11 },
+  translate: { x: 8, z: 11 },
   color: red,
 });
 // south west corner
 leftCorner.copy({
   scale: { x: -1 },
-  translate: { x: -8, z: -11 },
+  translate: { x: -8, z: 11 },
   color: blue,
 });
 
@@ -301,7 +301,7 @@ leftCorner.copy({
 
 var towerAnchor = new Anchor({
   addTo: town,
-  translate: { x: -13, y: -24, z: 4 },
+  translate: { x: -13, y: -24, z: -4 },
 });
 
 var tower = makeBuilding({
@@ -337,13 +337,13 @@ gableDot.copy({
 var towerChimney = new Shape({
   addTo: towerAnchor,
   path: [ { y: 0 }, { y: 4 } ],
-  translate: { x: -2, y: -37, z: -1 },
+  translate: { x: -2, y: -37, z: 1 },
   lineWidth: 2,
   stroke: true,
   color: navy,
 });
 towerChimney.copy({
-  translate: { x: -2, y: -37, z: 3 },
+  translate: { x: -2, y: -37, z: -3 },
 });
 
 // plume
@@ -361,8 +361,8 @@ new Shape({
     ]},
   ],
   addTo: towerAnchor,
-  translate: { x: -2, y: -42, z: 6 },
-  rotate: { y: TAU/4 },
+  translate: { x: -2, y: -42, z: -6 },
+  rotate: { y: -TAU/4 },
   stroke: true,
   lineWidth: 2,
   color: blue
@@ -373,10 +373,10 @@ new Shape({
 // big east slope
 var towerEWSlope = new Shape({
   path: [
-    { x: 0, y: 0, z: -1 },
     { x: 0, y: 0, z:  1 },
-    { x: 1, y: 1, z:  1 },
+    { x: 0, y: 0, z: -1 },
     { x: 1, y: 1, z: -1 },
+    { x: 1, y: 1, z:  1 },
   ],
   addTo: towerAnchor,
   translate: { x: 8 },
@@ -388,14 +388,14 @@ var towerEWSlope = new Shape({
 // south slope down to left building
 var towerNSSLope = new Shape({
   path: [
-    { z: 0, y: 0, x: -1 },
     { z: 0, y: 0, x:  1 },
-    { z: 1, y: 1, x:  1 },
+    { z: 0, y: 0, x: -1 },
     { z: 1, y: 1, x: -1 },
+    { z: 1, y: 1, x:  1 },
   ],
   addTo: towerAnchor,
-  translate: { z: -8 },
-  scale: { x: 8, y: 14, z: -8 },
+  translate: { z: 8 },
+  scale: { x: 8, y: 14, z: 8 },
   color: navy,
 });
 
@@ -404,18 +404,18 @@ new Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: 20, y: 20, z: 0 },
-    { x: 6, y: 20, z: -8 },
-    { x: 0, y: 14, z: -8 },
+    { x: 6, y: 20, z: 8 },
+    { x: 0, y: 14, z: 8 },
   ],
   addTo: towerAnchor,
-  translate: { x: 8, z: -8 },
+  translate: { x: 8, z: 8 },
   color: red,
 });
 
 // north slope
 towerNSSLope.copy({
-  translate: { z: 8 },
-  scale: { x: 8, y: 20, z: 7 },
+  translate: { z: -8 },
+  scale: { x: 8, y: 20, z: -7 },
   color: gold,
 });
 
@@ -424,10 +424,10 @@ new Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: 20, y: 20, z: 0 },
-    { x: 0, y: 20, z: 7 },
+    { x: 0, y: 20, z: -7 },
   ],
   addTo: towerAnchor,
-  translate: { x: 8, z: 8 },
+  translate: { x: 8, z: -8 },
   color: gold,
 });
 
@@ -443,10 +443,10 @@ new Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: -12, y: 20, z: 0 },
-    { x: 0, y: 20, z: 7 },
+    { x: 0, y: 20, z: -7 },
   ],
   addTo: towerAnchor,
-  translate: { x: -8, z: 8 },
+  translate: { x: -8, z: -8 },
   color: red,
 });
 
@@ -455,11 +455,11 @@ new Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: -12, y: 20, z: 0 },
-    { x: -6, y: 20, z: -8 },
-    { x: 0, y: 14, z: -8 },
+    { x: -6, y: 20, z: 8 },
+    { x: 0, y: 14, z: 8 },
   ],
   addTo: towerAnchor,
-  translate: { x: -8, z: -8 },
+  translate: { x: -8, z: 8 },
   color: blue,
 });
 
@@ -467,7 +467,7 @@ new Shape({
 
 var churchAnchor = new Anchor({
   addTo: town,
-  translate: { x: -5, y: -4, z: 27 },
+  translate: { x: -5, y: -4, z: -27 },
 });
 
 var church = makeBuilding({
@@ -506,7 +506,7 @@ new Ellipse({
 
   var bellTowerAnchor = new Anchor({
     addTo: churchAnchor,
-    translate: { x: -7, y: -36, z: 4 },
+    translate: { x: -7, y: -36, z: -4 },
   });
 
   // tower ledge
@@ -526,11 +526,11 @@ new Ellipse({
   for ( var i=0; i < 4; i++ ) {
     var wallAnchor = new Anchor({
       addTo: bellTowerAnchor,
-      rotate: { y: TAU/4 * i },
+      rotate: { y: TAU/4 * -i },
     });
     var bottomWallGroup = new Group({
       addTo: wallAnchor,
-      translate: { z: -4 }
+      translate: { z: 4 }
     });
 
     var wallColor = wallColors[i];
@@ -564,7 +564,7 @@ new Ellipse({
 
     var topWallGroup = new Group({
       addTo: wallAnchor,
-      translate: { y: -12, z: -3 },
+      translate: { y: -12, z: 3 },
     });
     // top wall
     new Rect({
@@ -587,8 +587,8 @@ new Ellipse({
     new Shape({
       path: [
         { x:  0, y: 0, z:  0 },
-        { x: -3, y: 6, z: -3 },
-        { x:  3, y: 6, z: -3 },
+        { x: -3, y: 6, z: 3 },
+        { x:  3, y: 6, z: 3 },
       ],
       addTo: wallAnchor,
       translate: { y: -25 },
@@ -600,9 +600,9 @@ new Ellipse({
   // south, white side
   new Shape({
     path: [
-      { z: -4, y:  0 },
-      { z:  4, y: -1 },
-      { z:  4, y:  8 },
+      { z:  4, y:  0 },
+      { z: -4, y: -1 },
+      { z: -4, y:  8 },
     ],
     addTo: bellTowerAnchor,
     translate: { x: 4 },
@@ -613,7 +613,7 @@ new Ellipse({
     width: 8,
     height: 10,
     addTo: bellTowerAnchor,
-    translate: { z: 4, y: 4 },
+    translate: { z: -4, y: 4 },
     color: gold,
   });
   // north blue side
@@ -645,7 +645,7 @@ new Shape({
     { x: 14, y: 14, z: 0 },
   ],
   addTo: town,
-  translate: { x: -6, y: -20, z: 12 },
+  translate: { x: -6, y: -20, z: -12 },
   lineWidth: 4,
   stroke: true,
   color: gold,
@@ -656,31 +656,31 @@ new Shape({
 // front in front of left building
 lilPyramid({
   addTo: town,
-  translate: { x: 6, z: -35, y: -4 },
+  translate: { x: 6, z: 35, y: -4 },
 });
 
 // behind left building
 
 lilPyramid({
   addTo: town,
-  translate: { x: -34, z: -20, y: -4 },
+  translate: { x: -34, z: 20, y: -4 },
 });
 
 
 // front right
 lilPyramid({
   addTo: town,
-  translate: { x: 35, z: -8, y: -4 },
+  translate: { x: 35, z: 8, y: -4 },
 });
 
 lilPyramid({
   addTo: town,
-  translate: { x: 31, z: 2, y: -4 },
+  translate: { x: 31, z: -2, y: -4 },
 });
 // in front of church
 lilPyramid({
   addTo: town,
-  translate: { x: 22, z: 28, y: -4 },
+  translate: { x: 22, z: -28, y: -4 },
 });
 
 // ----- hedges ----- //
@@ -688,24 +688,24 @@ lilPyramid({
 // to right of front building
 hedge({
   addTo: town,
-  translate: { x: 24, y: -4, z: -4 },
+  translate: { x: 24, y: -4, z: 4 },
 });
 
 // right of church
 hedge({
   addTo: town,
-  translate: { x: -4, y: -4, z: 42 },
+  translate: { x: -4, y: -4, z: -42 },
 });
 // in between tower & church
 hedge({
   addTo: town,
-  translate: { x: -30, y: -4, z: 18 },
+  translate: { x: -30, y: -4, z: -18 },
   // color: gold,
 });
 
 hedge({
   addTo: town,
-  translate: { x: 9, y: -4, z: 17 },
+  translate: { x: 9, y: -4, z: -17 },
   // color: gold,
 });
 
@@ -714,7 +714,7 @@ hedge({
 
 new Shape({
   addTo: town,
-  translate: { x: -6, y: -52, z: 42 },
+  translate: { x: -6, y: -52, z: -42 },
   lineWidth: 6,
   stroke: true,
   color: gold,
@@ -724,7 +724,7 @@ new Shape({
 
 // dot above left building
 var skyDot = new Shape({
-  translate: { x: -3, y: -48, z: -42 },
+  translate: { x: -3, y: -48, z: 42 },
   addTo: town,
   lineWidth: 2,
   stroke: true,
@@ -733,7 +733,7 @@ var skyDot = new Shape({
 
 // in front of church
 skyDot.copy({
-  translate: { x: 30, y: -28, z: 28 },
+  translate: { x: 30, y: -28, z: -28 },
 });
 
 var skyDiamond = new Shape({
@@ -744,7 +744,7 @@ var skyDiamond = new Shape({
     { x: -1, y:  0 },
   ],
   addTo: town,
-  translate: { x: -27, y: -45, z: -29 },
+  translate: { x: -27, y: -45, z: 29 },
   scale: 0.75,
   stroke: true,
   lineWidth: 0.5,
@@ -755,7 +755,7 @@ skyDiamond.copy({
 });
 
 var skyDiamond2 = skyDiamond.copy({
-  translate: { x: 8, y: -34, z: 42 },
+  translate: { x: 8, y: -34, z: -42 },
 });
 skyDiamond2.copy({
   rotate: { y: TAU/4, },
@@ -782,7 +782,7 @@ var skyStar = new Shape({
     ]},
   ],
   addTo: town,
-  translate: { x: -39, y: -51, z: -12 },
+  translate: { x: -39, y: -51, z: 12 },
   scale: 1.5,
   stroke: true,
   lineWidth: 1,
@@ -794,7 +794,7 @@ skyStar.copy({
 
 // up front
 var skyStar2 = skyStar.copy({
-  translate: { x: 29, y: -42, z: -30 },
+  translate: { x: 29, y: -42, z: 30 },
   color: white,
 });
 skyStar2.copy({
@@ -816,7 +816,7 @@ var cloud = new Shape({
     ]},
   ],
   addTo: town,
-  translate: { x: -30, y: -56, z: -10 },
+  translate: { x: -30, y: -56, z: 10 },
   scale: 1.5,
   rotate: { y: TAU/4 },
   stroke: true,
@@ -824,16 +824,16 @@ var cloud = new Shape({
   color: white,
 });
 cloud.copy({
-  translate: { x: -30, y: -57, z: -6 },
+  translate: { x: -30, y: -57, z: 6 },
 });
 cloud.copy({
-  translate: { x: -30, y: -56, z: -2 },
+  translate: { x: -30, y: -56, z: 2 },
 });
 
 // line underneath
 cloud.copy({
   path: [ { x: -1 }, { x: 1 } ],
-  translate: { x: -30, y: -56, z: -6 },
+  translate: { x: -30, y: -56, z: 6 },
   scale: { x: 2 },
 });
 
@@ -883,7 +883,7 @@ var sky = new Group({
     var bottomYB = bottomYs[ nextI ];
     var panelAnchor = new Anchor({
       addTo: sky,
-      rotate: { y: angle * -i  + TAU/4 },
+      rotate: { y: angle * i  - TAU/4 },
       translate: { y: 1 },
     });
     new Shape({
@@ -902,7 +902,7 @@ var sky = new Group({
         ]},
       ],
       addTo: panelAnchor,
-      translate: { z: radius },
+      translate: { z: -radius },
       color: blue,
       stroke: true,
       lineWidth: 1,
@@ -947,11 +947,11 @@ function update() {
     t += tSpeed * delta/60;
     var theta = easeInOut( t ) * TAU;
     var rev = 1;
-    var spin = -theta * rev - TAU/8;
+    var spin = -theta * rev + TAU/8;
     var extraRotation = TAU * rev * Math.floor( ( t % 4 ) );
     camera.rotate.y = spin - extraRotation;
     var everyOtherCycle = t % 2 < 1;
-    camera.rotate.x = everyOtherCycle ? 0 : ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU * 1/8;
+    camera.rotate.x = everyOtherCycle ? 0 : ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU * -1/8;
   }
   camera.normalizeRotate();
 
@@ -973,7 +973,7 @@ function render() {
   ctx.scale( zoom, zoom );
   ctx.translate( w/2, h/2 );
 
-  var isCameraXUp = camera.rotate.x > 0 && camera.rotate.x < TAU/2;
+  var isCameraXUp = camera.rotate.x < 0 || camera.rotate.x > TAU/2;
 
   sky.renderGraph( ctx );
 
@@ -1011,5 +1011,5 @@ new Dragger({
 
 document.querySelector('.reset-button').onclick = function() {
   isRotating = false;
-  camera.rotate.set({ x: 0, y: -TAU/8 });
+  camera.rotate.set({ x: 0, y: TAU/8 });
 };
