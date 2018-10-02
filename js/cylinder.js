@@ -24,7 +24,7 @@ Cylinder.prototype.create = function(/* options */) {
     width: this.radius * 2,
     height: this.radius * 2,
     addTo: this,
-    translate: { z: -baseZ },
+    translate: { z: baseZ },
     rotate: { y: TAU/2 },
     color: this.color,
     lineWidth: this.lineWidth,
@@ -34,7 +34,7 @@ Cylinder.prototype.create = function(/* options */) {
   });
   // back outside base
   backBase = base.copy({
-    translate: { z: baseZ },
+    translate: { z: -baseZ },
     rotate: { y: 0 },
   });
 
@@ -46,7 +46,7 @@ Cylinder.prototype.create = function(/* options */) {
     });
     // back inside base
     base.copy({
-      translate: { z: baseZ },
+      translate: { z: -baseZ },
       rotate: { y: TAU/2 },
       color: this.baseColor
     });

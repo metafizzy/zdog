@@ -19,7 +19,7 @@ if ( pixelRatio > 1 ) {
 var isRotating = false;
 var quarterTurn = Math.sin( TAU/8 );
 
-var sceneStartRotation = { y: TAU/8 };
+var sceneStartRotation = { y: -TAU/8 };
 
 var scene = new Anchor({
   rotate: sceneStartRotation,
@@ -72,7 +72,7 @@ var ground = new Anchor({
 
   var dude = new Anchor({
     addTo: ground,
-    translate: { x : 24, z: -12 },
+    translate: { x : 24, z: 12 },
   });
 
   var hipX = ( 8 / quarterTurn ) / 2;
@@ -83,7 +83,7 @@ var ground = new Anchor({
     ],
     addTo: dude,
     translate: { y: -49 },
-    rotate: { x: -TAU/16 },
+    rotate: { x: TAU/16 },
     lineWidth: 8,
     color: beigeLight,
   });
@@ -150,7 +150,7 @@ var ground = new Anchor({
 
   var leftShin = rightShin.copy({
     addTo: leftThigh,
-    rotate: { x: TAU/4 - hips.rotate.x },
+    rotate: { x: -TAU/4 - hips.rotate.x },
     color: beigeDark,
   });
   // left shin line
@@ -175,8 +175,8 @@ var ground = new Anchor({
       height: 10,
       radius: 2,
       addTo: isRight ? rightAnkle : leftAnkle,
-      translate: { y: 6, z: -4 },
-      rotate: { x: TAU/4 + shoeAngleX },
+      translate: { y: 6, z: 4 },
+      rotate: { x: -TAU/4 - shoeAngleX },
       color: isRight ? white : offWhite,
       fill: true,
       stroke: true,
@@ -186,7 +186,7 @@ var ground = new Anchor({
     // laces
     var lacesGroup = new Group({
       addTo: shoe,
-      translate: { z: 3 },
+      translate: { z: -3 },
     });
     var shoeLace = new Shape({
       path: [ { x: -1 }, { x: 1 } ],
@@ -212,8 +212,8 @@ var ground = new Anchor({
       height: 13,
       radius: 3,
       addTo: shoe,
-      translate: { z: -3.5 },
-      // rotate: { x: TAU/4 },
+      translate: { z: 3.5 },
+      // rotate: { x: -TAU/4 },
       lineWidth: 1,
       fill: true,
       color: blueDark,
@@ -227,7 +227,7 @@ var ground = new Anchor({
       { x:  torsoX },
     ],
     addTo: dude,
-    translate: { y: -59, z: 6 },
+    translate: { y: -59, z: -6 },
     color: navy,
     lineWidth: 16,
   });
@@ -240,14 +240,14 @@ var ground = new Anchor({
     ],
     addTo: torso,
     translate: { x: -shoulderX, y: -3 },
-    rotate: { x: TAU/16, z: TAU/8 },
+    rotate: { x: -TAU/16, z: TAU/8 },
     lineWidth: 10,
     color: navy,
   });
 
   var leftShoulder = rightShoulder.copy({
     translate: { x: shoulderX, y: -3 },
-    rotate: { x: -TAU*3/16, z: -TAU/32 },
+    rotate: { x: TAU*3/16, z: -TAU/32 },
     color: midnight,
   });
 
@@ -258,7 +258,7 @@ var ground = new Anchor({
     ],
     addTo: rightShoulder,
     translate: { y: 16 },
-    rotate: {  x: -2.12, z: 0 },
+    rotate: {  x: 2.12, z: -0 },
     lineWidth: 8,
     color: skinMedium,
   });
@@ -266,12 +266,12 @@ var ground = new Anchor({
   var leftArm = rightArm.copy({
     addTo: leftShoulder,
     color: skinDark,
-    rotate: { x: -TAU/4, z: TAU/8 },
+    rotate: { x: TAU/4, z: TAU/8 },
   });
 
   var rightHand = new Shape({
     addTo: rightArm,
-    translate: { x: -0.5, y: 14, z: -1 },
+    translate: { x: -0.5, y: 14, z: 1 },
     lineWidth: 10,
     color: skinMedium,
   });
@@ -286,15 +286,15 @@ var ground = new Anchor({
   var jacketZipScale = torso.lineWidth/2;
   new Shape({
     path: [
-      { z: 0, y: -1 },
+      { z: -0, y: -1 },
       { arc: [
-        { z: -1, y: -1 },
-        { z: -1, y: 0 },
+        { z: 1, y: -1 },
+        { z: 1, y: 0 },
       ]},
     ],
     scale: { z: jacketZipScale, y: jacketZipScale },
     addTo: torso,
-    rotate: { x: TAU/32 },
+    rotate: { x: -TAU/32 },
     color: sky,
     closed: false,
     lineWidth: 0.5,
@@ -305,14 +305,14 @@ var ground = new Anchor({
     path: [ { y: neckY }, { y: neckY - 4 } ],
     addTo: torso,
     // translate: { y: }
-    rotate: { x: -TAU/16, y: -TAU*3/16 },
+    rotate: { x: TAU/16, y: TAU*3/16 },
     lineWidth: 6,
     color: skinMedium,
   });
   // chin
   var chin = new Shape({
     addTo: neck,
-    translate: { y: neckY - 5, z: -2 },
+    translate: { y: neckY - 5, z: 2 },
     lineWidth: 8,
     color: skinMedium,
   });
@@ -332,7 +332,7 @@ var ground = new Anchor({
       { y: -7 },
     ],
     addTo: chin,
-    translate: { x: -2, y: -2, z: 3 },
+    translate: { x: -2, y: -2, z: -3 },
     lineWidth: 4,
     color: auburn,
   });
@@ -343,14 +343,14 @@ var ground = new Anchor({
       { y: -6 },
     ],
     addTo: chin,
-    translate: { x: 1.25, y: -2, z: 3 },
+    translate: { x: 1.25, y: -2, z: -3 },
     lineWidth: 2.5,
     color: red,
   });
   // smile
   semiCircle.copy({
     addTo: chin,
-    translate: { y: -1.5, z: -3 },
+    translate: { y: -1.5, z: 3 },
     scale: { x: 1.5, y: 1.5 },
     fill: true,
     lineWidth: 0.5,
@@ -359,7 +359,7 @@ var ground = new Anchor({
   // eyes
   var eye = semiCircle.copy({
     addTo: forehead,
-    translate: { x: -1, y: 0.5, z: -2 },
+    translate: { x: -1, y: 0.5, z: 2 },
     scale: { x: 0.5, y: -0.5 },
     closed: false,
     color: midnight,
@@ -367,21 +367,21 @@ var ground = new Anchor({
     fill: false,
   });
   eye.copy({
-    translate: { x: 1, y: 0.5, z: -2 },
+    translate: { x: 1, y: 0.5, z: 2 },
   });
 
   var ear = new Ellipse({
     width: 1.5,
     height: 1.5,
     addTo: forehead,
-    translate: { x: 3.5, y: 1, z: 1 },
+    translate: { x: 3.5, y: 1, z: -1 },
     rotate: { y: TAU/8 },
     lineWidth: 1,
     color: skinMedium,
     fill: true,
   });
   ear.copy({
-    translate: { x: -3.5, y: 1, z: 1 },
+    translate: { x: -3.5, y: 1, z: -1 },
     rotate: { y: -TAU/8 },
   });
 
@@ -392,7 +392,7 @@ var ground = new Anchor({
 
   var lady = new Anchor({
     addTo: ground,
-    translate: { x : -24, z: 12 },
+    translate: { x : -24, z: -12 },
   });
 
   var hips = new Shape({
@@ -404,7 +404,7 @@ var ground = new Anchor({
 
   var torsoAnchor = new Anchor({
     addTo: hips,
-    rotate: { x: TAU/8 },
+    rotate: { x: -TAU/8 },
   });
 
   var torso = new Rect({
@@ -431,20 +431,20 @@ var ground = new Anchor({
     height: 5,
     radius: 1.5,
     addTo: neck,
-    translate: { x: 1, y: 2, z: -0 },
-    rotate: { x: TAU/4, z: TAU/8 },
+    translate: { x: 1, y: 2, z: 0 },
+    rotate: { x: -TAU/4, z: TAU/8 },
     color: white,
     fill: true,
   });
   collar.copy({
-    translate: { x: -1, y: 2, z: -0 },
-    rotate: { x: TAU/4, z: -TAU/8 },
+    translate: { x: -1, y: 2, z: 0 },
+    rotate: { x: -TAU/4, z: -TAU/8 },
   });
 
   var head = new Anchor({
     addTo: neck,
     translate: { y: -6 },
-    rotate: { x: -TAU/8 },
+    rotate: { x: TAU/8 },
   });
   var faceGroup = new Group({
     addTo: head,
@@ -484,7 +484,7 @@ var ground = new Anchor({
   // glasses
   var glasses = new Group({
     addTo: head,
-    translate: { y: -1, z: -5 },
+    translate: { y: -1, z: 5 },
   });
 
   var lens = new Ellipse({
@@ -525,15 +525,15 @@ var ground = new Anchor({
 
   // ----- lady arms ----- //
 
-  var leftWrist = { z: -12, y: -12 };
+  var leftWrist = { z: 12, y: -12 };
 
   var leftArm = new Shape({
     path: [
-      { z: 0, y: 0 },
-      { z: -12, y: 0 },
+      { z: -0, y: 0 },
+      { z: 12, y: 0 },
       leftWrist,
       // hack for z-sort probs
-      { move: [{ x: 16, z: 16 } ]},
+      { move: [{ x: 16, z: -16 } ]},
     ],
     addTo: torso,
     translate: { x: 4, y: -3 },
@@ -544,7 +544,7 @@ var ground = new Anchor({
 
   // leftHand
   var leftHand = new Shape({
-    path: [ { x: -1, z: 0.5 } ],
+    path: [ { x: -1, z: -0.5 } ],
     addTo: leftArm,
     translate: leftWrist,
     color: skinMedium,
@@ -553,8 +553,8 @@ var ground = new Anchor({
 
   var phoneAnchor = new Anchor({
     addTo: leftHand,
-    translate: { x: -2, y: -0, z: 4 },
-    rotate: { x: -TAU/8 },
+    translate: { x: -2, y: -0, z: -4 },
+    rotate: { x: TAU/8 },
   });
 
   var phoneBack = new Group({
@@ -562,7 +562,7 @@ var ground = new Anchor({
   });
   var phoneFront = new Group({
     addTo: phoneAnchor,
-    translate: { z: 0.5 },
+    translate: { z: -0.5 },
   });
   // back phone panel
   var phonePanel = new RoundedRect({
@@ -588,8 +588,8 @@ var ground = new Anchor({
   new Shape({
     path: [
       // z-sort hack
-      { move: [{ z: -8 }]},
-      { move: [{ z: 0 }]},
+      { move: [{ z: 8 }]},
+      { move: [{ z: -0 }]},
       {},
     ],
     addTo: phoneBack,
@@ -616,7 +616,7 @@ var ground = new Anchor({
     color: skinLight,
   });
 
-  var rightHandPosition = new Vector3( rightWrist ).add({ x: -0.5, z: 1 });
+  var rightHandPosition = new Vector3( rightWrist ).add({ x: -0.5, z: -1 });
 
   var rightHand = leftHand.copy({
     path: [{}],

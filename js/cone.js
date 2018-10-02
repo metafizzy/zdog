@@ -19,7 +19,7 @@ Cone.prototype.create = function(/* options */) {
   // composite shape, create child shapes
   this.apex = new Shape({
     rendering: false,
-    translate: { z: -this.height },
+    translate: { z: this.height },
     addTo: this,
   });
   // outside base

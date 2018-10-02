@@ -20,6 +20,7 @@
     "Rect": false,
     "RoundedRect": false,
     "Shape": false,
+    "shapeSorter": false,
     "TAU": false,
     "Vector3": false
   }

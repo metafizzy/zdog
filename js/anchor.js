@@ -85,12 +85,8 @@ Anchor.prototype.updateGraph = function() {
     item.updateSortValue();
   });
   // z-sort
-  this.flatGraph.sort( sortBySortValue );
+  this.flatGraph.sort( shapeSorter );
 };
-
-function sortBySortValue( a, b ) {
-  return b.sortValue - a.sortValue;
-}
 
 Anchor.prototype.checkFlatGraph = function() {
   if ( !this.flatGraph ) {

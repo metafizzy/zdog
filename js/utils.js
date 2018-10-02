@@ -28,3 +28,7 @@ function modulo( num, div ) {
 function getDistance1( x, y ) {
   return Math.sqrt( x * x + y * y );
 }
+
+function shapeSorter( a, b ) {
+  return a.sortValue - b.sortValue;
+}

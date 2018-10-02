@@ -26,7 +26,7 @@ var white = 'white';
 // -- illustration shapes --- //
 
 var scene = new Anchor({
-  rotate: { x: TAU/32 },
+  rotate: { x: -TAU/32 },
 });
 
 var cat = new Group({
@@ -45,7 +45,7 @@ new Shape({
 
 var face = new Anchor({
   addTo: cat,
-  translate: { y: -4, z: -6.5 },
+  translate: { y: -4, z: 6.5 },
 });
 
 // nose
@@ -57,7 +57,7 @@ new Shape({
   ],
   scale: { x: 0.25, y: 0.25 },
   addTo: face,
-  translate: { z: -1.5 },
+  translate: { z: 1.5 },
   lineWidth: 1,
   color: midnight,
 });
@@ -68,7 +68,7 @@ new RoundedRect({
   height: 7,
   radius: 2.5,
   addTo: cat,
-  translate: { y: 3.5, z: -5 },
+  translate: { y: 3.5, z: 5 },
   // rotate: { x: TAU/64 },
   color: white,
   lineWidth: 3,
@@ -80,7 +80,7 @@ new Shape({
   path: [ { x: -1 }, { x: 1 } ],
   scale: { x: 2 },
   addTo: cat,
-  translate: { y: -3, z: -4 },
+  translate: { y: -3, z: 4 },
   lineWidth: 4,
   color: magenta,
 });
@@ -89,8 +89,8 @@ new Shape({
 new Shape({
   path: [ { y: 0 }, { y: 8 } ],
   addTo: cat,
-  translate: { y: 7, z: 4 },
-  rotate: { x: TAU/32 },
+  translate: { y: 7, z: -4 },
+  rotate: { x: -TAU/32 },
   lineWidth: 1,
   color: magenta,
 });
@@ -99,15 +99,15 @@ var backLine = new Shape({
   path: [ { x: -1 }, { x: 1 } ],
   scale: { x: 3 },
   addTo: cat,
-  translate: { y: 0, z: 6.5 },
+  translate: { y: 0, z: -6.5 },
   lineWidth: 0.5,
   color: '#F7A',
 });
 backLine.copy({
-  translate: { y: -3, z: 6.5 },
+  translate: { y: -3, z: -6.5 },
 });
 backLine.copy({
-  translate: { y: 3, z: 6.5 },
+  translate: { y: 3, z: -6.5 },
 });
 
 [ -1, 1 ].forEach( function( xSide ) {
@@ -126,7 +126,7 @@ backLine.copy({
     path: [ { x: -1 }, { x: 1} ],
     scale: { x: 0.4 },
     addTo: face,
-    translate: { x: 1*xSide, y: 0.5, z: -0.5 },
+    translate: { x: 1*xSide, y: 0.5, z: 0.5 },
     lineWidth: 1.5,
     color: white,
   });
@@ -166,26 +166,26 @@ backLine.copy({
   var arm = new Shape({
     path: [ { y: 0 }, { y: 3.5 } ],
     addTo: cat,
-    translate: { x: 3.5*xSide, y: -1, z: -5.5 },
-    rotate: { x: -TAU/16 },
+    translate: { x: 3.5*xSide, y: -1, z: 5.5 },
+    rotate: { x: TAU/16 },
     lineWidth: 3,
     color: magenta,
   });
 
   // leg
   arm.copy({
-    translate: { x: 3.5*xSide, y: 8, z: -2 },
+    translate: { x: 3.5*xSide, y: 8, z: 2 },
     rotate: {},
   });
 });
 
 var diamondPanel = new Shape({
   path: [
-    { x: 0, y: 1, z: 0 },
-    { x: -1, y: 0, z: -1 },
-    { x:  1, y: 0, z: -1 },
+    { x: 0, y: 1, z: -0 },
+    { x: -1, y: 0, z: 1 },
+    { x:  1, y: 0, z: 1 },
   ],
-  scale: { x: 12, y: 30, z: 12 },
+  scale: { x: 12, y: 30, z: -12 },
   addTo: scene,
   stroke: false,
   fill: true,
@@ -204,22 +204,22 @@ diamondPanel.copy({
   color: 'hsla(60, 100%, 50%, 0.4)',
 });
 diamondPanel.copy({
-  scale: { x: 12, y: -30, z: 12 },
+  scale: { x: 12, y: -30, z: -12 },
   rotate: { y: TAU/4*0 },
   color: 'hsla(60, 100%, 50%, 0.4)',
 });
 diamondPanel.copy({
-  scale: { x: 12, y: -30, z: 12 },
+  scale: { x: 12, y: -30, z: -12 },
   rotate: { y: TAU/4*1 },
   color: 'hsla(60, 100%, 50%, 0.3)',
 });
 diamondPanel.copy({
-  scale: { x: 12, y: -30, z: 12 },
+  scale: { x: 12, y: -30, z: -12 },
   rotate: { y: TAU/4*2 },
   color: 'hsla(60, 100%, 50%, 0.2)',
 });
 diamondPanel.copy({
-  scale: { x: 12, y: -30, z: 12 },
+  scale: { x: 12, y: -30, z: -12 },
   rotate: { y: TAU/4*3 },
   color: 'hsla(60, 100%, 50%, 0.1)',
 });

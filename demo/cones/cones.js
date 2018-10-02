@@ -37,12 +37,12 @@ var scene = new Anchor();
 
 // -----  ----- //
 
-
+// top & bottom
 var cone = new Cone({
   radius: 4,
   height: 10,
   addTo: scene,
-  translate: { y: 16 },
+  translate: { y: -16 },
   // scale: { x: 2, y: 2 },
   rotate: { x: -TAU/4 },
   color: colorWheel[1],
@@ -50,14 +50,13 @@ var cone = new Cone({
   stroke: false,
 });
 cone.copy({
-  translate: { y: -16 },
+  translate: { y: 16 },
   rotate: { x: TAU/4 },
 });
 
 
 
 [ -1, 1 ].forEach( function( ySide ) {
-  // return;
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
       addTo: scene,
@@ -70,7 +69,7 @@ cone.copy({
 
     cone.copy({
       addTo: rotor2,
-      translate: { y: -16*ySide },
+      translate: { y: 16*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[i],
       baseColor: colorWheel[ (i+7) % 5 ],
@@ -91,7 +90,7 @@ cone.copy({
 
     cone.copy({
       addTo: rotor2,
-      translate: { y: 16*ySide },
+      translate: { y: -16*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[ (i+3) % 5 ],
       baseColor: colorWheel[i],
@@ -100,7 +99,6 @@ cone.copy({
 });
 
 [ -1, 1 ].forEach( function( ySide ) {
-  // return;
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
       addTo: scene,
@@ -113,7 +111,7 @@ cone.copy({
 
     cone.copy({
       addTo: rotor2,
-      translate: { y: 16*ySide },
+      translate: { y: -16*ySide },
       // scale: { y: -1 },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[ (i+1) % 5 ],

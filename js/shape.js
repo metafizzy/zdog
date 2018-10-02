@@ -10,7 +10,7 @@ var Shape = Anchor.subclass({
   closed: true,
   rendering: true,
   path: [ {} ],
-  front: { z: -1 },
+  front: { z: 1 },
   backfaceVisible: true,
 });
 
@@ -107,7 +107,7 @@ Shape.prototype.render = function( ctx ) {
     return;
   }
   // do not render if hiding backface
-  var isFacingBack = this.renderNormal.z < 0;
+  var isFacingBack = this.renderNormal.z > 0;
   if ( !this.backfaceVisible && isFacingBack ) {
     return;
   }

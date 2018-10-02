@@ -21,9 +21,7 @@ Group.prototype.updateSortValue = function() {
   this.sortValue = sortValueTotal / this.flatGraph.length;
 
   if ( this.updateSort ) {
-    this.flatGraph.sort( function( a, b ) {
-      return b.sortValue - a.sortValue;
-    });
+    this.flatGraph.sort( shapeSorter );
   }
 };
 
