@@ -169,7 +169,7 @@ var ground = new Anchor({
 
   // shoes
   [ true, false ].forEach( function( isRight ) {
-    var shoeAngleX = isRight ? -TAU/16 : hips.rotate.x;
+    var shoeAngleX = isRight ? -TAU/16 : -hips.rotate.x;
     var shoe = new RoundedRect({
       width: 2,
       height: 10,
@@ -328,7 +328,7 @@ var ground = new Anchor({
   // hair big
   new Shape({
     path: [
-      { y: 0 },
+      { y: -1 },
       { y: -7 },
     ],
     addTo: chin,
@@ -346,6 +346,15 @@ var ground = new Anchor({
     translate: { x: 1.25, y: -2, z: -3 },
     lineWidth: 2.5,
     color: red,
+  });
+  // hair back
+  new Ellipse({
+    width: 3,
+    height: 3,
+    addTo: chin,
+    translate: { y: -4, z: -4 },
+    lineWidth: 4,
+    color: auburn,
   });
   // smile
   semiCircle.copy({
@@ -375,14 +384,14 @@ var ground = new Anchor({
     height: 1.5,
     addTo: forehead,
     translate: { x: 3.5, y: 1, z: -1 },
-    rotate: { y: TAU/8 },
+    rotate: { y: -TAU/8 },
     lineWidth: 1,
     color: skinMedium,
     fill: true,
   });
   ear.copy({
     translate: { x: -3.5, y: 1, z: -1 },
-    rotate: { y: -TAU/8 },
+    rotate: { y: TAU/8 },
   });
 
 })();
