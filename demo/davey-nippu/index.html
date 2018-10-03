@@ -16,7 +16,6 @@
       align-items: center;
       justify-content: center;
       background: #09D;
-      color: white;
       font-family: sans-serif;
       text-align: center;
     }
@@ -25,8 +24,26 @@
       display: block;
       margin: 0px auto 20px;
       cursor: move;
-      border: 1px solid;
     }
+
+    a { color: white; }
+    a:hover { color: #606; }
+
+    button {
+      background: #848;
+      color: white;
+      font-size: 14px;
+      font-family: inherit;
+      border: none;
+      border-radius: 3px;
+      padding: 8px 10px;
+    }
+
+    button:hover {
+      background: #606;
+      cursor: pointer;
+    }
+
   </style>
 
 </head>
@@ -34,7 +51,7 @@
 
 <div class="container">
   <canvas></canvas>
-  <!-- <p>Click &amp; drag to rotate</p> -->
+  <p><a href="http://robindavey.co.uk/post/162551722511">Original illustration by Robin Davey</a></p>
   <p><button class="reset-button">Reset</button></p>
 </div>
 
@@ -43,10 +60,11 @@
 <script src="../../js/anchor.js"></script>
 <script src="../../js/path-action.js"></script>
 <script src="../../js/shape.js"></script>
-<script src="../../js/ellipse.js"></script>
 <script src="../../js/rect.js"></script>
 <script src="../../js/rounded-rect.js"></script>
+<script src="../../js/ellipse.js"></script>
 <script src="../../js/group.js"></script>
+<script src="../../js/hemisphere.js"></script>
 <script src="../../js/dragger.js"></script>
 <!-- <script src="../../js/fps-counter.js"></script> -->
 <script src="davey-nippu.js"></script>

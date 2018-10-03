@@ -4,8 +4,8 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var w = 128;
 var h = 128;
-var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
+var minWindowSize = Math.min( window.innerWidth, (window.innerHeight - 60) );
+var zoom = Math.floor( minWindowSize / w );
 var pixelRatio = window.devicePixelRatio || 1;
 zoom *= pixelRatio;
 var canvasWidth = canvas.width = w * zoom;
@@ -16,7 +16,7 @@ if ( pixelRatio > 1 ) {
   canvas.style.height = canvasHeight / pixelRatio + 'px';
 }
 
-var isRotating = false;
+var isRotating = true;
 var quarterTurn = Math.sin( TAU/8 );
 
 var sceneStartRotation = { y: -TAU/8 };
@@ -72,7 +72,7 @@ var ground = new Anchor({
 
   var dude = new Anchor({
     addTo: ground,
-    translate: { x : 24, z: 12 },
+    translate: { x : -24, z: -12 },
   });
 
   var hipX = ( 8 / quarterTurn ) / 2;
@@ -401,13 +401,13 @@ var ground = new Anchor({
 
   var lady = new Anchor({
     addTo: ground,
-    translate: { x : -24, z: -12 },
+    translate: { x : 24, z: 12 },
   });
 
   var hips = new Shape({
     addTo: lady,
     translate: { y: -38 },
-    lineWidth: 14,
+    lineWidth: 15,
     color: navy,
   });
 
@@ -428,7 +428,7 @@ var ground = new Anchor({
   // ----- lady head ----- //
 
   var neck = new Shape({
-    path: [ {}, { y: -5 }],
+    path: [ {}, { y: -2 }],
     addTo: torso,
     translate: { y: -7 },
     lineWidth: 4,
@@ -455,40 +455,63 @@ var ground = new Anchor({
     translate: { y: -6 },
     rotate: { x: TAU/8 },
   });
-  var faceGroup = new Group({
-    addTo: head,
-  });
+  // var faceGroup = new Group({
+  //   addTo: head,
+  // });
   // hair cap
-  new Shape({
-    lineWidth: 11,
-    translate: { y: -1 },
-    addTo: faceGroup,
+  new Hemisphere({
+    addTo: head,
+    radius: 5.5,
     color: midnight,
-  })
+    lineWidth: 1.5,
+    translate: { y: -1 },
+    rotate: { x: TAU/8 * 3, y: 0 },
+  });
   // face
+  new Hemisphere({
+    addTo: head,
+    radius: 4.5,
+    color: skinLight,
+    baseColor: midnight,
+    lineWidth: 0.5,
+    translate: { y: -0.95 },
+    rotate: { x: TAU/8 * 3, y: TAU/2 },
+  });
+  // smile
   new Shape({
+    addTo: head,
     path: [
-      { x: 1, y: 0 },
+      { move: [ { x: 1, y: 0 } ]},
       { arc: [
         { x: 1, y: 1 },
-        { x: 0, y: 1 },
+        { x: 0, y: 1 }
       ]},
-      { arc: [
-        { x: -1, y: 1 },
-        { x: -1, y: 0 },
-      ]},
-      { x: 1, y: 0 },
     ],
-    scale: { x: 2, y: 2 },
-    addTo: faceGroup,
-    // translate: { y: 1 },
-    lineWidth: 5,
-    rotate: { y: TAU/4, z: TAU/8 },
-
-    fill: true,
-    color: skinLight,
+    scale: 1.5,
+    translate: { y: 0.5, z: 4 },
+    rotate: { z: TAU/8 },
+    color: skinDark,
     closed: false,
+    lineWidth: 0.5,
+    
   });
+
+  // hair locks
+  new RoundedRect({
+    width: 6,
+    height: 10,
+    radius: 3,
+    addTo: head,
+    translate: { y: 2, x: 4.5, z: -2 },
+    rotate: { y: TAU/4 },
+    fill: true,
+    color: midnight,
+    lineWidth: 2,
+  });
+  // hairLock.copy({
+  //   translate: { y: 8, x: 4.5, z: -2 },
+  // });
+
 
   // glasses
   var glasses = new Group({
@@ -500,13 +523,13 @@ var ground = new Anchor({
     width: 4,
     height: 4,
     addTo: glasses,
-    translate: { x: -2.25 },
+    translate: { x: -2.5 },
     stroke: false,
     fill: true,
     color: '#603',
   });
   lens.copy({
-    translate: { x: 2.25 },
+    translate: { x: 2.5 },
   });
 
   var glassesRim = lens.copy({
@@ -516,36 +539,25 @@ var ground = new Anchor({
     color: auburn,
   });
   glassesRim.copy({
-    translate: { x: 2.25 },
+    translate: { x: 2.5 },
   });
 
-  // long locks
-  // new RoundedRect({
-  //   width: 8,
-  //   height: 12,
-  //   radius: 4,
-  //   addTo: head,
-  //   translate: { y: 1, x: 4.5 },
-  //   rotate: { y: TAU/4 },
-  //   fill: true,
-  //   color: midnight,
-  //   lineWidth: 2,
-  // });
+
 
   // ----- lady arms ----- //
 
-  var leftWrist = { z: 12, y: -12 };
+  var leftWrist = { z: 14, y: -14 };
 
   var leftArm = new Shape({
     path: [
       { z: -0, y: 0 },
-      { z: 12, y: 0 },
+      { z: 12, y: -2 }, // elbow
       leftWrist,
       // hack for z-sort probs
       { move: [{ x: 16, z: -16 } ]},
     ],
     addTo: torso,
-    translate: { x: 4, y: -3 },
+    translate: { x: 5, y: -3 },
     closed: false,
     color: skinMedium,
     lineWidth: 4,
@@ -621,7 +633,7 @@ var ground = new Anchor({
       rightWrist,
     ],
     translate: { x: -4, y: -3 },
-    rotate: { z: TAU/16, x: -TAU/32 },
+    rotate: { z: TAU/16, x: TAU/32 },
     color: skinLight,
   });
 
@@ -634,9 +646,216 @@ var ground = new Anchor({
     color: skinLight,
   });
 
+  var suitCase = new Anchor({
+    addTo: rightHand,
+    translate: { y: 12 },
+    rotate: { y: TAU/4 }
+  });
+
+  var suitCaseFrontPanel = new RoundedRect({
+    addTo: suitCase,
+    width: 24,
+    height: 14,
+    radius: 2,
+    translate: { z: 3 },
+    color: '#848',
+    fill: true,
+  });
+  suitCaseFrontPanel.copy({
+    translate: { z: -3 },
+    color: '#606',
+  });
+
+  var suitCaseTopPanel = new Rect({
+    addTo: suitCase,
+    width: 20,
+    height: 5,
+    translate: { y: -7 },
+    rotate: { x: TAU/4 },
+    lineWidth: 0.5,
+    fill: true,
+    color: '#606',
+  });
+  suitCaseTopPanel.copy({
+    translate: { y: 7 },
+  });
+  var suitCaseSidePanel = suitCaseTopPanel.copy({
+    width: 5,
+    height: 10,
+    translate: { x: 12 },
+    rotate: { y: TAU/4 },
+  });
+  suitCaseSidePanel.copy({
+    translate: { x: -12 },
+  });
+  // suit case filler
+  new Rect({
+    addTo: suitCase,
+    width: 20,
+    height: 10,
+    lineWidth: 4,
+    color: '#606',
+  });
+  // suit case handle
+  var suitCaseHandle = new Shape({
+    addTo: suitCase,
+    path: [
+      {},
+      { arc: [
+        { x: 1, y: 0 },
+        { x: 1, y: 1 },
+      ]},
+      { x: 1, y: 3 },
+    ],
+    translate: { x: 3, y: -11 },
+    lineWidth: 1.5,
+    color: midnight,
+    closed: false,
+  });
+  suitCaseHandle.copy({
+    scale: { x: -1 },
+    translate: { x: -3, y: -11 },
+  });
+
+  // ---- leg ---- //
+
+  // left leg
+  var leftAnkle = { y: 28 };
+  var leftLeg = new Shape({
+    addTo: hips,
+    path: [ { y: 0 }, leftAnkle ],
+    translate: { x: 3.5, y: 4, z: 0 },
+    lineWidth: 7,
+    rotate: { x: -TAU/8 },
+    color: midnight,
+  });
+
+  // right thigh
+  var rightKnee = { y: 16 };
+  var rightThigh = new Shape({
+    addTo: hips,
+    path: [ { y: 0 }, rightKnee ],
+    translate: { x: -3.5, y: 4, z: 0 },
+    lineWidth: 7,
+    rotate: { x: TAU/8 },
+    color: navy,
+  });
+  // rightShin
+  var rightAnkle = { y: 10 };
+  var rightShin = new Shape({
+    addTo: rightThigh,
+    path: [ { y: 0 }, rightAnkle ],
+    translate: rightKnee,
+    lineWidth: 7,
+    rotate: { x: -TAU/8 },
+    color: navy,
+  });
+
+  // lady feet
+  var rightFoot = new Shape({
+    addTo: rightShin,
+    path: [ { y: 2 }, { y: 8 } ],
+    translate: rightAnkle,
+    lineWidth: 4,
+    color: skinLight,
+  });
+  // heel
+  new Shape({
+    addTo: rightFoot,
+    path: [ { x: -1 }, { x: 1 } ],
+    translate: { y: 5, z: -3 },
+    lineWidth: 4,
+    color: beigeLight,
+  });
+  // sole edge
+  var soleEdge = new Shape({
+    addTo: rightFoot,
+    path: [
+      { x: -2, z: -2 },
+      { arc: [
+        { x: -2, z: -2, y: 5 },
+        { x: 0, z: 2, y: 5 }
+      ]},
+    ],
+    translate: { y: 6 },
+    lineWidth: 2,
+    fill: false,
+    closed: false,
+    color: beigeLight,
+  });
+  soleEdge.copy({
+    scale: { x: -1 },
+  });
+
+  // heel spike
+  new Shape({
+    addTo: rightFoot,
+    path: [ {}, { y: 5 } ],
+    translate: { y: 6, z: -4 },
+    lineWidth: 2,
+    color: beigeLight,
+  });
+  rightFoot.copyGraph({
+    addTo: leftLeg,
+    translate: leftAnkle,
+    color: skinMedium,
+  });
+
+})();
+
+( function() {
+  
+
+  // big puff
+  var cloud = new Shape({
+    addTo: scene,
+    translate: { x: 34, y: -26, z: -20 },
+    rotate: { y: -sceneStartRotation.y },
+    lineWidth: 16,
+    color: white,
+  });
+
+  // left small puff
+  var smallPuff = new Shape({
+    addTo: cloud,
+    translate: { x: -9, y: 4, z: 4 },
+    lineWidth: 8,
+    color: white,
+  });
+  smallPuff.copy({
+    translate: { x: 9, y: 5, z: 6 },
+    lineWidth: 10,
+  });
+
+  var disk = new RoundedRect({
+    addTo: cloud,
+    width: 26,
+    height: 12,
+    radius: 6,
+    translate: { x: -6, y: 7, z: 4 },
+    rotate: { x: TAU/4 },
+    lineWidth: 3,
+    color: white,
+    fill: true,
+  });
+  disk.copy({
+    translate: { x: 6, y: 9, z: 8 },
+  });
+
+  // sun
+  new Shape({
+    addTo: cloud,
+    translate: { x: -13, y: 0, z: -14 },
+    lineWidth: 8,
+    color: beigeLight,
+  });
+
 })();
 
 // -- animate --- //
+
+var t = 0;
+var tSpeed = 1/240;
 
 function animate() {
   update();
@@ -648,11 +867,28 @@ animate();
 
 // -- update -- //
 
+function easeInOut( i ) {
+  i = i % 1;
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
+}
+
 function update() {
-  scene.rotate.y += isRotating ? +TAU/150 : 0;
+
+  if ( isRotating ) {
+    t += tSpeed;
+    var theta = easeInOut( t ) * TAU;
+    scene.rotate.y = -theta + sceneStartRotation.y;
+  }
 
   scene.updateGraph();
 }
+
 
 // -- render -- //
 
