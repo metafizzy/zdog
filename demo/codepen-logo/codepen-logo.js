@@ -24,12 +24,10 @@ var tiltAngle = Math.asin(2/3);
 
 var scene = new Anchor({
   scale: 4,
-  rotate: { z: TAU/8, x: tiltAngle },
 });
 
 var prism = new Anchor({
   addTo: scene,
-  // rotate: {  }
 });
 
 // -- illustration shapes --- //
@@ -95,17 +93,17 @@ function easeInOut( i ) {
 
 function update() {
 
+
   if ( isRotating ) {
-    t += tSpeed;
-    var theta = easeInOut( t ) * TAU/4;
-    var turn = Math.floor( t % 4 );
+    var easeT = easeInOut( t );
+    var turn = Math.floor( t );
     if ( turn === 0 ) {
-      prism.rotate.x = theta * 2;
+      scene.rotate.z = lerp( TAU/8 * -3, TAU/8, easeT );
+      scene.rotate.x = lerp( 0, tiltAngle, easeT );
     } else if ( turn == 1 ) {
-      prism.rotate.z = theta * 1;
-    } else if ( turn == 2 ) {
-      prism.rotate.x = theta * 2;
+      prism.rotate.x = lerp( -TAU/2, 0, easeT );
     }
+    t += tSpeed;
   }
 
   scene.updateGraph();
@@ -147,3 +145,12 @@ new Dragger({
     scene.rotate.y = dragStartAngleY + angleYMove;
   },
 });
+
+document.querySelector('.reset-button').onclick = reset;
+
+function reset() {
+  t = 0;
+  scene.rotate.set({});
+  prism.rotate.set({});
+  isRotating = true;
+}
