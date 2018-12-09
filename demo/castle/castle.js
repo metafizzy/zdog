@@ -32,35 +32,47 @@ var scene = new Anchor({
 
 // -- illustration shapes --- //
 
-var topBlock = ( function() {
-  var block = new Anchor({
+function makeWall( options ) {
+  var rotor = new Anchor({
     addTo: scene,
-    translate: { x: -4, y: -4, z: 4 },
+    rotate: options.rotate,
+  });
+
+  // rotor
+  var wall = new Anchor({
+    addTo: rotor,
+    translate: { z: 4 },
+  });
+
+  var topBlock = new Anchor({
+    addTo: wall,
+    translate: { x: -4, y: -4 },
   });
 
   // side faces
   var face = new Rect({
-    addTo: block,
+    addTo: topBlock,
     width: 2,
     height: 2,
     translate: { z: 1 },
-    color: white,
+    color: options.outside,
     // stroke: false,
     lineWidth: 1/zoom,
   });
   face.copy({
     translate: { x: -1 },
     rotate: { y: TAU/4 },
+    color: options.left,
   });
   face.copy({
     translate: { x: 1 },
     rotate: { y: -TAU/4 },
-    color: black,
+    color: options.right,
   });
   face.copy({
     translate: { z: -1 },
     rotate: { y: TAU/2 },
-    color: black,
+    color: options.inside,
   });
   // top
   face.copy({
@@ -69,136 +81,137 @@ var topBlock = ( function() {
     color: black,
   });
 
-  return block;
-})();
+  topBlock.copyGraph({
+    translate: { x:  0, y: -4 },
+  });
 
-topBlock.copyGraph({
-  translate: { x:  0, y: -4, z:  4 },
-});
-topBlock.copyGraph({
-  translate: { x:  4, y: -4, z:  4 },
-});
-topBlock.copyGraph({
-  translate: { x:  4, y: -4, z:  0 },
-});
-topBlock.copyGraph({
-  translate: { x:  4, y: -4, z: -4 },
-});
-topBlock.copyGraph({
-  translate: { x:  0, y: -4, z: -4 },
-});
-topBlock.copyGraph({
-  translate: { x: -4, y: -4, z: -4 },
-});
-topBlock.copyGraph({
-  translate: { x: -4, y: -4, z:  0 },
+  var topTile = new Rect({
+    addTo: wall,
+    width: 2,
+    height: 2,
+    color: black,
+    lineWidth: 1/zoom,
+    rotate: { x: TAU/4 },
+    translate: { x: -2, y: -3 },
+  });
+  topTile.copy({
+    translate: { x:  2, y: -3 }
+  });
+
+  // outside arch
+  var arch = new Shape({
+    addTo: wall,
+    path: [
+      { x: -3, y: -3 },
+      { x:  3, y: -3 },
+      { x:  3, y:  2 },
+      { arc: [
+        { x: 3, y: -1 },
+        { x: 0, y: -1 }
+      ]},
+      { arc: [
+        { x: -3, y: -1 },
+        { x: -3, y: 2 }
+      ]},
+    ],
+    translate: { z: 1 },
+    color: options.outside,
+    lineWidth: 1/zoom,
+  });
+  // inside arch
+  arch.copy({
+    translate: { z: -1 },
+    rotate: { y: TAU/2 },
+    color: options.inside,
+  });
+
+  // outside columns
+  var outsideColumn = new Rect({
+    addTo: wall,
+    width: 2,
+    height: 8,
+    translate: { x: -4, y: 1, z: 1 },
+    color: options.outside,
+    lineWidth: 1/zoom,
+  });
+  outsideColumn.copy({
+    translate: { x: 4, y: 1, z: 1 },
+  });
+
+  var insideColumn = new Rect({
+    addTo: wall,
+    width: 2,
+    height: 3,
+    translate: { x: -3, y: 3.5 },
+    rotate: { y: -TAU/4 },
+    color: options.right,
+    lineWidth: 1/zoom,
+  });
+  insideColumn.copy({
+    translate: { x:  3, y: 3.5 },
+    rotate: { y: TAU/4 },
+    color: options.left,
+  });
+
+  // under arch, quarter arc
+  var underArch = new Shape({
+    addTo: wall,
+    path: [
+      { x:  3, y:  2 },
+      { arc: [
+        { x: 3, y: -1 },
+        { x: 0, y: -1 }
+      ]},
+      { x: 0, y: -1, z: -2 },
+      { arc: [
+        { x: 3, y: -1, z: -2 },
+        { x: 3, y: 2, z: -2 },
+      ]},
+    ],
+    translate: { z: 1 },
+    // front: { x: -1, y: 1 },
+    backfaceVisible: true,
+    color: options.left,
+    lineWidth: 1/zoom,
+  });
+  underArch.copy({
+    scale: { x: -1 },
+    // front: { x: 1, y: 1 },
+    color: options.right,
+  });
+
+}
+
+makeWall({
+  rotate: {},
+  outside: white,
+  inside: black,
+  left: white,
+  right: black,
 });
 
-var topTile = new Rect({
-  addTo: scene,
-  width: 2,
-  height: 2,
-  color: black,
-  lineWidth: 1/zoom,
-  rotate: { x: TAU/4 },
-  translate: { x: -2, y: -3, z:  4 },
-});
-topTile.copy({
-  translate: { x:  2, y: -3, z:  4 }
-});
-topTile.copy({
-  translate: { x:  4, y: -3, z:  2 }
-});
-topTile.copy({
-  translate: { x:  4, y: -3, z: -2 }
-});
-topTile.copy({
-  translate: { x:  2, y: -3, z: -4 }
-});
-topTile.copy({
-  translate: { x: -2, y: -3, z: -4 }
-});
-topTile.copy({
-  translate: { x: -4, y: -3, z: -2 }
-});
-topTile.copy({
-  translate: { x: -4, y: -3, z:  2 }
-});
-
-var outsideArch = new Shape({
-  addTo: scene,
-  path: [
-    { x: -5, y: -3 },
-    { x:  5, y: -3 },
-    { x:  5, y:  5 },
-    { x:  3, y:  5 },
-    { x:  3, y:  2 },
-    { arc: [
-      { x: 3, y: -1 },
-      { x: 0, y: -1 }
-    ]},
-    { arc: [
-      { x: -3, y: -1 },
-      { x: -3, y: 2 }
-    ]},
-    { x: -3, y:  5 },
-    { x: -5, y:  5 },
-  ],
-  translate: { z: 5 },
-  color: white,
-  lineWidth: 1/zoom,
-});
-
-outsideArch.copy({
-  translate: { x: 5 },
+makeWall({
   rotate: { y: -TAU/4 },
-  color: black,
-});
-outsideArch.copy({
-  translate: { x: -5 },
-  rotate: { y: TAU/4 },
-});
-
-outsideArch.copy({
-  translate: { z: -5 },
-  rotate: { y: TAU/2 },
-  color: black,
+  outside: black,
+  inside: white,
+  left: white,
+  right: black,
 });
 
-
-var insideArch = new Shape({
-  addTo: scene,
-  path: [
-    { x: -3, y: -3 },
-    { x:  3, y: -3 },
-    { x:  3, y:  2 },
-    { arc: [
-      { x: 3, y: -1 },
-      { x: 0, y: -1 }
-    ]},
-    { arc: [
-      { x: -3, y: -1 },
-      { x: -3, y: 2 }
-    ]},
-  ],
-  translate: { z: -3 },
-  color: white,
-  lineWidth: 1/zoom,
-});
-insideArch.copy({
-  translate: { x: -3 },
-  rotate: { y: -TAU/4 },
-  color: black,
-});
-insideArch.copy({
-  translate: { x: 3 },
-  rotate: { y: TAU/4 },
+makeWall({
+  rotate: { y: -TAU/2 },
+  outside: black,
+  inside: white,
+  left: black,
+  right: white,
 });
 
-insideArch.copy({
-  translate: { z: 3 },
-  rotate: { y: TAU/2 },
-  color: black,
+makeWall({
+  rotate: { y: TAU * -3/4 },
+  outside: white,
+  inside: black,
+  left: black,
+  right: white,
 });
 
 
