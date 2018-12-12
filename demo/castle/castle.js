@@ -2,8 +2,8 @@
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-var w = 32;
-var h = 32;
+var w = 24;
+var h = 24;
 var minWindowSize = Math.min( window.innerWidth - 20, window.innerHeight - 40 );
 var zoom = Math.floor( minWindowSize / w );
 var pixelRatio = window.devicePixelRatio || 1;
@@ -16,17 +16,18 @@ if ( pixelRatio > 1 ) {
   canvas.style.height = canvasHeight / pixelRatio + 'px';
 }
 
-var isRotating = false;
 var white = 'white';
 var black = '#333';
 
+var initRotate = { y: TAU/4 };
+
 var scene = new Anchor({
-  rotate: { x: -35/360 * TAU, y: 45/360 * TAU },
+  rotate: initRotate,
 });
 
 [ Shape, Rect ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
-  // ItemClass.defaults.stroke = false;
+  // ItemClass.defaults.stroke = true;
   ItemClass.defaults.backfaceVisible = false;
   ItemClass.defaults.lineWidth = 1/zoom;
 });
@@ -182,7 +183,7 @@ function makeWall( options ) {
   });
 
   // feet soles
-  var sole = new Rect({
+  new Rect({
     addTo: wall,
     width: 2,
     height: 2,
@@ -228,18 +229,53 @@ makeWall({
 
 // -- animate --- //
 
-function animate() {
-  update();
-  render();
-  requestAnimationFrame( animate );
-}
+var isRotating = true;
+var t = 0;
+var tSpeed = 1/105;
 
-animate();
+
 
 // -- update -- //
 
+function easeInOut( i ) {
+  i = i % 1;
+  var isFirstHalf = i < 0.5;
+  var i1 = isFirstHalf ? i : 1 - i;
+  i1 = i1 / 0.5;
+  // make easing steeper with more multiples
+  var i2 = i1 * i1 * i1 * i1;
+  i2 = i2 / 2;
+  return isFirstHalf ? i2 : i2*-1 + 1;
+}
+
+// var keyframes = [
+//   { x: -1/4, y: -1/4 },
+//   { x: -35/350, y: 1/8 },
+//   { x: 0, y: 2/4 },
+//   { x: -35/350, y: 5/8 },
+//   { x: -1/4, y: 3/4 },
+// ];
+
+var keyframes = [
+  { x: 0, y: 1/4 },
+  { x: -35/350, y: 5/8 },
+  { x: -1/4, y: 3/4 },
+  { x: -35/350, y: 9/8 },
+  { x: 0, y: 5/4 },
+];
+
 function update() {
-  scene.rotate.y += isRotating ? +TAU/150 : 0;
+
+  if ( isRotating ) {
+    var easeT = easeInOut( t );
+    var turnLimit = keyframes.length - 1;
+    var turn = Math.floor( t % turnLimit );
+    var keyframeA = keyframes[ turn ];
+    var keyframeB = keyframes[ turn + 1 ];
+    scene.rotate.x = lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
+    scene.rotate.y = lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
+    t += tSpeed;
+  }
 
   scene.updateGraph();
 }
@@ -260,6 +296,16 @@ function render() {
 
   ctx.restore();
 }
+
+// ---- animate ---- //
+
+function animate() {
+  update();
+  render();
+  requestAnimationFrame( animate );
+}
+
+animate();
 
 // ----- inputs ----- //
 
