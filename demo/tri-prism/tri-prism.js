@@ -26,11 +26,11 @@ var isRotating = false;
 var navy = '#456';
 var green = '#296';
 var egg = '#FED';
-var red = '#E21';
+var red = '#D21';
 var ochre = '#F90';
 var yellow = '#EC0';
 
-document.body.style.backgroundColor = egg;
+document.body.style.backgroundColor = '#EDC';
 
 var scene = new Anchor({
   rotate: { x: -35/360 * TAU, y: 45/360 * TAU },
@@ -62,11 +62,11 @@ function makePrism( options ) {
     ],
     color: red,
     fill: true,
-    stroke: false,
+    lineWidth: 1/zoom,
   });
   triangle.copy({
     translate: { x: -2 },
-    color: green,
+    color: navy,
   });
 
   // slope
@@ -78,9 +78,9 @@ function makePrism( options ) {
       { x:  0, y: -1, z: -1 },
       { x:  0, y:  1, z:  1 },
     ],
-    color: yellow,
+    color: ochre,
     fill: true,
-    stroke: false,
+    lineWidth: 1/zoom,
   });
 
   var base = new Rect({
@@ -91,13 +91,13 @@ function makePrism( options ) {
     rotate: { y: TAU/2 },
     color: navy,
     fill: true,
-    stroke: false,
+    lineWidth: 1/zoom,
     backfaceVisible: false,
   });
   base.copy({
     translate: { x: -1, y: 1 },
     rotate: { x: -TAU/4 },
-    color: ochre,
+    color: red,
   });
 
   return prism;
@@ -179,8 +179,8 @@ function render() {
   pctx.restore();
 
 
-  var shiftX = 3 * Math.sqrt(2) * zoom;
-  var shiftY = 2 * Math.sqrt(2) * Math.sqrt(3)/2 * zoom;
+  var shiftX = Math.round( 3 * Math.sqrt(2) * zoom );
+  var shiftY = Math.round( 2 * Math.sqrt(2) * Math.sqrt(3)/2 * zoom );
   ctx.save();
   ctx.translate( Math.round( w * shrink * zoom ), Math.round( h * shrink * zoom ) );
   ctx.drawImage( proxyCanvas, 0, 0 );
