@@ -28,6 +28,7 @@ var scene = new Anchor({
   ItemClass.defaults.fill = true;
   // ItemClass.defaults.stroke = false;
   ItemClass.defaults.backfaceVisible = false;
+  ItemClass.defaults.lineWidth = 1/zoom;
 });
 
 // -- illustration shapes --- //
@@ -56,8 +57,6 @@ function makeWall( options ) {
     height: 2,
     translate: { z: 1 },
     color: options.outside,
-    // stroke: false,
-    lineWidth: 1/zoom,
   });
   face.copy({
     translate: { x: -1 },
@@ -90,7 +89,6 @@ function makeWall( options ) {
     width: 2,
     height: 2,
     color: black,
-    lineWidth: 1/zoom,
     rotate: { x: TAU/4 },
     translate: { x: -2, y: -3 },
   });
@@ -99,29 +97,37 @@ function makeWall( options ) {
   });
 
   // outside arch
+
+  // outside arch
   var arch = new Shape({
     addTo: wall,
     path: [
-      { x: -3, y: -3 },
-      { x:  3, y: -3 },
-      { x:  3, y:  2 },
+      { x: 0, y: -3 },
+      { x: 3, y: -3 },
+      { x: 3, y:  2 },
       { arc: [
         { x: 3, y: -1 },
         { x: 0, y: -1 }
       ]},
-      { arc: [
-        { x: -3, y: -1 },
-        { x: -3, y: 2 }
-      ]},
     ],
     translate: { z: 1 },
     color: options.outside,
-    lineWidth: 1/zoom,
   });
+  arch.copy({
+    scale: { x: -1 },
+  });
+
+
   // inside arch
   arch.copy({
     translate: { z: -1 },
     rotate: { y: TAU/2 },
+    color: options.inside,
+  });
+  arch.copy({
+    translate: { z: -1 },
+    rotate: { y: TAU/2 },
+    scale: { x: -1 },
     color: options.inside,
   });
 
@@ -132,7 +138,6 @@ function makeWall( options ) {
     height: 8,
     translate: { x: -4, y: 1, z: 1 },
     color: options.outside,
-    lineWidth: 1/zoom,
   });
   outsideColumn.copy({
     translate: { x: 4, y: 1, z: 1 },
@@ -145,7 +150,6 @@ function makeWall( options ) {
     translate: { x: -3, y: 3.5 },
     rotate: { y: -TAU/4 },
     color: options.right,
-    lineWidth: 1/zoom,
   });
   insideColumn.copy({
     translate: { x:  3, y: 3.5 },
@@ -169,15 +173,22 @@ function makeWall( options ) {
       ]},
     ],
     translate: { z: 1 },
-    // front: { x: -1, y: 1 },
     backfaceVisible: true,
     color: options.left,
-    lineWidth: 1/zoom,
   });
-  underArch.copy({
+  underArch.copyGraph({
     scale: { x: -1 },
-    // front: { x: 1, y: 1 },
     color: options.right,
+  });
+
+  // feet soles
+  var sole = new Rect({
+    addTo: wall,
+    width: 2,
+    height: 2,
+    translate: { x: -4, y: 5, z: 0 },
+    rotate: { x: -TAU/4 },
+    color: white,
   });
 
 }
