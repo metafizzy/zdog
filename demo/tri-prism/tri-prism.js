@@ -3,23 +3,25 @@
 var canvas = document.querySelector('canvas');
 var proxyCanvas = document.createElement('canvas');
 var ctx = canvas.getContext('2d');
-var pctx = proxyCanvas.getContext('2d');
 var w = 14 * Math.sqrt(2);
 var h = 14 * Math.sqrt(2);
-var minWindowSize = Math.min( window.innerWidth - 20, window.innerHeight - 40 );
+var minWindowSize = Math.min( window.innerWidth - 20, window.innerHeight - 20 );
 var zoom = Math.floor( minWindowSize / w );
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
+
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
 var shrink = 1/3;
 proxyCanvas.width = canvasWidth * shrink;
 proxyCanvas.height = canvasHeight * shrink;
-// set canvas screen size
-// if ( pixelRatio > 1 ) {
-//   canvas.style.width = canvasWidth / pixelRatio + 'px';
-//   canvas.style.height = canvasHeight / pixelRatio + 'px';
-// }
+
+
+var illo = new Illo({
+  canvas: proxyCanvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
+
 
 var isRotating = false;
 
@@ -147,7 +149,7 @@ var transforms = {
 };
 
 function update() {
-  var easeT = easeInOut( t ) * TAU/4;
+  var easeT = easeInOut( t, 4 ) * TAU/4;
 
   var turn = Math.floor( t % 6 );
   var transform = transforms[ turn ];
@@ -163,56 +165,26 @@ function update() {
 
 // -- render -- //
 
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
+var shiftX = Math.round( 3 * Math.sqrt(2) * zoom );
+var shiftY = Math.round( 2 * Math.sqrt(2) * Math.sqrt(3)/2 * zoom );
 
 function render() {
+  illo.render( scene );
+
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  pctx.clearRect( 0, 0, canvasWidth, canvasHeight );
 
-  pctx.save();
-  pctx.scale( zoom, zoom );
-  pctx.translate( w/2 * shrink, h/2 * shrink );
-
-  scene.renderGraph( pctx );
-
-  pctx.restore();
-
-
-  var shiftX = Math.round( 3 * Math.sqrt(2) * zoom );
-  var shiftY = Math.round( 2 * Math.sqrt(2) * Math.sqrt(3)/2 * zoom );
   ctx.save();
   ctx.translate( Math.round( w * shrink * zoom ), Math.round( h * shrink * zoom ) );
-  ctx.drawImage( proxyCanvas, 0, 0 );
 
-  ctx.drawImage( proxyCanvas, shiftX, shiftY );
-  ctx.drawImage( proxyCanvas, shiftX, -shiftY );
-  ctx.drawImage( proxyCanvas, -shiftX, -shiftY );
-  ctx.drawImage( proxyCanvas, -shiftX, shiftY );
+  for ( var col = -2; col < 3; col++ ) {
+    for ( var row = -2; row < 3; row++ ) {
+      var x = col * shiftX;
+      var y = ( row * 2 + col % 2 ) * shiftY;
+      ctx.drawImage( illo.canvas, x, y );
+    }
+  }
 
-  ctx.drawImage( proxyCanvas, 0, shiftY*2 );
-  ctx.drawImage( proxyCanvas, 0, shiftY*4 );
-  ctx.drawImage( proxyCanvas, 0, -shiftY*2 );
-  ctx.drawImage( proxyCanvas, 0, -shiftY*4 );
-
-  ctx.drawImage( proxyCanvas, shiftX, shiftY*3 );
-  ctx.drawImage( proxyCanvas, shiftX, -shiftY*3 );
-  ctx.drawImage( proxyCanvas, -shiftX, -shiftY*3 );
-  ctx.drawImage( proxyCanvas, -shiftX, shiftY*3 );
-
-
-  ctx.drawImage( proxyCanvas, shiftX*2, shiftY*4 );
-  ctx.drawImage( proxyCanvas, shiftX*2, shiftY*2 );
-  ctx.drawImage( proxyCanvas, shiftX*2, 0 );
-  ctx.drawImage( proxyCanvas, shiftX*2, -shiftY*2 );
-  ctx.drawImage( proxyCanvas, shiftX*2, -shiftY*4 );
-  ctx.drawImage( proxyCanvas, -shiftX*2, shiftY*4 );
-  ctx.drawImage( proxyCanvas, -shiftX*2, shiftY*2 );
-  ctx.drawImage( proxyCanvas, -shiftX*2, 0 );
-  ctx.drawImage( proxyCanvas, -shiftX*2, -shiftY*2 );
-  ctx.drawImage( proxyCanvas, -shiftX*2, -shiftY*4 );
   ctx.restore();
-
 }
 
 function animate() {
@@ -243,13 +215,3 @@ new Dragger({
   },
 });
 
-function easeInOut( i ) {
-  i = i % 1;
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1 * i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}

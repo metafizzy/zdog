@@ -3,22 +3,20 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 160;
 var h = 160;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
+canvas.width = w * zoom;
+canvas.height = h * zoom;
 
-var isRotating = true;
+var illo = new Illo({
+  canvas: canvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
+
 
 var madColor = {
   skin: '#FD9',
@@ -41,13 +39,18 @@ var glow = 'hsla(60, 100%, 80%, 0.3)';
 var featherGold = '#FE5';
 
 var camera = new Anchor({
-  rotate: { y: TAU/4 },
+  rotate: { y: -TAU/4 },
 });
 
 // -- illustration shapes --- //
 
-makeMadeline( camera, true, madColor );
-makeMadeline( camera, false, badColor, { y: TAU/2 } );
+makeMadeline( true, madColor, {
+  addTo: camera,
+});
+makeMadeline( false, badColor, {
+  addTo: camera,
+  rotate: { y: TAU/2 },
+});
 
 
 // ----- feather ----- //
@@ -175,7 +178,7 @@ var feather = new Group({
 
 var birdRotor = new Anchor({
   addTo: camera,
-  rotate: { y: TAU*1/8 },
+  rotate: { y: TAU*-1/8 },
 });
 
 makeBird({
@@ -210,13 +213,14 @@ makeBird({
 
 // -- animate --- //
 
+var isRotating = true;
 var rotateSpeed = -TAU/60;
 var xClock = 0;
 var then = new Date() - 1/60;
 
 function animate() {
   update();
-  render();
+  illo.render( camera );
   requestAnimationFrame( animate );
 }
 
@@ -229,7 +233,7 @@ function update() {
   var delta = now - then;
   // auto rotate
   if ( isRotating ) {
-    var theta = rotateSpeed/60 * delta;
+    var theta = rotateSpeed/60 * delta * -1;
     camera.rotate.y += theta;
     xClock += theta/4;
     camera.rotate.x = Math.sin( xClock ) * TAU/12;
@@ -240,38 +244,8 @@ function update() {
   then = now;
 }
 
-// -- render -- //
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  camera.renderGraph( ctx );
-
-  ctx.restore();
-}
-
 // ----- inputs ----- //
 
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
+illo.enableDragRotate( camera, function() {
+  isRotating = false;
 });

@@ -27,8 +27,8 @@ unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 var isRotating = true;
 
 var jumpRotation = new Vector3({
-  x: -12/360 * TAU,
-  y: 15/360 * TAU,
+  x: 12/360 * TAU,
+  y: -15/360 * TAU,
   z: -31/360 * TAU,
 });
 
@@ -86,8 +86,8 @@ var bodyLineWidth = 28;
     // body cut-in
     // cut-in points
     var ciA = new Vector3({ z: 0, y: -23 });
-    var ciB = new Vector3({ z: -16, y: -7 });
-    var ciC = new Vector3({ z: -16, y: 7 });
+    var ciB = new Vector3({ z: 16, y: -7 });
+    var ciC = new Vector3({ z: 16, y: 7 });
     var ciD = new Vector3({ z: 0, y: 23 });
     // 45 degree points
     var topPoints = getQuarterArcPoints( ciA, ciB );
@@ -116,19 +116,19 @@ var bodyLineWidth = 28;
     width: 4,
     height: 4,
     addTo: unibody,
-    translate: { x: -14, y: -19, z: 2 },
+    translate: { x: -14, y: -19, z: -2 },
     color: isOutline ? black : magenta,
     lineWidth: 8 + outlineWidth,
   });
   // left ear
   ear.copy({
-    translate: { x: 14, y: -19, z: 2 },
+    translate: { x: 14, y: -19, z: -2 },
   });
 
 
   // face container
   var face = new Anchor({
-    translate: { y: -2, z: -14 },
+    translate: { y: -2, z: 14 },
     addTo: unibody,
   });
 
@@ -137,7 +137,7 @@ var bodyLineWidth = 28;
     width: 8,
     height: 4,
     addTo: face,
-    translate: { y: 4, z: -1 },
+    translate: { y: 4, z: 1 },
     color: isOutline ? black : 'white',
     lineWidth: 6 + outlineWidth,
     fill: true,
@@ -152,7 +152,7 @@ var bodyLineWidth = 28;
         { x: 0, y: 0.5 },
       ],
       addTo: face,
-      translate: { y: 1.5, z: -4 },
+      translate: { y: 1.5, z: 4 },
       color: black,
       lineWidth: 3,
       fill: true,
@@ -203,7 +203,7 @@ var bodyLineWidth = 28;
     ],
     addTo: unibody,
     translate: { x: -17, y: 5 },
-    rotate: { y: -0.25 },
+    rotate: { y: 0.25 },
     color: isOutline ? black : gold,
     lineWidth: 12 + outlineWidth,
   });
@@ -234,8 +234,8 @@ var bodyLineWidth = 28;
       { y: 15 },
     ],
     addTo: unibody,
-    translate: { x: -10, y: 13, z: 1 },
-    rotate: { z: 49/360 * TAU, x: 0.3 },
+    translate: { x: -10, y: 13, z: -1 },
+    rotate: { z: 49/360 * TAU, x: -0.3 },
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
   });
@@ -244,8 +244,8 @@ var bodyLineWidth = 28;
   if ( !isOutline ) {
     rightLegCutInA = new Shape({
       path: [
-        { z: -8, y: 4 },
-        { z: -8, y: 15 },
+        { z: 8, y: 4 },
+        { z: 8, y: 15 },
         // {
         //   arc: [
         //     { z: -8, y: 23 },
@@ -272,8 +272,8 @@ var bodyLineWidth = 28;
       { y: 12 },
     ],
     addTo: unibody,
-    translate: { x: 9, y: 13, z: 1 },
-    rotate: { z: 0.7, x: 0.4 },
+    translate: { x: 9, y: 13, z: -1 },
+    rotate: { z: 0.7, x: -0.4 },
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
   });
@@ -285,7 +285,7 @@ var bodyLineWidth = 28;
     ],
     addTo: leftThigh,
     translate: leftThigh.path[1],
-    rotate: { z: 0.2, x: 0.9 },
+    rotate: { z: 0.2, x: -0.9 },
     color: isOutline ? black : blue,
     lineWidth: 12 + outlineWidth,
   });
@@ -293,8 +293,8 @@ var bodyLineWidth = 28;
   if ( !isOutline ) {
     backLegCutIn = new Shape({
       path: [
-        { z: -8, y: -14 },
-        { z: -8, y: -8 },
+        { z: 8, y: -14 },
+        { z: 8, y: -8 },
         // { arc: [
         //   { z: -8, y: 0 },
         //   { z: 0, y: 0 },
@@ -310,12 +310,12 @@ var bodyLineWidth = 28;
 
     crotchCutIn = new Shape({
       path: [
-        { x: -1.5, z: 2 },
+        { x: -1.5, z: -2 },
         { x:  1, z: 0 }
       ],
       scale: { x: 2 },
       addTo: unibody,
-      translate: { x: -5, y: 7+14+2 - 1.5, z: -2 },
+      translate: { x: -5, y: 7+14+2 - 1.5, z: 2 },
       color: black,
       lineWidth: 4,
       closed: false,
@@ -339,7 +339,7 @@ var sectionSize = unibodyHeight / 4;
     length: sectionSize,
     addTo: stripeGroup,
     translate: { x: -bodyWidth/2 },
-    rotate: { x: TAU/4 },
+    rotate: { x: -TAU/4 },
     color: color,
     fill: true,
     stroke: false,
@@ -352,13 +352,13 @@ var sectionSize = unibodyHeight / 4;
     width: bodyWidth,
     height: sectionSize,
     addTo: stripeGroup,
-    translate: { z: -bodyLineWidth/2 },
+    translate: { z: bodyLineWidth/2 },
     color: color,
     fill: true,
     stroke: false,
   });
   panel.copy({
-    translate: { z: bodyLineWidth/2 },
+    translate: { z: -bodyLineWidth/2 },
   });
 });
 
@@ -395,34 +395,24 @@ animate();
 
 // -- update -- //
 
-// i, 0->1
-function easeInOut( i ) {
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}
-
 function update() {
   if ( isRotating ) {
-    t += TAU/180;
-    var easeT = easeInOut( ( t/TAU) % 1 );
-    camera.rotate.y = easeT*TAU*-2 + jumpRotation.y;
+    t += 1/180;
+    var easeT = easeInOut( t, 3 );
+    camera.rotate.y = easeT*TAU*2 + jumpRotation.y;
   }
 
   camera.normalizeRotate();
   // normalize angle y
   var cameraRY = camera.rotate.y = modulo( camera.rotate.y, TAU );
   // update cut-in rotates
-  rightLegCutInA.rotate.y = 1.2 - cameraRY;
-  rightLegCutInB.rotate.y = 1.2 - cameraRY;
-  backLegCutIn.rotate.y = 1.4 - cameraRY;
+  rightLegCutInA.rotate.y = -1.2 - cameraRY;
+  rightLegCutInB.rotate.y = -1.2 - cameraRY;
+  backLegCutIn.rotate.y = -1.4 - cameraRY;
+
   var isCameraYFront = cameraRY < TAU/4 || cameraRY > TAU *3/4;
-  var isCameraYRight = cameraRY < TAU/2;
-  bodyCutIn.rotate.y = isCameraYFront == isCameraYRight ? 1.5 : -1.5;
+  var isCameraYRight = cameraRY > TAU/2;
+  bodyCutIn.rotate.y = isCameraYFront == isCameraYRight ? -1.5 : 1.5;
   bodyCutIn.rotate.y -= cameraRY;
   bodyCutIn.translate.x = isCameraYRight ? 3 : -3;
 
@@ -484,7 +474,7 @@ new Dragger({
 });
 
 document.querySelector('.flat-button').onclick = function() {
-  camera.rotate.set({ x: 0, y: 0, z: 0 });
+  camera.rotate.set({});
 };
 
 document.querySelector('.jump-button').onclick = setJumpRotate;

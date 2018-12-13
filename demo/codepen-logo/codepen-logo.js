@@ -1,24 +1,19 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 48;
 var h = 48;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.floor( minWindowSize / w );
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
+canvas.width = w * zoom;
+canvas.height = h * zoom;
 
-var isRotating = true;
-var t = 0;
-var tSpeed = 1/90;
+var illo = new Illo({
+  canvas: canvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
 
 var tiltAngle = Math.asin(2/3);
 
@@ -70,32 +65,18 @@ side.copy({
 
 // -- animate --- //
 
+var isRotating = true;
+var t = 0;
+var tSpeed = 1/90;
+
+illo.enableDragRotate( scene, function() {
+  isRotating = false;
+});
+
 function animate() {
-  update();
-  render();
-  requestAnimationFrame( animate );
-}
-
-animate();
-
-// -- update -- //
-
-function easeInOut( i ) {
-  i = i % 1;
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}
-
-function update() {
-
-
+  // update
   if ( isRotating ) {
-    var easeT = easeInOut( t );
+    var easeT = easeInOut( t, 3 );
     var turn = Math.floor( t );
     if ( turn === 0 ) {
       scene.rotate.z = lerp( TAU/8 * -3, TAU/8, easeT );
@@ -107,44 +88,17 @@ function update() {
   }
 
   scene.updateGraph();
+
+  // render
+  illo.render( scene );
+
+  requestAnimationFrame( animate );
 }
 
-// -- render -- //
+animate();
 
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  scene.renderGraph( ctx );
-
-  ctx.restore();
-}
 
 // ----- inputs ----- //
-
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = scene.rotate.x;
-    dragStartAngleY = scene.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    scene.rotate.x = dragStartAngleX + angleXMove;
-    scene.rotate.y = dragStartAngleY + angleYMove;
-  },
-});
 
 document.querySelector('.reset-button').onclick = reset;
 

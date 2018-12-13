@@ -32,3 +32,34 @@ function getDistance1( x, y ) {
 function shapeSorter( a, b ) {
   return a.sortValue - b.sortValue;
 }
+
+var powerMultipliers = {
+  2: function( i ) {
+    return i * i;
+  },
+  3: function( i ) {
+    return i * i * i;
+  },
+  4: function( i ) {
+    return i * i * i * i;
+  },
+  5: function( i ) {
+    return i * i * i * i * i;
+  }
+};
+
+function easeInOut( i, power ) {
+  if ( power == 1 ) {
+    return i;
+  }
+  var powerMultiplier = powerMultipliers[ power ] || powerMultipliers[2];
+
+  i = i % 1;
+  var isFirstHalf = i < 0.5;
+  var slope = isFirstHalf ? i : 1 - i;
+  slope = slope / 0.5;
+  // make easing steeper with more multiples
+  var curve = powerMultiplier( slope );
+  curve = curve / 2;
+  return isFirstHalf ? curve : 1 - curve;
+}

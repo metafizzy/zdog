@@ -1,23 +1,20 @@
 /* jshint unused: false */
 
-function makeMadeline( camera, isGood, colors, rotation ) {
+function makeMadeline( isGood, colors, options ) {
 
-  var rotor = new Anchor({
-    addTo: camera,
-    rotate: rotation,
-  });
+  var rotor = new Anchor( options );
 
   var body = new Group({
     addTo: rotor,
-    rotate: { x: TAU/8 },
-    translate: { z: 48 },
+    rotate: { x: -TAU/8 },
+    translate: { z: -48 },
     updateSort: true,
   });
 
   var head = new Anchor({
     addTo: body,
-    translate: { y: -11, z: 2 },
-    rotate: { x: -TAU/8 },
+    translate: { y: -11, z: -2 },
+    rotate: { x: TAU/8 },
   });
 
   // face
@@ -25,14 +22,14 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     width: 6,
     height: 6,
     addTo: head,
-    translate: { z: -4 },
+    translate: { z: 4 },
     lineWidth: 8,
     color: colors.skin,
   });
 
   var eyeGroup = new Group({
     addTo: face,
-    translate: { z: -face.lineWidth/2 + 0.5 },
+    translate: { z: face.lineWidth/2 - 0.5 },
   });
 
 
@@ -44,19 +41,18 @@ function makeMadeline( camera, isGood, colors, rotation ) {
         width: 2,
         height: 1.3,
         addTo: eyeGroup,
-        translate: { x: 4.5*xSide, y: 3, z: 1 },
-        rotate: { y: TAU/16*xSide },
+        translate: { x: 4.5*xSide, y: 3, z: -1 },
+        rotate: { y: -TAU/16*xSide },
         lineWidth: 1,
         color: '#FA8',
         fill: true,
       });
     }
 
-
     var eyeX = 3.5*xSide;
 
     // eye
-    var eyeWhite = new Ellipse({
+    new Ellipse({
       width: 0.75,
       height: 1.5,
       addTo: eyeGroup,
@@ -88,8 +84,6 @@ function makeMadeline( camera, isGood, colors, rotation ) {
       fill: true,
     });
 
-
-
   });
 
 
@@ -98,10 +92,10 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     path: [
       { x: -1 },
       { x: 1 },
-      { z: 4 },
+      { z: -4 },
     ],
     addTo: head,
-    translate: { y: -4, z: 1 },
+    translate: { y: -4, z: -1 },
     lineWidth: 18,
     color: colors.hair,
   });
@@ -110,38 +104,38 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     path: [
       {},
       { arc: [
-        { z: -4, y: 4 },
+        { z: 4, y: 4 },
         { z: 0, y: 8 },
       ]},
     ],
     addTo: head,
-    translate: { x: 2, y: -7.5, z: -6 },
-    rotate: { x: -0.5, z: -0.5 },
+    translate: { x: 2, y: -7.5, z: 6 },
+    rotate: { x: 0.5, z: -0.5 },
     lineWidth: 4,
     color: colors.hair,
     closed: false,
   });
   bang.copy({
-    translate: { x: 5, y: -6, z: -5 },
-    rotate: { x: 0.3, z: -0.5 },
+    translate: { x: 5, y: -6, z: 5 },
+    rotate: { x: -0.3, z: -0.5 },
   });
   bang.copy({
-    translate: { x: 5, y: -6, z: -3 },
-    rotate: { y: 0.7, z: -1 },
+    translate: { x: 5, y: -6, z: 3 },
+    rotate: { y: -0.7, z: -1 },
   });
 
   // left side
   bang.copy({
-    translate: { x: -2, y: -7.5, z: -6 },
+    translate: { x: -2, y: -7.5, z: 6 },
     rotate: { x: 0, z: TAU/16*6 },
   });
   bang.copy({
-    translate: { x: -5, y: -6, z: -5 },
+    translate: { x: -5, y: -6, z: 5 },
     rotate: { x: 0, z: TAU/4 },
   });
   bang.copy({
-    translate: { x: -5, y: -6, z: -3 },
-    rotate: { y: -0.7, z: 1 },
+    translate: { x: -5, y: -6, z: 3 },
+    rotate: { y: 0.7, z: 1 },
   });
 
   // hair cover
@@ -152,7 +146,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     ],
     addTo: head,
     lineWidth: 7,
-    translate: { y: -8, z: -5 },
+    translate: { y: -8, z: 5 },
     color: colors.hair,
   });
 
@@ -162,25 +156,25 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     path: [
       { y: -4, z: 0 },
       { bezier: [
-        { y: -10, z: 14 },
-        { y: 0, z: 16 },
-        { y: 0, z: 26 }
+        { y: -10, z: -14 },
+        { y: 0, z: -16 },
+        { y: 0, z: -26 }
       ]},
     ],
     addTo: head,
-    translate: { z: 4, y: 0 },
+    translate: { z: -4, y: 0 },
     lineWidth: 10,
     color: colors.hair,
     closed: false,
   });
 
   trailLock.copy({
-    translate: { x: -3, z: 4 },
+    translate: { x: -3, z: -4 },
     rotate: { z: -TAU/8 },
     lineWidth: 8,
   });
   trailLock.copy({
-    translate: { x: 3, z: 4 },
+    translate: { x: 3, z: -4 },
     rotate: { z: TAU/8 },
     lineWidth: 8,
   });
@@ -198,7 +192,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     width: 12,
     height: 10,
     addTo: body,
-    rotate: { x: TAU/4 },
+    rotate: { x: -TAU/4 },
     translate: { y: -1 },
     lineWidth: 6,
     color: colors.parkaLight,
@@ -224,7 +218,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     width: 10,
     height: 8,
     addTo: body,
-    rotate: { x: TAU/4 },
+    rotate: { x: -TAU/4 },
     translate: { y: 11 },
     lineWidth: 4,
     color: colors.tight,
@@ -237,20 +231,20 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     new Shape({
       addTo: body,
       lineWidth: 6,
-      translate: { x: 6*xSide, y: -5, z: 1 },
+      translate: { x: 6*xSide, y: -5, z: -1 },
       color: colors.parkaLight,
     });
 
     var shoulderJoint = new Anchor({
       addTo: body,
-      translate: { x: 9*xSide, y: -3, z: 2 },
+      translate: { x: 9*xSide, y: -3, z: -2 },
     });
 
     // top shoulder rib
     var armRib = new Ellipse({
       width: 2,
       height: 2,
-      rotate: { x: TAU/4 },
+      rotate: { x: -TAU/4 },
       addTo: shoulderJoint,
       translate: { x: 0*xSide },
       lineWidth: 6,
@@ -286,10 +280,10 @@ function makeMadeline( camera, isGood, colors, rotation ) {
 
     if ( xSide == 1 ) {
       // extend left hand
-      shoulderJoint.rotate = Vector3.sanitize({ x: -TAU/8*3, z: -TAU/32 });
+      shoulderJoint.rotate = Vector3.sanitize({ x: TAU/8*3, z: -TAU/32 });
     } else {
       // back right hand
-      shoulderJoint.rotate = Vector3.sanitize({ z: TAU/16*2, x: TAU/16*2 });
+      shoulderJoint.rotate = Vector3.sanitize({ z: TAU/16*2, x: -TAU/16*2 });
       elbowJoint.rotate = Vector3.sanitize({ z: TAU/8 });
     }
 
@@ -313,8 +307,8 @@ function makeMadeline( camera, isGood, colors, rotation ) {
 
     if ( xSide == -1 ) {
       // bend right leg
-      thigh.rotate = Vector3.sanitize({ x: -TAU/16*3, z: TAU/16 });
-      shin.rotate = Vector3.sanitize({ x: TAU/16*5 });
+      thigh.rotate = Vector3.sanitize({ x: TAU/16*3, z: TAU/16 });
+      shin.rotate = Vector3.sanitize({ x: -TAU/16*5 });
     }
 
   });
@@ -327,7 +321,7 @@ function makeMadeline( camera, isGood, colors, rotation ) {
     ],
     rendering: false,
     addTo: body,
-    translate: { y: 11, z: 2 },
+    translate: { y: 11, z: -2 },
     lineWidth: 8,
     color: colors.tight,
   });

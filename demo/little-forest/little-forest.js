@@ -1,20 +1,19 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 360;
 var h = 360;
-var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
+var minWindowSize = Math.min( window.innerWidth, window.innerHeight - 40 );
 var zoom = Math.min( 3, Math.floor( minWindowSize / (w/2) ) / 2 );
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
+canvas.width = w * zoom;
+canvas.height = h * zoom;
+
+var illo = new Illo({
+  canvas: canvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
 
 // colors
 var midnight = '#313';
@@ -32,7 +31,7 @@ var layerSpace = 56;
 
 // background
 var background = new Shape({
-  translate: { z: layerSpace*2 },
+  translate: { z: layerSpace*-2 },
   rendering: false,
   addTo: camera,
 });
@@ -41,7 +40,7 @@ var bgStripe = new Rect({
   width: 180,
   height: 44,
   addTo: background,
-  translate: { y: -40, z: 24 },
+  translate: { y: -40, z: -24 },
   color: magenta,
   lineWidth: 12,
   fill: true,
@@ -51,7 +50,7 @@ var bgCircle = new Ellipse({
   width: 96,
   height: 96,
   addTo: background,
-  translate: { y: -16, z: 24 },
+  translate: { y: -16, z: -24 },
   color: magenta,
   lineWidth: 24,
   fill: true,
@@ -74,21 +73,21 @@ bgCircle.copy({
 bgStripe.copy({
   height: 60,
   addTo: background,
-  translate: { y: 32, z: -24 },
+  translate: { y: 32, z: 24 },
   color: gold,
 });
 // gold circle
 bgCircle.copy({
   width: 32,
   height: 32,
-  translate: { y: -16, z: -24 },
+  translate: { y: -16, z: 24 },
   color: gold,
 });
 
 // sun
 new Shape({
   addTo: background,
-  translate: { y: -16, z: -48 },
+  translate: { y: -16, z: 48 },
   lineWidth: 24,
   color: white,
 });
@@ -97,7 +96,7 @@ new Shape({
 
 var midBackground = new Group({
   addTo: camera,
-  translate: { z: layerSpace*1 },
+  translate: { z: layerSpace*-1 },
 });
 
 var midBGDot = new Shape({
@@ -215,13 +214,13 @@ var midgroundTree = {
 tree( midgroundTree, {
   width: 10,
   height: 24,
-  translate: { x: -86, y: -14, z: 8 },
+  translate: { x: -86, y: -14, z: -8 },
 });
 
 tree( midgroundTree, {
   width: 16,
   height: 36,
-  translate: { x: -70, y: -12, z: -14 },
+  translate: { x: -70, y: -12, z: 14 },
 });
 
 tree( midgroundTree, {
@@ -233,13 +232,13 @@ tree( midgroundTree, {
 tree( midgroundTree, {
   width: 10,
   height: 24,
-  translate: { x: -26, y: 12, z: 8 },
+  translate: { x: -26, y: 12, z: -8 },
 });
 
 tree( midgroundTree, {
   width: 10,
   height: 24,
-  translate: { x: -18, y: 18, z: -2 },
+  translate: { x: -18, y: 18, z: 2 },
 });
 
 var lonelyTranslate = { x: 32, y: 24 };
@@ -265,19 +264,19 @@ new Shape({
 tree( midgroundTree, {
   width: 10,
   height: 24,
-  translate: { x: 64, y: 40, z: -6 },
+  translate: { x: 64, y: 40, z: 6 },
 });
 tree( midgroundTree, {
   width: 10,
   height: 24,
-  translate: { x: 72, y: 44, z: 2 },
+  translate: { x: 72, y: 44, z: -2 },
 });
 
 // ----- midForeground ----- //
 
 var midForeground = new Anchor({
   addTo: camera,
-  translate: { z: -layerSpace },
+  translate: { z: layerSpace },
 });
 
 // midForeground ground part A
@@ -351,23 +350,23 @@ tree( midForeTree, {
 tree( midForeTree, {
   width: 10,
   height: 24,
-  translate: { x: 10, y: 22, z: -2 },
+  translate: { x: 10, y: 22, z: 2 },
 });
 tree( midForeTree, {
   width: 16,
   height: 36,
-  translate: { x: 22, y: 18, z: 6 },
+  translate: { x: 22, y: 18, z: -6 },
 });
 
 tree( midForeTree, {
   width: 16,
   height: 36,
-  translate: { x: 76, y: -6, z: -12 },
+  translate: { x: 76, y: -6, z: 12 },
 });
 tree( midForeTree, {
   width: 10,
   height: 24,
-  translate: { x: 86, y: -4, z: 10 },
+  translate: { x: 86, y: -4, z: -10 },
 });
 
 // ----- foregroundA ----- //
@@ -387,7 +386,7 @@ var foregroundA = new Shape({
     { x: -96, y: 90 },
   ],
   addTo: camera,
-  translate: { z: -layerSpace*2 },
+  translate: { z: layerSpace*2 },
   color: midnight,
   lineWidth: 48,
   fill: true,
@@ -464,7 +463,7 @@ var grassBlade = new Shape({
 });
 grassBlade.copy({
   translate: { x: -33, y: 50 },
-  rotate: { z: TAU/2 + 0.2 }
+  rotate: { z: TAU/2 + 0.2 },
 });
 
 grassBlade.copy({
@@ -496,7 +495,7 @@ var foregroundB = new Shape({
     { x: 96, y: 90 },
   ],
   addTo: camera,
-  translate: { z: -layerSpace*2 },
+  translate: { z: layerSpace*2 },
   color: midnight,
   lineWidth: 48,
   fill: true,
@@ -553,29 +552,29 @@ grassBlade.copy({
 
 var particle = new Shape({
   addTo: camera,
-  translate: { x: -70, y: -50, z: layerSpace*0.25 },
+  translate: { x: -70, y: -50, z: layerSpace*-0.25 },
   lineWidth: 4,
   color: gold,
 });
 particle.copy({
-  translate: { x: 68, y: -28, z: layerSpace*-0.5 },
+  translate: { x: 68, y: -28, z: layerSpace*0.5 },
 });
 particle.copy({
-  translate: { x: -70, y: 2, z: layerSpace*-0.75 },
+  translate: { x: -70, y: 2, z: layerSpace*0.75 },
   color: amber,
 });
 particle.copy({
-  translate: { x: 74, y: 14, z: layerSpace*-1.5 },
+  translate: { x: 74, y: 14, z: layerSpace*1.5 },
 });
 particle.copy({
-  translate: { x: -24, y: 34, z: layerSpace*-1.75 },
+  translate: { x: -24, y: 34, z: layerSpace*1.75 },
 });
 particle.copy({
-  translate: { x: 34, y: 34, z: layerSpace*-1.9 },
+  translate: { x: 34, y: 34, z: layerSpace*1.9 },
   color: amber,
 });
 particle.copy({
-  translate: { x: 22, y: 40, z: layerSpace*-2.2 },
+  translate: { x: 22, y: 40, z: layerSpace*2.2 },
 });
 
 // ----- clouds ----- //
@@ -605,8 +604,8 @@ var twoCloud = new Shape({
     ]},
   ],
   addTo: camera,
-  translate: { x: -84, y: -38, z: layerSpace*1 },
-  rotate: { y: TAU*1/16 },
+  translate: { x: -84, y: -38, z: layerSpace*-1 },
+  rotate: { y: -TAU*1/16 },
   scale: { x: 1/Math.cos(TAU*1/16) },
   lineWidth: 4,
   color: white,
@@ -614,8 +613,8 @@ var twoCloud = new Shape({
 });
 
 twoCloud.copy({
-  translate: { x: -38, y: -22, z: layerSpace*0.5 },
-  rotate: { y: TAU*1/8 },
+  translate: { x: -38, y: -22, z: layerSpace*-0.5 },
+  rotate: { y: -TAU*1/8 },
   scale: { x: 1/Math.cos(TAU*1/8) * -1 },
 });
 
@@ -657,8 +656,8 @@ new Shape({
     { x: 32, y: 0 },
   ],
   addTo: camera,
-  translate: { x: 72, y: -52, z: layerSpace*1 },
-  rotate: { y: TAU * -1/16 },
+  translate: { x: 72, y: -52, z: layerSpace*-1 },
+  rotate: { y: TAU * 1/16 },
   scale: { x: 1/Math.cos(TAU * -1/16) },
   lineWidth: 4,
   color: white,
@@ -688,7 +687,7 @@ var starA = new Shape({
     ]},
   ],
   addTo: camera,
-  translate: { x: -50, y: -50, z: layerSpace*1.5 },
+  translate: { x: -50, y: -50, z: layerSpace*-1.5 },
   color: gold,
   lineWidth: 2,
   fill: true,
@@ -698,7 +697,7 @@ starA.copy({
 });
 
 var starB = starA.copy({
-  translate: { x: 42, y: -20, z: layerSpace*0.5 },
+  translate: { x: 42, y: -20, z: -layerSpace*0.5 },
 });
 starB.copy({
   rotate: { y: TAU/4 },
@@ -723,7 +722,7 @@ new Shape({
     { z: 3, y: 0 },
   ],
   addTo: camera,
-  translate: { x: 18, y: -30, z: layerSpace*1 },
+  translate: { x: 18, y: -30, z: layerSpace*-1 },
   lineWidth: 3,
   color: midnight,
   closed: false,
@@ -736,73 +735,30 @@ var isRotating = true;
 var t = 0;
 var tSpeed = 1/240;
 
+illo.enableDragRotate( camera, function() {
+  isRotating = false;
+});
+
 function animate() {
-  update();
-  render();
-  requestAnimationFrame( animate );
-}
-
-animate();
-
-// -- update -- //
-
-function update() {
+  // update
   if ( isRotating ) {
     t += tSpeed;
     var theta = easeInOut( t ) * TAU;
-    var delta = TAU * 3/64;
+    var delta = TAU * -3/64;
     camera.rotate.y = Math.sin( theta ) * delta;
     camera.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;
   }
 
   camera.updateGraph();
+
+  illo.render( camera );
+  requestAnimationFrame( animate );
 }
 
-function easeInOut( i ) {
-  i = i % 1;
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}
+animate();
 
-// -- render -- //
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  camera.renderGraph( ctx );
-
-  ctx.restore();
-}
 
 // ----- inputs ----- //
-
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: document,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
-});
 
 document.querySelector('.reset-button').onclick = function() {
   isRotating = false;

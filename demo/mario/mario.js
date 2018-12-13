@@ -1,19 +1,20 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
+canvas.width = w * zoom;
+canvas.height = h * zoom;
+
+var illo = new Illo({
+  canvas: canvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
+
 // colors
 var colors = {
   eye: '#333',
@@ -25,137 +26,101 @@ var colors = {
   leather: '#A63',
 };
 
-var camera = new Anchor();
+var camera = new Anchor({
+});
 
 // -- illustration shapes --- //
 
 // head
-new Shape({
-  path: [
-    { x: 0, y: -12, z: -1 },
-  ],
+var head = new Shape({
+  addTo: camera,
+  translate: { y: -12, z: 1 },
   color: colors.skin,
   lineWidth: 23,
-  addTo: camera,
 });
 
 // nose
 new Shape({
-  path: [
-    { x: 0, y: -7, z: -14 },
-  ],
+  addTo: head,
+  translate: { y: 5, z: 13 },
   color: colors.skin,
   lineWidth: 7,
-  addTo: camera,
 });
 
 
 
 // chin
-var chinSide = { x: -5, y: -6, z: -5 };
-var chinCenter = { x: 0, y: -3.5, z: -7 };
-new Shape({
+var chin = new Shape({
+  addTo: head,
   path: [
-    chinSide,
-    chinCenter
+    { x: -5, y: 6, z: 4 },
+    { x: 0, y: 8.5, z: 6 }
   ],
   color: colors.skin,
   lineWidth: 10,
-  addTo: camera,
 });
-// reverse
-chinSide.x = -chinSide.x;
-new Shape({
-  path: [
-    chinCenter,
-    chinSide
-  ],
-  color: colors.skin,
-  lineWidth: 10,
-  addTo: camera,
+chin.copy({
+  scale: { x: -1 },
 });
+
 // mouth
 new Shape({
   path: [
-    { x: -3, y: -3, z: -10 },
-    { x: -1, y: -1, z: -10 },
-    { x:  1, y: -1, z: -10 },
-    { x:  3, y: -3, z: -10 },
+    { x: -3, y: -3 },
+    { x: -1, y: -1 },
+    { x:  1, y: -1 },
+    { x:  3, y: -3 },
   ],
+  translate: { y: 12, z: 9 },
   color: colors.cloth,
   fill: true,
   lineWidth: 2,
-  addTo: camera,
+  addTo: head,
 });
 
 
+var hat = new Anchor({
+  addTo: head,
+  translate: { y: -8 },
+});
 
 // hat front
-var hatFrontA = { x: -8, y: -20, z: -6 };
-var hatFrontB = { x: -4, y: -23, z: -8 };
-var hatFrontC = { x: -hatFrontB.x, y: hatFrontB.y, z: hatFrontB.z };
+var hatFrontA = new Vector3({ x: -8, y: 0, z: 5 });
+var hatFrontB = new Vector3({ x: -4, y: -3, z: 7 });
+var hatFrontC = hatFrontB.copy().multiply({ x: -1 });
+var hatFrontD = hatFrontA.copy().multiply({ x: -1 });
 
+// hat front
 new Shape({
   path: [
     hatFrontA,
     hatFrontB,
-    { x: -hatFrontB.x, y: hatFrontB.y, z: hatFrontB.z },
-    { x: -hatFrontA.x, y: hatFrontA.y, z: hatFrontA.z },
-  ],
-  color: colors.cloth,
-  closed: false,
-  fill: false,
-  lineWidth: 11,
-  addTo: camera,
-});
-new Shape({
-  path: [
-    hatFrontB,
     hatFrontC,
+    hatFrontD,
   ],
   color: colors.cloth,
   closed: false,
   fill: false,
   lineWidth: 11,
-  addTo: camera,
-});
-// hatFrontD
-hatFrontA.x = -hatFrontA.x;
-new Shape({
-  path: [
-    hatFrontC,
-    hatFrontA,
-  ],
-  color: colors.cloth,
-  closed: false,
-  fill: false,
-  lineWidth: 11,
-  addTo: camera,
+  addTo: hat,
 });
 
-
-var hatTopFrontX = 10;
-var hatTopFrontY = -19;
-var hatTopFrontZ = -6;
-var hatTopBackX = 7;
-var hatTopBackY = -17;
-var hatTopBackZ = 9;
-
-var hatTopBackA = { x:  hatTopBackX, y: hatTopBackY, z: hatTopBackZ };
-var hatTopBackB = { x: -hatTopBackX, y: hatTopBackY, z: hatTopBackZ };
+var hatTopFront = new Vector3({ x: 10, y: 1, z: 5 });
+var hatTopBackA = new Vector3({ x: 7, y: 3, z: -10 });
+var hatTopBackB = hatTopBackA.copy().multiply({ x: -1 });
 
 // hat top
 new Shape({
   path: [
-    { x: -hatTopFrontX, y: hatTopFrontY, z: hatTopFrontZ },
-    { x:  hatTopFrontX, y: hatTopFrontY, z: hatTopFrontZ },
+    hatTopFront.copy().multiply({ x: -1 }),
+    hatTopFront,
     hatTopBackA,
     hatTopBackB,
   ],
   color: colors.cloth,
   fill: true,
   lineWidth: 9,
-  addTo: camera,
+  addTo: hat,
 });
 // hat top back
 new Shape({
@@ -165,231 +130,235 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 9,
-  addTo: camera,
+  addTo: hat,
 });
+
+// hat top side
+var hatTopSide = new Shape({
+  path: [
+    hatTopFront,
+    hatTopBackA,
+  ],
+  color: colors.cloth,
+  lineWidth: 9,
+  addTo: hat,
+});
+hatTopSide.copy({
+  scale: { x: -1 },
+});
+
 
 // hat top cover
 new Shape({
   path: [
-    { x: -3, y: -20, z: 7 },
-    { x:  3, y: -20, z: 7 },
-    { x:  3, y: -23, z: -5 },
-    { x: -3, y: -23, z: -5 },
+    { x: -3, y:  0, z: -8 },
+    { x:  3, y:  0, z: -8 },
+    { x:  3, y: -3, z: 4 },
+    { x: -3, y: -3, z: 4 },
   ],
   color: colors.cloth,
   lineWidth: 6,
-  addTo: camera,
+  addTo: hat,
 });
 
-[ -1, 1 ].forEach( function( xSide ) {
-  // eyes pupil
-  new Shape({
-    path: [
-      { x: 5*xSide, y: -10, z: -10 },
-      { x: 5*xSide, y: -8, z: -10 },
-    ],
-    color: colors.eye,
-    lineWidth: 3,
-    addTo: camera,
-  });
+// hat brim
+// brim has left & right side
+var hatBrim = new Shape({
+  path: [
+    { x: 10, y: 4, z: -0 },
+    { x: 8, y: 4, z: 5 },
+    { x: 0, y: 2, z: 9 },
+    { x: 0, y: 1, z: 2 },
+  ],
+  translate: { z: 7 },
+  color: colors.cloth,
+  fill: true,
+  lineWidth: 4,
+  addTo: hat,
+});
+hatBrim.copy({
+  scale: { x: -1 },
+});
 
+// eyes pupil
+var eye = new Shape({
+  path: [
+    { y: 2 },
+    { y: 4 },
+  ],
+  translate: { x: 5, z: 9 },
+  color: colors.eye,
+  lineWidth: 3,
+  addTo: head,
+});
+eye.copy({
+  translate: { x: -5, z: 9 },
+});
 
-  // eye brow
-  new Shape({
-    path: [
-      { x: 7*xSide, y: -13.5, z: -10 },
-      { x: 5.5*xSide, y: -14, z: -11 },
-      { x: 4*xSide, y: -13.5, z: -11 },
-    ],
-    color: colors.hair,
-    closed: false,
-    lineWidth: 2.5,
-    addTo: camera,
-  });
+var brow = new Shape({
+  path: [
+    { x: 3, y: 0, z: -0 },
+    { x: 1.5, y: -0.5, z: 1 },
+    { x: 0, y: 0, z: 1 },
+  ],
+  translate: { x: 4, y: -1.5, z: 9 },
+  color: colors.hair,
+  closed: false,
+  lineWidth: 2.5,
+  addTo: head,
+});
+brow.copy({
+  scale: { x: -1 },
+  translate: { x: -4, y: -1.5, z: 9 },
+});
 
+var mustache = new Group({
+  addTo: head,
+  translate: { y: 6.5, z: 10 },
+});
+// mustache line
+new Shape({
+  path: [
+    { x: 2, y: 1, z: 1.5 },
+    { x: 6.5, y: 0, z: -0 },
+  ],
+  color: colors.hair,
+  lineWidth: 3,
+  addTo: mustache,
+});
+// mustache sections
+var mustacheSection = new Shape({
+  translate: { x: 1.75, y: 1.5, z: 1 },
+  color: colors.hair,
+  lineWidth: 4,
+  addTo: mustache,
+});
+mustacheSection.copy({
+  translate: { x: 4.5, y: 1, z: 0.75 }
+});
 
-  // hat brim
-  // brim has left & right side
-  new Shape({
-    path: [
-      { x: 10*xSide, y: -16, z: -8 },
-      { x: 8*xSide, y: -16, z: -13 },
-      { x: 0, y: -18, z: -17 },
-      { x: 0, y: -19, z: -10 },
-    ],
-    color: colors.cloth,
-    fill: true,
-    lineWidth: 4,
-    addTo: camera,
-  });
+mustache.copyGraph({
+  scale: { x: -1 },
+});
 
-  // hat top side
-  new Shape({
-    path: [
-      { x:  hatTopFrontX*xSide, y: hatTopFrontY, z: hatTopFrontZ },
-      { x:  hatTopBackX*xSide, y: hatTopBackY, z: hatTopBackZ },
-    ],
-    color: colors.cloth,
-    lineWidth: 9,
-    addTo: camera,
-  });
-  new Shape({
-    path: [
-      { x: 3*xSide, y: -20, z: 7 },
-      { x: 3*xSide, y: -23, z: -5 },
-    ],
-    color: colors.cloth,
-    lineWidth: 6,
-    addTo: camera,
-  });
+var sideburns = new Shape({
+  path: [
+    { y:  0, z:  0 },
+    { y: -4, z:  1.5 },
+    { y: -4, z: 1 },
+    { y: -1, z: 2 },
+  ],
+  translate: { x: 10, y: 3, z: 2 },
+  color: colors.hair,
+  closed: false,
+  fill: true,
+  lineWidth: 3,
+  addTo: head,
+});
+sideburns.copy({
+  translate: sideburns.translate.copy().multiply({ x: -1 }),
+});
 
-  var mustacheGroup = new Group({
-    addTo: camera,
-  });
+var ear = new Shape({
+  path: [
+    { x: 0, y:  0, z: -0 },
+    { x: 0, y: -4, z: -0 },
+    { x: 1, y: -4, z: -2 },
+    { x: 0, y:  0, z: -1 },
+  ],
+  translate: { x: 10, y: 4, z: -2 },
+  color: colors.skin,
+  fill: true,
+  lineWidth: 4,
+  addTo: head,
+});
+ear.copy({
+  scale: { x: -1 },
+  translate: ear.translate.copy().multiply({ x: -1 }),
+});
 
-  // mustache
-  new Shape({
-    path: [
-      { x: 2*xSide, y: -4.5, z: -12.5 },
-      { x: 6.5*xSide, y: -5.5, z: -11 },
-    ],
-    color: colors.hair,
-    fill: true,
-    lineWidth: 3,
-    addTo: mustacheGroup,
-  });
-  // mustache sections
-  new Shape({
-    path: [
-      { x: 1.75*xSide, y: -4, z: -12 },
-    ],
-    color: colors.hair,
-    fill: true,
-    lineWidth: 4,
-    addTo: mustacheGroup,
-  });
-  new Shape({
-    path: [
-      { x: 4.5*xSide, y: -4.5, z: -11.75 },
-    ],
-    color: colors.hair,
-    fill: true,
-    lineWidth: 4,
-    addTo: mustacheGroup,
-  });
+var sideHair = new Anchor({
+  addTo: head,
+});
 
-  // side burns
-  new Shape({
-    path: [
-      { x: 10*xSide, y: -9, z: -3 },
-      { x: 10*xSide, y: -13, z: -1.5 },
-      { x: 10*xSide, y: -13, z: -4 },
-      { x: 10*xSide, y: -10, z: -5 },
-    ],
-    color: colors.hair,
-    closed: false,
-    fill: true,
-    lineWidth: 3,
-    addTo: camera,
-  });
+// hair side panel
+new Shape({
+  path: [
+    { x: 4, y: -7,   z: -1 },
+    { x: 3, y:  0,   z: -0 },
+    { x: 0, y:  0,   z: -5 },
+    { x: 2, y: -6.5, z: -6 },
+  ],
+  translate: { x: 5, y: 7, z: -5 },
+  color: colors.hair,
+  fill: true,
+  lineWidth: 3,
+  addTo: sideHair,
+});
+// hair balls
+var hairBall = new Shape({
+  translate: { x: 6, y: 8, z: -8 },
+  color: colors.hair,
+  lineWidth: 6,
+  addTo: sideHair,
+});
+hairBall.copy({
+  translate: { x: 2, y: 8, z: -10 },
+});
 
-  // ears
-  new Shape({
-    path: [
-      { x: 10*xSide, y: -8, z: 1 },
-      { x: 10*xSide, y: -12, z: 1 },
-      { x: 11*xSide, y: -12, z: 3 },
-      { x: 10*xSide, y: -8, z: 2 },
-    ],
-    color: colors.skin,
-    fill: true,
-    lineWidth: 4,
-    addTo: camera,
-  });
-
-  // hair side panel
-  new Shape({
-    path: [
-      { x: 9*xSide, y: -12, z: 5 },
-      { x: 8*xSide, y: -5, z: 4 },
-      { x: 5*xSide, y: -5, z: 9 },
-      { x: 6*xSide, y: -11.5, z: 10 },
-    ],
-    color: colors.hair,
-    fill: true,
-    lineWidth: 3,
-    addTo: camera,
-  });
-  // hair balls
-  new Shape({
-    path: [
-      { x: 6*xSide, y: -4, z: 7 },
-    ],
-    color: colors.hair,
-    lineWidth: 6,
-    addTo: camera,
-  });
-  new Shape({
-    path: [
-      { x: 2*xSide, y: -4, z: 9 },
-    ],
-    color: colors.hair,
-    lineWidth: 6,
-    addTo: camera,
-  });
-
+sideHair.copyGraph({
+  scale: { x: -1 },
 });
 
 // hair back panel
 new Shape({
   path: [
-    { x: 5, y: -5, z: 9 },
-    { x: 6, y: -11.5, z: 10 },
-    { x: -6, y: -11.5, z: 10 },
-    { x: -5, y: -5, z: 9 },
+    { x:  5, y:  0,   z: -0 },
+    { x:  6, y: -6.5, z: -1 },
+    { x: -6, y: -6.5, z: -1 },
+    { x: -5, y:  0,   z: -0 },
   ],
+  translate: { y: 7, z: -10 },
   color: colors.hair,
   fill: true,
   lineWidth: 3,
-  addTo: camera,
+  addTo: head,
 });
 
 
-// belly/butt
-new Shape({
-  path: [
-    { x: 0, y: 10, z: -1 },
-  ],
+var body = new Shape({
+  translate: { x: 0, y: 10, z: 1 },
   color: colors.overalls,
   lineWidth: 20,
   addTo: camera,
 });
 
 // right arm
-var rightShoulder = { x: -8, y: 2, z: 2 };
+var rightShoulder = { x: -8, y: -8, z: -3 };
+var rightWrist = new Vector3({ x: -14, y: -17, z: -0 });
 new Shape({
   path: [
     rightShoulder,
-    { x: -14, y: -7, z: -1 },
+    rightWrist,
   ],
   color: colors.cloth,
   lineWidth: 8,
-  addTo: camera,
+  addTo: body,
 });
 
 // right hand
 new Shape({
   path: [
-    { x: -17, y: -13, z: -2 },
+    { x: -17, y: -23, z: 1 },
   ],
   color: colors.white,
   lineWidth: 12,
-  addTo: camera,
+  addTo: body,
 });
 
 // left arm
-var leftShoulder = { x: 6, y: 3, z: 3 };
-var leftElbow = { x: 8, y: 6, z: 7 };
+var leftShoulder = { x: 6, y: -7, z: -4 };
+var leftElbow = { x: 8, y: -4, z: -8 };
 new Shape({
   path: [
     leftShoulder,
@@ -397,25 +366,25 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 8,
-  addTo: camera,
+  addTo: body,
 });
 new Shape({
   path: [
     leftElbow,
-    { x: 12, y: 8, z: 8 },
+    { x: 12, y: -2, z: -9 },
   ],
   color: colors.cloth,
   lineWidth: 8,
-  addTo: camera,
+  addTo: body,
 });
 // left hand
 new Shape({
   path: [
-    { x: 17, y: 11, z: 7 },
+    { x: 17, y: 1, z: -8 },
   ],
   color: colors.white,
   lineWidth: 12,
-  addTo: camera,
+  addTo: body,
 });
 
 new Shape({
@@ -425,132 +394,76 @@ new Shape({
   ],
   color: colors.cloth,
   lineWidth: 8,
-  addTo: camera,
+  addTo: body,
 });
 
 // right leg
-new Shape({
+var rightLeg = new Shape({
   path: [
-    { x: -5, y: 14, z: -3 },
-    { x: -5, y: 20, z: -2 },
-    { x: -5, y: 22, z: -1 }
+    { y:  4, z: 2 },
+    { y: 10, z: 1 },
+    { y: 12, z: -0 }
   ],
+  translate: { x: -5 },
   closed: false,
   color: colors.overalls,
   lineWidth: 10,
-  addTo: camera,
+  addTo: body,
 });
-// right foot toe
-new Shape({
-  path: [
-    { x: -5, y: 28, z: 1.5 }
-  ],
-  color: colors.leather,
-  lineWidth: 11,
-  addTo: camera,
-});
-// right foot sole
-new Shape({
-  path: [
-    { x: -3, y: 22, z: 4 },
-    { x: -7, y: 22, z: 4 },
-    { x: -7, y: 29, z: 4 },
-    { x: -3, y: 29, z: 4 },
-  ],
+
+var shoe = new Rect({
+  addTo: rightLeg,
+  width: 4,
+  height: 7,
+  translate: { y: 15.5, z: -4 },
   fill: true,
   color: colors.leather,
   lineWidth: 6,
-  addTo: camera,
 });
 
+// toe ball
+new Shape({
+  addTo: shoe,
+  translate: { y: 3, z: 2.5 },
+  color: colors.leather,
+  lineWidth: 11,
+});
 
 // left leg
-new Shape({
+var leftLeg = new Shape({
   path: [
-    { x: 5, y: 14, z: -3 },
-    { x: 5, y: 12, z: -8 },
-    { x: 5, y: 13, z: -12 },
+    { y: 4, z: 2 },
+    { y: 2, z: 7 },
+    { y: 3, z: 11 },
   ],
+  translate: { x: 5 },
   closed: false,
   color: colors.overalls,
   lineWidth: 10,
-  addTo: camera,
+  addTo: body,
 });
-// left foot toe
-new Shape({
-  path: [
-    { x: 5, y: 9, z: -17 }
-  ],
-  color: colors.leather,
-  lineWidth: 11,
-  addTo: camera,
-});
-// left foot sole
-new Shape({
-  path: [
-    { x: 3, y: 8, z:  -19.5 },
-    { x: 7, y: 8, z:  -19.5 },
-    { x: 7, y: 15, z: -18 },
-    { x: 3, y: 15, z: -18 },
-  ],
-  fill: true,
-  color: colors.leather,
-  lineWidth: 6,
-  addTo: camera,
+
+shoe.copyGraph({
+  addTo: leftLeg,
+  translate: { y: 2, z: 18 },
+  rotate: { x: TAU * (160/360) },
 });
 
 // -- animate --- //
 
+var isRotating = true;
 
 function animate() {
-  update();
-  render();
+  camera.rotate.y += isRotating ? -0.05 : 0;
+  camera.updateGraph();
+  illo.render( camera );
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// -- update -- //
-
-var isRotating = true;
-
-function update() {
-  camera.rotate.y += isRotating ? -0.05 : 0;
-  camera.updateGraph();
-}
-
-// -- render -- //
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  camera.renderGraph( ctx );
-
-  ctx.restore();
-}
-
 // ----- inputs ----- //
 
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
+illo.enableDragRotate( camera, function() {
+  isRotating = false;
 });

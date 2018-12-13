@@ -111,6 +111,10 @@ Vector3.prototype.magnitude = function() {
   return Math.sqrt( sum );
 };
 
+Vector3.prototype.copy = function() {
+  return new Vector3( this );
+};
+
 // ----- utils ----- //
 
 // add missing properties

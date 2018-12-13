@@ -11,7 +11,7 @@ function makeBird( options ) {
   var bird = new Group({
     addTo: arrow,
     translate: { x: 87 },
-    rotate: { x: spin },
+    rotate: { x: -spin },
   });
 
   // bird body

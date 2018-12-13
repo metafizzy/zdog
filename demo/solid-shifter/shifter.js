@@ -210,7 +210,7 @@ Shifter.prototype.update = function( t ) {
 
   var turn = Math.floor( t % 6 );
 
-  var easeT = easeInOut( t ) * TAU/4;
+  var easeT = easeInOut( t, 4 ) * TAU/4;
   this.pyramid.rotate.x = easeT;
   this.cylinder1.rotate.y = easeT + TAU/4;
   this.cone.rotate.x = easeT + TAU/4;
@@ -238,14 +238,3 @@ Shifter.prototype.update = function( t ) {
     this.triCylinder.rendering = true;
   }
 };
-
-function easeInOut( i ) {
-  i = i % 1;
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1 * i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}

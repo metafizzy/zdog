@@ -1,22 +1,19 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
+canvas.width = w * zoom;
+canvas.height = h * zoom;
 
-var isRotating = true;
+var illo = new Illo({
+  canvas: canvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
 
 // colors
 var lightBlue = '#7CF';
@@ -44,12 +41,12 @@ var head = new Shape({
 [ 1, 3, 4, 5, 6, 7, 8, 9 ].forEach( function( i ) {
   new Shape({
     path: [
-      { x: -1.25, y: -1.5, z: -11.25 },
-      { x:  1.25, y: -1.5, z: -11.25 },
-      { x:  1.25, y:  1.5, z: -11.25 },
-      { x: -1.25, y:  1.5, z: -11.25 },
+      { x: -1.25, y: -1.5, z: 11.25 },
+      { x:  1.25, y: -1.5, z: 11.25 },
+      { x:  1.25, y:  1.5, z: 11.25 },
+      { x: -1.25, y:  1.5, z: 11.25 },
     ],
-    rotate: { x: -TAU/20 * i },
+    rotate: { x: TAU/20 * i },
     lineWidth: 2,
     fill: true,
     color: lightBlue,
@@ -90,7 +87,7 @@ var undiePanel = new Shape({
     { x:  0, y: 1.5 },
     { x: -undieX, y: undieY1 },
   ],
-  translate: { y: 4, z: -undieZ },
+  translate: { y: 4, z: undieZ },
   lineWidth: 5,
   color: darkBlue,
   fill: true,
@@ -98,16 +95,16 @@ var undiePanel = new Shape({
 });
 
 undiePanel.copy({
-  translate: { y: 4, z: undieZ },
+  translate: { y: 4, z: -undieZ },
 });
 
 // right undie panel
 var sideUndiePanel = new Shape({
   path: [
-    { y: undieY0, z: -undieZ },
     { y: undieY0, z:  undieZ },
-    { y: undieY1, z:  undieZ },
+    { y: undieY0, z: -undieZ },
     { y: undieY1, z: -undieZ },
+    { y: undieY1, z:  undieZ },
   ],
   translate: { x: -undieX, y: 4, },
   lineWidth: 5,
@@ -131,7 +128,7 @@ var rightUpperArm = new Shape({
     { x: -7 },
   ],
   translate: { x: -shoulderX, y: shoulderY },
-  rotate: { z: -0.8, y: 0.6 },
+  rotate: { z: -0.8, y: -0.6 },
   lineWidth: 6,
   color: lightBlue,
   addTo: camera,
@@ -167,7 +164,7 @@ var leftUpperArm = new Shape({
     { x: 11 },
   ],
   translate: { x: shoulderX, y: shoulderY-0.5 },
-  rotate: { z: -0.2, y: -0.3 },
+  rotate: { z: -0.2, y: 0.3 },
   lineWidth: 6,
   color: lightBlue,
   addTo: camera,
@@ -197,23 +194,23 @@ new Shape({
   // face panel
   var facePanel = new Shape({
     path: [
-      { x: 4*xSide, y: -4, z: 1 }, // top inside brow
+      { x: 4*xSide, y: -4, z: -1 }, // top inside brow
       { arc: [
-        { x: 0*xSide, y: -4, z: -0.5 },
-        { x: 0*xSide, y: 1, z: -1  }, // widows peak
+        { x: 0*xSide, y: -4, z: 0.5 },
+        { x: 0*xSide, y: 1, z: 1  }, // widows peak
       ]},
-      { x: 0*xSide, y: 1, z: -1  }, // nose
-      { x: 0*xSide, y: 5.5, z: 1  }, // chin front
+      { x: 0*xSide, y: 1, z: 1  }, // nose
+      { x: 0*xSide, y: 5.5, z: -1  }, // chin front
       { arc: [
-        { x: 7*xSide, y: 5.5, z: 4 }, // jaw
-        { x: 7*xSide, y: 0, z: 4 }, // far side
+        { x: 7*xSide, y: 5.5, z: -4 }, // jaw
+        { x: 7*xSide, y: 0, z: -4 }, // far side
       ]},
       { arc: [
-        { x: 7*xSide, y: -4, z: 4 }, // top back brow
-        { x: 4*xSide, y: -4, z: 1 }, // top inside brow
+        { x: 7*xSide, y: -4, z: -4 }, // top back brow
+        { x: 4*xSide, y: -4, z: -1 }, // top inside brow
       ]},
     ],
-    translate: { y: 4, z: -8.5 },
+    translate: { y: 4, z: 8.5 },
     fill: true,
     lineWidth: 1,
     // stroke: false,
@@ -226,21 +223,19 @@ new Shape({
     width: 4,
     height: 5,
     addTo: facePanel,
-    translate: { x: 3.75*xSide, y: -0.5, z: -0.5 },
-    rotate: { y: 0.2*xSide },
+    translate: { x: 3.75*xSide, y: -0.5, z: 0.5 },
+    rotate: { y: -0.2*xSide },
     lineWidth: 1,
     fill: true,
     color: 'white',
   });
 
-
-
   // pupils
   var pupil = new Ellipse({
     width: 1,
     height: 4,
-    translate: { x: -0.4*xSide, y: -0.2, z: -1 },
-    rotate: { y: -0.2*xSide },
+    translate: { x: -0.4*xSide, y: -0.2, z: 1 },
+    rotate: { y: 0.2*xSide },
     lineWidth: 1,
     fill: true,
     color: '#128',
@@ -253,8 +248,8 @@ new Shape({
   var earCone = new Ellipse({
     width:  5.5,
     height: 5.5,
-    translate: { x: 10*xSide, y: 3, z: 1 },
-    rotate: { y: (TAU/4-0.2)*xSide, x: TAU/4, z: 1 },
+    translate: { x: 10*xSide, y: 3, z: -1 },
+    rotate: { y: (TAU/4+0.2)*-xSide, x: TAU/4, z: 1 },
     fill: false,
     lineWidth: 2.5,
     color: lightBlue,
@@ -266,7 +261,7 @@ new Shape({
     width: 5,
     height: 5,
     addTo: earCone,
-    translate: { z: 1 },
+    translate: { z: -1 },
     color: '#C11',
     stroke: false,
     fill: true,
@@ -276,7 +271,7 @@ new Shape({
   var thigh = new Shape({
     path: [ { y: 0 }, { y: 3 } ],
     translate: { x: 4.5*xSide, y: 8 },
-    rotate: { z: -0.35*xSide, x: 0.1 },
+    rotate: { z: -0.35*xSide, x: -0.1 },
     lineWidth: 6,
     color: lightBlue,
     addTo: camera,
@@ -286,11 +281,11 @@ new Shape({
   var shin = new Shape({
     path: [
       { y: 5, z: 0 },
-      { y: 14, z: -2 },
-      { y: 14, z: 1 },
+      { y: 14, z: 2 },
+      { y: 14, z: -1 },
     ],
     translate: thigh.path[1],
-    rotate: { y: 0.5*xSide },
+    rotate: { y: -0.5*xSide },
     fill: true,
     lineWidth: 11,
     color: darkBlue,
@@ -300,13 +295,13 @@ new Shape({
   // sole
   new Shape({
     path: [
-      { y: 2.5, x: (0.5 + 2)*xSide, z: 3 },
-      { y: 2.5, x: (0.5 + -2)*xSide, z: 3 },
-      { y: 2.5, x: (0.5 + -1)*xSide, z: -5 },
-      { y: 2.5, x: (0.5 + 1)*xSide, z: -5 },
+      { y: 2.5, x: (0.5 + 2)*xSide, z: -3 },
+      { y: 2.5, x: (0.5 + -2)*xSide, z: -3 },
+      { y: 2.5, x: (0.5 + -1)*xSide, z: 5 },
+      { y: 2.5, x: (0.5 + 1)*xSide, z: 5 },
     ],
     translate: shin.path[1],
-    rotate: { z: 0.4*xSide, x: 0.1 },
+    rotate: { z: 0.4*xSide, x: -0.1 },
     fill: true,
     lineWidth: 7,
     color: darkBlue,
@@ -317,9 +312,11 @@ new Shape({
 
 // -- animate --- //
 
+var isRotating = true;
+
 function animate() {
   update();
-  render();
+  illo.render( camera );
   requestAnimationFrame( animate );
 }
 
@@ -337,8 +334,8 @@ function update() {
   // angleXFlip *= 
   var headAngleY = modulo( camera.rotate.y + head.rotate.y + angleXOffset, TAU );
   var headAngleX = modulo( camera.rotate.x + angleXOffset, TAU );
-  var stareX = (headAngleY / TAU * 2 - 1) * -8;
-  var stareY = (headAngleX / TAU * 2 - 1) * -8;
+  var stareX = (headAngleY / TAU * 2 - 1) * 8;
+  var stareY = (headAngleX / TAU * 2 - 1) * 8;
   stareX = Math.max( -2, Math.min( 2, stareX ) );
   stareY = Math.max( -1, Math.min( 1, stareY ) );
   stareY = isAngleXFlip ? -stareY : stareY;
@@ -352,38 +349,8 @@ function update() {
   camera.updateGraph();
 }
 
-// -- render -- //
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  camera.renderGraph( ctx );
-
-  ctx.restore();
-}
-
 // ----- inputs ----- //
 
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
+illo.enableDragRotate( camera, function() {
+  isRotating = false;
 });
