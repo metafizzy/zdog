@@ -44,12 +44,17 @@ Shape.prototype.updatePathActions = function() {
     var keys = Object.keys( pathPart );
     var method = keys[0];
     var points = pathPart[ method ];
-    var isInstruction = keys.length === 1 && actionNames.includes( method ) &&
-      Array.isArray( points );
-
+    // default to line if no instruction
+    var isInstruction = keys.length == 1 && actionNames.includes( method );
     if ( !isInstruction ) {
       method = 'line';
-      points = [ pathPart ];
+      points = pathPart;
+    }
+    // munge single-point methods like line & move without arrays
+    var isLineOrMove = method == 'line' || method == 'move';
+    var isPointsArray = Array.isArray( points );
+    if ( isLineOrMove && !isPointsArray ) {
+      points = [ points ];
     }
 
     // first action is always move
