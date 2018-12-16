@@ -1,10 +1,17 @@
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 72;
 var h = 72;
 var zoom = 6;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
+canvas.width = w * zoom;
+canvas.height = h * zoom;
+
+var illo = new Illo({
+  canvas: canvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
+
 // colors
 var colors = {
   fur: '#EA0',
@@ -306,50 +313,15 @@ cloakSide.copyGraph({
 
 
 function animate() {
-  update();
-  render();
+  scene.updateGraph();
+  illo.render( scene );
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// -- update -- //
-
-function update() {
-  scene.updateGraph();
-}
-
-// -- render -- //
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  scene.renderGraph( ctx );
-
-  ctx.restore();
-}
-
 // ----- inputs ----- //
 
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    dragStartAngleX = scene.rotate.x;
-    dragStartAngleY = scene.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    scene.rotate.x = dragStartAngleX + angleXMove;
-    scene.rotate.y = dragStartAngleY + angleYMove;
-  },
+illo.enableDragRotate( scene, function() {
+  isRotating = false;
 });

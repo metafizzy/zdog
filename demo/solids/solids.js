@@ -1,22 +1,19 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 96;
 var h = 96;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
-// zoom = 2.5;
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
+canvas.width = w * zoom;
+canvas.height = h * zoom;
 
+var illo = new Illo({
+  canvas: canvas,
+  prerender: function( ctx ) {
+    ctx.scale( zoom, zoom );
+  },
+});
 
 var ROOT3 = Math.sqrt(3);
 var ROOT5 = Math.sqrt(5);
@@ -440,24 +437,11 @@ new Cone({
 
 function animate() {
   update();
-  render();
+  illo.render( scene );
   requestAnimationFrame( animate );
 }
 
 animate();
-
-// -- update -- //
-
-function easeInOut( i ) {
-  i = i % 1;
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}
 
 function update() {
   viewRotation.y += isRotating ? +TAU/150 : 0;
@@ -477,39 +461,8 @@ function update() {
   scene.updateGraph();
 }
 
-// -- render -- //
-
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  scene.renderGraph( ctx );
-
-  ctx.restore();
-}
-
 // ----- inputs ----- //
 
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = viewRotation.x;
-    dragStartAngleY = viewRotation.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    viewRotation.x = dragStartAngleX + angleXMove;
-    viewRotation.y = dragStartAngleY + angleYMove;
-  },
+illo.enableDragRotate( scene, function() {
+  isRotating = false;
 });
