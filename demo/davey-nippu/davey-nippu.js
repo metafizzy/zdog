@@ -10,9 +10,7 @@ canvas.height = h * zoom;
 
 var illo = new Illo({
   canvas: canvas,
-  prerender: function( ctx ) {
-    ctx.scale( zoom, zoom );
-  },
+  scale: zoom,
 });
 
 var quarterTurn = Math.sin( TAU/8 );

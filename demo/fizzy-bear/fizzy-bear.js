@@ -4,25 +4,32 @@ var canvas = document.querySelector('canvas');
 // unibody canvas for compositing
 var unibodyCanvas = document.createElement('canvas');
 var bodyLinesCanvas = document.createElement('canvas');
-var ctx = canvas.getContext('2d');
-var unibodyCtx = unibodyCanvas.getContext('2d');
-var bodyLinesCtx = bodyLinesCanvas.getContext('2d');
+// document.body.appendChild( unibodyCanvas );
 // document.body.appendChild( bodyLinesCanvas );
 var w = 88;
 var h = 88;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
+
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
 unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
 unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
+
+var mainIllo = new Illo({
+  canvas: canvas,
+  scale: zoom,
+});
+
+var unibodyIllo = new Illo({
+  canvas: unibodyCanvas,
+  scale: zoom,
+});
+
+var bodyLinesIllo = new Illo({
+  canvas: bodyLinesCanvas,
+  scale: zoom,
+});
 
 var isRotating = true;
 
@@ -168,15 +175,15 @@ var bodyLineWidth = 28;
         ]},
         { arc: [
           { x: 4, y: -4 },
-          { x: 4, y: 0 } 
+          { x: 4, y: 0 }
         ]},
         { arc: [
           { x: 3, y: -1.5 },
-          { x: 0, y: -1.5 } 
+          { x: 0, y: -1.5 }
         ]},
         { arc: [
           { x: -3, y: -1.5 },
-          { x: -4, y: 0 } 
+          { x: -4, y: 0 }
         ]},
       ],
       addTo: face,
@@ -364,9 +371,9 @@ var sectionSize = unibodyHeight / 4;
 
 // unibody composited rendering
 var unibodyRender = positiveUnibody.render;
+var bodyLinesCtx = bodyLinesIllo.ctx;
 positiveUnibody.render = function( ctx ) {
-  // render unibody on its own canvas, so we can use lineWidth
-  unibodyRender.call( positiveUnibody, unibodyCtx );
+  unibodyRender.call( positiveUnibody, unibodyIllo.ctx );
   // render body lines separately, on its own canvas
   bodyLinesCtx.globalCompositeOperation = 'source-over';
   bodySectionsAnchor.renderGraph( bodyLinesCtx );
@@ -374,11 +381,14 @@ positiveUnibody.render = function( ctx ) {
   bodyLinesCtx.restore();
   bodyLinesCtx.globalCompositeOperation = 'destination-in';
   bodyLinesCtx.drawImage( unibodyCanvas, 0, 0 );
-  zoomContext( bodyLinesCtx );
   // draw unibody composite on to canvas
   ctx.restore();
   ctx.drawImage( bodyLinesCanvas, 0, 0 );
-  zoomContext( ctx );
+  // re-zoom
+  mainIllo.ctx.save();
+  mainIllo.ctx.translate( mainIllo.width/2, mainIllo.height/2 );
+  var scale = mainIllo.pixelRatio * mainIllo.scale;
+  mainIllo.ctx.scale( scale, scale );
 };
 
 // -- animate --- //
@@ -423,35 +433,22 @@ function update() {
 }
 
 // -- render -- //
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-unibodyCtx.lineCap = bodyLinesCtx.lineCap = 'round';
-unibodyCtx.lineJoin = bodyLinesCtx.lineJoin  = 'round';
+
 setJumpRotate();
 
 function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  unibodyCtx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  bodyLinesCtx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  zoomContext( ctx );
-  zoomContext( unibodyCtx );
-  zoomContext( bodyLinesCtx );
+  var ctx = mainIllo.ctx;
+  mainIllo.prerender();
+  unibodyIllo.prerender();
+  bodyLinesIllo.prerender();
 
   outlineAnchor.renderGraph( ctx );
   positiveAnchor.renderGraph( ctx );
 
-  ctx.restore();
-  unibodyCtx.restore();
-  bodyLinesCtx.restore();
+  mainIllo.postrender();
+  unibodyIllo.postrender();
+  bodyLinesIllo.postrender();
 }
-
-function zoomContext( context ) {
-  context.save();
-  context.scale( zoom, zoom );
-  /* nudge up to center (lazy) */
-  context.translate( w/2, h/2 - 4 );
-}
-
 
 // ----- inputs ----- //
 

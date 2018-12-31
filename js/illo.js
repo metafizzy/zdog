@@ -10,7 +10,7 @@ function Illo( options ) {
 
 Illo.defaults = {
   centered: true,
-  prerender: function() {},
+  onPrerender: function() {},
 };
 
 Illo.prototype.setCanvas = function( canvas ) {
@@ -26,7 +26,7 @@ Illo.prototype.setCanvas = function( canvas ) {
 
   this.ctx.lineCap = 'round';
   this.ctx.lineJoin = 'round';
-
+  // console.log('set line cap');
   var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
   // sizes
   this.width = this.canvas.width * pixelRatio;
@@ -40,19 +40,26 @@ Illo.prototype.setCanvas = function( canvas ) {
   }
 };
 
-Illo.prototype.render = function( item ) {
+Illo.prototype.prerender = function() {
   var ctx = this.ctx;
   ctx.clearRect( 0, 0, this.width, this.height );
   ctx.save();
   if ( this.centered ) {
     ctx.translate( this.width/2, this.height/2 );
   }
-  ctx.scale( this.pixelRatio, this.pixelRatio );
+  var scale = this.pixelRatio * this.scale;
+  ctx.scale( scale, scale );
+  this.onPrerender( ctx );
+};
 
-  this.prerender( ctx );
-  item.renderGraph( ctx );
+Illo.prototype.render = function( item ) {
+  this.prerender();
+  item.renderGraph( this.ctx );
+  this.postrender();
+};
 
-  ctx.restore();
+Illo.prototype.postrender = function () {
+  this.ctx.restore();
 };
 
 Illo.prototype.enableDragRotate = function( item, onPointerDown ) {

@@ -12,6 +12,7 @@ canvas.height = h * zoom;
 
 var illo = new Illo({
   canvas: canvas,
+  scale: zoom,
 });
 
 // default to flat, filled shapes
@@ -947,13 +948,10 @@ function update() {
 // -- render -- //
 
 
+
 function render() {
-  // illo prerender
-  var ctx = illo.ctx;
-  ctx.clearRect( 0, 0, illo.width, illo.height );
-  ctx.save();
-  ctx.translate( illo.width/2, illo.height/2 );
-  ctx.scale( illo.pixelRatio * zoom, illo.pixelRatio * zoom );
+var ctx = illo.ctx;
+  illo.prerender();
 
   // render shapes
   var isCameraXUp = camera.rotate.x < 0 || camera.rotate.x > TAU/2;
@@ -969,6 +967,7 @@ function render() {
     flatEarth.render( ctx );
   }
 
+  illo.postrender();
   ctx.restore();
 }
 

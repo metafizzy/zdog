@@ -17,9 +17,7 @@ proxyCanvas.height = canvasHeight * shrink;
 
 var illo = new Illo({
   canvas: proxyCanvas,
-  prerender: function( ctx ) {
-    ctx.scale( zoom, zoom );
-  },
+  scale: zoom,
 });
 
 
