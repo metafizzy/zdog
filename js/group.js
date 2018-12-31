@@ -43,25 +43,14 @@ Group.prototype.getFlatGraph = function() {
   return [ this ];
 };
 
-
-Group.prototype.checkFlatGraph = function() {
-  if ( !this.flatGraph ) {
-    this.updateFlatGraph();
-  }
-};
-
-Group.prototype.updateFlatGraph = function() {
-  this.flatGraph = this.getChildFlatGraph();
-};
-
 // get flat graph only used for group
 // do not include in parent flatGraphs
-Group.prototype.getChildFlatGraph = function() {
+Group.prototype.updateFlatGraph = function() {
   // do not include self
   var flatGraph = [];
   this.children.forEach( function( child ) {
     var childFlatGraph = child.getFlatGraph();
     flatGraph = flatGraph.concat( childFlatGraph );
   });
-  return flatGraph;
+  this.flatGraph = flatGraph;
 };
