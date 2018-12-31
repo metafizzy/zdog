@@ -5,13 +5,34 @@ function Illo( options ) {
   extend( this, Illo.defaults );
   extend( this, options );
 
+  this.anchor = new Anchor({
+    scale: this.scale,
+    rotate: this.rotate,
+    transform: this.transform,
+  });
   this.setCanvas( this.canvas );
+  this.setDragRotate( this.dragRotate );
 }
 
 Illo.defaults = {
   centered: true,
+  zoom: 1,
   onPrerender: function() {},
+  onDragStart: function() {},
+  onDragMove: function () {},
 };
+
+// ----- anchor ----- //
+
+Illo.prototype.addChild = function( item ) {
+  this.anchor.addChild( item );
+};
+
+Illo.prototype.updateGraph = function() {
+  this.anchor.updateGraph();
+};
+
+// ----- illo ----- //
 
 Illo.prototype.setCanvas = function( canvas ) {
   if ( typeof canvas == 'string' ) {
@@ -47,12 +68,13 @@ Illo.prototype.prerender = function() {
   if ( this.centered ) {
     ctx.translate( this.width/2, this.height/2 );
   }
-  var scale = this.pixelRatio * this.scale;
+  var scale = this.pixelRatio * this.zoom;
   ctx.scale( scale, scale );
   this.onPrerender( ctx );
 };
 
 Illo.prototype.render = function( item ) {
+  item = item || this.anchor;
   this.prerender();
   item.renderGraph( this.ctx );
   this.postrender();
@@ -62,23 +84,33 @@ Illo.prototype.postrender = function () {
   this.ctx.restore();
 };
 
-Illo.prototype.enableDragRotate = function( item, onPointerDown ) {
-  var dragStartAngleX, dragStartAngleY;
-  onPointerDown = onPointerDown || function() {};
+Illo.prototype.setDragRotate = function( item ) {
+  if ( !item ) {
+    return;
+  } else if ( item === true ) {
+    item = this.anchor;
+  }
+  this.dragRotate = item;
 
   new Dragger({
     startElement: this.canvas,
-    onPointerDown: function() {
-      dragStartAngleX = item.rotate.x;
-      dragStartAngleY = item.rotate.y;
-      onPointerDown();
-    },
-    onPointerMove: function( pointer, moveX, moveY ) {
-      var displaySize = this.width / this.pixelRatio;
-      var angleXMove = moveY / displaySize * TAU;
-      var angleYMove = moveX / displaySize * TAU;
-      item.rotate.x = dragStartAngleX + angleXMove;
-      item.rotate.y = dragStartAngleY + angleYMove;
-    }.bind( this ),
+    onPointerDown: this.dragStart.bind( this ),
+    onPointerMove: this.dragMove.bind( this ),
   });
 };
+
+Illo.prototype.dragStart = function( pointer ) {
+  this.dragStartX = this.dragRotate.rotate.x;
+  this.dragStartY = this.dragRotate.rotate.y;
+  this.onDragStart( pointer );
+};
+
+Illo.prototype.dragMove = function( pointer, moveX, moveY ) {
+  var displaySize = this.width / this.pixelRatio;
+  var rotateXMove = moveY / displaySize * TAU;
+  var rotateYMove = moveX / displaySize * TAU;
+  this.dragRotate.rotate.x = this.dragStartX + rotateXMove;
+  this.dragRotate.rotate.y = this.dragStartY + rotateYMove;
+  this.onDragMove( pointer, moveX, moveY );
+};
+

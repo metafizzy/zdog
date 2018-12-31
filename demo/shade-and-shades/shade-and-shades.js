@@ -10,24 +10,32 @@ canvas.height = h * zoom;
 
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
 });
 
 Shape.defaults.closed = false;
 Shape.defaults.lineWidth = 3;
 
-
 var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;
+var isRotating = true;
 
-var scene = new Anchor();
+var illo = new Illo({
+  canvas: canvas,
+  zoom: zoom,
+  onDragStart: function() {
+    isRotating = false;
+  }
+});
 
 var initialHatRotate = { y: -TAU/8 };
 
 var hat = new Anchor({
-  addTo: scene,
+  addTo: illo,
   rotate: initialHatRotate,
 });
+
+illo.setDragRotate( hat );
 
 // -- illustration shapes --- //
 
@@ -46,7 +54,7 @@ var capTop = new Shape({
     ]},
     { x: 20, y: 4 },
   ],
-  addTo: scene,
+  addTo: illo,
 });
 
 // cap back
@@ -204,7 +212,6 @@ glassesArmB.render = function() {
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var cycleFrame = 240;
 
@@ -243,7 +250,7 @@ function update() {
   var isRotateXTopSide = rx < TAU/4 || rx > TAU * 3/4;
   capTop.scale.y = isRotateXTopSide ? 1 : -1;
 
-  scene.updateGraph();
+  illo.updateGraph();
 }
 
 // -- render -- //
@@ -251,7 +258,7 @@ function update() {
 function render() {
   var ctx = illo.ctx;
   ctx.globalCompositeOperation = 'source-over';
-  illo.render( scene );
+  illo.render();
 
   // render gradient
   ctx.globalCompositeOperation = 'source-in';
@@ -263,10 +270,6 @@ function render() {
 }
 
 // ----- inputs ----- //
-
-illo.enableDragRotate( hat, function() {
-  isRotating = false;
-});
 
 document.querySelector('.reset-button').onclick = function() {
   hat.rotate.set( initialHatRotate );

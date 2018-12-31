@@ -8,20 +8,6 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
-var illo = new Illo({
-  canvas: canvas,
-  scale: zoom,
-});
-
-var white = 'white';
-var black = '#333';
-
-var initRotate = { y: TAU/4 };
-
-var scene = new Anchor({
-  rotate: initRotate,
-});
-
 [ Shape, Rect ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
   // ItemClass.defaults.stroke = true;
@@ -29,11 +15,26 @@ var scene = new Anchor({
   ItemClass.defaults.lineWidth = 1/zoom;
 });
 
+var white = 'white';
+var black = '#333';
+var isRotating = true;
+var initRotate = { y: TAU/4 };
+
+var illo = new Illo({
+  canvas: canvas,
+  zoom: zoom,
+  rotate: initRotate,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
+});
+
 // -- illustration shapes --- //
 
 function makeWall( options ) {
   var rotor = new Anchor({
-    addTo: scene,
+    addTo: illo,
     rotate: options.rotate,
   });
 
@@ -226,13 +227,8 @@ makeWall({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var tSpeed = 1/105;
-
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});
 
 // var keyframes = [
 //   { x: -1/4, y: -1/4 },
@@ -258,15 +254,15 @@ function animate() {
     var turn = Math.floor( t % turnLimit );
     var keyframeA = keyframes[ turn ];
     var keyframeB = keyframes[ turn + 1 ];
-    scene.rotate.x = lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
-    scene.rotate.y = lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
+    illo.anchor.rotate.x = lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
+    illo.anchor.rotate.y = lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
     t += tSpeed;
   }
 
-  scene.updateGraph();
+  illo.updateGraph();
 
   // render
-  illo.render( scene );
+  illo.render();
   requestAnimationFrame( animate );
 }
 
