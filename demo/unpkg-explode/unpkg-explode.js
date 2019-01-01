@@ -1,26 +1,24 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 48;
 var h = 48;
 var minWindowSize = Math.min( window.innerWidth, (window.innerHeight - 200) );
 var zoom = Math.floor( minWindowSize / w );
 // var zoom = 6;
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
+canvas.width = w * zoom;
+canvas.height = h * zoom;
 
 var isRotating = false;
 
-var scene = new Anchor({
+var illo = new Illo({
+  canvas: canvas,
+  zoom: zoom,
   rotate: { x: TAU * (35/360), y: TAU/8 },
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 var red = '#E21';
@@ -46,7 +44,7 @@ var outlines = [];
 ].forEach( function( rotation, i ) {
 
   var rotor = new Anchor({
-    addTo: scene,
+    addTo: illo,
     rotate: rotation,
   });
 
@@ -83,60 +81,16 @@ var outlines = [];
 
 // -- animate --- //
 
+illo.ctx.globalCompositeOperation = 'multiply';
+
 function animate() {
-  update();
-  render();
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
+  illo.rotate.y += isRotating ? +TAU/150 : 0;
 }
 
 animate();
-
-// -- update -- //
-
-function update() {
-  scene.rotate.y += isRotating ? +TAU/150 : 0;
-
-  scene.updateGraph();
-}
-
-// -- render -- //
-
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-ctx.globalCompositeOperation = 'multiply';
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  scene.renderGraph( ctx );
-
-  ctx.restore();
-}
-
-// ----- inputs ----- //
-
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = scene.rotate.x;
-    dragStartAngleY = scene.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    scene.rotate.x = dragStartAngleX + angleXMove;
-    scene.rotate.y = dragStartAngleY + angleYMove;
-  },
-});
-
 
 // ----- animation ----- //
 
@@ -148,7 +102,8 @@ function animation( duration, onFrame ) {
 
   animateFrame = function() {
     var ellasped = now() - start;
-    var t = Math.min( ellasped / duration, 1 ); // 0 -> 1;
+    // HACK, should be 1
+    var t = Math.min( ellasped / duration, 0.999 ); // 0 -> 1;
     onFrame( t );
     if ( ellasped < duration ) {
       requestAnimationFrame( animateFrame );
@@ -166,27 +121,16 @@ function startAnimation() {
   animation( 2000, function( t ) {
     // var negT = 1 - t;
     // var easeT = 1 - negT * negT * negT;
-    var easeT = easeInOut( t );
+    var easeT = easeInOut( t, 3 );
     panelAnchors.forEach( function( panelAnchor ) {
       panelAnchor.translate.z = lerp( -8, -11, easeT );
     });
-    scene.rotate.x = lerp( TAU/4, TAU * (35/360), easeT );
-    scene.rotate.y = lerp( -TAU/2, TAU/8, easeT );
+    illo.rotate.x = lerp( TAU/4, TAU * (35/360), easeT );
+    illo.rotate.y = lerp( -TAU/2, TAU/8, easeT );
   });
 }
 
 startAnimation();
-
-function easeInOut( i ) {
-  // i = i % 1;
-  var isFirstHalf = i < 0.5;
-  var i1 = isFirstHalf ? i : 1 - i;
-  i1 = i1 / 0.5;
-  // make easing steeper with more multiples
-  var i2 = i1 * i1 * i1;
-  i2 = i2 / 2;
-  return isFirstHalf ? i2 : i2*-1 + 1;
-}
 
 // ----- more inputs ----- //
 

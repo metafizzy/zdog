@@ -254,15 +254,15 @@ function animate() {
     var turn = Math.floor( t % turnLimit );
     var keyframeA = keyframes[ turn ];
     var keyframeB = keyframes[ turn + 1 ];
-    illo.anchor.rotate.x = lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
-    illo.anchor.rotate.y = lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
+    illo.rotate.x = lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
+    illo.rotate.y = lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
     t += tSpeed;
   }
 
   illo.updateGraph();
 
   // render
-  illo.render();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 

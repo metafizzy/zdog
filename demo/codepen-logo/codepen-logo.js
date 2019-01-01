@@ -8,19 +8,22 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  scale: 4,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 var tiltAngle = Math.asin(2/3);
 
-var scene = new Anchor({
-  scale: 4,
-});
-
 var prism = new Anchor({
-  addTo: scene,
+  addTo: illo,
 });
 
 // -- illustration shapes --- //
@@ -63,13 +66,9 @@ side.copy({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var tSpeed = 1/90;
 
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});
 
 function animate() {
   // update
@@ -77,19 +76,17 @@ function animate() {
     var easeT = easeInOut( t, 3 );
     var turn = Math.floor( t );
     if ( turn === 0 ) {
-      scene.rotate.z = lerp( TAU/8 * -3, TAU/8, easeT );
-      scene.rotate.x = lerp( 0, tiltAngle, easeT );
+      illo.rotate.z = lerp( TAU/8 * -3, TAU/8, easeT );
+      illo.rotate.x = lerp( 0, tiltAngle, easeT );
     } else if ( turn == 1 ) {
-      prism.rotate.x = lerp( -TAU/2, 0, easeT );
+      illo.rotate.x = lerp( -TAU/2, 0, easeT );
     }
     t += tSpeed;
   }
 
-  scene.updateGraph();
+  illo.updateGraph();
 
-  // render
-  illo.render( scene );
-
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -102,7 +99,6 @@ document.querySelector('.reset-button').onclick = reset;
 
 function reset() {
   t = 0;
-  scene.rotate.set({});
-  prism.rotate.set({});
+  illo.rotate.set({});
   isRotating = true;
 }

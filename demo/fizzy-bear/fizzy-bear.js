@@ -16,22 +16,28 @@ var canvasHeight = canvas.height = h * zoom;
 unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
 unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 
+var camera = new Anchor();
+var isRotating = true;
+
 var mainIllo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: camera,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 var unibodyIllo = new Illo({
   canvas: unibodyCanvas,
-  scale: zoom,
+  zoom: zoom,
 });
 
 var bodyLinesIllo = new Illo({
   canvas: bodyLinesCanvas,
-  scale: zoom,
+  zoom: zoom,
 });
 
-var isRotating = true;
 
 var jumpRotation = new Vector3({
   x: 12/360 * TAU,
@@ -45,8 +51,6 @@ var orange = '#E62';
 var gold = '#EA0';
 var blue = '#19F';
 var black = '#333';
-
-var camera = new Anchor();
 
 var bearAnchor = new Anchor({
   addTo: camera,
@@ -387,7 +391,7 @@ positiveUnibody.render = function( ctx ) {
   // re-zoom
   mainIllo.ctx.save();
   mainIllo.ctx.translate( mainIllo.width/2, mainIllo.height/2 );
-  var scale = mainIllo.pixelRatio * mainIllo.scale;
+  var scale = mainIllo.pixelRatio * mainIllo.zoom;
   mainIllo.ctx.scale( scale, scale );
 };
 
@@ -451,24 +455,6 @@ function render() {
 }
 
 // ----- inputs ----- //
-
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
-});
 
 document.querySelector('.flat-button').onclick = function() {
   camera.rotate.set({});

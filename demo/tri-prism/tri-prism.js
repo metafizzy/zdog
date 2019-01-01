@@ -17,30 +17,24 @@ proxyCanvas.height = canvasHeight * shrink;
 
 var illo = new Illo({
   canvas: proxyCanvas,
-  scale: zoom,
+  rotate: { x: -35/360 * TAU, y: 45/360 * TAU },
+  zoom: zoom,
 });
 
 
 var isRotating = false;
 
 var navy = '#456';
-var green = '#296';
-var egg = '#FED';
 var red = '#D21';
 var ochre = '#F90';
-var yellow = '#EC0';
 
 document.body.style.backgroundColor = '#EDC';
-
-var scene = new Anchor({
-  rotate: { x: -35/360 * TAU, y: 45/360 * TAU },
-});
 
 // -- illustration shapes --- //
 
 function makePrism( options ) {
   var prism = new Anchor({
-    addTo: scene,
+    addTo: illo,
     rotate: options.rotate,
   });
 
@@ -158,7 +152,7 @@ function update() {
 
   t += tSpeed;
 
-  scene.updateGraph();
+  illo.updateGraph();
 }
 
 // -- render -- //
@@ -167,7 +161,7 @@ var shiftX = Math.round( 3 * Math.sqrt(2) * zoom );
 var shiftY = Math.round( 2 * Math.sqrt(2) * Math.sqrt(3)/2 * zoom );
 
 function render() {
-  illo.render( scene );
+  illo.renderGraph();
 
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
 
@@ -202,14 +196,14 @@ new Dragger({
   startElement: canvas,
   onPointerDown: function() {
     isRotating = false;
-    dragStartAngleX = scene.rotate.x;
-    dragStartAngleY = scene.rotate.y;
+    dragStartAngleX = illo.rotate.x;
+    dragStartAngleY = illo.rotate.y;
   },
   onPointerMove: function( pointer, moveX, moveY ) {
     var angleXMove = moveY / canvasWidth * TAU;
     var angleYMove = moveX / canvasWidth * TAU;
-    scene.rotate.x = dragStartAngleX + angleXMove;
-    scene.rotate.y = dragStartAngleY + angleYMove;
+    illo.rotate.x = dragStartAngleX + angleXMove;
+    illo.rotate.y = dragStartAngleY + angleYMove;
   },
 });
 

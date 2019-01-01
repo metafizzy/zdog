@@ -8,9 +8,16 @@ var zoom = Math.min( 10, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  rotate: { x: -TAU/32 },
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 // colors
@@ -21,12 +28,8 @@ var white = 'white';
 
 // -- illustration shapes --- //
 
-var scene = new Anchor({
-  rotate: { x: -TAU/32 },
-});
-
 var cat = new Group({
-  addTo: scene,
+  addTo: illo,
   updateSort: true,
 });
 
@@ -182,7 +185,7 @@ var diamondPanel = new Shape({
     { x:  1, y: 0, z: 1 },
   ],
   scale: { x: 12, y: 30, z: -12 },
-  addTo: scene,
+  addTo: illo,
   stroke: false,
   fill: true,
   color: 'hsla(60, 100%, 50%, 0.1)',
@@ -222,17 +225,10 @@ diamondPanel.copy({
 
 // -- animate --- //
 
-var isRotating = true;
-
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});
-
-
 function animate() {
-  scene.rotate.y += isRotating ? -TAU/150 : 0;
-  scene.updateGraph();
-  illo.render( scene );
+  illo.rotate.y += isRotating ? -TAU/150 : 0;
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 

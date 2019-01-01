@@ -7,18 +7,21 @@ var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
+var isRotating = true;
 
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 // colors
 var lightBlue = '#7CF';
 var darkBlue = '#25C';
 var skin = '#FCA';
-
-var camera = new Anchor();
 
 // -- illustration shapes --- //
 
@@ -32,7 +35,7 @@ var head = new Shape({
   rotate: { y: 0.5 },
   lineWidth: 21,
   color: darkBlue,
-  addTo: camera,
+  addTo: illo,
 });
 
 // helmet details
@@ -66,7 +69,7 @@ new Shape({
   lineWidth: 11,
   color: lightBlue,
   fill: true,
-  addTo: camera,
+  addTo: illo,
 });
 
 // undies
@@ -89,7 +92,7 @@ var undiePanel = new Shape({
   lineWidth: 5,
   color: darkBlue,
   fill: true,
-  addTo: camera,
+  addTo: illo,
 });
 
 undiePanel.copy({
@@ -108,7 +111,7 @@ var sideUndiePanel = new Shape({
   lineWidth: 5,
   color: darkBlue,
   fill: true,
-  addTo: camera,
+  addTo: illo,
 });
 // left
 sideUndiePanel.copy({
@@ -129,7 +132,7 @@ var rightUpperArm = new Shape({
   rotate: { z: -0.8, y: -0.6 },
   lineWidth: 6,
   color: lightBlue,
-  addTo: camera,
+  addTo: illo,
 });
 
 var rightForeArm = new Shape({
@@ -165,7 +168,7 @@ var leftUpperArm = new Shape({
   rotate: { z: -0.2, y: 0.3 },
   lineWidth: 6,
   color: lightBlue,
-  addTo: camera,
+  addTo: illo,
 });
 
 var leftForeArm = new Shape({
@@ -272,7 +275,7 @@ new Shape({
     rotate: { z: -0.35*xSide, x: -0.1 },
     lineWidth: 6,
     color: lightBlue,
-    addTo: camera,
+    addTo: illo,
   });
 
   // shin
@@ -314,7 +317,7 @@ var isRotating = true;
 
 function animate() {
   update();
-  illo.render( camera );
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -323,15 +326,15 @@ animate();
 // -- update -- //
 
 function update() {
-  camera.rotate.y += isRotating ? -TAU/150 : 0;
-  camera.normalizeRotate();
+  illo.rotate.y += isRotating ? -TAU/150 : 0;
+  illo.normalizeRotate();
 
   // change pupil position
-  var isAngleXFlip = camera.rotate.x > TAU/4 && camera.rotate.x < TAU * 3/4;
+  var isAngleXFlip = illo.rotate.x > TAU/4 && illo.rotate.x < TAU * 3/4;
   var angleXOffset = isAngleXFlip ? 0 : TAU/2;
   // angleXFlip *= 
-  var headAngleY = modulo( camera.rotate.y + head.rotate.y + angleXOffset, TAU );
-  var headAngleX = modulo( camera.rotate.x + angleXOffset, TAU );
+  var headAngleY = modulo( illo.rotate.y + head.rotate.y + angleXOffset, TAU );
+  var headAngleX = modulo( illo.rotate.x + angleXOffset, TAU );
   var stareX = (headAngleY / TAU * 2 - 1) * 8;
   var stareY = (headAngleX / TAU * 2 - 1) * 8;
   stareX = Math.max( -2, Math.min( 2, stareX ) );
@@ -344,11 +347,6 @@ function update() {
   pupils[1].translate.y = -0.2 + stareY;
 
   // rotate
-  camera.updateGraph();
+  illo.updateGraph();
 }
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});

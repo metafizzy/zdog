@@ -8,11 +8,16 @@ var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
-
 
 // colors
 var pink = '#F8B';
@@ -22,15 +27,13 @@ var shoe = '#D03';
 var red = '#E10';
 var yellow = '#FD0';
 
-var camera = new Anchor();
-
 // -- illustration shapes --- //
 
 var body = new Shape({
   lineWidth: 22,
   translate: { y: 11 },
   rotate: { x: 0.3, z: 0.1 },
-  addTo: camera,
+  addTo: illo,
   color: pink,
 });
 
@@ -277,19 +280,12 @@ new Shape({
 
 // -- animate --- //
 
-var isRotating = true;
-
 function animate() {
-  camera.rotate.y += isRotating ? -TAU/150 : 0;
-  camera.updateGraph();
-  illo.render( camera );
+  illo.rotate.y += isRotating ? -TAU/150 : 0;
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});

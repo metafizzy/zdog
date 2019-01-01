@@ -258,7 +258,7 @@ function update() {
 function render() {
   var ctx = illo.ctx;
   ctx.globalCompositeOperation = 'source-over';
-  illo.render();
+  illo.renderGraph();
 
   // render gradient
   ctx.globalCompositeOperation = 'source-in';

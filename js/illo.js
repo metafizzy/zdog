@@ -1,38 +1,24 @@
+/* globals Illo: true */
+
 // -------------------------- Illo -------------------------- //
 
-function Illo( options ) {
-  // set defaults & options
-  extend( this, Illo.defaults );
-  extend( this, options );
+var noop = function() {};
 
-  this.anchor = new Anchor({
-    scale: this.scale,
-    rotate: this.rotate,
-    transform: this.transform,
-  });
-  this.setCanvas( this.canvas );
-  this.setDragRotate( this.dragRotate );
-}
-
-Illo.defaults = {
+var Illo = Anchor.subclass({
+  canvas: undefined,
   centered: true,
   zoom: 1,
-  onPrerender: function() {},
-  onDragStart: function() {},
-  onDragMove: function () {},
+  dragRotate: undefined,
+  onPrerender: noop,
+  onDragStart: noop,
+  onDragMove: noop,
+});
+
+Illo.prototype.create = function( options ) {
+  Anchor.prototype.create.call( this, options );
+  this.setCanvas( this.canvas );
+  this.setDragRotate( this.dragRotate );
 };
-
-// ----- anchor ----- //
-
-Illo.prototype.addChild = function( item ) {
-  this.anchor.addChild( item );
-};
-
-Illo.prototype.updateGraph = function() {
-  this.anchor.updateGraph();
-};
-
-// ----- illo ----- //
 
 Illo.prototype.setCanvas = function( canvas ) {
   if ( typeof canvas == 'string' ) {
@@ -73,10 +59,10 @@ Illo.prototype.prerender = function() {
   this.onPrerender( ctx );
 };
 
-Illo.prototype.render = function( item ) {
-  item = item || this.anchor;
+Illo.prototype.renderGraph = function( item ) {
+  item = item || this;
   this.prerender();
-  item.renderGraph( this.ctx );
+  Anchor.prototype.renderGraph.call( item, this.ctx );
   this.postrender();
 };
 
@@ -88,7 +74,7 @@ Illo.prototype.setDragRotate = function( item ) {
   if ( !item ) {
     return;
   } else if ( item === true ) {
-    item = this.anchor;
+    item = this;
   }
   this.dragRotate = item;
 
@@ -113,4 +99,3 @@ Illo.prototype.dragMove = function( pointer, moveX, moveY ) {
   this.dragRotate.rotate.y = this.dragStartY + rotateYMove;
   this.onDragMove( pointer, moveX, moveY );
 };
-

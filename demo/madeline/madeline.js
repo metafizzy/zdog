@@ -10,11 +10,17 @@ var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  rotate: { y: -TAU/4 },
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
-
 
 var madColor = {
   skin: '#FD9',
@@ -36,17 +42,13 @@ var badColor = {
 var glow = 'hsla(60, 100%, 80%, 0.3)';
 var featherGold = '#FE5';
 
-var camera = new Anchor({
-  rotate: { y: -TAU/4 },
-});
-
 // -- illustration shapes --- //
 
 makeMadeline( true, madColor, {
-  addTo: camera,
+  addTo: illo,
 });
 makeMadeline( false, badColor, {
-  addTo: camera,
+  addTo: illo,
   rotate: { y: TAU/2 },
 });
 
@@ -54,7 +56,7 @@ makeMadeline( false, badColor, {
 // ----- feather ----- //
 
 var feather = new Group({
-  addTo: camera,
+  addTo: illo,
   rotate: { y: -TAU/4 },
 });
 
@@ -124,7 +126,7 @@ var feather = new Group({
   var rodCount = 14;
   for ( var i=0; i < rodCount; i++ ) {
     var zRotor = new Anchor({
-      addTo: camera,
+      addTo: illo,
       rotate: { z: TAU/rodCount * i },
     });
 
@@ -153,7 +155,7 @@ var feather = new Group({
 
   for ( var i=0; i < dotCount; i++ ) {
     var yRotor = new Anchor({
-      addTo: camera,
+      addTo: illo,
       rotate: { y: TAU/dotCount * i },
     });
 
@@ -175,7 +177,7 @@ var feather = new Group({
 // ----- birds ----- //
 
 var birdRotor = new Anchor({
-  addTo: camera,
+  addTo: illo,
   rotate: { y: TAU*-1/8 },
 });
 
@@ -218,7 +220,7 @@ var then = new Date() - 1/60;
 
 function animate() {
   update();
-  illo.render( camera );
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -232,18 +234,13 @@ function update() {
   // auto rotate
   if ( isRotating ) {
     var theta = rotateSpeed/60 * delta * -1;
-    camera.rotate.y += theta;
+    illo.rotate.y += theta;
     xClock += theta/4;
-    camera.rotate.x = Math.sin( xClock ) * TAU/12;
+    illo.rotate.x = Math.sin( xClock ) * TAU/12;
   }
 
-  camera.updateGraph();
+  illo.updateGraph();
 
   then = now;
 }
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});

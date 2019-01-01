@@ -8,9 +8,15 @@ var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 // colors
@@ -24,14 +30,11 @@ var colors = {
   leather: '#A63',
 };
 
-var camera = new Anchor({
-});
-
 // -- illustration shapes --- //
 
 // head
 var head = new Shape({
-  addTo: camera,
+  addTo: illo,
   translate: { y: -12, z: 1 },
   color: colors.skin,
   lineWidth: 23,
@@ -328,7 +331,7 @@ var body = new Shape({
   translate: { x: 0, y: 10, z: 1 },
   color: colors.overalls,
   lineWidth: 20,
-  addTo: camera,
+  addTo: illo,
 });
 
 // right arm
@@ -449,19 +452,12 @@ shoe.copyGraph({
 
 // -- animate --- //
 
-var isRotating = true;
-
 function animate() {
-  camera.rotate.y += isRotating ? -0.05 : 0;
-  camera.updateGraph();
-  illo.render( camera );
+  illo.rotate.y += isRotating ? -0.05 : 0;
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});

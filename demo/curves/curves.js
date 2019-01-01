@@ -8,11 +8,9 @@ canvas.height = h * zoom;
 
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
 });
-
-
-var camera = new Anchor();
 
 // -- illustration shapes --- //
 
@@ -33,7 +31,7 @@ new Shape({
     ]},
     { x: -6, y:  8 },
   ],
-  addTo: camera,
+  addTo: illo,
   lineWidth: 2,
   color: '#19F',
 });
@@ -48,7 +46,7 @@ new Shape({
     ]},
     { x: 10, y: 10 }
   ],
-  addTo: camera,
+  addTo: illo,
   lineWidth: 2,
   color: '#A00',
 });
@@ -56,15 +54,9 @@ new Shape({
 // -- animate --- //
 
 function animate() {
-  camera.updateGraph();
-  illo.render( camera );
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
-
-// ----- inputs ----- //
-
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});

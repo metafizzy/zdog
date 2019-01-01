@@ -5,13 +5,8 @@ var w = 96;
 var h = 96;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
-canvas.width = w * zoom;
+var canvasWidth = canvas.width = w * zoom;
 canvas.height = h * zoom;
-
-var illo = new Illo({
-  canvas: canvas,
-  scale: zoom,
-});
 
 var ROOT3 = Math.sqrt(3);
 var ROOT5 = Math.sqrt(5);
@@ -35,7 +30,9 @@ var yellow = '#ED0';
 // var gold = '#EA0';
 // var yellow = '#8FF';
 
-var scene = new Anchor({
+var illo = new Illo({
+  canvas: canvas,
+  zoom: zoom,
   scale: 8,
 });
 
@@ -46,7 +43,7 @@ var solids = [];
 ( function() {
 
   var hourglass = new Anchor({
-    addTo: scene,
+    addTo: illo,
     translate: { x: 0, y: -4 },
   });
 
@@ -75,7 +72,7 @@ var solids = [];
 ( function() {
 
   var sphere = new Anchor({
-    addTo: scene,
+    addTo: illo,
     translate: { x: -4, y: -4 },
   });
 
@@ -102,7 +99,7 @@ var solids = [];
 var cylinder = new Cylinder({
   radius: 1,
   length: 2,
-  addTo: scene,
+  addTo: illo,
   translate: { x: 4, y: -4 },
   // rotate: { x: TAU/4 },
   color: gold,
@@ -115,7 +112,7 @@ solids.push( cylinder );
 // ----- cone ----- //
 
 var cone = new Anchor({
-  addTo: scene,
+  addTo: illo,
   translate: { x: -4, y: 0 },
 });
 
@@ -137,7 +134,7 @@ new Cone({
 ( function() {
 
   var tetrahedron = new Anchor({
-    addTo: scene,
+    addTo: illo,
     translate: { x: 0, y: 0 },
     scale: 2.5,
   });
@@ -186,7 +183,7 @@ new Cone({
 ( function() {
 
   var octahedron = new Anchor({
-    addTo: scene,
+    addTo: illo,
     translate: { x: -4, y: 4 },
     scale: 1.75,
   });
@@ -236,7 +233,7 @@ new Cone({
 ( function() {
 
   var cube = new Anchor({
-    addTo: scene,
+    addTo: illo,
     translate: { x: 4, y: 0 },
     scale: 1,
   });
@@ -289,7 +286,7 @@ new Cone({
 ( function() {
 
   var dodecahedron = new Anchor({
-    addTo: scene,
+    addTo: illo,
     translate: { x: 0, y: 4 },
     scale: 0.75,
   });
@@ -353,7 +350,7 @@ new Cone({
 ( function() {
 
   var isocahedron = new Anchor({
-    addTo: scene,
+    addTo: illo,
     translate: { x: 4, y: 4 },
     scale: 1.2,
   });
@@ -435,7 +432,7 @@ new Cone({
 
 function animate() {
   update();
-  illo.render( scene );
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -456,11 +453,24 @@ function update() {
     solid.rotate.set( viewRotation );
   });
 
-  scene.updateGraph();
+  illo.updateGraph();
 }
 
 // ----- inputs ----- //
 
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
+var dragStartAngleX, dragStartAngleY;
+
+new Dragger({
+  startElement: canvas,
+  onPointerDown: function() {
+    isRotating = false;
+    dragStartAngleX = viewRotation.x;
+    dragStartAngleY = viewRotation.y;
+  },
+  onPointerMove: function( pointer, moveX, moveY ) {
+    var angleXMove = moveY / canvasWidth * TAU;
+    var angleYMove = moveX / canvasWidth * TAU;
+    viewRotation.x = dragStartAngleX + angleXMove;
+    viewRotation.y = dragStartAngleY + angleYMove;
+  },
 });

@@ -7,23 +7,23 @@ var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
-
-var illo = new Illo({
-  canvas: canvas,
-  scale: zoom,
-});
-
+var isRotating = true;
 // ratio to make things look square when rotated a quarter
 var antiTwist = 1 / Math.cos( TAU/8 );
-
 // colors
 var blue = '#19F';
 
 var initialRotate = { y: TAU/8 };
 
-var camera = new Anchor({
+var illo = new Illo({
+  canvas: canvas,
+  zoom: zoom,
   scale: { x: antiTwist, z: antiTwist },
   rotate: initialRotate,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 // -- illustration shapes --- //
@@ -43,7 +43,7 @@ var leg = new Shape({
     { move: [ { y: -4 } ] },
     { line: [ { y: 12 } ] },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { x: 16, y: 16, z: 8 },
   lineWidth: 8,
   color: blue,
@@ -69,7 +69,7 @@ leg.copy({
 // leg connectors
 var legConnector = new Shape({
   path: [ { x: -8 }, { x: 8 } ],
-  addTo: camera,
+  addTo: illo,
   translate: { y: 16, z: 8 },
   lineWidth: 8,
   color: blue,
@@ -89,7 +89,7 @@ new Shape({
   ],
   // fudge these numbers
   scale: { x: 14.25, z: -3.75 },
-  addTo: camera,
+  addTo: illo,
   translate: { y: 10 },
   lineWidth: 20,
   color: blue,
@@ -118,7 +118,7 @@ new Shape({
     ]},
     { x: 24, y: -28 },
   ],
-  addTo: camera,
+  addTo: illo,
   lineWidth: 8,
   color: blue,
   closed: false,
@@ -130,7 +130,7 @@ new Shape({
     { x: -16, y: -28 },
     { x: 24, y: -28 },
   ],
-  addTo: camera,
+  addTo: illo,
   lineWidth: 8,
   color: blue,
   closed: false,
@@ -139,7 +139,7 @@ new Shape({
 // head ball
 var head = new Shape({
   translate: { x: 16, y: -31 },
-  addTo: camera,
+  addTo: illo,
   lineWidth: 14,
   color: blue,
 });
@@ -180,7 +180,7 @@ new Shape({
     ]},
     { x: -18, z: -28 },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { y: 4 },
   // rotate: { x: -0.25 },
   color: blue,
@@ -190,19 +190,18 @@ new Shape({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 
 function animate() {
   // update
   if ( isRotating ) {
     var easeT = easeInOut( t, 3 );
-    camera.rotate.y = easeT*-TAU + TAU/8;
-    camera.rotate.x = ( Math.cos( easeT * TAU ) * 0.5 + -0.5 ) * TAU/12;
+    illo.rotate.y = easeT*-TAU + TAU/8;
+    illo.rotate.x = ( Math.cos( easeT * TAU ) * 0.5 + -0.5 ) * TAU/12;
     t += 1/210;
   }
-  camera.updateGraph();
-  illo.render( camera );
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -210,12 +209,8 @@ animate();
 
 // ----- inputs ----- //
 
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});
-
 document.querySelector('.reset-button').onclick = function() {
-  camera.rotate.set( initialRotate );
+  illo.rotate.set( initialRotate );
   isRotating = false;
 };
 

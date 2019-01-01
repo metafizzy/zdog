@@ -8,9 +8,15 @@ var zoom = Math.min( 10, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 // colors
@@ -27,15 +33,11 @@ var colorWheel = [ beige, magenta, orange, blue, yellow ];
 
 // -- illustration shapes --- //
 
-var scene = new Anchor();
-
-// -----  ----- //
-
 // top & bottom
 var cone = new Cone({
   radius: 4,
   height: 10,
-  addTo: scene,
+  addTo: illo,
   translate: { y: -16 },
   // scale: { x: 2, y: 2 },
   rotate: { x: -TAU/4 },
@@ -53,7 +55,7 @@ cone.copy({
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
-      addTo: scene,
+      addTo: illo,
       rotate: { y: TAU/5 * i },
     });
     var rotor2 = new Anchor({
@@ -74,7 +76,7 @@ cone.copy({
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
-      addTo: scene,
+      addTo: illo,
       rotate: { y: TAU/5 * (i+0.5) },
     });
     var rotor2 = new Anchor({
@@ -95,7 +97,7 @@ cone.copy({
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
-      addTo: scene,
+      addTo: illo,
       rotate: { y: TAU/5 * (i+0.5) },
     });
     var rotor2 = new Anchor({
@@ -117,18 +119,13 @@ cone.copy({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var cycleFrame = 360;
 
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});
-
 function animate() {
   rotate();
-  scene.updateGraph();
-  illo.render( scene );
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -146,6 +143,6 @@ function rotate() {
   var halfT = isFirstHalf ? t : t - 0.5;
   var doubleEaseT = easeInOut( halfT * 2, 3 ) / 2;
   doubleEaseT += isFirstHalf ? 0 : 0.5;
-  scene.rotate.y = doubleEaseT * TAU;
-  scene.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;
+  illo.rotate.y = doubleEaseT * TAU;
+  illo.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;
 }

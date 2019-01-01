@@ -10,9 +10,16 @@ var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  rotate: { y: TAU/8 },
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 // default to flat, filled shapes
@@ -21,17 +28,13 @@ var illo = new Illo({
   ItemClass.defaults.stroke = false;
 });
 
-var camera = new Anchor({
-  rotate: { y: TAU/8 },
-});
-
 // -- illustration shapes --- //
 
 var quarterView = 1/Math.sin(TAU/8);
 
 // anchor
 var town = new Group({
-  addTo: camera,
+  addTo: illo,
   translate: { y: 36 },
   scale: { x: quarterView, z: quarterView },
   updateSort: true,
@@ -837,7 +840,7 @@ cloud.copy({
 var flatEarth = new Ellipse({
   width: 128,
   height: 128,
-  addTo: camera,
+  addTo: illo,
   translate: town.translate,
   rotate: { x: TAU/4 },
   lineWidth: 8,
@@ -848,7 +851,7 @@ var flatEarth = new Ellipse({
 // ----- sky ----- //
 
 var sky = new Group({
-  addTo: camera,
+  addTo: illo,
   translate: town.translate,
   // translate: { y: 2 },
 });
@@ -908,7 +911,6 @@ var sky = new Group({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var tSpeed = 1/120;
 var then = new Date() - 1/60;
@@ -933,28 +935,26 @@ function update() {
     var rev = 1;
     var spin = -theta * rev + TAU/8;
     var extraRotation = TAU * rev * Math.floor( ( t % 4 ) );
-    camera.rotate.y = spin - extraRotation;
+    illo.rotate.y = spin - extraRotation;
     var everyOtherCycle = t % 2 < 1;
-    camera.rotate.x = everyOtherCycle ? 0 : ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU * -1/8;
+    illo.rotate.x = everyOtherCycle ? 0 : ( Math.cos( theta ) * -0.5 + 0.5 ) * TAU * -1/8;
   }
-  camera.normalizeRotate();
+  illo.normalizeRotate();
 
   // rotate
-  camera.updateGraph();
+  illo.updateGraph();
 
   then = now;
 }
 
 // -- render -- //
 
-
-
 function render() {
-var ctx = illo.ctx;
+  var ctx = illo.ctx;
   illo.prerender();
 
   // render shapes
-  var isCameraXUp = camera.rotate.x < 0 || camera.rotate.x > TAU/2;
+  var isCameraXUp = illo.rotate.x < 0 || illo.rotate.x > TAU/2;
 
   sky.renderGraph( ctx );
 
@@ -973,11 +973,7 @@ var ctx = illo.ctx;
 
 // ----- inputs ----- //
 
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});
-
 document.querySelector('.reset-button').onclick = function() {
   isRotating = false;
-  camera.rotate.set({ x: 0, y: TAU/8 });
+  illo.rotate.set({ x: 0, y: TAU/8 });
 };

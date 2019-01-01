@@ -7,20 +7,23 @@ var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 )
 var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
+var isRotating = true;
 
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
-
-var scene = new Anchor();
 
 // -- illustration shapes --- //
 
 new Rect({
   width: 20,
   height: 20,
-  addTo: scene,
+  addTo: illo,
   translate: { z: -10 },
   lineWidth: 2,
   color: '#E21',
@@ -29,7 +32,7 @@ new Rect({
 new Ellipse({
   width: 16,
   height: 16,
-  addTo: scene,
+  addTo: illo,
   translate: { z: 10 },
   lineWidth: 4,
   color: '#19F',
@@ -42,7 +45,7 @@ new Shape({
     { x:  1, z: -1 },
   ],
   scale: { x: 5, z: 5 },
-  addTo: scene,
+  addTo: illo,
   lineWidth: 2,
   fill: true,
   color: '#EA0',
@@ -50,22 +53,12 @@ new Shape({
 
 // -- animate --- //
 
-
-var isRotating = true;
-
 function animate() {
-  // update
-  scene.rotate.y += isRotating ? +TAU/150 : 0;
-  scene.updateGraph();
-  // render
-  illo.render( scene );
+  illo.rotate.y += isRotating ? +TAU/150 : 0;
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});

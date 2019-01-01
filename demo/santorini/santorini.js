@@ -3,23 +3,25 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
 var w = 192;
 var h = 164;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 var zoom = 5;
-var pixelRatio = window.devicePixelRatio || 1;
-zoom *= pixelRatio;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
-// set canvas screen size
-if ( pixelRatio > 1 ) {
-  canvas.style.width = canvasWidth / pixelRatio + 'px';
-  canvas.style.height = canvasHeight / pixelRatio + 'px';
-}
-
+canvas.width = w * zoom;
+canvas.height = h * zoom;
 var isRotating = false;
+var initRotate = { y: TAU/8 };
+
+var illo = new Illo({
+  canvas: canvas,
+  zoom: zoom,
+  rotate: initRotate,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
+});
 
 // colors
 // var white = 'white';
@@ -37,15 +39,9 @@ var isRotating = false;
   ItemClass.defaults.stroke = false;
 });
 
-var camera = new Anchor({
-  rotate: {
-    y: -TAU/8,
-  },
-});
-
 var island = new Anchor({
-  addTo: camera,
-  scale: { x: 1/Math.sin(TAU/8), z: 1/Math.sin(TAU/8) }
+  addTo: illo,
+  scale: { x: 1/Math.sin(TAU/8), z: -1/Math.sin(TAU/8) }
 });
 
 // Shape.defaults.lineWidth = 1/zoom;
@@ -550,59 +546,16 @@ makeDome({
 // -- animate --- //
 
 function animate() {
-  update();
-  render();
+  illo.rotate.y += isRotating ? TAU/150 : 0;
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// -- update -- //
-
-function update() {
-  camera.rotate.y += isRotating ? +TAU/150 : 0;
-
-  // rotate
-  camera.updateGraph();
-}
-
-// -- render -- //
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  camera.renderGraph( ctx );
-
-  ctx.restore();
-}
-
 // ----- inputs ----- //
 
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    isRotating = false;
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
-});
-
-
 document.querySelector('.reset-button').onclick = function() {
-  camera.rotate.set({ x: 0, y: -TAU/8 });
+  illo.rotate.set( initRotate );
 };

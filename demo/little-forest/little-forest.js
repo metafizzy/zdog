@@ -8,9 +8,15 @@ var zoom = Math.min( 3, Math.floor( minWindowSize / (w/2) ) / 2 );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 // colors
@@ -21,8 +27,6 @@ var amber = '#D65';
 var gold = '#FA6';
 var white = '#FFF';
 
-var camera = new Anchor();
-
 var layerSpace = 56;
 
 // -- illustration shapes --- //
@@ -31,7 +35,7 @@ var layerSpace = 56;
 var background = new Shape({
   translate: { z: layerSpace*-2 },
   rendering: false,
-  addTo: camera,
+  addTo: illo,
 });
 
 var bgStripe = new Rect({
@@ -93,7 +97,7 @@ new Shape({
 // ----- midBackground ----- //
 
 var midBackground = new Group({
-  addTo: camera,
+  addTo: illo,
   translate: { z: layerSpace*-1 },
 });
 
@@ -138,7 +142,7 @@ midBGBigDot.copy({
 // ----- midground ----- //
 
 var midground = new Anchor({
-  addTo: camera,
+  addTo: illo,
 });
 
 var midgroundGroundA = new Shape({
@@ -273,7 +277,7 @@ tree( midgroundTree, {
 // ----- midForeground ----- //
 
 var midForeground = new Anchor({
-  addTo: camera,
+  addTo: illo,
   translate: { z: layerSpace },
 });
 
@@ -383,7 +387,7 @@ var foregroundA = new Shape({
     ]},
     { x: -96, y: 90 },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { z: layerSpace*2 },
   color: midnight,
   lineWidth: 48,
@@ -492,7 +496,7 @@ var foregroundB = new Shape({
     { x: 0, y: 90 },
     { x: 96, y: 90 },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { z: layerSpace*2 },
   color: midnight,
   lineWidth: 48,
@@ -549,7 +553,7 @@ grassBlade.copy({
 // ----- particles ----- //
 
 var particle = new Shape({
-  addTo: camera,
+  addTo: illo,
   translate: { x: -70, y: -50, z: layerSpace*-0.25 },
   lineWidth: 4,
   color: gold,
@@ -601,7 +605,7 @@ var twoCloud = new Shape({
       { x: 20, y: 0 },
     ]},
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { x: -84, y: -38, z: layerSpace*-1 },
   rotate: { y: -TAU*1/16 },
   scale: { x: 1/Math.cos(TAU*1/16) },
@@ -653,7 +657,7 @@ new Shape({
     ]},
     { x: 32, y: 0 },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { x: 72, y: -52, z: layerSpace*-1 },
   rotate: { y: TAU * 1/16 },
   scale: { x: 1/Math.cos(TAU * -1/16) },
@@ -684,7 +688,7 @@ var starA = new Shape({
       { x: 0, y: -4 },
     ]},
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { x: -50, y: -50, z: layerSpace*-1.5 },
   color: gold,
   lineWidth: 2,
@@ -719,7 +723,7 @@ new Shape({
     { move: [{ z: -2, y: 0 }] },
     { z: 3, y: 0 },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { x: 18, y: -30, z: layerSpace*-1 },
   lineWidth: 3,
   color: midnight,
@@ -729,13 +733,8 @@ new Shape({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var tSpeed = 1/240;
-
-illo.enableDragRotate( camera, function() {
-  isRotating = false;
-});
 
 function animate() {
   // update
@@ -743,13 +742,12 @@ function animate() {
     t += tSpeed;
     var theta = easeInOut( t ) * TAU;
     var delta = TAU * -3/64;
-    camera.rotate.y = Math.sin( theta ) * delta;
-    camera.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;
+    illo.rotate.y = Math.sin( theta ) * delta;
+    illo.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;
   }
 
-  camera.updateGraph();
-
-  illo.render( camera );
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -760,5 +758,5 @@ animate();
 
 document.querySelector('.reset-button').onclick = function() {
   isRotating = false;
-  camera.rotate.set({ x: 0, y: 0 });
+  illo.rotate.set({});
 };

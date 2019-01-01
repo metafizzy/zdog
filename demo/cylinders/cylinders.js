@@ -8,9 +8,15 @@ var zoom = Math.min( 10, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 
@@ -23,10 +29,6 @@ var navy = '#249';
 
 // -- illustration shapes --- //
 
-var scene = new Anchor();
-
-// -----  ----- //
-
 var radius = 5;
 var len = 5;
 var y = 12;
@@ -34,7 +36,7 @@ var y = 12;
 var cylinder = new Cylinder({
   radius: radius,
   length: len,
-  addTo: scene,
+  addTo: illo,
   translate: { y: -y },
   rotate: { x: -TAU/4 },
   // rotate: { x: -TAU/8 },
@@ -43,7 +45,7 @@ var cylinder = new Cylinder({
   stroke: false,
 });
 cylinder.copy({
-  addTo: scene,
+  addTo: illo,
   translate: { y: y },
   rotate: { x: TAU/4 },
   color: magenta,
@@ -55,7 +57,7 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
     var rotor1 = new Anchor({
-      addTo: scene,
+      addTo: illo,
       rotate: { y: TAU/5 * i },
     });
     var rotor2 = new Anchor({
@@ -75,7 +77,7 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
 
 new Shape({
   rendering: false,
-  addTo: scene,
+  addTo: illo,
   lineWidth: 18,
   // color: '#FED',
   color: 'hsla(50, 50%, 90%, 0.8)',
@@ -83,14 +85,13 @@ new Shape({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var cycleFrame = 360;
 
 function animate() {
   rotate();
-  scene.updateGraph();
-  illo.render( scene );
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -109,12 +110,7 @@ function rotate() {
   var halfT = isFirstHalf ? t : t - 0.5;
   var doubleEaseT = easeInOut( halfT * 2, 3 ) / 2;
   doubleEaseT += isFirstHalf ? 0 : 0.5;
-  scene.rotate.y = doubleEaseT * TAU;
-  scene.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;
+  illo.rotate.y = doubleEaseT * TAU;
+  illo.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;
 }
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});

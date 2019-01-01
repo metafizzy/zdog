@@ -7,7 +7,8 @@ canvas.height = h * zoom;
 
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  dragRotate: true,
 });
 
 // colors
@@ -23,8 +24,6 @@ var colors = {
 
 // -- illustration shapes --- //
 
-var scene = new Anchor();
-
 // body center
 new Shape({
   path: [
@@ -32,14 +31,14 @@ new Shape({
     { x: 0, y: 14 },
     { x: 3, y: 10 },
   ],
-  addTo: scene,
+  addTo: illo,
   color: colors.inner,
   lineWidth: 13,
 });
 
 // head circle
 new Shape({
-  addTo: scene,
+  addTo: illo,
   translate: { y: -12 },
   color: colors.fur,
   lineWidth: 32,
@@ -47,7 +46,7 @@ new Shape({
 
 // nose
 var nose = new Anchor({
-  addTo: scene,
+  addTo: illo,
   translate: { y: -7, z: 17 },
 });
 new Shape({
@@ -77,7 +76,7 @@ new Shape({
     { x:  2, y: -3, z: 7 },
     { x: -2, y: -3, z: 7 },
   ],
-  addTo: scene,
+  addTo: illo,
   color: colors.fur,
   lineWidth: 12,
 });
@@ -88,7 +87,7 @@ var eye = new Shape({
     { y: -12 },
     { y: -9 },
   ],
-  addTo: scene,
+  addTo: illo,
   translate: { x: -8, z: 11 },
   color: colors.eye,
   lineWidth: 4,
@@ -104,7 +103,7 @@ var topEarY = -30;
 var earColor = colors.fur;
 
 var earAnchor = new Anchor({
-  addTo: scene,
+  addTo: illo,
   translate: { y: topEarY, z: frontEarZ },
 });
 
@@ -166,7 +165,7 @@ var whisker = new Shape({
     { x: 10, y: -2 },
     { x: 17, y: -2 },
   ],
-  addTo: scene,
+  addTo: illo,
   translate: { z: 6 },
   fill: true,
   color: colors.fur,
@@ -186,7 +185,7 @@ whisker.copy({
 // arms
 
 var armAnchor = new Anchor({
-  addTo: scene,
+  addTo: illo,
 });
 
 // shoulder
@@ -228,7 +227,7 @@ var leg = new Shape({
     { y: 20 },
     { y: 27 },
   ],
-  addTo: scene,
+  addTo: illo,
   translate: { x: -6 },
   color: colors.armor,
   lineWidth: 8,
@@ -251,7 +250,7 @@ var cloakZ1 = 6;
 var cloakZ2 = 8;
 
 var cloakSide = new Anchor({
-  addTo: scene,
+  addTo: illo,
 });
 
 // top straps
@@ -309,17 +308,11 @@ cloakSide.copyGraph({
 
 // -- animate --- //
 
-
 function animate() {
-  scene.updateGraph();
-  illo.render( scene );
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});

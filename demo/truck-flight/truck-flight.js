@@ -6,24 +6,21 @@ var h = 88;
 var zoom = 5;
 canvas.width =  w * zoom;
 canvas.height = h * zoom;
+var initRotate = { x: TAU/16, y: TAU/8 };
 
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  rotate: initRotate,
+  dragRotate: true,
 });
 
 // colors
 var light = '#FFF';
 var dark = '#333';
 
-var initRotate = { x: TAU/16, y: TAU/8 };
-
-var camera = new Anchor({
-  rotate: initRotate,
-});
-
 var darkStroke = {
-  addTo: camera,
+  addTo: illo,
   color: dark,
   stroke: true,
   fill: false,
@@ -31,14 +28,14 @@ var darkStroke = {
 };
 
 var lightFill = {
-  addTo: camera,
+  addTo: illo,
   color: light,
   stroke: false,
   fill: true,
 };
 
 var allDark = {
-  addTo: camera,
+  addTo: illo,
   color: dark,
   fill: true,
   lineWidth: 2,
@@ -172,14 +169,14 @@ var hood = new Shape( extend( {
 hood.copy( darkStroke );
 
 var frontGroup = new Group({
-  addTo: camera,
+  addTo: illo,
   translate: { x: 32, y: 2 },
   rotate: { y: -TAU/4 },
   // translate: { z: 1 }
 });
 
 // front
-var front = new Rect({
+new Rect({
   addTo: frontGroup,
   width: 24,
   height: 12,
@@ -187,11 +184,6 @@ var front = new Rect({
   fill: true,
   lineWidth: 2,
 });
-
-// var frontGroup = new Group({
-//   addTo: front,
-//   translate: { z: 1 }
-// });
 
 var frontDetails = new Anchor({
   addTo: frontGroup,
@@ -238,7 +230,7 @@ grillLine.copy({
 var tail = new Rect( extend({
   width: 24,
   height: 12,
-  addTo: camera,
+  addTo: illo,
   translate: { x: -32, y: 2 },
   rotate: { y: TAU/4 },
 }, lightFill ));
@@ -289,7 +281,7 @@ var cabBackTop = new Shape({
     { y:  -4, z: -12 },
     { y: -14, z: -12 },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { x: -8 },
   color: light,
   stroke: false,
@@ -309,7 +301,7 @@ var cabBackBottom = new Shape({
     { y:  8, z: -12 },
     { y: -4, z: -12 },
   ],
-  addTo: camera,
+  addTo: illo,
   translate: { x: -8 },
   color: light,
   stroke: false,
@@ -359,7 +351,7 @@ var darkStrokeWheel = lightFillWheel.copy({
 var darkWheel = new Ellipse({
   width: 12,
   height: 12,
-  addTo: camera,
+  addTo: illo,
   translate: { x: 18, y: 8, z: 10 },
   color: dark,
   lineWidth: 4,
@@ -397,8 +389,8 @@ darkWheel.copy({
 // -- animate --- //
 
 function animate() {
-  camera.updateGraph();
-  illo.render( camera );
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -406,8 +398,6 @@ animate();
 
 // ----- inputs ----- //
 
-illo.enableDragRotate( camera );
-
 document.querySelector('.quarter-twist-button').onclick = function() {
-  camera.rotate.set( initRotate );
+  illo.rotate.set( initRotate );
 };

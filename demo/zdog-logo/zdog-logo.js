@@ -8,10 +8,17 @@ var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 )
 var zoom = Math.floor( (minWindowSize*2) / w ) / 2;
 canvas.width = w * zoom;
 canvas.height = h * zoom;
+var isRotating = true;
+var initRotate = { x: 20/360 * TAU, y: -50/360 * TAU };
 
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  rotate: initRotate,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 var red = '#E21';
@@ -21,17 +28,10 @@ var denim = '#345';
 var depth = 20;
 var lineWidth = 8;
 
-var initRotate = { x: 20/360 * TAU, y: -50/360 * TAU };
-
-var scene = new Anchor({
-  rotate: initRotate,
-});
-
-
 // -- illustration shapes --- //
 
 var bigGroup = new Group({
-  addTo: scene,
+  addTo: illo,
 });
 
 var backGroup = new Group({
@@ -226,7 +226,7 @@ var semicircle = new Shape({
 // ears
 // group & extra shape are hacks
 var earGroup = new Group({
-  addTo: scene,
+  addTo: illo,
 });
 
 var ear = semicircle.copy({
@@ -246,12 +246,8 @@ earGroup.copyGraph({
   scale: { z: -1 },
 });
 
-//
-
 // -- animate --- //
 
-
-var isRotating = true;
 var t = 0;
 var tSpeed = 1/180;
 
@@ -260,23 +256,18 @@ function animate() {
   if ( isRotating ) {
     var turn = Math.floor( t % 2 );
     if ( turn == 0 ) {
-      scene.rotate.y = easeInOut( t, 4 ) * TAU + initRotate.y;
+      illo.rotate.y = easeInOut( t, 4 ) * TAU + initRotate.y;
     } else if ( turn == 1 ) {
-      scene.rotate.z = easeInOut( t, 4 ) * TAU;
+      illo.rotate.z = easeInOut( t, 4 ) * TAU;
       // scene.rotate.x = easeInOut( t, 4 ) * TAU + initRotate.x;
     }
     t += tSpeed;
   }
-  scene.updateGraph();
+  illo.updateGraph();
   // render
-  illo.render( scene );
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
 
-// ----- inputs ----- //
-
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});

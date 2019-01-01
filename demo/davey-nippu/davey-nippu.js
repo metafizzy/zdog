@@ -8,18 +8,20 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var isRotating = true;
+var sceneStartRotation = { y: -TAU/8 };
+
 var illo = new Illo({
   canvas: canvas,
-  scale: zoom,
+  zoom: zoom,
+  rotate: sceneStartRotation,
+  dragRotate: true,
+  onDragStart: function() {
+    isRotating = false;
+  },
 });
 
 var quarterTurn = Math.sin( TAU/8 );
-
-var sceneStartRotation = { y: -TAU/8 };
-
-var scene = new Anchor({
-  rotate: sceneStartRotation,
-});
 
 // ----- colors ----- //
 
@@ -58,7 +60,7 @@ var semiCircle = new Shape({
 // -- models --- //
 
 var ground = new Anchor({
-  addTo: scene,
+  addTo: illo,
   translate: { y: 56 },
 });
 
@@ -804,7 +806,7 @@ var ground = new Anchor({
 
   // big puff
   var cloud = new Shape({
-    addTo: scene,
+    addTo: illo,
     translate: { x: 34, y: -26, z: -20 },
     rotate: { y: -sceneStartRotation.y },
     lineWidth: 16,
@@ -850,27 +852,19 @@ var ground = new Anchor({
 
 // -- animate --- //
 
-var isRotating = true;
 var t = 0;
 var tSpeed = 1/240;
-
-illo.enableDragRotate( scene, function() {
-  isRotating = false;
-});
 
 function animate() {
   // update
   if ( isRotating ) {
     t += tSpeed;
     var theta = easeInOut( t ) * TAU;
-    scene.rotate.y = -theta + sceneStartRotation.y;
+    illo.rotate.y = -theta + sceneStartRotation.y;
   }
 
-  scene.updateGraph();
-
-  // render
-  illo.render( scene );
-
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
@@ -879,5 +873,5 @@ animate();
 // ----- inputs ----- //
 
 document.querySelector('.reset-button').onclick = function() {
-  scene.rotate.set( sceneStartRotation );
+  illo.rotate.set( sceneStartRotation );
 };
