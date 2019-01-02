@@ -183,7 +183,7 @@ function Shifter( options ) {
       color: egg,
       rotate: { x: tilt },
       scale: { y: 1/Math.cos( tilt ) },
-      backfaceVisible: false,
+      backface: false,
     });
     cap.copy({ // left inside cap
       rotate: { y: TAU/2, x: tilt },

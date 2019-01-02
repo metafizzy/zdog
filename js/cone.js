@@ -31,7 +31,7 @@ Cone.prototype.create = function(/* options */) {
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backfaceVisible: this.baseColor ? false : true,
+    backface: this.baseColor ? false : true,
   });
   // inside base
   if ( this.baseColor ) {

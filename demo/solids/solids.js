@@ -153,7 +153,7 @@ new Cone({
     fill: true,
     stroke: false,
     color: violet,
-    // backfaceVisible: false,
+    // backface: false,
   });
 
 
@@ -220,7 +220,7 @@ new Cone({
         stroke: false,
         fill: true,
         color: colorWheel[ i + 0.5 + 0.5*ySide ],
-        backfaceVisible: false,
+        backface: false,
       });
     }
   });
@@ -306,7 +306,7 @@ new Cone({
     fill: true,
     stroke: false,
     color: yellow,
-    // backfaceVisible: false,
+    // backface: false,
   });
 
   face.copy({
@@ -407,7 +407,7 @@ new Cone({
         stroke: false,
         fill: true,
         color: capColors[i],
-        // backfaceVisible: false,
+        // backface: false,
       });
 
       var sideRotateX = -sideTilt;

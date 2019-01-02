@@ -189,7 +189,7 @@ var zFace = new Shape({
   fill: true,
   color: gold,
   lineWidth: lineWidth,
-  backfaceVisible: false,
+  backface: false,
 });
 
 zFace.copy({
@@ -219,7 +219,7 @@ var semicircle = new Shape({
   stroke: true,
   lineWidth: 5,
   color: denim,
-  // backfaceVisible: false,
+  // backface: false,
 });
 
 

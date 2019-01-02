@@ -86,7 +86,7 @@ function makePrism( options ) {
     color: navy,
     fill: true,
     lineWidth: 1/zoom,
-    backfaceVisible: false,
+    backface: false,
   });
   base.copy({
     translate: { x: -1, y: 1 },

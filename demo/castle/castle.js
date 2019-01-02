@@ -11,7 +11,7 @@ canvas.height = h * zoom;
 [ Shape, Rect ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
   // ItemClass.defaults.stroke = true;
-  ItemClass.defaults.backfaceVisible = false;
+  ItemClass.defaults.backface = false;
   ItemClass.defaults.lineWidth = 1/zoom;
 });
 
@@ -172,7 +172,7 @@ function makeWall( options ) {
       ]},
     ],
     translate: { z: 1 },
-    backfaceVisible: true,
+    backface: true,
     color: options.left,
   });
   underArch.copyGraph({

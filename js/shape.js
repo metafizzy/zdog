@@ -11,7 +11,7 @@ var Shape = Anchor.subclass({
   rendering: true,
   path: [ {} ],
   front: { z: 1 },
-  backfaceVisible: true,
+  backface: true,
 });
 
 Shape.prototype.create = function( options ) {
@@ -113,7 +113,7 @@ Shape.prototype.render = function( ctx ) {
   }
   // do not render if hiding backface
   var isFacingBack = this.renderNormal.z > 0;
-  if ( !this.backfaceVisible && isFacingBack ) {
+  if ( !this.backface && isFacingBack ) {
     return;
   }
   // render dot or path
