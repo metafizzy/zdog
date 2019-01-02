@@ -8,7 +8,7 @@ Anchor.prototype.create = function( options ) {
   // set defaults & options
   extend( this, this.constructor.defaults );
   options = options || {};
-  this.setOptions( this, options );
+  this.setOptions( options );
 
   // transform
   this.translate = new Vector3( options.translate );
@@ -39,12 +39,12 @@ Anchor.optionKeys = Object.keys( Anchor.defaults ).concat([
   'addTo',
 ]);
 
-Anchor.prototype.setOptions = function( item, options ) {
+Anchor.prototype.setOptions = function( options ) {
   var optionKeys = this.constructor.optionKeys;
 
   for ( var key in options ) {
     if ( optionKeys.includes( key ) ) {
-      item[ key ] = options[ key ];
+      this[ key ] = options[ key ];
     }
   }
 };
@@ -137,7 +137,7 @@ Anchor.prototype.copy = function( options ) {
     itemOptions[ key ] = this[ key ];
   }, this );
   // add set options
-  this.setOptions( itemOptions, options );
+  extend( itemOptions, options );
   var ItemClass = this.constructor;
   return new ItemClass( itemOptions );
 };
