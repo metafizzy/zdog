@@ -112,8 +112,8 @@ Shape.prototype.render = function( ctx ) {
     return;
   }
   // do not render if hiding backface
-  var isFacingBack = this.renderNormal.z > 0;
-  if ( !this.backface && isFacingBack ) {
+  this.isFacingBack = this.renderNormal.z > 0;
+  if ( !this.backface && this.isFacingBack ) {
     return;
   }
   // render dot or path
@@ -127,7 +127,7 @@ Shape.prototype.render = function( ctx ) {
 
 // Safari does not render lines with no size, have to render circle instead
 Shape.prototype.renderDot = function( ctx ) {
-  ctx.fillStyle = this.color;
+  ctx.fillStyle = this.getRenderColor();
   var point = this.pathActions[0].endRenderPoint;
   ctx.beginPath();
   var radius = this.lineWidth/2;
@@ -135,10 +135,18 @@ Shape.prototype.renderDot = function( ctx ) {
   ctx.fill();
 };
 
+Shape.prototype.getRenderColor = function() {
+  // use backface color if applicable
+  var isBackfaceColor = typeof this.backface == 'string' && this.isFacingBack;
+  var color = isBackfaceColor ? this.backface : this.color;
+  return color;
+};
+
 Shape.prototype.renderPath = function( ctx ) {
   // set render properties
-  ctx.fillStyle = this.color;
-  ctx.strokeStyle = this.color;
+  var color = this.getRenderColor();
+  ctx.fillStyle = color;
+  ctx.strokeStyle = color;
   ctx.lineWidth = this.lineWidth;
 
   // render points

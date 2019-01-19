@@ -30,27 +30,13 @@ Cylinder.prototype.create = function(/* options */) {
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backface: this.baseColor ? false : true,
+    backface: this.baseColor || true,
   });
   // back outside base
   backBase = base.copy({
     translate: { z: -baseZ },
     rotate: { y: 0 },
   });
-
-  if ( this.baseColor ) {
-    // front inside base
-    base.copy({
-      rotate: { y: 0 },
-      color: this.baseColor
-    });
-    // back inside base
-    base.copy({
-      translate: { z: -baseZ },
-      rotate: { y: TAU/2 },
-      color: this.baseColor
-    });
-  }
 
   // used for rendering ring
   this.frontOrigin = frontBase.renderOrigin;

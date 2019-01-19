@@ -31,15 +31,8 @@ Cone.prototype.create = function(/* options */) {
     lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
-    backface: this.baseColor ? false : true,
+    backface: this.baseColor || true,
   });
-  // inside base
-  if ( this.baseColor ) {
-    base.copy({
-      color: this.baseColor,
-      rotate: { y: TAU/2 },
-    });
-  }
 
   // used for calculating contour angle
   this.renderNormal = base.renderNormal;
