@@ -19,6 +19,7 @@ Anchor.prototype.create = function( options ) {
   } else {
     this.scale = Vector3.sanitize( options.scale, 1 );
   }
+  this.scale = new Vector3( this.scale );
 
   // origin
   this.origin = new Vector3();
