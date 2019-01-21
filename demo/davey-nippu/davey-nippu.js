@@ -40,23 +40,6 @@ var white = 'white';
 var blueDark = '#66C';
 var bluePale = '#CCF';
 
-// ----- template shapes ----- //
-
-var semiCircle = new Shape({
-  path: [
-    { x: 1, y: 0 },
-    { arc: [
-      { x: 1, y: 1 },
-      { x: 0, y: 1 },
-    ]},
-    { arc: [
-      { x: -1, y: 1 },
-      { x: -1, y: 0 },
-    ]},
-  ],
-});
-
-
 // -- models --- //
 
 var ground = new Anchor({
@@ -355,19 +338,24 @@ var ground = new Anchor({
     color: auburn,
   });
   // smile
-  semiCircle.copy({
+  new Ellipse({
     addTo: chin,
+    quarters: 2,
     translate: { y: -1.5, z: 3 },
-    scale: { x: 1.5, y: 1.5 },
+    rotate: { z: TAU/4 },
+    scale: 3,
     fill: true,
     lineWidth: 0.5,
     color: white,
+    closed: true,
   });
   // eyes
-  var eye = semiCircle.copy({
+  var eye = new Ellipse({
     addTo: forehead,
+    quarters: 2,
+    scale: 1,
     translate: { x: -1, y: 0.5, z: 2 },
-    scale: { x: 0.5, y: -0.5 },
+    rotate: { z: -TAU/4 },
     closed: false,
     color: midnight,
     lineWidth: 0.38,

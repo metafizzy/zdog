@@ -5,6 +5,7 @@
 var Ellipse = Shape.subclass({
   width: 1,
   height: 1,
+  quarters: 4,
   closed: false,
 });
 
@@ -16,18 +17,27 @@ Ellipse.prototype.updatePath = function() {
     { arc: [ // top right
       { x: x, y: -y },
       { x: x, y: 0 },
-    ]},
-    { arc: [ // bottom right
+    ]}
+  ];
+  // bottom right
+  if ( this.quarters > 1 ) {
+    this.path.push({ arc: [
       { x: x, y: y },
       { x: 0, y: y },
-    ]},
-    { arc: [ // bottom left
+    ]});
+  }
+  // bottom left
+  if ( this.quarters > 2 ) {
+    this.path.push({ arc: [
       { x: -x, y: y },
       { x: -x, y: 0 },
-    ]},
-    { arc: [ // bottom left
+    ]});
+  }
+  // top left
+  if ( this.quarters > 3 ) {
+    this.path.push({ arc: [
       { x: -x, y: -y },
       { x: 0, y: -y },
-    ]},
-  ];
+    ]});
+  }
 };

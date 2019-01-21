@@ -199,29 +199,19 @@ zFace.copy({
 });
 
 // nose
-var semicircle = new Shape({
+var semiCircle = new Ellipse({
   addTo: backGroup,
-  path: [
-    { x: -1, y: 0 },
-    { arc: [
-      { x: -1, y: 1 },
-      { x:  0, y: 1 },
-    ]},
-    { arc: [
-      { x:  1, y: 1 },
-      { x:  1, y: 0 },
-    ]},
-  ],
-  scale: 4,
+  quarters: 2,
+  scale: 8,
   translate: { x: -26, y: -20 },
-  rotate: { y: TAU/4 },
+  rotate: { y: TAU/4, z: TAU/4 },
   fill: true,
   stroke: true,
   lineWidth: 5,
   color: denim,
+  closed: true,
   // backface: false,
 });
-
 
 // ears
 // group & extra shape are hacks
@@ -229,17 +219,18 @@ var earGroup = new Group({
   addTo: illo,
 });
 
-var ear = semicircle.copy({
+var ear = semiCircle.copy({
   addTo: earGroup,
-  scale: 12,
-  rotate: { z: -TAU * 5/16, x: TAU/16 },
+  quarters: 2,
+  scale: 24,
+  rotate: { z: -TAU/16, x: TAU/16 },
   translate: { x: 10, y: -14, z: depth },
 });
 
 new Shape({
   rendering: false,
   addTo: ear,
-  translate: { y: -1, z: 1 },
+  translate: { z: 0.5, x: -0.5 },
 });
 
 earGroup.copyGraph({
