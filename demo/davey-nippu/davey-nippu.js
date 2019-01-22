@@ -182,7 +182,7 @@ var ground = new Anchor({
     });
     // HACK, add invisible shape so laces better render on top
     new Shape({
-      rendering: false,
+      visible: false,
       addTo: lacesGroup,
       translate: { y: 4 },
     });

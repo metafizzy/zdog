@@ -430,7 +430,7 @@ function update() {
   bodyCutIn.rotate.y -= cameraRY;
   bodyCutIn.translate.x = isCameraYRight ? 3 : -3;
 
-  crotchCutIn.rendering = cameraRY < TAU/4 || cameraRY > TAU *7/8;
+  crotchCutIn.visible = cameraRY < TAU/4 || cameraRY > TAU *7/8;
 
   // update cameras
   camera.updateGraph();

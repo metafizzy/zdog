@@ -31,7 +31,7 @@ Hemisphere.prototype.create = function(/* options */) {
 };
 
 Hemisphere.prototype.render = function( ctx ) {
-  if ( !this.rendering ) {
+  if ( !this.visible ) {
     return;
   }
   this.renderDome( ctx );

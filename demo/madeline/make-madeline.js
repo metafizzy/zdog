@@ -319,7 +319,7 @@ function makeMadeline( isGood, colors, options ) {
       { x: -3 },
       { x: 3 },
     ],
-    rendering: false,
+    visible: false,
     addTo: body,
     translate: { y: 11, z: -2 },
     lineWidth: 8,

@@ -228,7 +228,7 @@ var ear = semiCircle.copy({
 });
 
 new Shape({
-  rendering: false,
+  visible: false,
   addTo: ear,
   translate: { z: 0.5, x: -0.5 },
 });

@@ -27,7 +27,7 @@ function Shifter( options ) {
   this.pyramid = ( function() {
     var pyramid = new Group({
       addTo: shifterAnchor,
-      rendering: false,
+      visible: false,
       // translate: { x: -3, y: -3 },
       updateSort: true,
     });
@@ -67,7 +67,7 @@ function Shifter( options ) {
   // cylinder 1
   this.cylinder1 = new Cylinder({
     addTo: shifterAnchor,
-    rendering: false,
+    visible: false,
     radius: 1,
     length: 2,
     // translate: { x: 0, y: -3 },
@@ -85,7 +85,7 @@ function Shifter( options ) {
   this.cone = ( function() {
     var anchor = new Group({
       addTo: shifterAnchor,
-      rendering: false,
+      visible: false,
       // translate: { x: 3, y: -3 },
       updateSort: true,
     });
@@ -108,7 +108,7 @@ function Shifter( options ) {
   this.prism = ( function() {
     var prism = new Group({
       addTo: shifterAnchor,
-      rendering: false,
+      visible: false,
       // translate: { x: -3, y: 0 },
       updateSort: true,
     });
@@ -156,7 +156,7 @@ function Shifter( options ) {
   this.triCylinder = ( function() {
     var cylinder = new Group({
       addTo: shifterAnchor,
-      rendering: false,
+      visible: false,
       // translate: { x: 3 },
     });
 
@@ -200,7 +200,7 @@ function Shifter( options ) {
 
   this.cylinder2 = this.cylinder1.copy({
     translate: {},
-    rendering: false,
+    visible: false,
     rotate: { x: TAU/4 },
   });
 
@@ -219,22 +219,22 @@ Shifter.prototype.update = function( t ) {
   this.triCylinder.rotate.y = easeT + TAU/4;
 
   if ( turn === 0 ) {
-    this.triCylinder.rendering = false;
-    this.pyramid.rendering = true;
+    this.triCylinder.visible = false;
+    this.pyramid.visible = true;
   } else if ( turn == 1) {
-    this.pyramid.rendering = false;
-    this.cylinder1.rendering = true;
+    this.pyramid.visible = false;
+    this.cylinder1.visible = true;
   } else if ( turn == 2 ) {
-    this.cylinder1.rendering = false;
-    this.cone.rendering = true;
+    this.cylinder1.visible = false;
+    this.cone.visible = true;
   } else if ( turn == 3 ) {
-    this.cone.rendering = false;
-    this.prism.rendering = true;
+    this.cone.visible = false;
+    this.prism.visible = true;
   } else if ( turn == 4 ) {
-    this.prism.rendering = false;
-    this.cylinder2.rendering = true;
+    this.prism.visible = false;
+    this.cylinder2.visible = true;
   } else if ( turn == 5 ) {
-    this.cylinder2.rendering = false;
-    this.triCylinder.rendering = true;
+    this.cylinder2.visible = false;
+    this.triCylinder.visible = true;
   }
 };

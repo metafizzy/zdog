@@ -63,7 +63,7 @@ new Shape({
   fill: true,
   lineWidth: 1/zoom,
   closed: false,
-  // rendering: false,
+  // visible: false,
 });
 // nub
 new Cylinder({

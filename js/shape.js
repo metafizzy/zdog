@@ -8,7 +8,7 @@ var Shape = Anchor.subclass({
   color: '#333',
   lineWidth: 1,
   closed: true,
-  rendering: true,
+  visible: true,
   path: [ {} ],
   front: { z: 1 },
   backface: true,
@@ -108,7 +108,7 @@ Shape.prototype.updateSortValue = function() {
 
 Shape.prototype.render = function( ctx ) {
   var length = this.pathDirections.length;
-  if ( !this.rendering || !length ) {
+  if ( !this.visible || !length ) {
     return;
   }
   // do not render if hiding backface

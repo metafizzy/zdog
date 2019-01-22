@@ -18,7 +18,7 @@ Cone.prototype.create = function(/* options */) {
   Group.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
   this.apex = new Shape({
-    rendering: false,
+    visible: false,
     translate: { z: this.height },
     addTo: this,
   });
@@ -43,7 +43,7 @@ Cone.prototype.create = function(/* options */) {
 };
 
 Cone.prototype.render = function( ctx ) {
-  if ( !this.rendering ) {
+  if ( !this.visible ) {
     return;
   }
   this.renderCone( ctx );

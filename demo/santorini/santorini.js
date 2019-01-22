@@ -481,7 +481,7 @@ makeRock({
 
 var staircaseAnchor = new Shape({
   addTo: island,
-  rendering: false,
+  visible: false,
   translate: { x: -35, y: -14, z: 5 },
 });
 

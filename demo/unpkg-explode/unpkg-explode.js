@@ -68,7 +68,7 @@ var outlines = [];
   panels.push( panel );
 
   var outline = panel.copy({
-    rendering: false,
+    visible: false,
     stroke: true,
     fill: false,
     lineWidth: 1,
@@ -157,7 +157,7 @@ function changePanelColor( value )  {
 var outlineCheckbox = document.querySelector('.outline-checkbox');
 outlineCheckbox.onchange = function( event ) {
   outlines.forEach( function( outline ) {
-    outline.rendering = event.target.checked;
+    outline.visible = event.target.checked;
   });
 };
 
@@ -166,6 +166,6 @@ changeOutline( outlineCheckbox.checked );
 
 function changeOutline( isRendering ) {
   outlines.forEach( function( outline ) {
-    outline.rendering = isRendering;
+    outline.visible = isRendering;
   });
 }

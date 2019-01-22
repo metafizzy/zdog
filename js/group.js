@@ -4,7 +4,7 @@
 
 var Group = Anchor.subclass({
   updateSort: false,
-  rendering: true,
+  visible: true,
 });
 
 // ----- update ----- //
@@ -28,7 +28,7 @@ Group.prototype.updateSortValue = function() {
 // ----- render ----- //
 
 Group.prototype.render = function( ctx ) {
-  if ( !this.rendering ) {
+  if ( !this.visible ) {
     return;
   }
 

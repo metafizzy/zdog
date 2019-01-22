@@ -45,7 +45,7 @@ Cylinder.prototype.create = function(/* options */) {
 };
 
 Cylinder.prototype.render = function( ctx ) {
-  if ( !this.rendering ) {
+  if ( !this.visible ) {
     return;
   }
   this.renderRing( ctx );

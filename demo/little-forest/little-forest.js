@@ -34,7 +34,7 @@ var layerSpace = 56;
 // background
 var background = new Shape({
   translate: { z: layerSpace*-2 },
-  rendering: false,
+  visible: false,
   addTo: illo,
 });
 
