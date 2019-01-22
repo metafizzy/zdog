@@ -227,6 +227,7 @@ function makeMadeline( isGood, colors, options ) {
 
   // arms
   [ -1, 1 ].forEach( function( xSide ) {
+    var isLeft = xSide == 1;
     // shoulder ball
     new Shape({
       addTo: body,
@@ -238,6 +239,7 @@ function makeMadeline( isGood, colors, options ) {
     var shoulderJoint = new Anchor({
       addTo: body,
       translate: { x: 9*xSide, y: -3, z: -2 },
+      rotate: isLeft ? { x: TAU/8*3, z: -TAU/32 } : { z: TAU/16*2, x: -TAU/16*2 },
     });
 
     // top shoulder rib
@@ -258,6 +260,7 @@ function makeMadeline( isGood, colors, options ) {
     var elbowJoint = new Anchor({
       addTo: shoulderJoint,
       translate: { y: 8 },
+      rotate: isLeft ? {} : { z: TAU/8 },
     });
 
     armRib.copy({
@@ -278,21 +281,13 @@ function makeMadeline( isGood, colors, options ) {
       color: colors.skin,
     });
 
-    if ( xSide == 1 ) {
-      // extend left hand
-      shoulderJoint.rotate = Vector3.sanitize({ x: TAU/8*3, z: -TAU/32 });
-    } else {
-      // back right hand
-      shoulderJoint.rotate = Vector3.sanitize({ z: TAU/16*2, x: -TAU/16*2 });
-      elbowJoint.rotate = Vector3.sanitize({ z: TAU/8 });
-    }
-
     // ----- legs ----- //
     var knee = { y: 7 };
     var thigh = new Shape({
       path: [ { y: 0 }, knee ],
       addTo: body,
       translate: { x: 4*xSide, y: 13 },
+      rotate: isLeft ? {} : { x: TAU/16*3, z: TAU/16 },
       lineWidth: 8,
       color: colors.tight,
     });
@@ -302,14 +297,9 @@ function makeMadeline( isGood, colors, options ) {
       addTo: thigh,
       lineWidth: 6,
       translate: knee,
+      rotate: isLeft ? {} : { x: -TAU/16*5 },
       color: colors.tight,
     });
-
-    if ( xSide == -1 ) {
-      // bend right leg
-      thigh.rotate = Vector3.sanitize({ x: TAU/16*3, z: TAU/16 });
-      shin.rotate = Vector3.sanitize({ x: -TAU/16*5 });
-    }
 
   });
 
