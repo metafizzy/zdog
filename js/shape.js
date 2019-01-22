@@ -17,7 +17,7 @@ var Shape = Anchor.subclass({
 Shape.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
   this.updatePath(); // hook for Rect, Ellipse, & other subclasses
-  this.updatePathActions();
+  this.updatePathDirections();
 
   // front
   this.front = new Vector3( options.front || this.front );
@@ -35,10 +35,10 @@ var actionNames = [
 // place holder for Ellipse, Rect, etc.
 Shape.prototype.updatePath = function() {};
 
-// parse path into PathActions
-Shape.prototype.updatePathActions = function() {
+// parse path into PathDirections
+Shape.prototype.updatePathDirections = function() {
   var previousPoint;
-  this.pathActions = this.path.map( function( pathPart, i ) {
+  this.pathDirections = this.path.map( function( pathPart, i ) {
     // pathPart can be just vector coordinates -> { x, y, z }
     // or path instruction -> { arc: [ {x0,y0,z0}, {x1,y1,z1} ] }
     var keys = Object.keys( pathPart );
@@ -60,10 +60,10 @@ Shape.prototype.updatePathActions = function() {
     // first action is always move
     method = i === 0 ? 'move' : method;
     // arcs require previous last point
-    var pathAction = new PathAction( method, points, previousPoint );
+    var direction = new PathDirection( method, points, previousPoint );
     // update previousLastPoint
-    previousPoint = pathAction.endRenderPoint;
-    return pathAction;
+    previousPoint = direction.endRenderPoint;
+    return direction;
   });
 };
 
@@ -72,9 +72,9 @@ Shape.prototype.updatePathActions = function() {
 Shape.prototype.reset = function() {
   this.renderOrigin.set( this.origin );
   this.renderFront.set( this.front );
-  // reset pathAction render points
-  this.pathActions.forEach( function( pathAction ) {
-    pathAction.reset();
+  // reset direction render points
+  this.pathDirections.forEach( function( direction ) {
+    direction.reset();
   });
 };
 
@@ -84,8 +84,8 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   this.renderFront.transform( translation, rotation, scale );
   this.renderNormal.set( this.renderOrigin ).subtract( this.renderFront );
   // transform points
-  this.pathActions.forEach( function( pathAction ) {
-    pathAction.transform( translation, rotation, scale );
+  this.pathDirections.forEach( function( direction ) {
+    direction.transform( translation, rotation, scale );
   });
   // transform children
   this.children.forEach( function( child ) {
@@ -96,18 +96,18 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
 
 Shape.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
-  this.pathActions.forEach( function( pathAction ) {
-    sortValueTotal += pathAction.endRenderPoint.z;
+  this.pathDirections.forEach( function( direction ) {
+    sortValueTotal += direction.endRenderPoint.z;
   });
   // average sort value of all points
   // def not geometrically correct, but works for me
-  this.sortValue = sortValueTotal / this.pathActions.length;
+  this.sortValue = sortValueTotal / this.pathDirections.length;
 };
 
 // ----- render ----- //
 
 Shape.prototype.render = function( ctx ) {
-  var length = this.pathActions.length;
+  var length = this.pathDirections.length;
   if ( !this.rendering || !length ) {
     return;
   }
@@ -128,7 +128,7 @@ Shape.prototype.render = function( ctx ) {
 // Safari does not render lines with no size, have to render circle instead
 Shape.prototype.renderDot = function( ctx ) {
   ctx.fillStyle = this.getRenderColor();
-  var point = this.pathActions[0].endRenderPoint;
+  var point = this.pathDirections[0].endRenderPoint;
   ctx.beginPath();
   var radius = this.lineWidth/2;
   ctx.arc( point.x, point.y, radius, 0, TAU );
@@ -151,11 +151,11 @@ Shape.prototype.renderPath = function( ctx ) {
 
   // render points
   ctx.beginPath();
-  this.pathActions.forEach( function( pathAction ) {
-    pathAction.render( ctx );
+  this.pathDirections.forEach( function( direction ) {
+    direction.render( ctx );
   });
-  var isTwoPoints = this.pathActions.length == 2 &&
-    this.pathActions[1].method == 'line';
+  var isTwoPoints = this.pathDirections.length == 2 &&
+    this.pathDirections[1].method == 'line';
   if ( !isTwoPoints && this.closed ) {
     ctx.closePath();
   }

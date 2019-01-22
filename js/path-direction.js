@@ -1,6 +1,6 @@
-// -------------------------- PathAction -------------------------- //
+// -------------------------- PathDirection -------------------------- //
 
-function PathAction( method, points, previousPoint ) {
+function PathDirection( method, points, previousPoint ) {
   this.method = method;
   this.points = points.map( mapVectorPoint );
   this.renderPoints = points.map( mapVectorPoint );
@@ -17,7 +17,7 @@ function mapVectorPoint( point ) {
   return new Vector3( point );
 }
 
-PathAction.prototype.reset = function() {
+PathDirection.prototype.reset = function() {
   // reset renderPoints back to orignal points position
   var points = this.points;
   this.renderPoints.forEach( function( renderPoint, i ) {
@@ -26,34 +26,34 @@ PathAction.prototype.reset = function() {
   });
 };
 
-PathAction.prototype.transform = function( translation, rotation, scale ) {
+PathDirection.prototype.transform = function( translation, rotation, scale ) {
   this.renderPoints.forEach( function( renderPoint ) {
     renderPoint.transform( translation, rotation, scale );
   });
 };
 
-PathAction.prototype.render = function( ctx ) {
+PathDirection.prototype.render = function( ctx ) {
   this[ this.method ]( ctx );
 };
 
-PathAction.prototype.move = function( ctx ) {
+PathDirection.prototype.move = function( ctx ) {
   var point = this.renderPoints[0];
   ctx.moveTo( point.x, point.y );
 };
 
-PathAction.prototype.line = function( ctx ) {
+PathDirection.prototype.line = function( ctx ) {
   var point = this.renderPoints[0];
   ctx.lineTo( point.x, point.y );
 };
 
-PathAction.prototype.bezier = function( ctx ) {
+PathDirection.prototype.bezier = function( ctx ) {
   var cp0 = this.renderPoints[0];
   var cp1 = this.renderPoints[1];
   var end = this.renderPoints[2];
   ctx.bezierCurveTo( cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y );
 };
 
-PathAction.prototype.arc = function( ctx ) {
+PathDirection.prototype.arc = function( ctx ) {
   var prev = this.previousPoint;
   var corner = this.renderPoints[0];
   var end = this.renderPoints[1];

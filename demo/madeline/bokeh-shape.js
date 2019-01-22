@@ -31,7 +31,7 @@ BokehShape.prototype.renderDot = function( ctx ) {
   this.updateBokeh();
   ctx.globalAlpha = this.getBokehAlpha();
   ctx.fillStyle = this.color;
-  var point = this.pathActions[0].endRenderPoint;
+  var point = this.pathDirections[0].endRenderPoint;
   ctx.beginPath();
   var radius = this.getBokehLineWidth()/2;
   ctx.arc( point.x, point.y, radius, 0, TAU );
@@ -49,11 +49,11 @@ BokehShape.prototype.renderPath = function( ctx ) {
 
   // render points
   ctx.beginPath();
-  this.pathActions.forEach( function( pathAction ) {
-    pathAction.render( ctx );
+  this.pathDirections.forEach( function( direction ) {
+    direction.render( ctx );
   });
-  var isTwoPoints = this.pathActions.length == 2 &&
-    this.pathActions[1].method == 'line';
+  var isTwoPoints = this.pathDirections.length == 2 &&
+    this.pathDirections[1].method == 'line';
   if ( !isTwoPoints && this.closed ) {
     ctx.closePath();
   }
