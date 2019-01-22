@@ -18,9 +18,8 @@ Cylinder.prototype.create = function(/* options */) {
   Group.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
   var baseZ = this.length/2;
-  var base, frontBase, backBase;
   // front outside base
-  base = frontBase = new Ellipse({
+  var frontBase = new Ellipse({
     width: this.radius * 2,
     height: this.radius * 2,
     addTo: this,
@@ -33,7 +32,7 @@ Cylinder.prototype.create = function(/* options */) {
     backface: this.baseColor || true,
   });
   // back outside base
-  backBase = base.copy({
+  var backBase = frontBase.copy({
     translate: { z: -baseZ },
     rotate: { y: 0 },
   });

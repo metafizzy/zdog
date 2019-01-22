@@ -65,7 +65,7 @@ Cone.prototype.renderCone = function( ctx ) {
   if ( !isApexVisible ) {
     return;
   }
-
+  // update tangents
   var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) + TAU/2;
   var projectLength = apexDistance / eccen;
   var projectAngle = Math.acos( radius / projectLength );
@@ -83,7 +83,7 @@ Cone.prototype.renderCone = function( ctx ) {
   tangentB.rotateZ( apexAngle );
   tangentA.add( this.renderOrigin );
   tangentB.add( this.renderOrigin );
-
+  // render
   ctx.strokeStyle = ctx.fillStyle = this.color;
   ctx.lineWidth = this.lineWidth;
   ctx.beginPath();
