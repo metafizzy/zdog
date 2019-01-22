@@ -78,7 +78,7 @@ new Cylinder({
 
 new Cone({
   radius: 2,
-  height: 3,
+  length: 3,
   scale: 2,
   addTo: illo,
   translate: { x: -8 },

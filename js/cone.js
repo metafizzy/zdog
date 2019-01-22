@@ -4,7 +4,7 @@
 
 var Cone = Group.subclass({
   radius: 0.5,
-  height: 1,
+  length: 1,
   color: '#333',
   baseColor: undefined,
   fill: true,
@@ -19,7 +19,7 @@ Cone.prototype.create = function(/* options */) {
   // composite shape, create child shapes
   this.apex = new Shape({
     visible: false,
-    translate: { z: this.height },
+    translate: { z: this.length },
     addTo: this,
   });
   // outside base

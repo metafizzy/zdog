@@ -93,7 +93,7 @@ function Shifter( options ) {
     new Cone({
       addTo: anchor,
       radius: 1,
-      height: 2,
+      length: 2,
       rotate: { x: TAU/4 },
       translate: { y: 1 },
       color: ochre,

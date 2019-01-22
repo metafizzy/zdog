@@ -120,7 +120,7 @@ solids.push( cone );
 
 new Cone({
   radius: 1,
-  height: 2,
+  length: 2,
   addTo: cone,
   translate: { z: 1 },
   rotate: { y: TAU/2 },
