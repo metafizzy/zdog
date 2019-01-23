@@ -95,27 +95,18 @@ var feather = new Group({
   }
 
   // rachis
-  var rachis = new Shape({
-    path: [
-      { y: -radius },
-      { arc: [
-        { y: -radius, z: -radius },
-        { y: 0, z: -radius },
-      ]},
-      { arc: [
-        { y: radius, z: -radius },
-        { y: radius, z: 0 },
-      ]},
-    ],
+  var rachis = new Ellipse({
     addTo: feather,
+    diameter: radius*2,
+    quarters: 2,
+    rotate: { y: -TAU/4 },
     stroke: 2,
     color: featherGold,
-    closed: false,
   });
   rachis.copy({
     stroke: 8,
     color: glow,
-    rotate: { x: -0.5 }
+    rotate: { y: -TAU/4, x: -0.5 }
   });
 })();
 

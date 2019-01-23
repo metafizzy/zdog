@@ -62,25 +62,17 @@ function makeMadeline( isGood, colors, options ) {
     });
 
     // eye brow
-    new Shape({
-      path: [
-        { x: -1, y: 0 },
-        { arc: [
-          { x: -1, y: -1 },
-          { x: 0, y: -1 }
-        ]},
-        { arc: [
-          { x: 1, y: -1 },
-          { x: 1, y: 0 }
-        ]},
-      ],
+    new Ellipse({
       addTo: eyeGroup,
+      height: 3,
+      width: 1.2,
+      quarters: 2,
       translate: { x: eyeX, y: -3 },
-      scale: { x: 1.5, y: 0.6 },
-      rotate: { z: 0.15*xSide * (isGood ? 1 : -1) },
+      rotate: { z: -TAU/4 + 0.15*xSide * (isGood ? 1 : -1) },
       color: colors.hair,
       stroke: 1,
-      fill: true,
+      fill: false,
+      closed: true,
     });
 
   });

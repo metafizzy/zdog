@@ -317,11 +317,11 @@ cabBackBottom.copy({
 var lightFillWheel = new Shape( extend({
   path: [
     { x: 0, y: -6 },
-    { arc: [ // top rig6t
+    { arc: [ // top right
       { x: 6, y: -6 },
       { x: 6, y: 0 },
     ]},
-    { arc: [ // bottom rig6t
+    { arc: [ // bottom right
       { x: 6, y: 6 },
       { x: 0, y: 6 },
     ]},

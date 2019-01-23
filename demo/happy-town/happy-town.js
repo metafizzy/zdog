@@ -791,24 +791,15 @@ skyStar2.copy({
 
 // ----- clouds ----- //
 
-var cloud = new Shape({
-  path: [
-    { x: -1, y: 0 },
-    { arc: [
-      { x: -1, y: -1 },
-      { x: 0, y: -1 },
-    ]},
-    { arc: [
-      { x: 1, y: -1 },
-      { x: 1, y: 0 },
-    ]},
-  ],
+var cloud = new Ellipse({
   addTo: town,
+  diameter: 3,
+  quarters: 2,
   translate: { x: -30, y: -56, z: 10 },
-  scale: 1.5,
-  rotate: { y: TAU/4 },
+  rotate: { y: TAU/4, z: -TAU/4 },
   stroke: 2,
- color: white,
+  closed: true,
+  color: white,
 });
 cloud.copy({
   translate: { x: -30, y: -57, z: 6 },
@@ -818,10 +809,14 @@ cloud.copy({
 });
 
 // line underneath
-cloud.copy({
+new Shape({
+  addTo: town,
   path: [ { x: -1 }, { x: 1 } ],
   translate: { x: -30, y: -56, z: 6 },
   scale: { x: 2 },
+  rotate: { y: TAU/4 },
+  stroke: 2,
+  color: white,
 });
 
 // ----- flat earth ----- //

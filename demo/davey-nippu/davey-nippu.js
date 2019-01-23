@@ -263,20 +263,12 @@ var ground = new Anchor({
   });
 
   // jacketZip
-  var jacketZipScale = torso.stroke/2;
-  new Shape({
-    path: [
-      { z: -0, y: -1 },
-      { arc: [
-        { z: 1, y: -1 },
-        { z: 1, y: 0 },
-      ]},
-    ],
-    scale: { z: jacketZipScale, y: jacketZipScale },
+  new Ellipse({
     addTo: torso,
-    rotate: { x: -TAU/32 },
+    diameter: torso.stroke,
+    quarters: 1,
+    rotate: { y: TAU/4, x: -TAU/32 },
     color: sky,
-    closed: false,
     stroke: 0.5,
   });
 
@@ -460,22 +452,15 @@ var ground = new Anchor({
     rotate: { x: TAU/8 * 3, y: TAU/2 },
   });
   // smile
-  new Shape({
+  new Ellipse({
     addTo: head,
-    path: [
-      { move: [ { x: 1, y: 0 } ]},
-      { arc: [
-        { x: 1, y: 1 },
-        { x: 0, y: 1 }
-      ]},
-    ],
-    scale: 1.5,
+    diameter: 3,
+    quarters: 1,
     translate: { y: 0.5, z: 4 },
-    rotate: { z: TAU/8 },
+    rotate: { z: TAU * 3/8 },
     color: skinDark,
     closed: false,
     stroke: 0.5,
-    
   });
 
   // hair locks

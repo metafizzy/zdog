@@ -15,6 +15,7 @@ var illo = new Illo({
 
 Shape.defaults.closed = false;
 Shape.defaults.stroke = 3;
+Ellipse.defaults.stroke = 3;
 
 var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;
@@ -58,39 +59,21 @@ var capTop = new Shape({
 });
 
 // cap back
-new Shape({
-  path: [
-    { x: -20, z: 0 },
-    { arc: [
-      { x: -20, z: -20 },
-      { x:   0, z: -20 },
-    ]},
-    { arc: [
-      { x:  20, z: -20 },
-      { x:  20, z:  0 },
-    ]},
-  ],
+new Ellipse({
   addTo: hat,
+  diameter: 40,
+  quarters: 2,
   translate: { y: 4 },
+  rotate: { x: TAU/4, z: -TAU/4 },
 });
 
 // brim back arch
-new Shape({
-  path: [
-    { x: -1, y: 0 },
-    { arc: [
-      { x: -1, y: -1 },
-      { x:  0, y: -1 },
-    ]},
-    { arc: [
-      { x: 1, y: -1 },
-      { x: 1, y:  0 },
-    ]},
-
-  ],
+new Ellipse({
   addTo: hat,
-  scale: 16,
+  diameter: 32,
+  quarters: 2,
   translate: { y: 4, z: 12 },
+  rotate: { z: -TAU/4 },
 });
 
 // cap back to brim bottom connect

@@ -114,18 +114,13 @@ slope.copy({
 });
 
 // tail
-new Shape({
+new Ellipse({
   addTo: backGroup,
-  path: [
-    { x: 0, y: 0 },
-    { arc: [
-      { x: 1, y: 0 },
-      { x: 1, y: -1 },
-    ]},
-  ],
+  diameter: 32,
+  quarters: 1,
   closed: false,
-  scale: 16,
-  translate: { x: 22, y: 12 },
+  translate: { x: 22, y: -4 },
+  rotate: { z: TAU/4 },
   color: red,
   stroke: lineWidth,
 });
