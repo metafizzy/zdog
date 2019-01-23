@@ -11,19 +11,19 @@ Anchor.prototype.create = function( options ) {
   this.setOptions( options );
 
   // transform
-  this.translate = new Vector3( options.translate );
-  this.rotate = new Vector3( options.rotate );
+  this.translate = new Vector( options.translate );
+  this.rotate = new Vector( options.rotate );
   // scale
   if ( typeof options.scale == 'number' ) {
-    this.scale = Vector3.sanitize( {}, options.scale );
+    this.scale = Vector.sanitize( {}, options.scale );
   } else {
-    this.scale = Vector3.sanitize( options.scale, 1 );
+    this.scale = Vector.sanitize( options.scale, 1 );
   }
-  this.scale = new Vector3( this.scale );
+  this.scale = new Vector( this.scale );
 
   // origin
-  this.origin = new Vector3();
-  this.renderOrigin = new Vector3();
+  this.origin = new Vector();
+  this.renderOrigin = new Vector();
   // children
   this.children = [];
   if ( this.addTo ) {

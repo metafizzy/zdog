@@ -39,7 +39,7 @@ var bodyLinesIllo = new Illo({
 });
 
 
-var jumpRotation = new Vector3({
+var jumpRotation = new Vector({
   x: 12/360 * TAU,
   y: -15/360 * TAU,
   z: -31/360 * TAU,
@@ -96,10 +96,10 @@ var bodyLineWidth = 28;
     positiveUnibody = unibody;
     // body cut-in
     // cut-in points
-    var ciA = new Vector3({ z: 0, y: -23 });
-    var ciB = new Vector3({ z: 16, y: -7 });
-    var ciC = new Vector3({ z: 16, y: 7 });
-    var ciD = new Vector3({ z: 0, y: 23 });
+    var ciA = new Vector({ z: 0, y: -23 });
+    var ciB = new Vector({ z: 16, y: -7 });
+    var ciC = new Vector({ z: 16, y: 7 });
+    var ciD = new Vector({ z: 0, y: 23 });
     // 45 degree points
     var topPoints = getQuarterArcPoints( ciA, ciB );
     var bottomPoints = getQuarterArcPoints( ciD, ciC );
@@ -467,16 +467,16 @@ function setJumpRotate() {
 }
 
 function getQuarterArcPoints( a, b ) {
-  var start = new Vector3({
+  var start = new Vector({
     z: lerp( a.z, b.z, 5/7 ),
     y: lerp( a.y, b.y, 2/7 ),
   });
   // control points
-  var cp0 = new Vector3({
+  var cp0 = new Vector({
     z: lerp( a.z, b.z, 24/28 ),
     y: lerp( a.y, b.y, 12/28 ),
   });
-  var cp1 = new Vector3({
+  var cp1 = new Vector({
     z: b.z,
     y: lerp( a.y, b.y, 5/7 ),
   });

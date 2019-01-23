@@ -17,13 +17,13 @@
     "Illo": false,
     "lerp": false,
     "modulo": false,
-    "PathAction": false,
+    "PathDirection": false,
     "Polygon": false,
     "Rect": false,
     "RoundedRect": false,
     "Shape": false,
     "shapeSorter": false,
     "TAU": false,
-    "Vector3": false
+    "Vector": false
   }
 }

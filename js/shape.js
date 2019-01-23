@@ -20,9 +20,9 @@ Shape.prototype.create = function( options ) {
   this.updatePathDirections();
 
   // front
-  this.front = new Vector3( options.front || this.front );
-  this.renderFront = new Vector3( this.front );
-  this.renderNormal = new Vector3();
+  this.front = new Vector( options.front || this.front );
+  this.renderFront = new Vector( this.front );
+  this.renderNormal = new Vector();
 };
 
 var actionNames = [

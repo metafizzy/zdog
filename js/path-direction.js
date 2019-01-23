@@ -9,12 +9,12 @@ function PathDirection( method, points, previousPoint ) {
   // arc actions come with previous point & corner point
   // but require bezier control points
   if ( method == 'arc' ) {
-    this.controlPoints = [ new Vector3(), new Vector3() ];
+    this.controlPoints = [ new Vector(), new Vector() ];
   }
 }
 
 function mapVectorPoint( point ) {
-  return new Vector3( point );
+  return new Vector( point );
 }
 
 PathDirection.prototype.reset = function() {

@@ -88,10 +88,10 @@ gearPath.forEach( function( corner, i ) {
   new Shape({
     addTo: gear,
     path: [
-      new Vector3( corner ).add( frontZ ),
-      new Vector3( corner ).add( backZ ),
-      new Vector3( nextCorner ).add( backZ ),
-      new Vector3( nextCorner ).add( frontZ ),
+      new Vector( corner ).add( frontZ ),
+      new Vector( corner ).add( backZ ),
+      new Vector( nextCorner ).add( backZ ),
+      new Vector( nextCorner ).add( frontZ ),
     ],
     color: i % 2 ? colorA : colorB,
     fill: true,

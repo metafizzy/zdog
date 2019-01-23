@@ -623,7 +623,7 @@ var ground = new Anchor({
     color: skinLight,
   });
 
-  var rightHandPosition = new Vector3( rightWrist ).add({ x: -0.5, z: -1 });
+  var rightHandPosition = new Vector( rightWrist ).add({ x: -0.5, z: -1 });
 
   var rightHand = leftHand.copy({
     path: [{}],

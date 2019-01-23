@@ -86,8 +86,8 @@ var hat = new Anchor({
 });
 
 // hat front
-var hatFrontA = new Vector3({ x: -8, y: 0, z: 5 });
-var hatFrontB = new Vector3({ x: -4, y: -3, z: 7 });
+var hatFrontA = new Vector({ x: -8, y: 0, z: 5 });
+var hatFrontB = new Vector({ x: -4, y: -3, z: 7 });
 var hatFrontC = hatFrontB.copy().multiply({ x: -1 });
 var hatFrontD = hatFrontA.copy().multiply({ x: -1 });
 
@@ -106,8 +106,8 @@ new Shape({
   addTo: hat,
 });
 
-var hatTopFront = new Vector3({ x: 10, y: 1, z: 5 });
-var hatTopBackA = new Vector3({ x: 7, y: 3, z: -10 });
+var hatTopFront = new Vector({ x: 10, y: 1, z: 5 });
+var hatTopBackA = new Vector({ x: 7, y: 3, z: -10 });
 var hatTopBackB = hatTopBackA.copy().multiply({ x: -1 });
 
 // hat top
@@ -336,7 +336,7 @@ var body = new Shape({
 
 // right arm
 var rightShoulder = { x: -8, y: -8, z: -3 };
-var rightWrist = new Vector3({ x: -14, y: -17, z: -0 });
+var rightWrist = new Vector({ x: -14, y: -17, z: -0 });
 new Shape({
   path: [
     rightShoulder,

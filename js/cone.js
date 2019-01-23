@@ -37,9 +37,9 @@ Cone.prototype.create = function(/* options */) {
   // used for calculating contour angle
   this.renderNormal = base.renderNormal;
   // vectors used for calculation
-  this.renderApex = new Vector3();
-  this.tangentA = new Vector3();
-  this.tangentB = new Vector3();
+  this.renderApex = new Vector();
+  this.tangentA = new Vector();
+  this.tangentB = new Vector();
 };
 
 Cone.prototype.render = function( ctx ) {

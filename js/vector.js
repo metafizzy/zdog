@@ -1,37 +1,37 @@
-// -------------------------- Vector3 -------------------------- //
+// -------------------------- Vector -------------------------- //
 
-function Vector3( position ) {
+function Vector( position ) {
   this.set( position );
 }
 
-Vector3.prototype.set = function( pos ) {
-  pos = Vector3.sanitize( pos );
+Vector.prototype.set = function( pos ) {
+  pos = Vector.sanitize( pos );
   this.x = pos.x;
   this.y = pos.y;
   this.z = pos.z;
   return this;
 };
 
-Vector3.prototype.rotate = function( rotation ) {
+Vector.prototype.rotate = function( rotation ) {
   if ( !rotation ) {
     return;
   }
-  rotation = Vector3.sanitize( rotation );
+  rotation = Vector.sanitize( rotation );
   this.rotateZ( rotation.z );
   this.rotateY( rotation.y );
   this.rotateX( rotation.x );
   return this;
 };
 
-Vector3.prototype.rotateZ = function( angle ) {
+Vector.prototype.rotateZ = function( angle ) {
   rotateProperty( this, angle, 'x', 'y' );
 };
 
-Vector3.prototype.rotateX = function( angle ) {
+Vector.prototype.rotateX = function( angle ) {
   rotateProperty( this, angle, 'y', 'z' );
 };
 
-Vector3.prototype.rotateY = function( angle ) {
+Vector.prototype.rotateY = function( angle ) {
   rotateProperty( this, angle, 'x', 'z' );
 };
 
@@ -47,29 +47,29 @@ function rotateProperty( vec, angle, propA, propB ) {
   vec[ propB ] = b*cos + a*sin;
 }
 
-Vector3.prototype.add = function( vec ) {
+Vector.prototype.add = function( vec ) {
   if ( !vec ) {
     return;
   }
-  vec = Vector3.sanitize( vec );
+  vec = Vector.sanitize( vec );
   this.x += vec.x;
   this.y += vec.y;
   this.z += vec.z;
   return this;
 };
 
-Vector3.prototype.subtract = function( vec ) {
+Vector.prototype.subtract = function( vec ) {
   if ( !vec ) {
     return;
   }
-  vec = Vector3.sanitize( vec );
+  vec = Vector.sanitize( vec );
   this.x -= vec.x;
   this.y -= vec.y;
   this.z -= vec.z;
   return this;
 };
 
-Vector3.prototype.multiply = function( value ) {
+Vector.prototype.multiply = function( value ) {
   if ( value === undefined ) {
     return;
   }
@@ -81,28 +81,29 @@ Vector3.prototype.multiply = function( value ) {
     return;
   }
   // multiply object
-  var vec = Vector3.sanitize( value, 1 );
+  var vec = Vector.sanitize( value, 1 );
   this.x *= vec.x;
   this.y *= vec.y;
   this.z *= vec.z;
   return this;
 };
 
-Vector3.prototype.transform = function( translation, rotation, scale ) {
+Vector.prototype.transform = function( translation, rotation, scale ) {
   this.multiply( scale );
   this.rotate( rotation );
   this.add( translation );
+  return this;
 };
 
-Vector3.prototype.lerp = function( vec, t ) {
-  vec = Vector3.sanitize( vec );
+Vector.prototype.lerp = function( vec, t ) {
+  vec = Vector.sanitize( vec );
   this.x = lerp( this.x, vec.x, t );
   this.y = lerp( this.y, vec.y, t );
   this.z = lerp( this.z, vec.z, t );
   return this;
 };
 
-Vector3.prototype.magnitude = function() {
+Vector.prototype.magnitude = function() {
   var sum = this.x*this.x + this.y*this.y + this.z*this.z;
   // PERF: check if sum ~= 1 and skip sqrt
   if ( Math.abs( sum - 1 ) < 0.00000001 ) {
@@ -111,14 +112,14 @@ Vector3.prototype.magnitude = function() {
   return Math.sqrt( sum );
 };
 
-Vector3.prototype.copy = function() {
-  return new Vector3( this );
+Vector.prototype.copy = function() {
+  return new Vector( this );
 };
 
 // ----- utils ----- //
 
 // add missing properties
-Vector3.sanitize = function( vec, value ) {
+Vector.sanitize = function( vec, value ) {
   vec = vec || {};
   value = value || 0;
   vec.x = vec.x === undefined ? value : vec.x;

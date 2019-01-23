@@ -14,7 +14,7 @@ var PHI = ( 1 + ROOT5 ) / 2;
 var isRotating = true;
 var t = 0;
 var tSpeed = 1/180;
-var viewRotation = new Vector3();
+var viewRotation = new Vector();
 
 // warm colors
 var violet = '#636';
