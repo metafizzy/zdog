@@ -12,7 +12,7 @@ canvas.height = h * zoom;
   ItemClass.defaults.fill = true;
   // ItemClass.defaults.stroke = true;
   ItemClass.defaults.backface = false;
-  ItemClass.defaults.lineWidth = 1/zoom;
+  ItemClass.defaults.stroke = 1/zoom;
 });
 
 var white = 'white';

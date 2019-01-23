@@ -76,7 +76,7 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
 new Shape({
   visible: false,
   addTo: illo,
-  lineWidth: 18,
+  stroke: 18,
   // color: '#FED',
   color: 'hsla(50, 50%, 90%, 0.8)',
 });

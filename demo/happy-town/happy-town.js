@@ -335,8 +335,7 @@ var towerChimney = new Shape({
   addTo: towerAnchor,
   path: [ { y: 0 }, { y: 4 } ],
   translate: { x: -2, y: -37, z: 1 },
-  lineWidth: 2,
-  stroke: true,
+  stroke: 2,
   color: navy,
 });
 towerChimney.copy({
@@ -360,8 +359,7 @@ new Shape({
   addTo: towerAnchor,
   translate: { x: -2, y: -42, z: -6 },
   rotate: { y: -TAU/4 },
-  stroke: true,
-  lineWidth: 2,
+  stroke: 2,
   color: blue
 });
 
@@ -641,8 +639,7 @@ new Shape({
   ],
   addTo: town,
   translate: { x: -6, y: -20, z: -12 },
-  lineWidth: 4,
-  stroke: true,
+  stroke: 4,
   color: gold,
 });
 
@@ -710,8 +707,7 @@ hedge({
 new Shape({
   addTo: town,
   translate: { x: -6, y: -52, z: -42 },
-  lineWidth: 6,
-  stroke: true,
+  stroke: 6,
   color: gold,
 });
 
@@ -721,8 +717,7 @@ new Shape({
 var skyDot = new Shape({
   translate: { x: -3, y: -48, z: 42 },
   addTo: town,
-  lineWidth: 2,
-  stroke: true,
+  stroke: 2,
   color: white,
 });
 
@@ -741,8 +736,7 @@ var skyDiamond = new Shape({
   addTo: town,
   translate: { x: -27, y: -45, z: 29 },
   scale: 0.75,
-  stroke: true,
-  lineWidth: 0.5,
+  stroke: 0.5,
   color: white,
 });
 skyDiamond.copy({
@@ -779,8 +773,7 @@ var skyStar = new Shape({
   addTo: town,
   translate: { x: -39, y: -51, z: 12 },
   scale: 1.5,
-  stroke: true,
-  lineWidth: 1,
+  stroke: 1,
   color: white,
 });
 skyStar.copy({
@@ -814,9 +807,8 @@ var cloud = new Shape({
   translate: { x: -30, y: -56, z: 10 },
   scale: 1.5,
   rotate: { y: TAU/4 },
-  stroke: true,
-  lineWidth: 2,
-  color: white,
+  stroke: 2,
+ color: white,
 });
 cloud.copy({
   translate: { x: -30, y: -57, z: 6 },
@@ -839,8 +831,7 @@ var flatEarth = new Ellipse({
   addTo: illo,
   translate: town.translate,
   rotate: { x: TAU/4 },
-  lineWidth: 8,
-  stroke: true,
+  stroke: 8,
   color: navy,
 });
 
@@ -898,8 +889,7 @@ var sky = new Group({
       addTo: panelAnchor,
       translate: { z: -radius },
       color: blue,
-      stroke: true,
-      lineWidth: 1,
+      stroke: 1,
       backface: false,
     });
   }

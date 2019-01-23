@@ -14,7 +14,7 @@ var illo = new Illo({
 });
 
 Shape.defaults.closed = false;
-Shape.defaults.lineWidth = 3;
+Shape.defaults.stroke = 3;
 
 var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;

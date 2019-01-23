@@ -30,7 +30,7 @@ var yellow = '#FD0';
 // -- illustration shapes --- //
 
 var body = new Shape({
-  lineWidth: 22,
+  stroke: 22,
   translate: { y: 11 },
   rotate: { x: 0.3, z: 0.1 },
   addTo: illo,
@@ -53,7 +53,7 @@ var face = new Anchor({
     width: 1.4,
     height: 5.5,
     addTo: eyeGroup,
-    lineWidth: 1,
+    stroke: 1,
     color: black,
     fill: true,
   });
@@ -63,7 +63,7 @@ var face = new Anchor({
     height: 2,
     addTo: eyeGroup,
     translate: { y: -1.5, z: 0.5 },
-    lineWidth: 0.5,
+    stroke: 0.5,
     color: '#FFF',
     fill: true,
   });
@@ -80,7 +80,7 @@ var face = new Anchor({
     translate: { y: 1, z: 10.5 },
     addTo: cheekHolder,
     color: blush,
-    lineWidth: 1,
+    stroke: 1,
   });
 
 });
@@ -112,7 +112,7 @@ new Shape({
   ],
   addTo: face,
   translate: { y: 2, z: -0.5 },
-  lineWidth: 1,
+  stroke: 1,
   color: shoe,
   fill: true,
 });
@@ -125,7 +125,7 @@ var rightArm = new Shape({
   addTo: body,
   translate: { x: -6, y: -4, z: 0 },
   color: pink,
-  lineWidth: 7,
+  stroke: 7,
 });
 
 // left arm
@@ -161,7 +161,7 @@ var rightFoot = new Shape({
   addTo: body,
   translate: { x: -1, y: 9, z: -9 },
   rotate: { z: 0.2 },
-  lineWidth: 6,
+  stroke: 6,
   color: shoe,
   fill: true,
   closed: false,
@@ -184,7 +184,7 @@ var umbrella = new Shape({
   translate: { y: -33, z: 2 },
   rotate: { y: 0.5 },
   color: yellow,
-  lineWidth: 1,
+  stroke: 1,
 });
 
 // star
@@ -208,7 +208,7 @@ var star = new Shape({
   path: starPath,
   addTo: umbrella,
   translate: { y: -4.5 },
-  lineWidth: 2,
+  stroke: 2,
   color: yellow,
   fill: true,
 });
@@ -229,7 +229,7 @@ new Shape({
   ],
   addTo: umbrella,
   translate: { y: 23 },
-  lineWidth: 2,
+  stroke: 2,
   color: '#37F',
   closed: false,
 });
@@ -255,7 +255,7 @@ new Shape({
       ],
       addTo: umbrella,
       rotate: { y: TAU/12 * i },
-      lineWidth: 1,
+      stroke: 1,
       color: colorSide ? red : 'white',
       fill: true,
     });

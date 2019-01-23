@@ -27,7 +27,7 @@ new Rect({
   height: 10,
   addTo: illo,
   translate: { z: -10 },
-  lineWidth: 2,
+  stroke: 2,
   color: '#E21',
 });
 
@@ -36,7 +36,7 @@ new Ellipse({
   diameter: 16,
   addTo: illo,
   translate: { z: 10 },
-  lineWidth: 4,
+  stroke: 4,
   color: '#19F',
 });
 
@@ -48,7 +48,7 @@ new Shape({
   ],
   scale: { x: 5, z: 5 },
   addTo: illo,
-  lineWidth: 2,
+  stroke: 2,
   fill: true,
   color: '#EA0',
 });

@@ -29,7 +29,7 @@ function makeBird( options ) {
     ],
     addTo: bird,
     translate: { x: 0.5 },
-    lineWidth: 3,
+    stroke: 3,
     color: options.color,
     fill: true,
   });
@@ -38,7 +38,7 @@ function makeBird( options ) {
   new Shape({
     translate: { x: 4, y: -1 },
     addTo: bird,
-    lineWidth: 4,
+    stroke: 4,
     color: options.color,
   });
   
@@ -51,7 +51,7 @@ function makeBird( options ) {
     ],
     addTo: bird,
     translate: { x: 5, y: -1 },
-    lineWidth: 1,
+    stroke: 1,
     color: options.color,
     fill: true,
   });
@@ -65,7 +65,7 @@ function makeBird( options ) {
     ],
     addTo: bird,
     translate: { x: -4, y: 0 },
-    lineWidth: 2,
+    stroke: 2,
     color: options.color,
     fill: true,
   });
@@ -82,7 +82,7 @@ function makeBird( options ) {
     addTo: bird,
     translate: { z: -1.5},
     rotate: { x: TAU/8 },
-    lineWidth: 1,
+    stroke: 1,
     color: options.color,
     fill: true,
   });

@@ -8,8 +8,7 @@ var Cone = Group.subclass({
   color: '#333',
   baseColor: undefined,
   fill: true,
-  stroke: true,
-  lineWidth: 1,
+  stroke: 1,
   updateSort: true,
 });
 
@@ -27,7 +26,6 @@ Cone.prototype.create = function(/* options */) {
     diameter: this.diameter,
     addTo: this,
     color: this.color,
-    lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
     backface: this.baseColor || true,
@@ -48,6 +46,8 @@ Cone.prototype.render = function( ctx ) {
   this.renderCone( ctx );
   Group.prototype.render.call( this, ctx );
 };
+
+Cone.prototype.getLineWidth = Shape.prototype.getLineWidth;
 
 Cone.prototype.renderCone = function( ctx ) {
   this.renderApex.set( this.apex.renderOrigin )
@@ -83,17 +83,18 @@ Cone.prototype.renderCone = function( ctx ) {
   tangentA.add( this.renderOrigin );
   tangentB.add( this.renderOrigin );
   // render
-  ctx.strokeStyle = ctx.fillStyle = this.color;
-  ctx.lineWidth = this.lineWidth;
   ctx.beginPath();
   ctx.moveTo( tangentA.x, tangentA.y );
   ctx.lineTo( this.apex.renderOrigin.x, this.apex.renderOrigin.y );
   ctx.lineTo( tangentB.x, tangentB.y );
 
   if ( this.stroke ) {
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.getLineWidth();
     ctx.stroke();
   }
   if ( this.fill ) {
+    ctx.fillStyle = this.color;
     ctx.fill();
   }
 };

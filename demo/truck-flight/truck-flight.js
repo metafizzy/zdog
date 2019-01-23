@@ -22,9 +22,8 @@ var dark = '#333';
 var darkStroke = {
   addTo: illo,
   color: dark,
-  stroke: true,
+  stroke: 2,
   fill: false,
-  lineWidth: 2,
 };
 
 var lightFill = {
@@ -38,7 +37,7 @@ var allDark = {
   addTo: illo,
   color: dark,
   fill: true,
-  lineWidth: 2,
+  stroke: 2,
 };
 
 // -- illustration shapes --- //
@@ -182,7 +181,7 @@ new Rect({
   height: 12,
   color: dark,
   fill: true,
-  lineWidth: 2,
+  stroke: 2,
 });
 
 var frontDetails = new Anchor({
@@ -197,7 +196,7 @@ var headlight = new Rect({
   addTo: frontDetails,
   translate: { x: -9, y: -3 },
   color: light,
-  lineWidth: 2,
+  stroke: 2,
 });
 headlight.copy({
   translate: { x: 9, y: -3 },
@@ -213,7 +212,7 @@ var grillLine = new Shape({
   translate: { y: -4 },
   color: light,
   closed: false,
-  lineWidth: 2,
+  stroke: 2,
 });
 grillLine.copy({
   translate: { y: 0 },
@@ -253,7 +252,7 @@ var backlight = new Rect({
   addTo: tailGroup,
   translate: { x: -10, y: -4 },
   color: dark,
-  lineWidth: 2, 
+  stroke: 2, 
   fill: true,
 });
 backlight.copy({
@@ -269,7 +268,7 @@ new Shape({
   addTo: tailGroup,
   translate: { y: 5, z: 1 },
   color: dark,
-  lineWidth: 4,
+  stroke: 4,
   closed: false,
 });
 
@@ -290,8 +289,7 @@ var cabBackTop = new Shape({
 cabBackTop.copy({
   color: dark,
   fill: false,
-  stroke: true,
-  lineWidth: 2,
+  stroke: 2,
 });
 
 var cabBackBottom = new Shape({
@@ -310,8 +308,7 @@ var cabBackBottom = new Shape({
 cabBackBottom.copy({
   color: dark,
   fill: false,
-  stroke: true,
-  lineWidth: 2,
+  stroke: 2,
 });
 
 // WHEELS
@@ -344,8 +341,7 @@ var lightFillWheel = new Shape( extend({
 }, lightFill ));
 var darkStrokeWheel = lightFillWheel.copy({
   fill: false,
-  stroke: true,
-  lineWidth: 4,
+  stroke: 4,
   color: dark,
 });
 var darkWheel = new Ellipse({
@@ -353,7 +349,7 @@ var darkWheel = new Ellipse({
   addTo: illo,
   translate: { x: 18, y: 8, z: 10 },
   color: dark,
-  lineWidth: 4,
+  stroke: 4,
   fill: true,
 });
 

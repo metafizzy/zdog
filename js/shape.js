@@ -3,10 +3,9 @@
 // -------------------------- Shape -------------------------- //
 
 var Shape = Anchor.subclass({
-  stroke: true,
+  stroke: 1,
   fill: false,
   color: '#333',
-  lineWidth: 1,
   closed: true,
   visible: true,
   path: [ {} ],
@@ -127,12 +126,26 @@ Shape.prototype.render = function( ctx ) {
 
 // Safari does not render lines with no size, have to render circle instead
 Shape.prototype.renderDot = function( ctx ) {
+  var lineWidth = this.getLineWidth();
+  if ( !lineWidth ) {
+    return;
+  }
   ctx.fillStyle = this.getRenderColor();
   var point = this.pathDirections[0].endRenderPoint;
   ctx.beginPath();
-  var radius = this.lineWidth/2;
+  var radius = lineWidth/2;
   ctx.arc( point.x, point.y, radius, 0, TAU );
   ctx.fill();
+};
+
+Shape.prototype.getLineWidth = function() {
+  if ( !this.stroke ) {
+    return 0;
+  }
+  if ( this.stroke == true ) {
+    return 1;
+  }
+  return this.stroke;
 };
 
 Shape.prototype.getRenderColor = function() {
@@ -143,12 +156,6 @@ Shape.prototype.getRenderColor = function() {
 };
 
 Shape.prototype.renderPath = function( ctx ) {
-  // set render properties
-  var color = this.getRenderColor();
-  ctx.fillStyle = color;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = this.lineWidth;
-
   // render points
   ctx.beginPath();
   this.pathDirections.forEach( function( direction ) {
@@ -159,10 +166,15 @@ Shape.prototype.renderPath = function( ctx ) {
   if ( !isTwoPoints && this.closed ) {
     ctx.closePath();
   }
+
+  var color = this.getRenderColor();
   if ( this.stroke ) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = this.getLineWidth();
     ctx.stroke();
   }
   if ( this.fill ) {
+    ctx.fillStyle = color;
     ctx.fill();
   }
 };

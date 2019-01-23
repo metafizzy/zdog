@@ -69,9 +69,8 @@ var outlines = [];
 
   var outline = panel.copy({
     visible: false,
-    stroke: true,
+    stroke: 1,
     fill: false,
-    lineWidth: 1,
     color: 'black',
   });
 

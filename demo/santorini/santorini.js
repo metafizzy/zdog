@@ -44,10 +44,7 @@ var island = new Anchor({
   scale: { x: 1/Math.sin(TAU/8), z: -1/Math.sin(TAU/8) }
 });
 
-// Shape.defaults.lineWidth = 1/zoom;
-
 // -- illustration shapes --- //
-
 
 // lil house in front, center
 oneStoryBuilding({

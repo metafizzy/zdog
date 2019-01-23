@@ -85,7 +85,7 @@ var feather = new Group({
       ],
       addTo: feather,
       rotate: { x: angleX * -i + TAU/8 },
-      lineWidth: 1,
+      stroke: 1,
       color: featherGold,
       fill: true,
     });
@@ -108,12 +108,12 @@ var feather = new Group({
       ]},
     ],
     addTo: feather,
-    lineWidth: 2,
+    stroke: 2,
     color: featherGold,
     closed: false,
   });
   rachis.copy({
-    lineWidth: 8,
+    stroke: 8,
     color: glow,
     rotate: { x: -0.5 }
   });
@@ -140,7 +140,7 @@ var feather = new Group({
       addTo: zRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU/8 },
       color: madColor.skin,
-      lineWidth: 1,
+      stroke: 1,
       bokehSize: 6,
       bokehLimit: 70,
     });
@@ -166,7 +166,7 @@ var feather = new Group({
       addTo: yRotor,
       rotate: { x: ( Math.random() * 2 - 1 ) * TAU*3/16 },
       color: badColor.skin,
-      lineWidth: 1 + Math.random(),
+      stroke: 1 + Math.random(),
       bokehSize: 6,
       bokehLimit: 74,
     });

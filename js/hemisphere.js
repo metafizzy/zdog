@@ -7,8 +7,7 @@ var Hemisphere = Group.subclass({
   color: '#333',
   baseColor: undefined,
   fill: true,
-  stroke: true,
-  lineWidth: 1,
+  stroke: 1,
 });
 
 Hemisphere.prototype.create = function(/* options */) {
@@ -20,7 +19,6 @@ Hemisphere.prototype.create = function(/* options */) {
     diameter: this.diameter,
     addTo: this,
     color: this.color,
-    lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
     backface: this.baseColor || true,
@@ -37,13 +35,13 @@ Hemisphere.prototype.render = function( ctx ) {
   Group.prototype.render.call( this, ctx );
 };
 
+Hemisphere.prototype.getLineWidth = Shape.prototype.getLineWidth;
+
 Hemisphere.prototype.renderDome = function( ctx ) {
   var contourAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x );
   var startAngle = contourAngle + TAU/4;
   var endAngle = contourAngle - TAU/4;
 
-  ctx.strokeStyle = ctx.fillStyle = this.color;
-  ctx.lineWidth = this.lineWidth;
   ctx.beginPath();
   var x = this.renderOrigin.x;
   var y = this.renderOrigin.y;
@@ -52,9 +50,12 @@ Hemisphere.prototype.renderDome = function( ctx ) {
   ctx.arc( x, y, domeRadius, startAngle, endAngle );
   ctx.closePath();
   if ( this.stroke ) {
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.getLineWidth();
     ctx.stroke();
   }
   if ( this.fill ) {
+    ctx.fillStyle = this.color;
     ctx.fill();
   }
 };

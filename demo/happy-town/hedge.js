@@ -6,20 +6,19 @@ function hedge( options ) {
 
   var ball = new Shape({
     path: [ { y: 0 }, { y: -1 } ],
-    lineWidth: 5,
     addTo: anchor,
     translate: { y: -2.5 },
-    stroke: true,
+    stroke: 5,
     color: options.color || navy,
   });
 
   ball.copy({
-    lineWidth: 4,
+    stroke: 4,
     translate: { y: -5 },
   });
 
   ball.copy({
-    lineWidth: 2.5,
+    stroke: 2.5,
     translate: { y: -7.5 },
   });
 }

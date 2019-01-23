@@ -45,7 +45,7 @@ var leg = new Shape({
   ],
   addTo: illo,
   translate: { x: 16, y: 16, z: 8 },
-  lineWidth: 8,
+  stroke: 8,
   color: blue,
   closed: false,
 });
@@ -71,7 +71,7 @@ var legConnector = new Shape({
   path: [ { x: -8 }, { x: 8 } ],
   addTo: illo,
   translate: { y: 16, z: 8 },
-  lineWidth: 8,
+  stroke: 8,
   color: blue,
   closed: false,
 });
@@ -91,7 +91,7 @@ new Shape({
   scale: { x: 14.25, z: -3.75 },
   addTo: illo,
   translate: { y: 10 },
-  lineWidth: 20,
+  stroke: 20,
   color: blue,
 });
 
@@ -119,7 +119,7 @@ new Shape({
     { x: 24, y: -28 },
   ],
   addTo: illo,
-  lineWidth: 8,
+  stroke: 8,
   color: blue,
   closed: false,
 });
@@ -131,7 +131,7 @@ new Shape({
     { x: 24, y: -28 },
   ],
   addTo: illo,
-  lineWidth: 8,
+  stroke: 8,
   color: blue,
   closed: false,
 });
@@ -140,7 +140,7 @@ new Shape({
 var head = new Shape({
   translate: { x: 16, y: -31 },
   addTo: illo,
-  lineWidth: 14,
+  stroke: 14,
   color: blue,
 });
 
@@ -149,7 +149,7 @@ var eye = new Shape({
   addTo: head,
   translate: { z: -1, x: 0 },
   color: 'white',
-  lineWidth: 4,
+  stroke: 4,
   fill: true,
   closed: false,
 });
@@ -184,7 +184,7 @@ new Shape({
   translate: { y: 4 },
   // rotate: { x: -0.25 },
   color: blue,
-  lineWidth: 8,
+  stroke: 8,
   closed: false,
 });
 

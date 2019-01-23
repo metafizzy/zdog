@@ -39,8 +39,7 @@ function makeRock( options ) {
       path: path,
       addTo: anchor,
       color: midnight,
-      stroke: true,
-      lineWidth: 2,
+      stroke: 2,
     });
   }
 

@@ -33,7 +33,7 @@ var pupils = {};
 var head = new Shape({
   translate: { y: -20 },
   rotate: { y: 0.5 },
-  lineWidth: 21,
+  stroke: 21,
   color: darkBlue,
   addTo: illo,
 });
@@ -48,7 +48,7 @@ var head = new Shape({
       { x: -1.25, y:  1.5, z: 11.25 },
     ],
     rotate: { x: TAU/20 * i },
-    lineWidth: 2,
+    stroke: 2,
     fill: true,
     color: lightBlue,
     addTo: head,
@@ -66,7 +66,7 @@ new Shape({
     { x: -1.7, y: 0.5 },
   ],
   translate: { y: -4 },
-  lineWidth: 11,
+  stroke: 11,
   color: lightBlue,
   fill: true,
   addTo: illo,
@@ -89,7 +89,7 @@ var undiePanel = new Shape({
     { x: -undieX, y: undieY1 },
   ],
   translate: { y: 4, z: undieZ },
-  lineWidth: 5,
+  stroke: 5,
   color: darkBlue,
   fill: true,
   addTo: illo,
@@ -108,7 +108,7 @@ var sideUndiePanel = new Shape({
     { y: undieY1, z:  undieZ },
   ],
   translate: { x: -undieX, y: 4, },
-  lineWidth: 5,
+  stroke: 5,
   color: darkBlue,
   fill: true,
   addTo: illo,
@@ -130,7 +130,7 @@ var rightUpperArm = new Shape({
   ],
   translate: { x: -shoulderX, y: shoulderY },
   rotate: { z: -0.8, y: -0.6 },
-  lineWidth: 6,
+  stroke: 6,
   color: lightBlue,
   addTo: illo,
 });
@@ -142,7 +142,7 @@ var rightForeArm = new Shape({
   ],
   translate: rightUpperArm.path[1],
   rotate: { z: 1.4 },
-  lineWidth: 10,
+  stroke: 10,
   color: darkBlue,
   addTo: rightUpperArm,
 });
@@ -153,7 +153,7 @@ new Shape({
   ],
   translate: rightForeArm.path[1],
   rotate: { z: 0.3 },
-  lineWidth: 11,
+  stroke: 11,
   color: darkBlue,
   addTo: rightForeArm,
 });
@@ -166,7 +166,7 @@ var leftUpperArm = new Shape({
   ],
   translate: { x: shoulderX, y: shoulderY-0.5 },
   rotate: { z: -0.2, y: 0.3 },
-  lineWidth: 6,
+  stroke: 6,
   color: lightBlue,
   addTo: illo,
 });
@@ -178,7 +178,7 @@ var leftForeArm = new Shape({
   ],
   translate: leftUpperArm.path[1],
   rotate: { z: -TAU/4 - leftUpperArm.rotate.z },
-  lineWidth: 11,
+  stroke: 11,
   color: darkBlue,
   addTo: leftUpperArm,
 });
@@ -186,7 +186,7 @@ var leftForeArm = new Shape({
 new Shape({
   path: [ { x: 4 } ],
   translate: leftForeArm.path[1],
-  lineWidth: 7,
+  stroke: 7,
   color: darkBlue,
   addTo: leftForeArm,
 });
@@ -213,8 +213,7 @@ new Shape({
     ],
     translate: { y: 4, z: 8.5 },
     fill: true,
-    lineWidth: 1,
-    // stroke: false,
+    stroke: 1,
     color: skin,
     addTo: head,
   });
@@ -226,7 +225,7 @@ new Shape({
     addTo: facePanel,
     translate: { x: 3.75*xSide, y: -0.5, z: 0.5 },
     rotate: { y: -0.2*xSide },
-    lineWidth: 1,
+    stroke: 1,
     fill: true,
     color: 'white',
   });
@@ -237,7 +236,7 @@ new Shape({
     height: 4,
     translate: { x: -0.4*xSide, y: -0.2, z: 1 },
     rotate: { y: 0.2*xSide },
-    lineWidth: 1,
+    stroke: 1,
     fill: true,
     color: '#128',
     addTo: eyeWhite,
@@ -251,7 +250,7 @@ new Shape({
     translate: { x: 10*xSide, y: 3, z: -1 },
     rotate: { y: (TAU/4+0.2)*-xSide, x: TAU/4, z: 1 },
     fill: false,
-    lineWidth: 2.5,
+    stroke: 2.5,
     color: lightBlue,
     addTo: head,
   });
@@ -271,7 +270,7 @@ new Shape({
     path: [ { y: 0 }, { y: 3 } ],
     translate: { x: 4.5*xSide, y: 8 },
     rotate: { z: -0.35*xSide, x: -0.1 },
-    lineWidth: 6,
+    stroke: 6,
     color: lightBlue,
     addTo: illo,
   });
@@ -286,7 +285,7 @@ new Shape({
     translate: thigh.path[1],
     rotate: { y: -0.5*xSide },
     fill: true,
-    lineWidth: 11,
+    stroke: 11,
     color: darkBlue,
     addTo: thigh,
   });
@@ -302,7 +301,7 @@ new Shape({
     translate: shin.path[1],
     rotate: { z: 0.4*xSide, x: -0.1 },
     fill: true,
-    lineWidth: 7,
+    stroke: 7,
     color: darkBlue,
     addTo: shin,
   });

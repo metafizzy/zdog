@@ -32,7 +32,7 @@ new Shape({
     { x: -6, y:  8 },
   ],
   addTo: illo,
-  lineWidth: 2,
+  stroke: 2,
   color: '#19F',
 });
 
@@ -47,7 +47,7 @@ new Shape({
     { x: 10, y: 10 }
   ],
   addTo: illo,
-  lineWidth: 2,
+  stroke: 2,
   color: '#A00',
 });
 

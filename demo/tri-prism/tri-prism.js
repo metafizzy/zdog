@@ -56,7 +56,7 @@ function makePrism( options ) {
     ],
     color: red,
     fill: true,
-    lineWidth: 1/zoom,
+    stroke: 1/zoom,
   });
   triangle.copy({
     translate: { x: -2 },
@@ -74,7 +74,7 @@ function makePrism( options ) {
     ],
     color: ochre,
     fill: true,
-    lineWidth: 1/zoom,
+    stroke: 1/zoom,
   });
 
   var base = new Rect({
@@ -85,7 +85,7 @@ function makePrism( options ) {
     rotate: { y: TAU/2 },
     color: navy,
     fill: true,
-    lineWidth: 1/zoom,
+    stroke: 1/zoom,
     backface: false,
   });
   base.copy({

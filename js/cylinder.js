@@ -8,8 +8,7 @@ var Cylinder = Group.subclass({
   color: '#333',
   baseColor: undefined,
   fill: true,
-  stroke: true,
-  lineWidth: 1,
+  stroke: 1,
   updateSort: true,
 });
 
@@ -25,7 +24,6 @@ Cylinder.prototype.create = function(/* options */) {
     translate: { z: baseZ },
     rotate: { y: TAU/2 },
     color: this.color,
-    lineWidth: this.lineWidth,
     stroke: this.stroke,
     fill: this.fill,
     backface: this.baseColor || true,
@@ -50,10 +48,12 @@ Cylinder.prototype.render = function( ctx ) {
   Group.prototype.render.call( this, ctx );
 };
 
+Cylinder.prototype.getLineWidth = Shape.prototype.getLineWidth;
+
 Cylinder.prototype.renderRing = function( ctx ) {
   ctx.strokeStyle = this.color;
   // apply scale
-  ctx.lineWidth = this.diameter * this.renderNormal.magnitude();
+  ctx.lineWidth = this.diameter * this.renderNormal.magnitude() + this.getLineWidth();
   ctx.lineCap = 'butt'; // nice
 
   ctx.beginPath();

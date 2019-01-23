@@ -38,7 +38,7 @@ var cap = new Rect({
   height: capLength,
   addTo: prism,
   translate: { z: -sideZ },
-  lineWidth: 2,
+  stroke: 2,
   color: 'white',
 });
 
@@ -51,7 +51,7 @@ var side = new Shape({
   path: [ { z: -1 }, { z: 1 } ],
   scale: sideZ,
   translate: { x: capLength/2, y: capLength/2 },
-  lineWidth: 2,
+  stroke: 2,
   color: 'white',
 });
 side.copy({

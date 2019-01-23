@@ -61,7 +61,7 @@ new Shape({
   color: colorA,
   backface: false,
   fill: true,
-  lineWidth: 1/zoom,
+  stroke: 1/zoom,
   closed: false,
   // visible: false,
 });
@@ -95,7 +95,7 @@ gearPath.forEach( function( corner, i ) {
     ],
     color: i % 2 ? colorA : colorB,
     fill: true,
-    lineWidth: 1/zoom,
+    stroke: 1/zoom,
   });
 });
 

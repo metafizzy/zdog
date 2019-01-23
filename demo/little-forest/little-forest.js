@@ -44,7 +44,7 @@ var bgStripe = new Rect({
   addTo: background,
   translate: { y: -40, z: -24 },
   color: magenta,
-  lineWidth: 12,
+  stroke: 12,
   fill: true,
 });
 // magenta circle
@@ -53,7 +53,7 @@ var bgCircle = new Ellipse({
   addTo: background,
   translate: { y: -16, z: -24 },
   color: magenta,
-  lineWidth: 24,
+  stroke: 24,
   fill: true,
 });
 
@@ -88,7 +88,7 @@ bgCircle.copy({
 new Shape({
   addTo: background,
   translate: { y: -16, z: 48 },
-  lineWidth: 24,
+  stroke: 24,
   color: white,
 });
 
@@ -102,7 +102,7 @@ var midBackground = new Group({
 var midBGDot = new Shape({
   addTo: midBackground,
   translate: { x: -36, y: 18 },
-  lineWidth: 24,
+  stroke: 24,
   color: amber,
 });
 midBGDot.copy({
@@ -122,18 +122,18 @@ midBGDot.copy({
 });
 
 var midBGBigDot = midBGDot.copy({
-  lineWidth: 48,
+  stroke: 48,
   translate: { x: -52, y: 40 },
 });
 midBGBigDot.copy({
   translate: { x: 20, y: 40 },
 });
 midBGBigDot.copy({
-  lineWidth: 40,
+  stroke: 40,
   translate: { x: 56, y: 40 },
 });
 midBGBigDot.copy({
-  lineWidth: 40,
+  stroke: 40,
   translate: { x: -16, y: 48 },
 });
 
@@ -156,7 +156,7 @@ var midgroundGroundA = new Shape({
   ],
   addTo: midground,
   color: magenta,
-  lineWidth: 48,
+  stroke: 48,
   fill: true,
 });
 midgroundGroundA.copy({
@@ -208,7 +208,7 @@ function tree( groupOptions, options ) {
 var midgroundTree = {
   addTo: midground,
   color: magenta,
-  lineWidth: 2,
+  stroke: 2,
 };
 
 tree( midgroundTree, {
@@ -257,7 +257,7 @@ new Shape({
   addTo: midground,
   translate: lonelyTranslate,
   color: magenta,
-  lineWidth: 4,
+  stroke: 4,
 });
 
 
@@ -293,7 +293,7 @@ var midForegroundGround = new Shape({
   ],
   addTo: midForeground,
   color: eggplant,
-  lineWidth: 48,
+  stroke: 48,
   fill: true,
 });
 midForegroundGround.copy({
@@ -313,7 +313,7 @@ midForegroundGround.copy({
 var midForeBall = new Shape({
   addTo: midForeground,
   translate: { x: -92, y: 18 },
-  lineWidth: 20,
+  stroke: 20,
   color: eggplant,
 });
 midForeBall.copy({
@@ -321,7 +321,7 @@ midForeBall.copy({
 });
 midForeBall.copy({
   translate: { x: -84, y: 28 },
-  lineWidth: 24,
+  stroke: 24,
 });
 midForeBall.copy({
   translate: { x: -74, y: 20 },
@@ -339,7 +339,7 @@ midForeBall.copy({
 var midForeTree = {
   addTo: midForeground,
   color: eggplant,
-  lineWidth: 2,
+  stroke: 2,
 };
 
 tree( midForeTree, {
@@ -388,13 +388,13 @@ var foregroundA = new Shape({
   addTo: illo,
   translate: { z: layerSpace*2 },
   color: midnight,
-  lineWidth: 48,
+  stroke: 48,
   fill: true,
 });
 
 var foregroundTree = {
   color: midnight,
-  lineWidth: 2,
+  stroke: 2,
 };
 
 tree( foregroundTree, {
@@ -419,7 +419,7 @@ new Shape({
   ],
   addTo: foregroundA,
   translate: foreTree1Translate,
-  lineWidth: 6,
+  stroke: 6,
   color: midnight,
 });
 
@@ -457,7 +457,7 @@ var grassBlade = new Shape({
   scale: 8,
   rotate: { z: 0.6 },
   color: midnight,
-  lineWidth: 1,
+  stroke: 1,
   fill: true,
   closed: false,
 });
@@ -497,7 +497,7 @@ var foregroundB = new Shape({
   addTo: illo,
   translate: { z: layerSpace*2 },
   color: midnight,
-  lineWidth: 48,
+  stroke: 48,
   fill: true,
 });
 
@@ -524,7 +524,7 @@ new Shape({
   ],
   addTo: foregroundB,
   translate: bigTreeTranslate,
-  lineWidth: 6,
+  stroke: 6,
   color: midnight,
 });
 
@@ -553,7 +553,7 @@ grassBlade.copy({
 var particle = new Shape({
   addTo: illo,
   translate: { x: -70, y: -50, z: layerSpace*-0.25 },
-  lineWidth: 4,
+  stroke: 4,
   color: gold,
 });
 particle.copy({
@@ -607,7 +607,7 @@ var twoCloud = new Shape({
   translate: { x: -84, y: -38, z: layerSpace*-1 },
   rotate: { y: -TAU*1/16 },
   scale: { x: 1/Math.cos(TAU*1/16) },
-  lineWidth: 4,
+  stroke: 4,
   color: white,
   fill: true,
 });
@@ -659,7 +659,7 @@ new Shape({
   translate: { x: 72, y: -52, z: layerSpace*-1 },
   rotate: { y: TAU * 1/16 },
   scale: { x: 1/Math.cos(TAU * -1/16) },
-  lineWidth: 4,
+  stroke: 4,
   color: white,
   fill: true,
 });
@@ -689,7 +689,7 @@ var starA = new Shape({
   addTo: illo,
   translate: { x: -50, y: -50, z: layerSpace*-1.5 },
   color: gold,
-  lineWidth: 2,
+  stroke: 2,
   fill: true,
 });
 starA.copy({
@@ -723,7 +723,7 @@ new Shape({
   ],
   addTo: illo,
   translate: { x: 18, y: -30, z: layerSpace*-1 },
-  lineWidth: 3,
+  stroke: 3,
   color: midnight,
   closed: false,
 });

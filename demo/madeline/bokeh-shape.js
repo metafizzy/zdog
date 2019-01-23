@@ -13,9 +13,8 @@ BokehShape.prototype.updateBokeh = function() {
   return this.bokeh;
 };
 
-BokehShape.prototype.getBokehLineWidth = function() {
-  
-  return this.lineWidth + this.bokehSize * this.bokeh * this.bokeh;
+BokehShape.prototype.getBokehStroke = function() {
+  return this.stroke + this.bokehSize * this.bokeh * this.bokeh;
 };
 
 BokehShape.prototype.getBokehAlpha = function() {
@@ -33,7 +32,7 @@ BokehShape.prototype.renderDot = function( ctx ) {
   ctx.fillStyle = this.color;
   var point = this.pathDirections[0].endRenderPoint;
   ctx.beginPath();
-  var radius = this.getBokehLineWidth()/2;
+  var radius = this.getBokehStroke()/2;
   ctx.arc( point.x, point.y, radius, 0, TAU );
   ctx.fill();
   ctx.globalAlpha = 1;
@@ -45,7 +44,7 @@ BokehShape.prototype.renderPath = function( ctx ) {
   // set render properties
   ctx.fillStyle = this.color;
   ctx.strokeStyle = this.color;
-  ctx.lineWidth = this.getBokehLineWidth();
+  ctx.lineWidth = this.getBokehStroke();
 
   // render points
   ctx.beginPath();

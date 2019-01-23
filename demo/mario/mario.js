@@ -37,7 +37,7 @@ var head = new Shape({
   addTo: illo,
   translate: { y: -12, z: 1 },
   color: colors.skin,
-  lineWidth: 23,
+  stroke: 23,
 });
 
 // nose
@@ -45,7 +45,7 @@ new Shape({
   addTo: head,
   translate: { y: 5, z: 13 },
   color: colors.skin,
-  lineWidth: 7,
+  stroke: 7,
 });
 
 
@@ -58,7 +58,7 @@ var chin = new Shape({
     { x: 0, y: 8.5, z: 6 }
   ],
   color: colors.skin,
-  lineWidth: 10,
+  stroke: 10,
 });
 chin.copy({
   scale: { x: -1 },
@@ -75,7 +75,7 @@ new Shape({
   translate: { y: 12, z: 9 },
   color: colors.cloth,
   fill: true,
-  lineWidth: 2,
+  stroke: 2,
   addTo: head,
 });
 
@@ -102,7 +102,7 @@ new Shape({
   color: colors.cloth,
   closed: false,
   fill: false,
-  lineWidth: 11,
+  stroke: 11,
   addTo: hat,
 });
 
@@ -120,7 +120,7 @@ new Shape({
   ],
   color: colors.cloth,
   fill: true,
-  lineWidth: 9,
+  stroke: 9,
   addTo: hat,
 });
 // hat top back
@@ -130,7 +130,7 @@ new Shape({
     hatTopBackB,
   ],
   color: colors.cloth,
-  lineWidth: 9,
+  stroke: 9,
   addTo: hat,
 });
 
@@ -141,7 +141,7 @@ var hatTopSide = new Shape({
     hatTopBackA,
   ],
   color: colors.cloth,
-  lineWidth: 9,
+  stroke: 9,
   addTo: hat,
 });
 hatTopSide.copy({
@@ -158,7 +158,7 @@ new Shape({
     { x: -3, y: -3, z: 4 },
   ],
   color: colors.cloth,
-  lineWidth: 6,
+  stroke: 6,
   addTo: hat,
 });
 
@@ -174,7 +174,7 @@ var hatBrim = new Shape({
   translate: { z: 7 },
   color: colors.cloth,
   fill: true,
-  lineWidth: 4,
+  stroke: 4,
   addTo: hat,
 });
 hatBrim.copy({
@@ -189,7 +189,7 @@ var eye = new Shape({
   ],
   translate: { x: 5, z: 9 },
   color: colors.eye,
-  lineWidth: 3,
+  stroke: 3,
   addTo: head,
 });
 eye.copy({
@@ -205,7 +205,7 @@ var brow = new Shape({
   translate: { x: 4, y: -1.5, z: 9 },
   color: colors.hair,
   closed: false,
-  lineWidth: 2.5,
+  stroke: 2.5,
   addTo: head,
 });
 brow.copy({
@@ -224,14 +224,14 @@ new Shape({
     { x: 6.5, y: 0, z: -0 },
   ],
   color: colors.hair,
-  lineWidth: 3,
+  stroke: 3,
   addTo: mustache,
 });
 // mustache sections
 var mustacheSection = new Shape({
   translate: { x: 1.75, y: 1.5, z: 1 },
   color: colors.hair,
-  lineWidth: 4,
+  stroke: 4,
   addTo: mustache,
 });
 mustacheSection.copy({
@@ -253,7 +253,7 @@ var sideburns = new Shape({
   color: colors.hair,
   closed: false,
   fill: true,
-  lineWidth: 3,
+  stroke: 3,
   addTo: head,
 });
 sideburns.copy({
@@ -270,7 +270,7 @@ var ear = new Shape({
   translate: { x: 10, y: 4, z: -2 },
   color: colors.skin,
   fill: true,
-  lineWidth: 4,
+  stroke: 4,
   addTo: head,
 });
 ear.copy({
@@ -293,14 +293,14 @@ new Shape({
   translate: { x: 5, y: 7, z: -5 },
   color: colors.hair,
   fill: true,
-  lineWidth: 3,
+  stroke: 3,
   addTo: sideHair,
 });
 // hair balls
 var hairBall = new Shape({
   translate: { x: 6, y: 8, z: -8 },
   color: colors.hair,
-  lineWidth: 6,
+  stroke: 6,
   addTo: sideHair,
 });
 hairBall.copy({
@@ -322,7 +322,7 @@ new Shape({
   translate: { y: 7, z: -10 },
   color: colors.hair,
   fill: true,
-  lineWidth: 3,
+  stroke: 3,
   addTo: head,
 });
 
@@ -330,7 +330,7 @@ new Shape({
 var body = new Shape({
   translate: { x: 0, y: 10, z: 1 },
   color: colors.overalls,
-  lineWidth: 20,
+  stroke: 20,
   addTo: illo,
 });
 
@@ -343,7 +343,7 @@ new Shape({
     rightWrist,
   ],
   color: colors.cloth,
-  lineWidth: 8,
+  stroke: 8,
   addTo: body,
 });
 
@@ -353,7 +353,7 @@ new Shape({
     { x: -17, y: -23, z: 1 },
   ],
   color: colors.white,
-  lineWidth: 12,
+  stroke: 12,
   addTo: body,
 });
 
@@ -366,7 +366,7 @@ new Shape({
     leftElbow,
   ],
   color: colors.cloth,
-  lineWidth: 8,
+  stroke: 8,
   addTo: body,
 });
 new Shape({
@@ -375,7 +375,7 @@ new Shape({
     { x: 12, y: -2, z: -9 },
   ],
   color: colors.cloth,
-  lineWidth: 8,
+  stroke: 8,
   addTo: body,
 });
 // left hand
@@ -384,7 +384,7 @@ new Shape({
     { x: 17, y: 1, z: -8 },
   ],
   color: colors.white,
-  lineWidth: 12,
+  stroke: 12,
   addTo: body,
 });
 
@@ -394,7 +394,7 @@ new Shape({
     rightShoulder,
   ],
   color: colors.cloth,
-  lineWidth: 8,
+  stroke: 8,
   addTo: body,
 });
 
@@ -408,7 +408,7 @@ var rightLeg = new Shape({
   translate: { x: -5 },
   closed: false,
   color: colors.overalls,
-  lineWidth: 10,
+  stroke: 10,
   addTo: body,
 });
 
@@ -419,7 +419,7 @@ var shoe = new Rect({
   translate: { y: 15.5, z: -4 },
   fill: true,
   color: colors.leather,
-  lineWidth: 6,
+  stroke: 6,
 });
 
 // toe ball
@@ -427,7 +427,7 @@ new Shape({
   addTo: shoe,
   translate: { y: 3, z: 2.5 },
   color: colors.leather,
-  lineWidth: 11,
+  stroke: 11,
 });
 
 // left leg
@@ -440,7 +440,7 @@ var leftLeg = new Shape({
   translate: { x: 5 },
   closed: false,
   color: colors.overalls,
-  lineWidth: 10,
+  stroke: 10,
   addTo: body,
 });
 

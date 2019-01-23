@@ -48,7 +48,7 @@ var topSide = new Rect({
   translate: { y: -20 },
   rotate: { x: TAU/4 },
   fill: true,
-  lineWidth: lineWidth,
+  stroke: lineWidth,
   color: red,
 });
 topSide.copy({
@@ -64,7 +64,7 @@ var endCap = new Rect({
   rotate: { y: TAU/4 },
   fill: true,
   color: red,
-  lineWidth: lineWidth,
+  stroke: lineWidth,
 });
 endCap.copy({
   translate: { x: -20,  y: 16 },
@@ -84,7 +84,7 @@ var underside = new Rect({
   height: depth,
   translate: { x: -5, y: -12 },
   rotate: { x: -TAU/4 },
-  lineWidth: lineWidth,
+  stroke: lineWidth,
   fill: true,
   color: red,
 });
@@ -103,7 +103,7 @@ var slope = new Rect({
   height: depth,
   translate: { x: -5 },
   rotate: { x: TAU/4, y: slopeAngle },
-  lineWidth: lineWidth,
+  stroke: lineWidth,
   fill: true,
   color: red,
 });
@@ -127,7 +127,7 @@ new Shape({
   scale: 16,
   translate: { x: 22, y: 12 },
   color: red,
-  lineWidth: lineWidth,
+  stroke: lineWidth,
 });
 
 // tongue
@@ -160,8 +160,7 @@ new Shape({
   ],
   rotate: { x: TAU/4 - Math.atan(16/22) },
   fill: true,
-  stroke: true,
-  lineWidth: 4,
+  stroke: 4,
   color: denim,
 
 });
@@ -188,7 +187,7 @@ var zFace = new Shape({
   translate: { z: depth/2 },
   fill: true,
   color: gold,
-  lineWidth: lineWidth,
+  stroke: lineWidth,
   backface: false,
 });
 
@@ -206,8 +205,7 @@ var semiCircle = new Ellipse({
   translate: { x: -26, y: -20 },
   rotate: { y: TAU/4, z: TAU/4 },
   fill: true,
-  stroke: true,
-  lineWidth: 5,
+  stroke: 5,
   color: denim,
   closed: true,
   // backface: false,

@@ -38,7 +38,7 @@ new Shape({
   path: [ { y: -1 }, { y: 1} ],
   scale: { y: 3 },
   addTo: cat, 
-  lineWidth: 14,
+  stroke: 14,
   color: magenta,
 });
 
@@ -57,7 +57,7 @@ new Shape({
   scale: { x: 0.25, y: 0.25 },
   addTo: face,
   translate: { z: 1.5 },
-  lineWidth: 1,
+  stroke: 1,
   color: midnight,
 });
 
@@ -70,7 +70,7 @@ new RoundedRect({
   translate: { y: 3.5, z: 5 },
   // rotate: { x: TAU/64 },
   color: white,
-  lineWidth: 3,
+  stroke: 3,
   fill: true,
 });
 
@@ -80,7 +80,7 @@ new Shape({
   scale: { x: 2 },
   addTo: cat,
   translate: { y: -3, z: 4 },
-  lineWidth: 4,
+  stroke: 4,
   color: magenta,
 });
 
@@ -90,7 +90,7 @@ new Shape({
   addTo: cat,
   translate: { y: 7, z: -4 },
   rotate: { x: -TAU/32 },
-  lineWidth: 1,
+  stroke: 1,
   color: magenta,
 });
 
@@ -99,7 +99,7 @@ var backLine = new Shape({
   scale: { x: 3 },
   addTo: cat,
   translate: { y: 0, z: -6.5 },
-  lineWidth: 0.5,
+  stroke: 0.5,
   color: '#F7A',
 });
 backLine.copy({
@@ -116,7 +116,7 @@ backLine.copy({
     scale: { y: 0.3 },
     addTo: face,
     translate: { x: 0.75*xSide, y: -1.5 },
-    lineWidth: 0.8,
+    stroke: 0.8,
     color: midnight,
   });
 
@@ -126,7 +126,7 @@ backLine.copy({
     scale: { x: 0.4 },
     addTo: face,
     translate: { x: 1*xSide, y: 0.5, z: 0.5 },
-    lineWidth: 1.5,
+    stroke: 1.5,
     color: white,
   });
 
@@ -140,7 +140,7 @@ backLine.copy({
     addTo: face,
     translate: { x: 2.5*xSide, y: 0.5 },
     color: white,
-    lineWidth: 0.25,
+    stroke: 0.25,
   });
   whisker.copy({
     scale: { x: xSide*3, y: -0.75 },
@@ -157,7 +157,7 @@ backLine.copy({
     addTo: cat,
     translate: { x: 2*xSide, y: -8 },
     color: magenta,
-    lineWidth: 3,
+    stroke: 3,
     fill: true,
   });
 
@@ -167,7 +167,7 @@ backLine.copy({
     addTo: cat,
     translate: { x: 3.5*xSide, y: -1, z: 5.5 },
     rotate: { x: TAU/16 },
-    lineWidth: 3,
+    stroke: 3,
     color: magenta,
   });
 

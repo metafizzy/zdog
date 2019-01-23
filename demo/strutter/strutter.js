@@ -34,7 +34,7 @@ new Shape({
   path: [ { x: -1 }, { x: 1 } ],
   scale: hipX,
   color: denim,
-  lineWidth: 4,
+  stroke: 4,
 });
 
 var rightLeg = new Shape({
@@ -43,7 +43,7 @@ var rightLeg = new Shape({
   translate: { x: -hipX },
   rotate: { x: TAU/4 },
   color: denim,
-  lineWidth: 4,
+  stroke: 4,
 });
 // foot
 new RoundedRect({
@@ -55,7 +55,7 @@ new RoundedRect({
   rotate: { x: TAU/4 },
   color: red,
   fill: true,
-  lineWidth: 4,
+  stroke: 4,
 });
 
 var plantAngle = -TAU/32 * 3;
@@ -74,7 +74,7 @@ new Shape({
   scale: 1.5,
   translate: { y: -5.5, z: -3 },
   color: red,
-  lineWidth: 9,
+  stroke: 9,
   fill: true,
 });
 
@@ -90,7 +90,7 @@ var armSize = 6;
     translate: { x: 4.5 * xSide, y: -8, z: -4 },
     rotate: isRight ? { y: TAU/8, z: -TAU/16 } : { y: TAU/8  },
     color: denim,
-    lineWidth: 4,
+    stroke: 4,
   });
 
   var forearm = new Shape({
@@ -99,13 +99,13 @@ var armSize = 6;
     translate: { x: armSize },
     rotate: isRight ? { z: TAU/16 * 3, y: TAU/4 } : { z: -TAU/4, x: -TAU/32 * 2, y: TAU/8 },
     color: red,
-    lineWidth: 4,
+    stroke: 4,
   });
   // hand
   new Shape({
     addTo: forearm,
     translate: { x: armSize, z: 1 },
-    lineWidth: 6,
+    stroke: 6,
     color: gold,
   });
 
@@ -134,7 +134,7 @@ var eye = new Ellipse({
   translate: { x: -2, y: 1.5, z: 5 },
   rotate: { z: -TAU/4 },
   color: denim,
-  lineWidth: 0.5,
+  stroke: 0.5,
   backface: false,
 });
 eye.copy({
@@ -150,7 +150,7 @@ new Ellipse({
   rotate: { z: TAU/4 },
   closed: true,
   color: '#FED',
-  lineWidth: 0.5,
+  stroke: 0.5,
   fill: true,
   backface: false,
 });

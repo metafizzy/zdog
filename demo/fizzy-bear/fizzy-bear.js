@@ -87,7 +87,7 @@ var bodyLineWidth = 28;
     addTo: anchor,
     // translate: { y: -1 },
     color: isOutline ? black : magenta,
-    lineWidth: bodyLineWidth + outlineWidth,
+    stroke: bodyLineWidth + outlineWidth,
     fill: true,
   });
 
@@ -117,7 +117,7 @@ var bodyLineWidth = 28;
       addTo: unibody,
       color: black,
       closed: false,
-      lineWidth: 4,
+      stroke: 4,
     });
 
   }
@@ -128,7 +128,7 @@ var bodyLineWidth = 28;
     addTo: unibody,
     translate: { x: -14, y: -19, z: -2 },
     color: isOutline ? black : magenta,
-    lineWidth: 8 + outlineWidth,
+    stroke: 8 + outlineWidth,
   });
   // left ear
   ear.copy({
@@ -149,7 +149,7 @@ var bodyLineWidth = 28;
     addTo: face,
     translate: { y: 4, z: 1 },
     color: isOutline ? black : 'white',
-    lineWidth: 6 + outlineWidth,
+    stroke: 6 + outlineWidth,
     fill: true,
   });
 
@@ -164,7 +164,7 @@ var bodyLineWidth = 28;
       addTo: face,
       translate: { y: 1.5, z: 4 },
       color: black,
-      lineWidth: 3,
+      stroke: 3,
       fill: true,
     });
 
@@ -193,7 +193,7 @@ var bodyLineWidth = 28;
       translate: { y: -3.25, x: -7.5, z: 0 },
       scale: { x: 0.6, y: 0.5 },
       color: black,
-      lineWidth: 2,
+      stroke: 2,
       closed: false,
       fill: true,
     });
@@ -215,7 +215,7 @@ var bodyLineWidth = 28;
     translate: { x: -17, y: 5 },
     rotate: { y: 0.25 },
     color: isOutline ? black : gold,
-    lineWidth: 12 + outlineWidth,
+    stroke: 12 + outlineWidth,
   });
   // left arm
   new Shape({
@@ -233,7 +233,7 @@ var bodyLineWidth = 28;
     translate: { x: 18, y: 5 },
     rotate: {  x: 0.4 },
     color: isOutline ? black : gold,
-    lineWidth: 12 + outlineWidth,
+    stroke: 12 + outlineWidth,
     closed: false,
   });
 
@@ -247,7 +247,7 @@ var bodyLineWidth = 28;
     translate: { x: -10, y: 13, z: -1 },
     rotate: { z: 49/360 * TAU, x: -0.3 },
     color: isOutline ? black : blue,
-    lineWidth: 12 + outlineWidth,
+    stroke: 12 + outlineWidth,
   });
 
   // right leg cut-in
@@ -267,7 +267,7 @@ var bodyLineWidth = 28;
       // rotate: { y: 1 },
       closed: false,
       color: black,
-      lineWidth: 4,
+      stroke: 4,
     });
     rightLegCutInB = rightLegCutInA.copy({
       scale: { z: -1 },
@@ -285,7 +285,7 @@ var bodyLineWidth = 28;
     translate: { x: 9, y: 13, z: -1 },
     rotate: { z: 0.7, x: -0.4 },
     color: isOutline ? black : blue,
-    lineWidth: 12 + outlineWidth,
+    stroke: 12 + outlineWidth,
   });
   // left shin
   var leftShin = new Shape({
@@ -297,7 +297,7 @@ var bodyLineWidth = 28;
     translate: leftThigh.path[1],
     rotate: { z: 0.2, x: -0.9 },
     color: isOutline ? black : blue,
-    lineWidth: 12 + outlineWidth,
+    stroke: 12 + outlineWidth,
   });
 
   if ( !isOutline ) {
@@ -315,7 +315,7 @@ var bodyLineWidth = 28;
       closed: false,
       // rotate: { y: 1 },
       color: black,
-      lineWidth: 4,
+      stroke: 4,
     });
 
     crotchCutIn = new Shape({
@@ -327,7 +327,7 @@ var bodyLineWidth = 28;
       addTo: unibody,
       translate: { x: -5, y: 7+14+2 - 1.5, z: 2 },
       color: black,
-      lineWidth: 4,
+      stroke: 4,
       closed: false,
     });
   }

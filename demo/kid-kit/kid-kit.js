@@ -33,7 +33,7 @@ new Shape({
   ],
   addTo: illo,
   color: colors.inner,
-  lineWidth: 13,
+  stroke: 13,
 });
 
 // head circle
@@ -41,7 +41,7 @@ new Shape({
   addTo: illo,
   translate: { y: -12 },
   color: colors.fur,
-  lineWidth: 32,
+  stroke: 32,
 });
 
 // nose
@@ -56,7 +56,7 @@ new Shape({
   ],
   addTo: nose,
   color: colors.eye,
-  lineWidth: 3,
+  stroke: 3,
 });
 new Shape({
   path: [
@@ -65,7 +65,7 @@ new Shape({
   ],
   addTo: nose,
   color: colors.eye,
-  lineWidth: 3,
+  stroke: 3,
 });
 
 // snout
@@ -78,7 +78,7 @@ new Shape({
   ],
   addTo: illo,
   color: colors.fur,
-  lineWidth: 12,
+  stroke: 12,
 });
 
 // eyes
@@ -90,7 +90,7 @@ var eye = new Shape({
   addTo: illo,
   translate: { x: -8, z: 11 },
   color: colors.eye,
-  lineWidth: 4,
+  stroke: 4,
 });
 eye.copy({
   translate: { x: 8, z: 11 },
@@ -118,21 +118,21 @@ new Shape({
   addTo: earAnchor,
   color: earColor,
   fill: true,
-  lineWidth: 4,
+  stroke: 4,
 });
 new Shape({
   path: [ earB, earC, earD ],
   addTo: earAnchor,
   color: earColor,
   fill: true,
-  lineWidth: 4,
+  stroke: 4,
 });
 new Shape({
   path: [ earC, earD, earE ],
   addTo: earAnchor,
   color: earColor,
   fill: true,
-  lineWidth: 4,
+  stroke: 4,
 });
 // inner ear
 var innerEarXShift = 4;
@@ -145,7 +145,7 @@ new Shape({
   addTo: earAnchor,
   color: colors.inner,
   fill: true,
-  lineWidth: 3,
+  stroke: 3,
 });
 
 earAnchor.copyGraph({
@@ -169,7 +169,7 @@ var whisker = new Shape({
   translate: { z: 6 },
   fill: true,
   color: colors.fur,
-  lineWidth: 3,
+  stroke: 3,
 });
 whisker.copy({
   translate: { y: -6, z: 6 },
@@ -197,7 +197,7 @@ new Shape({
   addTo: armAnchor,
   closed: true,
   color: colors.armor,
-  lineWidth: 8,
+  stroke: 8,
 });
 // forearm
 new Shape({
@@ -207,14 +207,14 @@ new Shape({
   ],
   addTo: armAnchor,
   color: colors.fur,
-  lineWidth: 8,
+  stroke: 8,
 });
 // hand
 new Shape({
   path: [ { x: 11, y: 18, z: -1} ],
   addTo: armAnchor,
   color: colors.armor,
-  lineWidth: 10,
+  stroke: 10,
 });
 
 armAnchor.copyGraph({
@@ -230,7 +230,7 @@ var leg = new Shape({
   addTo: illo,
   translate: { x: -6 },
   color: colors.armor,
-  lineWidth: 8,
+  stroke: 8,
 });
 leg.copy({
   translate: { x: 6 },
@@ -263,7 +263,7 @@ var topCloakStrap =   new Shape({
   addTo: cloakSide,
   fill: true,
   color: colors.cloak,
-  lineWidth: 4,
+  stroke: 4,
 });
 
 topCloakStrap.copy({
@@ -285,7 +285,7 @@ new Shape({
   addTo: cloakSide,
   fill: true,
   color: colors.cloak,
-  lineWidth: 4,
+  stroke: 4,
 });
 new Shape({
   path: [
@@ -298,7 +298,7 @@ new Shape({
   translate: { z: cloakZ2 },
   fill: true,
   color: colors.cloak,
-  lineWidth: 4,
+  stroke: 4,
 });
 
 cloakSide.copyGraph({

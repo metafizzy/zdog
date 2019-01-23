@@ -22,13 +22,13 @@ function makeMadeline( isGood, colors, options ) {
     diameter: 6,
     addTo: head,
     translate: { z: 4 },
-    lineWidth: 8,
+    stroke: 8,
     color: colors.skin,
   });
 
   var eyeGroup = new Group({
     addTo: face,
-    translate: { z: face.lineWidth/2 - 0.5 },
+    translate: { z: face.stroke/2 - 0.5 },
   });
 
 
@@ -42,7 +42,7 @@ function makeMadeline( isGood, colors, options ) {
         addTo: eyeGroup,
         translate: { x: 4.5*xSide, y: 3, z: -1 },
         rotate: { y: -TAU/16*xSide },
-        lineWidth: 1,
+        stroke: 1,
         color: '#FA8',
         fill: true,
       });
@@ -57,7 +57,7 @@ function makeMadeline( isGood, colors, options ) {
       addTo: eyeGroup,
       color: colors.eye,
       translate: { x: eyeX },
-      lineWidth: 2,
+      stroke: 2,
       fill: true,
     });
 
@@ -79,7 +79,7 @@ function makeMadeline( isGood, colors, options ) {
       scale: { x: 1.5, y: 0.6 },
       rotate: { z: 0.15*xSide * (isGood ? 1 : -1) },
       color: colors.hair,
-      lineWidth: 1,
+      stroke: 1,
       fill: true,
     });
 
@@ -95,7 +95,7 @@ function makeMadeline( isGood, colors, options ) {
     ],
     addTo: head,
     translate: { y: -4, z: -1 },
-    lineWidth: 18,
+    stroke: 18,
     color: colors.hair,
   });
 
@@ -110,7 +110,7 @@ function makeMadeline( isGood, colors, options ) {
     addTo: head,
     translate: { x: 2, y: -7.5, z: 6 },
     rotate: { x: 0.5, z: -0.5 },
-    lineWidth: 4,
+    stroke: 4,
     color: colors.hair,
     closed: false,
   });
@@ -144,7 +144,7 @@ function makeMadeline( isGood, colors, options ) {
       { x:  3 },
     ],
     addTo: head,
-    lineWidth: 7,
+    stroke: 7,
     translate: { y: -8, z: 5 },
     color: colors.hair,
   });
@@ -162,7 +162,7 @@ function makeMadeline( isGood, colors, options ) {
     ],
     addTo: head,
     translate: { z: -4, y: 0 },
-    lineWidth: 10,
+    stroke: 10,
     color: colors.hair,
     closed: false,
   });
@@ -170,18 +170,18 @@ function makeMadeline( isGood, colors, options ) {
   trailLock.copy({
     translate: { x: -3, z: -4 },
     rotate: { z: -TAU/8 },
-    lineWidth: 8,
+    stroke: 8,
   });
   trailLock.copy({
     translate: { x: 3, z: -4 },
     rotate: { z: TAU/8 },
-    lineWidth: 8,
+    stroke: 8,
   });
   trailLock.copy({
     translate: { y: 2 },
     // rotate: { z: TAU/2 },
     scale: { y: 0.5 },
-    lineWidth: 8,
+    stroke: 8,
   });
 
   // ----- torso ----- //
@@ -193,7 +193,7 @@ function makeMadeline( isGood, colors, options ) {
     addTo: body,
     rotate: { x: -TAU/4 },
     translate: { y: -1 },
-    lineWidth: 6,
+    stroke: 6,
     color: colors.parkaLight,
     fill: true,
   });
@@ -219,7 +219,7 @@ function makeMadeline( isGood, colors, options ) {
     addTo: body,
     rotate: { x: -TAU/4 },
     translate: { y: 11 },
-    lineWidth: 4,
+    stroke: 4,
     color: colors.tight,
     fill: true,
   });
@@ -230,7 +230,7 @@ function makeMadeline( isGood, colors, options ) {
     // shoulder ball
     new Shape({
       addTo: body,
-      lineWidth: 6,
+      stroke: 6,
       translate: { x: 6*xSide, y: -5, z: -1 },
       color: colors.parkaLight,
     });
@@ -247,7 +247,7 @@ function makeMadeline( isGood, colors, options ) {
       rotate: { x: -TAU/4 },
       addTo: shoulderJoint,
       translate: { x: 0*xSide },
-      lineWidth: 6,
+      stroke: 6,
       color: colors.parkaLight,
       fill: true,
     });
@@ -275,7 +275,7 @@ function makeMadeline( isGood, colors, options ) {
     new Shape({
       addTo: elbowJoint,
       translate: { y: 9, z: -1 },
-      lineWidth: 8,
+      stroke: 8,
       color: colors.skin,
     });
 
@@ -286,14 +286,14 @@ function makeMadeline( isGood, colors, options ) {
       addTo: body,
       translate: { x: 4*xSide, y: 13 },
       rotate: isLeft ? {} : { x: TAU/16*3, z: TAU/16 },
-      lineWidth: 8,
+      stroke: 8,
       color: colors.tight,
     });
 
     var shin = new Shape({
       path: [ { y: 0 }, { y: 8 } ],
       addTo: thigh,
-      lineWidth: 6,
+      stroke: 6,
       translate: knee,
       rotate: isLeft ? {} : { x: -TAU/16*5 },
       color: colors.tight,
@@ -310,7 +310,7 @@ function makeMadeline( isGood, colors, options ) {
     visible: false,
     addTo: body,
     translate: { y: 11, z: -2 },
-    lineWidth: 8,
+    stroke: 8,
     color: colors.tight,
   });
 
