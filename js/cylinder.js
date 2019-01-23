@@ -3,7 +3,7 @@
 // -------------------------- Cylinder -------------------------- //
 
 var Cylinder = Group.subclass({
-  radius: 0.5,
+  diameter: 1,
   length: 1,
   color: '#333',
   baseColor: undefined,
@@ -20,8 +20,7 @@ Cylinder.prototype.create = function(/* options */) {
   var baseZ = this.length/2;
   // front outside base
   var frontBase = new Ellipse({
-    width: this.radius * 2,
-    height: this.radius * 2,
+    diameter: this.diameter,
     addTo: this,
     translate: { z: baseZ },
     rotate: { y: TAU/2 },
@@ -54,7 +53,7 @@ Cylinder.prototype.render = function( ctx ) {
 Cylinder.prototype.renderRing = function( ctx ) {
   ctx.strokeStyle = this.color;
   // apply scale
-  ctx.lineWidth = this.radius * 2 * this.renderNormal.magnitude();
+  ctx.lineWidth = this.diameter * this.renderNormal.magnitude();
   ctx.lineCap = 'butt'; // nice
 
   ctx.beginPath();

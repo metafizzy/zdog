@@ -33,8 +33,7 @@ new Rect({
 
 /*
 new Ellipse({
-  width: 16,
-  height: 16,
+  diameter: 16,
   addTo: illo,
   translate: { z: 10 },
   lineWidth: 4,
@@ -56,7 +55,7 @@ new Shape({
 */
 
 new Hemisphere({
-  radius: 2,
+  diameter: 4,
   scale: 2,
   addTo: illo,
   translate: { x: 8 },
@@ -66,7 +65,7 @@ new Hemisphere({
 });
 
 new Cylinder({
-  radius: 2,
+  diameter: 4,
   length: 4,
   scale: 2,
   addTo: illo,
@@ -77,7 +76,7 @@ new Cylinder({
 });
 
 new Cone({
-  radius: 2,
+  diameter: 4,
   length: 3,
   scale: 2,
   addTo: illo,

@@ -30,8 +30,7 @@ new Rect({
 });
 
 new Ellipse({
-  width: 16,
-  height: 16,
+  diameter: 16,
   addTo: illo,
   translate: { z: 10 },
   lineWidth: 4,

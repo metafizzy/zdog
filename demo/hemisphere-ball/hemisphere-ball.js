@@ -29,7 +29,7 @@ var navy = '#249';
 // -- illustration shapes --- //
 
 var hemi = new Hemisphere({
-  radius: 6.5,
+  diameter: 13,
   addTo: illo,
   translate: { y: -16 },
   rotate: { x: -TAU/4 },

@@ -3,7 +3,7 @@
 // -------------------------- Cone -------------------------- //
 
 var Cone = Group.subclass({
-  radius: 0.5,
+  diameter: 1,
   length: 1,
   color: '#333',
   baseColor: undefined,
@@ -24,8 +24,7 @@ Cone.prototype.create = function(/* options */) {
   });
   // outside base
   var base = new Ellipse({
-    width: this.radius * 2,
-    height: this.radius * 2,
+    diameter: this.diameter,
     addTo: this,
     color: this.color,
     lineWidth: this.lineWidth,
@@ -59,7 +58,7 @@ Cone.prototype.renderCone = function( ctx ) {
   // eccentricity
   var eccenAngle = Math.acos( normalDistance / scale );
   var eccen = Math.sin( eccenAngle );
-  var radius = this.radius * scale;
+  var radius = this.diameter/2 * scale;
   // does apex extend beyond eclipse of face
   var isApexVisible = radius * eccen < apexDistance;
   if ( !isApexVisible ) {

@@ -61,8 +61,7 @@ var frontBuilding = makeBuilding({
 
 // east gable dot
 var gableDot = new Ellipse({
-  width: 2,
-  height: 2,
+  diameter: 2,
   addTo: frontBuilding.eastWall,
   color: blue,
   translate: { y: -20 },
@@ -491,8 +490,7 @@ door.copy({
 
 // big circle window
 new Ellipse({
-  width: 8,
-  height: 8,
+  diameter: 8,
   addTo: church.westWall,
   translate: { y: -22 },
   color: navy,
@@ -545,8 +543,7 @@ new Ellipse({
     });
     // circle cut-out
     new Ellipse({
-      width: 4,
-      height: 4,
+      diameter: 4,
       addTo: bottomWallGroup,
       translate: { y: -4 },
       color: accentColor,
@@ -838,8 +835,7 @@ cloud.copy({
 // ----- flat earth ----- //
 
 var flatEarth = new Ellipse({
-  width: 128,
-  height: 128,
+  diameter: 128,
   addTo: illo,
   translate: town.translate,
   rotate: { x: TAU/4 },

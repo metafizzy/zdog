@@ -68,7 +68,7 @@ function Shifter( options ) {
   this.cylinder1 = new Cylinder({
     addTo: shifterAnchor,
     visible: false,
-    radius: 1,
+    diameter: 2,
     length: 2,
     // translate: { x: 0, y: -3 },
     rotate: { y: TAU/4 },
@@ -92,7 +92,7 @@ function Shifter( options ) {
 
     new Cone({
       addTo: anchor,
-      radius: 1,
+      diameter: 2,
       length: 2,
       rotate: { x: TAU/4 },
       translate: { y: 1 },
@@ -178,8 +178,7 @@ function Shifter( options ) {
     // left outside cap
     var cap = new Ellipse({
       addTo: capAnchor,
-      width: 2,
-      height: 2,
+      diameter: 2,
       color: egg,
       rotate: { x: tilt },
       scale: { y: 1/Math.cos( tilt ) },

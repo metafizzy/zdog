@@ -68,7 +68,7 @@ new Shape({
 // nub
 new Cylinder({
   addTo: faceGroup,
-  radius: 3,
+  diameter: 6,
   length: 2,
   color: colorB,
   baseColor: 'white',

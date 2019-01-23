@@ -29,13 +29,11 @@ var navy = '#249';
 
 // -- illustration shapes --- //
 
-var radius = 5;
-var len = 5;
 var y = 12;
 
 var cylinder = new Cylinder({
-  radius: radius,
-  length: len,
+  diameter: 10,
+  length: 5,
   addTo: illo,
   translate: { y: -y },
   rotate: { x: -TAU/4 },

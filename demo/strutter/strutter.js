@@ -120,7 +120,7 @@ var head = new Anchor({
 // face
 new Hemisphere({
   addTo: head,
-  radius: 6,
+  diameter: 12,
   color: gold,
   baseColor: red,
   rotate: { x: -TAU/4 },
@@ -129,8 +129,7 @@ new Hemisphere({
 
 var eye = new Ellipse({
   addTo: head,
-  width: 2,
-  height: 2,
+  diameter: 2,
   quarters: 2,
   translate: { x: -2, y: 1.5, z: 5 },
   rotate: { z: -TAU/4 },
@@ -145,8 +144,7 @@ eye.copy({
 // smile
 new Ellipse({
   addTo: head,
-  width: 3,
-  height: 3,
+  diameter: 3,
   quarters: 2,
   translate: { y: 3, z: 4.5 },
   rotate: { z: TAU/4 },
@@ -159,7 +157,7 @@ new Ellipse({
 
 new Hemisphere({
   addTo: head,
-  radius: 6,
+  diameter: 12,
   color: red,
   baseColor: gold,
   rotate: { x: TAU/4 },

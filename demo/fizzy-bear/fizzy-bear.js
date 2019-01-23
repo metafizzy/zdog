@@ -124,8 +124,7 @@ var bodyLineWidth = 28;
 
   // right ear
   var ear = new Ellipse({
-    width: 4,
-    height: 4,
+    diameter: 4,
     addTo: unibody,
     translate: { x: -14, y: -19, z: -2 },
     color: isOutline ? black : magenta,
@@ -346,7 +345,7 @@ var sectionSize = unibodyHeight / 4;
     translate: { y: ( i - 1.5 ) * 10.5 },
   });
   var cylinder = new Cylinder({
-    radius: bodyLineWidth/2,
+    diameter: bodyLineWidth,
     length: sectionSize,
     addTo: stripeGroup,
     translate: { x: -bodyWidth/2 },

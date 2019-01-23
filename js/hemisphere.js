@@ -3,7 +3,7 @@
 // -------------------------- Hemisphere -------------------------- //
 
 var Hemisphere = Group.subclass({
-  radius: 0.5,
+  diameter: 1,
   color: '#333',
   baseColor: undefined,
   fill: true,
@@ -17,8 +17,7 @@ Hemisphere.prototype.create = function(/* options */) {
   // composite shape, create child shapes
   // outside base
   var base = new Ellipse({
-    width: this.radius * 2,
-    height: this.radius * 2,
+    diameter: this.diameter,
     addTo: this,
     color: this.color,
     lineWidth: this.lineWidth,
@@ -49,7 +48,7 @@ Hemisphere.prototype.renderDome = function( ctx ) {
   var x = this.renderOrigin.x;
   var y = this.renderOrigin.y;
   // apply scale
-  var domeRadius = this.radius * this.renderNormal.magnitude();
+  var domeRadius = this.diameter/2 * this.renderNormal.magnitude();
   ctx.arc( x, y, domeRadius, startAngle, endAngle );
   ctx.closePath();
   if ( this.stroke ) {

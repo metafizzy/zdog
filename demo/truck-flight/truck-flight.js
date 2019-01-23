@@ -349,8 +349,7 @@ var darkStrokeWheel = lightFillWheel.copy({
   color: dark,
 });
 var darkWheel = new Ellipse({
-  width: 12,
-  height: 12,
+  diameter: 12,
   addTo: illo,
   translate: { x: 18, y: 8, z: 10 },
   color: dark,

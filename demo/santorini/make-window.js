@@ -10,8 +10,7 @@ function makeWindow( options ) {
 
 function makeCircleWindow( options ) {
   new Ellipse( extend( options, {
-    width: 2,
-    height: 2,
+    diameter: 2,
   }));
 }
 

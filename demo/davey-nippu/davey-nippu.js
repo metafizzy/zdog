@@ -299,8 +299,7 @@ var ground = new Anchor({
   });
   // forehead
   var forehead = new Ellipse({
-    width: 2,
-    height: 2,
+    diameter: 2,
     addTo: chin,
     translate: { y: -4 },
     lineWidth: 4,
@@ -330,8 +329,7 @@ var ground = new Anchor({
   });
   // hair back
   new Ellipse({
-    width: 3,
-    height: 3,
+    diameter: 3,
     addTo: chin,
     translate: { y: -4, z: -4 },
     lineWidth: 4,
@@ -366,8 +364,7 @@ var ground = new Anchor({
   });
 
   var ear = new Ellipse({
-    width: 1.5,
-    height: 1.5,
+    diameter: 1.5,
     addTo: forehead,
     translate: { x: 3.5, y: 1, z: -1 },
     rotate: { y: -TAU/8 },
@@ -447,7 +444,7 @@ var ground = new Anchor({
   // hair cap
   new Hemisphere({
     addTo: head,
-    radius: 5.5,
+    diameter: 11,
     color: midnight,
     lineWidth: 1.5,
     translate: { y: -1 },
@@ -456,7 +453,7 @@ var ground = new Anchor({
   // face
   new Hemisphere({
     addTo: head,
-    radius: 4.5,
+    diameter: 9,
     color: skinLight,
     baseColor: midnight,
     lineWidth: 0.5,
@@ -506,8 +503,7 @@ var ground = new Anchor({
   });
 
   var lens = new Ellipse({
-    width: 4,
-    height: 4,
+    diameter: 4,
     addTo: glasses,
     translate: { x: -2.5 },
     stroke: false,
@@ -583,8 +579,7 @@ var ground = new Anchor({
   });
   // phone logo dot
   new Ellipse({
-    width: 1.25,
-    height: 1.25,
+    diameter: 1.25,
     addTo: phoneBack,
     translate: { y: -1 },
     fill: true,

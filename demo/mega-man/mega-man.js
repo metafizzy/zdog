@@ -247,8 +247,7 @@ new Shape({
 
   // ear cone outer
   var earCone = new Ellipse({
-    width:  5.5,
-    height: 5.5,
+    diameter:  5.5,
     translate: { x: 10*xSide, y: 3, z: -1 },
     rotate: { y: (TAU/4+0.2)*-xSide, x: TAU/4, z: 1 },
     fill: false,
@@ -259,8 +258,7 @@ new Shape({
   
   // ear cone inner inner
   new Ellipse({
-    width: 5,
-    height: 5,
+    diameter: 5,
     addTo: earCone,
     translate: { z: -1 },
     color: '#C11',

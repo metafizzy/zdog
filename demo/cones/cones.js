@@ -35,7 +35,7 @@ var colorWheel = [ beige, magenta, orange, blue, yellow ];
 
 // top & bottom
 var cone = new Cone({
-  radius: 4,
+  diameter: 8,
   length: 10,
   addTo: illo,
   translate: { y: -16 },

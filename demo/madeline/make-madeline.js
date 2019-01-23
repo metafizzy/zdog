@@ -19,8 +19,7 @@ function makeMadeline( isGood, colors, options ) {
 
   // face
   var face = new Ellipse({
-    width: 6,
-    height: 6,
+    diameter: 6,
     addTo: head,
     translate: { z: 4 },
     lineWidth: 8,
@@ -244,8 +243,7 @@ function makeMadeline( isGood, colors, options ) {
 
     // top shoulder rib
     var armRib = new Ellipse({
-      width: 2,
-      height: 2,
+      diameter: 2,
       rotate: { x: -TAU/4 },
       addTo: shoulderJoint,
       translate: { x: 0*xSide },

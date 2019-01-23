@@ -49,8 +49,7 @@ var bgStripe = new Rect({
 });
 // magenta circle
 var bgCircle = new Ellipse({
-  width: 96,
-  height: 96,
+  diameter: 96,
   addTo: background,
   translate: { y: -16, z: -24 },
   color: magenta,
@@ -65,8 +64,7 @@ bgStripe.copy({
 });
 // amber circle
 bgCircle.copy({
-  width: 64,
-  height: 64,
+  diameter: 64,
   translate: { y: -16, },
   color: amber,
 });

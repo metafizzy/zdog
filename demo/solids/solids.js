@@ -50,7 +50,7 @@ var solids = [];
   solids.push( hourglass );
 
   var hemi = new Hemisphere({
-    radius: 1,
+    diameter: 2,
     translate: { z: -1 },
     addTo: hourglass,
     color: magenta,
@@ -79,7 +79,7 @@ var solids = [];
   solids.push( sphere );
 
   var hemi = new Hemisphere({
-    radius: 1,
+    diameter: 2,
     addTo: sphere,
     color: orange,
     baseColor: violet,
@@ -97,7 +97,7 @@ var solids = [];
 // ----- cylinder ----- //
 
 var cylinder = new Cylinder({
-  radius: 1,
+  diameter: 2,
   length: 2,
   addTo: illo,
   translate: { x: 4, y: -4 },
@@ -119,7 +119,7 @@ var cone = new Anchor({
 solids.push( cone );
 
 new Cone({
-  radius: 1,
+  diameter: 2,
   length: 2,
   addTo: cone,
   translate: { z: 1 },

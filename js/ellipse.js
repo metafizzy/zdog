@@ -3,15 +3,18 @@
 // -------------------------- Ellipse -------------------------- //
 
 var Ellipse = Shape.subclass({
-  width: 1,
-  height: 1,
+  diameter: 1,
+  width: undefined,
+  height: undefined,
   quarters: 4,
   closed: false,
 });
 
 Ellipse.prototype.updatePath = function() {
-  var x = this.width / 2;
-  var y = this.height / 2;
+  var width = this.width != undefined ? this.width : this.diameter;
+  var height = this.height != undefined ? this.height : this.diameter;
+  var x = width / 2;
+  var y = height / 2;
   this.path = [
     { x: 0, y: -y },
     { arc: [ // top right
