@@ -27,13 +27,9 @@ Illo.prototype.setCanvas = function( canvas ) {
   } else {
     this.canvas = canvas;
   }
-
   // update related properties
   this.ctx = this.canvas.getContext('2d');
 
-  this.ctx.lineCap = 'round';
-  this.ctx.lineJoin = 'round';
-  // console.log('set line cap');
   var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
   // sizes
   this.width = this.canvas.width * pixelRatio;
@@ -49,6 +45,8 @@ Illo.prototype.setCanvas = function( canvas ) {
 
 Illo.prototype.prerender = function() {
   var ctx = this.ctx;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
   ctx.clearRect( 0, 0, this.width, this.height );
   ctx.save();
   if ( this.centered ) {
