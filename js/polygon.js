@@ -7,7 +7,7 @@ var Polygon = Shape.subclass({
   radius: 0.5,
 });
 
-Polygon.prototype.updatePath = function() {
+Polygon.prototype.setPath = function() {
   this.path = [];
   for ( var i=0; i < this.sides; i++ ) {
     var theta = i/this.sides * TAU - TAU/4;

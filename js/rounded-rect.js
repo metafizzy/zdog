@@ -9,7 +9,7 @@ var RoundedRect = Shape.subclass({
   closed: false,
 });
 
-RoundedRect.prototype.updatePath = function() {
+RoundedRect.prototype.setPath = function() {
   var xA = this.width / 2;
   var yA = this.height / 2;
   var shortSide = Math.min( xA, yA );

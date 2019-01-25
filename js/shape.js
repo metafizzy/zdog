@@ -15,9 +15,7 @@ var Shape = Anchor.subclass({
 
 Shape.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
-  this.updatePath(); // hook for Rect, Ellipse, & other subclasses
-  this.updatePathDirections();
-
+  this.updatePath();
   // front
   this.front = new Vector( options.front || this.front );
   this.renderFront = new Vector( this.front );
@@ -31,8 +29,13 @@ var actionNames = [
   'arc',
 ];
 
+Shape.prototype.updatePath = function() {
+  this.setPath();
+  this.updatePathDirections();
+};
+
 // place holder for Ellipse, Rect, etc.
-Shape.prototype.updatePath = function() {};
+Shape.prototype.setPath = function() {};
 
 // parse path into PathDirections
 Shape.prototype.updatePathDirections = function() {

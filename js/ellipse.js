@@ -10,7 +10,7 @@ var Ellipse = Shape.subclass({
   closed: false,
 });
 
-Ellipse.prototype.updatePath = function() {
+Ellipse.prototype.setPath = function() {
   var width = this.width != undefined ? this.width : this.diameter;
   var height = this.height != undefined ? this.height : this.diameter;
   var x = width / 2;

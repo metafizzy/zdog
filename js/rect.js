@@ -7,7 +7,7 @@ var Rect = Shape.subclass({
   height: 1,
 });
 
-Rect.prototype.updatePath = function() {
+Rect.prototype.setPath = function() {
   var x = this.width / 2;
   var y = this.height / 2;
   this.path = [
