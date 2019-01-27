@@ -5,6 +5,7 @@
   "undef": true,
   "globals": {
     "Anchor": false,
+    "Box": false,
     "Cone": false,
     "Cylinder": false,
     "Dragger": false,
