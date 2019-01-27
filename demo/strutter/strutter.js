@@ -11,8 +11,9 @@ canvas.height = h * zoom;
 var isRotating = true;
 // colors
 var gold = '#EA0';
-var red = '#E21';
-var denim = '#345';
+var orange = '#C25';
+var eggplant = '#636';
+var midnight = '#424';
 
 var illo = new Illo({
   canvas: canvas,
@@ -33,7 +34,7 @@ new Shape({
   addTo: illo,
   path: [ { x: -1 }, { x: 1 } ],
   scale: hipX,
-  color: denim,
+  color: eggplant,
   stroke: 4,
 });
 
@@ -42,7 +43,7 @@ var rightLeg = new Shape({
   path: [ { y: 0 }, { y: 12 } ],
   translate: { x: -hipX },
   rotate: { x: TAU/4 },
-  color: denim,
+  color: eggplant,
   stroke: 4,
 });
 // foot
@@ -53,7 +54,7 @@ new RoundedRect({
   radius: 1,
   translate: { y: 14, z: 2 },
   rotate: { x: TAU/4 },
-  color: red,
+  color: orange,
   fill: true,
   stroke: 4,
 });
@@ -62,7 +63,7 @@ var plantAngle = -TAU/32 * 3;
 var leftLeg = rightLeg.copyGraph({
   translate: { x: hipX },
   rotate: { x: plantAngle },
-  color: '#234'
+  color: midnight,
 });
 
 leftLeg.children[0].rotate.set({ x: TAU/4 - plantAngle });
@@ -73,7 +74,7 @@ new Shape({
   path: [ { x: -1 }, { x:  1 } ],
   scale: 1.5,
   translate: { y: -5.5, z: -3 },
-  color: red,
+  color: orange,
   stroke: 9,
   fill: true,
 });
@@ -89,7 +90,7 @@ var armSize = 6;
     scale: { x: xSide },
     translate: { x: 4.5 * xSide, y: -8, z: -4 },
     rotate: isRight ? { y: TAU/8, z: -TAU/16 } : { y: TAU/8  },
-    color: denim,
+    color: eggplant,
     stroke: 4,
   });
 
@@ -98,7 +99,7 @@ var armSize = 6;
     path: [ { x: 0 }, { x: armSize-2 } ],
     translate: { x: armSize },
     rotate: isRight ? { z: TAU/16 * 3, y: TAU/4 } : { z: -TAU/4, x: -TAU/32 * 2, y: TAU/8 },
-    color: red,
+    color: orange,
     stroke: 4,
   });
   // hand
@@ -122,7 +123,7 @@ new Hemisphere({
   addTo: head,
   diameter: 12,
   color: gold,
-  baseColor: red,
+  baseColor: orange,
   rotate: { x: -TAU/4 },
   stroke: false,
 });
@@ -133,7 +134,7 @@ var eye = new Ellipse({
   quarters: 2,
   translate: { x: -2, y: 1.5, z: 5 },
   rotate: { z: -TAU/4 },
-  color: denim,
+  color: eggplant,
   stroke: 0.5,
   backface: false,
 });
@@ -158,7 +159,7 @@ new Ellipse({
 new Hemisphere({
   addTo: head,
   diameter: 12,
-  color: red,
+  color: orange,
   baseColor: gold,
   rotate: { x: TAU/4 },
   stroke: false,
@@ -180,7 +181,7 @@ new Shape({
     ]},
     { x:  -1, z: 0 },
   ],
-  color: denim,
+  color: eggplant,
   fill: true,
 });
 
@@ -194,7 +195,7 @@ new Shape({
     ]},
     { x: 0, z:  0 },
   ],
-  color: denim,
+  color: eggplant,
   fill: true,
 });
 

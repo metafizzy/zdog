@@ -9,9 +9,11 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = false;
 // colors
+var yellow = "#ED0";
 var gold = '#EA0';
-var red = '#E21';
-var denim = '#345';
+var orange = '#E62';
+var garnet = '#C25';
+var eggplant = '#636';
 
 [ Shape, Ellipse, Rect ].forEach( function( ShapeClass ) {
   ShapeClass.defaults.stroke = 1/zoom;
@@ -54,13 +56,14 @@ var gable = new Shape({
 gable.copy({
   addTo: house,
   translate: { z: -2 },
+  color: garnet,
 });
 
 // hole
 new Ellipse({
   addTo: frontGroup,
   diameter: 1.25,
-  color: denim,
+  color: eggplant,
   stroke: false,
 });
 
@@ -70,10 +73,11 @@ var side = new Rect({
   height: 2,
   rotate: { y: TAU/4 },
   translate: { x: 2, y: 1 },
-  color: denim,
+  color: orange,
 });
 side.copy({
   translate: { x: -2, y: 1 },
+  color: garnet,
 });
 
 var roofAnchor = new Anchor({
@@ -91,8 +95,8 @@ var roof = new Rect({
   height: 4,
   translate: { x: -roofW/2 },
   rotate: { x: TAU/4 },
-  color: red,
-  backface: denim,
+  color: orange,
+  backface: eggplant,
 });
 
 roof.copy({
@@ -101,10 +105,13 @@ roof.copy({
   // color: gold,
 });
 
-roofAnchor.copyGraph({
+var roofCopy = roofAnchor.copyGraph({
   scale: { x: -1 },
   rotate: { z: TAU/8 },
 });
+
+roofCopy.children[0].color = yellow;
+roofCopy.children[1].color = yellow;
 
 // base
 new Rect({
@@ -113,7 +120,7 @@ new Rect({
   height: 4,
   translate: { y: 2 },
   rotate: { x: TAU/4 },
-  color: red,
+  color: eggplant,
 });
 
 // -- animate --- //

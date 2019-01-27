@@ -17,18 +17,11 @@ var tSpeed = 1/180;
 var viewRotation = new Vector();
 
 // warm colors
-var violet = '#636';
-var magenta = '#C25';
+var eggplant = '#636';
+var garnet = '#C25';
 var orange = '#E62';
 var gold = '#EA0';
 var yellow = '#ED0';
-
-// cool colors
-// var violet = '#366';
-// var magenta = '#C25';
-// var orange = '#4DD';
-// var gold = '#EA0';
-// var yellow = '#8FF';
 
 var illo = new Illo({
   canvas: canvas,
@@ -53,7 +46,7 @@ var solids = [];
     diameter: 2,
     translate: { z: -1 },
     addTo: hourglass,
-    color: magenta,
+    color: garnet,
     baseColor: orange,
     stroke: false,
   });
@@ -61,7 +54,7 @@ var solids = [];
   hemi.copy({
     translate: { z: 1 },
     rotate: { y: TAU/2 },
-    color: violet,
+    color: eggplant,
     baseColor: gold,
   });
 
@@ -82,13 +75,13 @@ var solids = [];
     diameter: 2,
     addTo: sphere,
     color: orange,
-    baseColor: violet,
+    baseColor: eggplant,
     stroke: false,
   });
 
   hemi.copy({
     rotate: { y: TAU/2 },
-    color: violet,
+    color: eggplant,
     baseColor: orange,
   });
 
@@ -103,7 +96,7 @@ var cylinder = new Cylinder({
   translate: { x: 4, y: -4 },
   // rotate: { x: TAU/4 },
   color: gold,
-  baseColor: magenta,
+  baseColor: garnet,
   stroke: false,
 });
 
@@ -124,7 +117,7 @@ new Cone({
   addTo: cone,
   translate: { z: 1 },
   rotate: { y: TAU/2 },
-  color: magenta,
+  color: garnet,
   baseColor: gold,
   stroke: false,
 });
@@ -152,7 +145,7 @@ new Cone({
     translate: { y: height/2 },
     fill: true,
     stroke: false,
-    color: violet,
+    color: eggplant,
     // backface: false,
   });
 
@@ -170,7 +163,7 @@ new Cone({
     triangle.copy({
       addTo: rotor2,
       translate: { y: -inradius },
-      color: [ gold, magenta, orange ][i],
+      color: [ gold, garnet, orange ][i],
     });
   }
 
@@ -190,7 +183,7 @@ new Cone({
 
   solids.push( octahedron );
 
-  var colorWheel = [ violet, magenta, orange, gold, yellow ];
+  var colorWheel = [ eggplant, garnet, orange, gold, yellow ];
 
   // radius of triangle with side length = 1
   var radius = ROOT3/2 * 2/3;
@@ -230,56 +223,22 @@ new Cone({
 
 // ----- cube ----- //
 
-( function() {
+var cube = new Box({
+  addTo: illo,
+  width: 2,
+  height: 2,
+  depth: 2,
+  translate: { x: 4, y: 0 },
+  top: yellow,
+  front: gold,
+  left: orange,
+  right: orange,
+  back: garnet,
+  bottom: eggplant,
+  stroke: false,
+});
 
-  var cube = new Anchor({
-    addTo: illo,
-    translate: { x: 4, y: 0 },
-    scale: 1,
-  });
-
-  solids.push( cube );
-
-  var face = new Rect({
-    width: 2,
-    height: 2,
-    addTo: cube,
-    translate: { z: -1 },
-    fill: true,
-    stroke: false,
-    color: magenta,
-  });
-
-  face.copy({
-    translate: { z: 1 },
-    color: gold,
-  });
-
-  face.copy({
-    translate: { x: -1 },
-    rotate: { y: -TAU/4 },
-    color: orange,
-  });
-
-  face.copy({
-    translate: { x: 1 },
-    rotate: { y: -TAU/4 },
-    color: orange,
-  });
-
-  face.copy({
-    translate: { y: -1 },
-    rotate: { x: -TAU/4 },
-    color: yellow,
-  });
-
-  face.copy({
-    translate: { y: 1 },
-    rotate: { x: -TAU/4 },
-    color: violet,
-  });
-
-})();
+solids.push( cube );
 
 // ----- dodecahedron ----- //
 
@@ -312,7 +271,7 @@ new Cone({
   face.copy({
     translate: { y: midradius },
     rotate: { x: -TAU/4 },
-    color: violet,
+    color: eggplant,
   });
 
 
@@ -320,8 +279,8 @@ new Cone({
 
 
     var colorWheel = {
-      '-1': [ violet, magenta, gold, orange, magenta ],
-      1: [ yellow, gold, magenta, orange, gold ],
+      '-1': [ eggplant, garnet, gold, orange, garnet ],
+      1: [ yellow, gold, garnet, orange, gold ],
     }[ ySide ];
 
     for ( var i=0; i < 5; i++ ) {
@@ -368,17 +327,17 @@ new Cone({
   var sideTilt = Math.asin( capSagitta / faceHeight );
   var sideHeight = Math.sqrt( faceHeight*faceHeight - capSagitta*capSagitta );
 
-  // var colorWheel = [ violet, magenta, orange, gold, yellow ];
+  // var colorWheel = [ eggplant, garnet, orange, gold, yellow ];
 
   [ -1, 1 ].forEach( function( ySide ) {
     var capColors = {
-      '-1': [ magenta, gold, yellow, gold, orange ],
-      1: [ gold, magenta, violet, magenta, orange ],
+      '-1': [ garnet, gold, yellow, gold, orange ],
+      1: [ gold, garnet, eggplant, garnet, orange ],
     }[ ySide ];
 
     var sideColors = {
-      '-1': [ magenta, gold, yellow, orange, magenta ],
-      1: [ gold, magenta, violet, orange, orange ],
+      '-1': [ garnet, gold, yellow, orange, garnet ],
+      1: [ gold, garnet, eggplant, orange, orange ],
     }[ ySide ];
 
     for ( var i=0; i < 5; i++ ) {

@@ -21,9 +21,9 @@ var illo = new Illo({
   },
 });
 
-var red = '#E21';
+var red = '#E62';
 var gold = '#EA0';
-var denim = '#345';
+var denim = '#636';
 
 var depth = 20;
 var lineWidth = 8;

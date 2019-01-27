@@ -23,8 +23,8 @@ var illo = new Illo({
 var yellow = '#ED0';
 var gold = '#EA0';
 var orange = '#E62';
-var magenta = '#C25';
-var navy = '#249';
+var garnet = '#C25';
+var eggplant = '#636';
 
 // -- illustration shapes --- //
 
@@ -33,18 +33,18 @@ var hemi = new Hemisphere({
   addTo: illo,
   translate: { y: -16 },
   rotate: { x: -TAU/4 },
-  color: magenta,
-  baseColor: navy,
+  color: garnet,
+  baseColor: eggplant,
   stroke: false,
 });
 hemi.copy({
   translate: { y: 16 },
   rotate: { x: TAU/4 },
-  color: magenta,
-  baseColor: navy,
+  color: garnet,
+  baseColor: eggplant,
 });
 
-var colorWheel = [ navy, magenta, orange, gold, yellow, ];
+var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
 
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
