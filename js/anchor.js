@@ -51,7 +51,17 @@ Anchor.prototype.setOptions = function( options ) {
 };
 
 Anchor.prototype.addChild = function( shape ) {
-  this.children.push( shape );
+  var index = this.children.indexOf( shape );
+  if ( index == -1 ) {
+    this.children.push( shape );
+  }
+};
+
+Anchor.prototype.removeChild = function( shape ) {
+  var index = this.children.indexOf( shape );
+  if ( index != -1 ) {
+    this.children.splice( index, 1 );
+  }
 };
 
 // ----- update ----- //
