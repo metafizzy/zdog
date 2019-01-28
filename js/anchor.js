@@ -1,13 +1,12 @@
 // -------------------------- Anchor -------------------------- //
 
 function Anchor( options ) {
-  this.create( options );
+  this.create( options || {} );
 }
 
 Anchor.prototype.create = function( options ) {
   // set defaults & options
   extend( this, this.constructor.defaults );
-  options = options || {};
   this.setOptions( options );
 
   // transform
@@ -175,7 +174,7 @@ function getSubclass( Super ) {
   return function( defaults ) {
     // create constructor
     function Item( options ) {
-      this.create( options );
+      this.create( options || {} );
     }
 
     Item.prototype = Object.create( Super.prototype );
