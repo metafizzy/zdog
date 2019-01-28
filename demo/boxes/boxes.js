@@ -1,8 +1,8 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var w = 12;
-var h = 12;
+var w = 9;
+var h = 9;
 var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
 var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
@@ -32,9 +32,13 @@ var illo = new Illo({
 
 // -- illustration shapes --- //
 
+var model = new Anchor({
+  addTo: illo,
+});
+
 function addBox( options ) {
   var boxOptions = {
-    addTo: illo,
+    addTo: model,
     stroke: false,
     top: yellow,
     back: gold,
@@ -50,41 +54,61 @@ function addBox( options ) {
 
 // top
 addBox({
-  height: 2,
   bottom: false,
-  translate: { y: -1.5 },
+  translate: { y: -1 },
 });
 // bottom
 addBox({
-  height: 2,
   top: false,
-  translate: { y: 1.5 },
+  translate: { y: 1 },
 });
 // front
 addBox({
-  depth: 2,
   back: false,
-  translate: { z: 1.5 },
+  translate: { z: 1 },
 });
 // back
 addBox({
-  depth: 2,
   front: false,
-  translate: { z: -1.5 },
+  translate: { z: -1 },
 });
 // left
 addBox({
-  width: 2,
   right: false,
-  translate: { x: -1.5 },
+  translate: { x: -1 },
 });
 // right
 addBox({
-  width: 2,
   left: false,
-  translate: { x: 1.5 },
+  translate: { x: 1 },
 });
 
+var dot = new Shape({
+  addTo: model,
+  translate: { y: -2 },
+  stroke: 1,
+  color: gold,
+});
+dot.copy({
+  translate: { y: 2 },
+  color: gold,
+});
+dot.copy({
+  translate: { x: -2 },
+  color: yellow,
+});
+dot.copy({
+  translate: { x: 2 },
+  color: garnet,
+});
+dot.copy({
+  translate: { z: -2 },
+  color: orange,
+});
+dot.copy({
+  translate: { z: 2 },
+  color: eggplant,
+});
 
 // -- animate --- //
 
@@ -92,9 +116,18 @@ var t = 0;
 
 function animate() {
   if ( isRotating ) {
-    illo.rotate.y = easeInOut( t%1, 4 ) * TAU + initRotate.y;
+    var turn = Math.floor( t % 4 );
+    var theta = easeInOut( t%1, 3 ) * TAU;
+    if ( turn === 0  || turn == 2 ) {
+      model.rotate.y = theta;
+    } else if ( turn == 1 ) {
+      model.rotate.x = theta;
+    } else if ( turn == 3 ) {
+      model.rotate.z = theta;
+    }
     t += 1/150;
   }
+
   illo.updateGraph();
   illo.renderGraph();
   requestAnimationFrame( animate );
