@@ -51,15 +51,24 @@ Anchor.prototype.setOptions = function( options ) {
 
 Anchor.prototype.addChild = function( shape ) {
   var index = this.children.indexOf( shape );
-  if ( index == -1 ) {
-    this.children.push( shape );
+  if ( index != -1 ) {
+    return;
   }
+  shape.remove(); // remove previous parent
+  shape.addTo = this; // keep parent reference
+  this.children.push( shape );
 };
 
 Anchor.prototype.removeChild = function( shape ) {
   var index = this.children.indexOf( shape );
   if ( index != -1 ) {
     this.children.splice( index, 1 );
+  }
+};
+
+Anchor.prototype.remove = function() {
+  if ( this.addTo ) {
+    this.addTo.removeChild( this );
   }
 };
 
