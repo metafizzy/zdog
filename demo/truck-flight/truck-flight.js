@@ -6,9 +6,10 @@ var h = 88;
 var zoom = 5;
 canvas.width =  w * zoom;
 canvas.height = h * zoom;
+var TAU = Zdog.TAU;
 var initRotate = { x: TAU/16, y: TAU/8 };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: initRotate,
@@ -49,15 +50,15 @@ var bedSidePath = [
   { x: -32, y:  8 },
 ];
 
-var darkStrokeSide = extend( {translate: { z: 12 }}, darkStroke );
-var lightFillSide = extend( {translate: { z: 12 }}, lightFill );
-var allDarkSide = extend( {translate: { z: -12 }}, allDark );
+var darkStrokeSide = Zdog.extend( {translate: { z: 12 }}, darkStroke );
+var lightFillSide = Zdog.extend( {translate: { z: 12 }}, lightFill );
+var allDarkSide = Zdog.extend( {translate: { z: -12 }}, allDark );
 
 // sides, outer
 [ lightFillSide, darkStrokeSide, allDarkSide ].forEach( function( sideOptions ) {
 
   // door
-  new Shape( extend( {
+  new Zdog.Shape( Zdog.extend( {
     path: [
       { x:  -8, y: -14 },
       { x:  10, y: -14 },
@@ -68,12 +69,12 @@ var allDarkSide = extend( {translate: { z: -12 }}, allDark );
   }, sideOptions ) );
 
   // bed side
-  new Shape( extend( {
+  new Zdog.Shape( Zdog.extend( {
     path: bedSidePath,
   }, sideOptions ) );
 
   // front side
-  new Shape( extend( {
+  new Zdog.Shape( Zdog.extend( {
     path: [
       { x: 20, y: -4 },
       { x: 32, y: -4 },
@@ -86,16 +87,16 @@ var allDarkSide = extend( {translate: { z: -12 }}, allDark );
 
 // inside bed
 // side, dark
-new Shape( extend( { 
+new Zdog.Shape( Zdog.extend( { 
   path: bedSidePath,
   translate: { z: 11 }
 }, allDark ));
 // side light
-new Shape( extend( { 
+new Zdog.Shape( Zdog.extend( { 
   path: bedSidePath,
   translate: { z: -11 }
 }, lightFill ));
-new Shape( extend( { 
+new Zdog.Shape( Zdog.extend( { 
   path: bedSidePath,
   translate: { z: -11 }
 }, darkStroke ));
@@ -103,7 +104,7 @@ new Shape( extend( {
 // underside
 
 // back underside
-new Shape( extend( {
+new Zdog.Shape( Zdog.extend( {
   path: [
     { x: -32, z:  12 },
     { x:  -8, z:  12 },
@@ -113,7 +114,7 @@ new Shape( extend( {
   translate: { y: 8 },
 }, allDark ) );
 // door underside
-new Shape( extend( {
+new Zdog.Shape( Zdog.extend( {
   path: [
     { x: -8, z: 12 },
     { x: 20, z: 12 },
@@ -123,7 +124,7 @@ new Shape( extend( {
   translate: { y: 8 },
 }, allDark ) );
 // front underside
-new Shape( extend( {
+new Zdog.Shape( Zdog.extend( {
   path: [
     { x: 20, z: 12 },
     { x: 32, z: 12 },
@@ -134,7 +135,7 @@ new Shape( extend( {
 }, allDark ) );
 
 // roof
-var roof = new Shape( extend( {
+var roof = new Zdog.Shape( Zdog.extend( {
   path: [
     { x:  -8, z: 12 },
     { x:  10, z: 12 },
@@ -146,7 +147,7 @@ var roof = new Shape( extend( {
 roof.copy( darkStroke );
 
 // windshield
-new Shape( extend( {
+new Zdog.Shape( Zdog.extend( {
   path: [
     { x: 10, y: -14, z: 12 },
     { x: 10, y: -14, z: -12 },
@@ -156,7 +157,7 @@ new Shape( extend( {
 }, allDark ) );
 
 // hood
-var hood = new Shape( extend( {
+var hood = new Zdog.Shape( Zdog.extend( {
   path: [
     { x: 20, z: 12 },
     { x: 32, z: 12 },
@@ -167,7 +168,7 @@ var hood = new Shape( extend( {
 }, lightFill ) );
 hood.copy( darkStroke );
 
-var frontGroup = new Group({
+var frontGroup = new Zdog.Group({
   addTo: illo,
   translate: { x: 32, y: 2 },
   rotate: { y: -TAU/4 },
@@ -175,7 +176,7 @@ var frontGroup = new Group({
 });
 
 // front
-new Rect({
+new Zdog.Rect({
   addTo: frontGroup,
   width: 24,
   height: 12,
@@ -184,13 +185,13 @@ new Rect({
   stroke: 2,
 });
 
-var frontDetails = new Anchor({
+var frontDetails = new Zdog.Anchor({
   addTo: frontGroup,
   translate: { z: 0.5 },
 });
 
 // front details
-var headlight = new Rect({
+var headlight = new Zdog.Rect({
   width: 2,
   height: 2,
   addTo: frontDetails,
@@ -203,7 +204,7 @@ headlight.copy({
 });
 
 // top line
-var grillLine = new Shape({
+var grillLine = new Zdog.Shape({
   path: [
     { x: -4 },
     { x: 4 },
@@ -226,7 +227,7 @@ grillLine.copy({
 });
 
 // tail
-var tail = new Rect( extend({
+var tail = new Zdog.Rect( Zdog.extend({
   width: 24,
   height: 12,
   addTo: illo,
@@ -240,13 +241,13 @@ tail.copy({
   translate: { x: -31, y: 2 },
 });
 
-var tailGroup = new Group({
+var tailGroup = new Zdog.Group({
   addTo: tail,
   translate: { z: -0 },
 });
 
 // back details
-var backlight = new Rect({
+var backlight = new Zdog.Rect({
   width: 4,
   height: 4,
   addTo: tailGroup,
@@ -259,7 +260,7 @@ backlight.copy({
   translate: { x: 10, y: -4 },
 });
 // back bumper
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -11 },
     { x: 11 },
@@ -273,7 +274,7 @@ new Shape({
 });
 
 // cab back
-var cabBackTop = new Shape({
+var cabBackTop = new Zdog.Shape({
   path: [
     { y: -14, z: 12 },
     { y:  -4, z: 12 },
@@ -292,7 +293,7 @@ cabBackTop.copy({
   stroke: 2,
 });
 
-var cabBackBottom = new Shape({
+var cabBackBottom = new Zdog.Shape({
   path: [
     { y: -4, z: 12 },
     { y:  8, z: 12 },
@@ -314,7 +315,7 @@ cabBackBottom.copy({
 // WHEELS
 
 // front light
-var lightFillWheel = new Shape( extend({
+var lightFillWheel = new Zdog.Shape( Zdog.extend({
   path: [
     { x: 0, y: -6 },
     { arc: [ // top right
@@ -344,7 +345,7 @@ var darkStrokeWheel = lightFillWheel.copy({
   stroke: 4,
   color: dark,
 });
-var darkWheel = new Ellipse({
+var darkWheel = new Zdog.Ellipse({
   diameter: 12,
   addTo: illo,
   translate: { x: 18, y: 8, z: 10 },

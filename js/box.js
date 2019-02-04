@@ -1,8 +1,25 @@
-/* globals Box: true */
+/**
+ * Box composite shape
+ */
 
-// -------------------------- Box -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils', './anchor', './shape', './rect' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( depends, factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Box = factory( Zdog, Zdog.Anchor, Zdog.Shape, Zdog.Rect );
+  }
+}( this, function factory( utils, Anchor, Shape, Rect ) {
 
-var boxDefaults = extend( {
+var boxDefaults = utils.extend( {
   width: 1,
   height: 1,
   depth: 1,
@@ -17,8 +34,9 @@ var boxDefaults = extend( {
 boxDefaults.fill = true;
 delete boxDefaults.path;
 
-
 var Box = Anchor.subclass( boxDefaults );
+
+var TAU = utils.TAU;
 
 Box.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
@@ -75,7 +93,7 @@ Box.prototype.setFace = function( faceName, options ) {
     return;
   }
   // update & add face
-  extend( options, {
+  utils.extend( options, {
     // set color from option, i.e. `front: '#19F'`
     color: typeof property == 'string' ? property : this.color,
     stroke: this.stroke,
@@ -94,3 +112,7 @@ Box.prototype.setFace = function( faceName, options ) {
   face.updatePath();
   this.addChild( face );
 };
+
+return Box;
+
+}));

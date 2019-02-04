@@ -1,10 +1,12 @@
+var TAU = Zdog.TAU;
+
 function BokehShape( options ) {
   this.create( options );
   this.bokehSize = options.bokehSize || 5;
   this.bokehLimit = options.bokehLimit || 64;
 }
 
-BokehShape.prototype = Object.create( Shape.prototype );
+BokehShape.prototype = Object.create( Zdog.Shape.prototype );
 
 BokehShape.prototype.updateBokeh = function() {
   // bokeh 0 -> 1

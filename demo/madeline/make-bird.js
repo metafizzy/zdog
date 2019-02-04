@@ -2,20 +2,20 @@ function makeBird( options ) {
 
   var spin = options.spin || 0;
 
-  var arrow = new Anchor({
+  var arrow = new Zdog.Anchor({
     addTo: options.addTo,
     scale: 2/3,
     rotate: { z: spin },
   });
 
-  var bird = new Group({
+  var bird = new Zdog.Group({
     addTo: arrow,
     translate: { x: 87 },
     rotate: { x: -spin },
   });
 
   // bird body
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -3, y: 0 },
       { arc: [
@@ -35,7 +35,7 @@ function makeBird( options ) {
   });
 
   // bird head
-  new Shape({
+  new Zdog.Shape({
     translate: { x: 4, y: -1 },
     addTo: bird,
     stroke: 4,
@@ -43,7 +43,7 @@ function makeBird( options ) {
   });
   
   // beak
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: 0, y: -1 },
       { x: 3, y: 0 },
@@ -57,7 +57,7 @@ function makeBird( options ) {
   });
 
   // tail feather
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -3, z: -2 },
       { x:  0, z:  0 },
@@ -70,7 +70,7 @@ function makeBird( options ) {
     fill: true,
   });
   
-  var wing = new Shape({
+  var wing = new Zdog.Shape({
     path: [
       { x: 3, y: 0 },
       { x: -1, y: -9 },

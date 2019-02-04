@@ -8,20 +8,21 @@ var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
 });
 
-Shape.defaults.closed = false;
-Shape.defaults.stroke = 3;
-Ellipse.defaults.stroke = 3;
+Zdog.Shape.defaults.closed = false;
+Zdog.Shape.defaults.stroke = 3;
+Zdog.Ellipse.defaults.stroke = 3;
 
+var TAU = Zdog.TAU;
 var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;
 var isRotating = true;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   onDragStart: function() {
@@ -31,7 +32,7 @@ var illo = new Illo({
 
 var initialHatRotate = { y: -TAU/8 };
 
-var hat = new Anchor({
+var hat = new Zdog.Anchor({
   addTo: illo,
   rotate: initialHatRotate,
 });
@@ -41,7 +42,7 @@ illo.setDragRotate( hat );
 // -- illustration shapes --- //
 
 // cap top
-var capTop = new Shape({
+var capTop = new Zdog.Shape({
   path: [
     { x: -20, y: 4 },
     { x: -20, y: 0 },
@@ -59,7 +60,7 @@ var capTop = new Shape({
 });
 
 // cap back
-new Ellipse({
+new Zdog.Ellipse({
   addTo: hat,
   diameter: 40,
   quarters: 2,
@@ -68,7 +69,7 @@ new Ellipse({
 });
 
 // brim back arch
-new Ellipse({
+new Zdog.Ellipse({
   addTo: hat,
   diameter: 32,
   quarters: 2,
@@ -77,7 +78,7 @@ new Ellipse({
 });
 
 // cap back to brim bottom connect
-var brimConnector = new Shape({
+var brimConnector = new Zdog.Shape({
   path: [
     { x: -20, z: 0 },
     { arc: [
@@ -95,7 +96,7 @@ brimConnector.copy({
 
 var brimTip = { x: 0, y: -12, z: 38 };
 
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 0, y: -12, z: 12 },
     brimTip,
@@ -103,7 +104,7 @@ new Shape({
   addTo: hat,
 });
 
-var brimBridge = new Shape({
+var brimBridge = new Zdog.Shape({
   path: [
     { x: -16, y: 4, z: 12 },
     { x: -16, y: 4, z: 22 },
@@ -121,7 +122,7 @@ brimBridge.copy({
 
 // glasses front top
 
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -1 },
     { x: 1 },
@@ -133,7 +134,7 @@ new Shape({
 
 // glass lens
 var lensScale = (quarterView - 1) * 0.75 + 1;
-var glassLens = new Shape({
+var glassLens = new Zdog.Shape({
   path: [
     { x: 0, y: -3 },
     { x: 0, y: 0 },
@@ -158,7 +159,7 @@ glassLens.copy({
 });
 
 // glasses arm
-var glassesArmA = new Shape({
+var glassesArmA = new Zdog.Shape({
   path: [
     { z: 12, y: 0 },
     { z: -1, y: 0 },
@@ -181,7 +182,7 @@ glassesArmA.render = function() {
   if ( isRotateXFlat && isRotateYBlocking ) {
     return;
   }
-  Shape.prototype.render.apply( this, arguments );
+  Zdog.Shape.prototype.render.apply( this, arguments );
 };
 
 glassesArmB.render = function() {
@@ -190,7 +191,7 @@ glassesArmB.render = function() {
   if ( isRotateXFlat && isRotateYBlocking ) {
     return;
   }
-  Shape.prototype.render.apply( this, arguments );
+  Zdog.Shape.prototype.render.apply( this, arguments );
 };
 
 // -- animate --- //
@@ -218,7 +219,7 @@ function update() {
     var isFirstHalf = t < 0.5;
     var halfT = isFirstHalf ? t : 1 - t;
     halfT /= 0.5;
-    var easeT = easeInOut( halfT, 3 );
+    var easeT = Zdog.easeInOut( halfT, 3 );
     hat.rotate.y = easeT*TAU/4 - TAU/8;
     var rxDirection = isFirstHalf ? 1 : 0;
     hat.rotate.x = (Math.cos( halfT * TAU ) * -0.5 + 0.5 ) * -TAU/16 * rxDirection;

@@ -5,14 +5,15 @@ var h = 72;
 var zoom = 6;
 var canvasWidth = canvas.width = w * zoom;
 var canvasHeight = canvas.height = h * zoom;
+var TAU = Zdog.TAU;
 
 var rZSpeed = 0;
 
-var camera = new Anchor();
+var camera = new Zdog.Anchor();
 
 // -- illustration shapes --- //
 
-var rect1 = new Rect({
+var rect1 = new Zdog.Rect({
   width: 12,
   height: 16,
   translate: { z: -6 },
@@ -23,7 +24,7 @@ var rect1 = new Rect({
   addTo: camera,
 });
 
-var moon1 = new Shape({
+var moon1 = new Zdog.Shape({
   path: [
     { z: 0 },
     { z: 6 }
@@ -34,7 +35,7 @@ var moon1 = new Shape({
   addTo: rect1,
 });
 
-new Rect({
+new Zdog.Rect({
   width: 12,
   height: 8,
   translate: { y: 8 },
@@ -45,7 +46,7 @@ new Rect({
   addTo: camera,
 });
 
-new Shape({
+new Zdog.Shape({
   path: [
     { y: -6, z: 4 },
     { y:  6, z: 4 },
@@ -105,7 +106,7 @@ document.querySelector('.toggle-z-rotation-button').onclick = function() {
 // click drag to rotate
 var dragStartAngleX, dragStartAngleY;
 
-new Dragger({
+new Zdog.Dragger({
   startElement: canvas,
   onPointerDown: function() {
     dragStartAngleX = camera.rotate.x;

@@ -1,10 +1,10 @@
 function hedge( options ) {
-  var anchor = new Anchor({
+  var anchor = new Zdog.Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });
 
-  var ball = new Shape({
+  var ball = new Zdog.Shape({
     path: [ { y: 0 }, { y: -1 } ],
     addTo: anchor,
     translate: { y: -2.5 },

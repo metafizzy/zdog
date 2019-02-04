@@ -9,7 +9,7 @@ function makeWindow( options ) {
 }
 
 function makeCircleWindow( options ) {
-  new Ellipse( extend( options, {
+  new Zdog.Ellipse( Zdog.extend( options, {
     diameter: 2,
   }));
 }
@@ -17,7 +17,7 @@ function makeCircleWindow( options ) {
 function makeLongWindow( options ) {
   var y2 = options.height - 1;
 
-  var windowShape = new Shape( extend( options, {
+  var windowShape = new Zdog.Shape( Zdog.extend( options, {
     path: [
       { x: -1, y: 0 },
       { arc: [

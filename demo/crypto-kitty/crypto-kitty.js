@@ -9,8 +9,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: { x: -TAU/32 },
@@ -28,13 +29,13 @@ var white = 'white';
 
 // -- illustration shapes --- //
 
-var cat = new Group({
+var cat = new Zdog.Group({
   addTo: illo,
   updateSort: true,
 });
 
 // body
-new Shape({
+new Zdog.Shape({
   path: [ { y: -1 }, { y: 1} ],
   scale: { y: 3 },
   addTo: cat, 
@@ -42,13 +43,13 @@ new Shape({
   color: magenta,
 });
 
-var face = new Anchor({
+var face = new Zdog.Anchor({
   addTo: cat,
   translate: { y: -4, z: 6.5 },
 });
 
 // nose
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -1 },
     { x: 1 },
@@ -62,7 +63,7 @@ new Shape({
 });
 
 // tummy
-new RoundedRect({
+new Zdog.RoundedRect({
   width: 5,
   height: 7,
   radius: 2.5,
@@ -75,7 +76,7 @@ new RoundedRect({
 });
 
 // chin
-new Shape({
+new Zdog.Shape({
   path: [ { x: -1 }, { x: 1 } ],
   scale: { x: 2 },
   addTo: cat,
@@ -85,7 +86,7 @@ new Shape({
 });
 
 // tail
-new Shape({
+new Zdog.Shape({
   path: [ { y: 0 }, { y: 8 } ],
   addTo: cat,
   translate: { y: 7, z: -4 },
@@ -94,7 +95,7 @@ new Shape({
   color: magenta,
 });
 
-var backLine = new Shape({
+var backLine = new Zdog.Shape({
   path: [ { x: -1 }, { x: 1 } ],
   scale: { x: 3 },
   addTo: cat,
@@ -111,7 +112,7 @@ backLine.copy({
 
 [ -1, 1 ].forEach( function( xSide ) {
   // eye
-  new Shape({
+  new Zdog.Shape({
     path: [ { y: -1 }, { y: 1} ],
     scale: { y: 0.3 },
     addTo: face,
@@ -121,7 +122,7 @@ backLine.copy({
   });
 
   // maw
-  new Shape({
+  new Zdog.Shape({
     path: [ { x: -1 }, { x: 1} ],
     scale: { x: 0.4 },
     addTo: face,
@@ -131,7 +132,7 @@ backLine.copy({
   });
 
   // whisker
-  var whisker = new Shape({
+  var whisker = new Zdog.Shape({
     path: [
       { x: 0, y: 0 },
       { x: 1, y: 1 },
@@ -147,7 +148,7 @@ backLine.copy({
   });
 
   // ear
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: 0, y:  0 },
       { x: 1, y:  1 },
@@ -162,7 +163,7 @@ backLine.copy({
   });
 
   // arm
-  var arm = new Shape({
+  var arm = new Zdog.Shape({
     path: [ { y: 0 }, { y: 3.5 } ],
     addTo: cat,
     translate: { x: 3.5*xSide, y: -1, z: 5.5 },
@@ -178,7 +179,7 @@ backLine.copy({
   });
 });
 
-var diamondPanel = new Shape({
+var diamondPanel = new Zdog.Shape({
   path: [
     { x: 0, y: 1, z: -0 },
     { x: -1, y: 0, z: 1 },

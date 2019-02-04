@@ -8,7 +8,7 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
-[ Shape, Rect ].forEach( function( ItemClass ) {
+[ Zdog.Shape, Zdog.Rect ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
   // ItemClass.defaults.stroke = true;
   ItemClass.defaults.backface = false;
@@ -18,9 +18,10 @@ canvas.height = h * zoom;
 var white = 'white';
 var black = '#333';
 var isRotating = true;
+var TAU = Zdog.TAU;
 var initRotate = { y: TAU/4 };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: initRotate,
@@ -33,24 +34,24 @@ var illo = new Illo({
 // -- illustration shapes --- //
 
 function makeWall( options ) {
-  var rotor = new Anchor({
+  var rotor = new Zdog.Anchor({
     addTo: illo,
     rotate: options.rotate,
   });
 
   // rotor
-  var wall = new Anchor({
+  var wall = new Zdog.Anchor({
     addTo: rotor,
     translate: { z: 4 },
   });
 
-  var topBlock = new Anchor({
+  var topBlock = new Zdog.Anchor({
     addTo: wall,
     translate: { x: -4, y: -4 },
   });
 
   // side faces
-  var face = new Rect({
+  var face = new Zdog.Rect({
     addTo: topBlock,
     width: 2,
     height: 2,
@@ -83,7 +84,7 @@ function makeWall( options ) {
     translate: { x:  0, y: -4 },
   });
 
-  var topTile = new Rect({
+  var topTile = new Zdog.Rect({
     addTo: wall,
     width: 2,
     height: 2,
@@ -98,7 +99,7 @@ function makeWall( options ) {
   // outside arch
 
   // outside arch
-  var arch = new Shape({
+  var arch = new Zdog.Shape({
     addTo: wall,
     path: [
       { x: 0, y: -3 },
@@ -131,7 +132,7 @@ function makeWall( options ) {
   });
 
   // outside columns
-  var outsideColumn = new Rect({
+  var outsideColumn = new Zdog.Rect({
     addTo: wall,
     width: 2,
     height: 8,
@@ -142,7 +143,7 @@ function makeWall( options ) {
     translate: { x: 4, y: 1, z: 1 },
   });
 
-  var insideColumn = new Rect({
+  var insideColumn = new Zdog.Rect({
     addTo: wall,
     width: 2,
     height: 3,
@@ -157,7 +158,7 @@ function makeWall( options ) {
   });
 
   // under arch, quarter arc
-  var underArch = new Shape({
+  var underArch = new Zdog.Shape({
     addTo: wall,
     path: [
       { x:  3, y:  2 },
@@ -181,7 +182,7 @@ function makeWall( options ) {
   });
 
   // feet soles
-  new Rect({
+  new Zdog.Rect({
     addTo: wall,
     width: 2,
     height: 2,
@@ -249,13 +250,13 @@ var keyframes = [
 function animate() {
   // update
   if ( isRotating ) {
-    var easeT = easeInOut( t, 4 );
+    var easeT = Zdog.easeInOut( t, 4 );
     var turnLimit = keyframes.length - 1;
     var turn = Math.floor( t % turnLimit );
     var keyframeA = keyframes[ turn ];
     var keyframeB = keyframes[ turn + 1 ];
-    illo.rotate.x = lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
-    illo.rotate.y = lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
+    illo.rotate.x = Zdog.lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
+    illo.rotate.y = Zdog.lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
     t += tSpeed;
   }
 

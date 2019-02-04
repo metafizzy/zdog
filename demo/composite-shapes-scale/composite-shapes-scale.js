@@ -8,9 +8,10 @@ var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var TAU = Zdog.TAU;
 var isRotating = true;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   scale: 2,
@@ -22,7 +23,7 @@ var illo = new Illo({
 
 // -- illustration shapes --- //
 
-new Rect({
+new Zdog.Rect({
   width: 10,
   height: 10,
   addTo: illo,
@@ -32,7 +33,7 @@ new Rect({
 });
 
 /*
-new Ellipse({
+new Zdog.Ellipse({
   diameter: 16,
   addTo: illo,
   translate: { z: 10 },
@@ -40,7 +41,7 @@ new Ellipse({
   color: '#19F',
 });
 
-new Shape({
+new Zdog.Shape({
   path: [
     { x:  0, z:  1 },
     { x: -1, z: -1 },
@@ -54,7 +55,7 @@ new Shape({
 });
 */
 
-new Hemisphere({
+new Zdog.Hemisphere({
   diameter: 4,
   scale: 2,
   addTo: illo,
@@ -64,7 +65,7 @@ new Hemisphere({
   stroke: false,
 });
 
-new Cylinder({
+new Zdog.Cylinder({
   diameter: 4,
   length: 4,
   scale: 2,
@@ -75,7 +76,7 @@ new Cylinder({
   stroke: false,
 });
 
-new Cone({
+new Zdog.Cone({
   diameter: 4,
   length: 3,
   scale: 2,

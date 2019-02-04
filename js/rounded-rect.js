@@ -1,6 +1,22 @@
-/* globals RoundedRect: true */
+/**
+ * RoundedRect
+ */
 
-// -------------------------- RoundedRect -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [ './shape' ], factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory( require('./shape') );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.RoundedRect = factory( Zdog.Shape );
+  }
+}( this, function factory( Shape ) {
 
 var RoundedRect = Shape.subclass({
   width: 1,
@@ -56,3 +72,7 @@ RoundedRect.prototype.setPath = function() {
 
   this.path = path;
 };
+
+return RoundedRect;
+
+}));

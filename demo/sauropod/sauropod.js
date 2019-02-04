@@ -8,6 +8,7 @@ var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = true;
+var TAU = Zdog.TAU;
 // ratio to make things look square when rotated a quarter
 var antiTwist = 1 / Math.cos( TAU/8 );
 // colors
@@ -15,7 +16,7 @@ var blue = '#19F';
 
 var initialRotate = { y: TAU/8 };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   scale: { x: antiTwist, z: antiTwist },
@@ -29,7 +30,7 @@ var illo = new Illo({
 // -- illustration shapes --- //
 
 // front right leg
-var leg = new Shape({
+var leg = new Zdog.Shape({
   path: [
     { x: -8, y: 0 },
     { arc: [
@@ -67,7 +68,7 @@ leg.copy({
 
 
 // leg connectors
-var legConnector = new Shape({
+var legConnector = new Zdog.Shape({
   path: [ { x: -8 }, { x: 8 } ],
   addTo: illo,
   translate: { y: 16, z: 8 },
@@ -80,7 +81,7 @@ legConnector.copy({
 });
 
 // body
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -1, z:  1 },
     { x:  1, z:  1 },
@@ -96,7 +97,7 @@ new Shape({
 });
 
 // neck squiggle
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 16, y: 4 },
     { arc: [
@@ -125,7 +126,7 @@ new Shape({
 });
 
 // neck 
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -16, y: -28 },
     { x: 24, y: -28 },
@@ -137,7 +138,7 @@ new Shape({
 });
 
 // head ball
-var head = new Shape({
+var head = new Zdog.Shape({
   translate: { x: 16, y: -31 },
   addTo: illo,
   stroke: 14,
@@ -145,7 +146,7 @@ var head = new Shape({
 });
 
 // eyes
-var eye = new Shape({
+var eye = new Zdog.Shape({
   addTo: head,
   translate: { z: -1, x: 0 },
   color: 'white',
@@ -158,7 +159,7 @@ eye.copy({
 });
 
 // tail
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -16, z: 0 },
     { arc: [
@@ -195,7 +196,7 @@ var t = 0;
 function animate() {
   // update
   if ( isRotating ) {
-    var easeT = easeInOut( t, 3 );
+    var easeT = Zdog.easeInOut( t, 3 );
     illo.rotate.y = easeT*-TAU + TAU/8;
     illo.rotate.x = ( Math.cos( easeT * TAU ) * 0.5 + -0.5 ) * TAU/12;
     t += 1/210;

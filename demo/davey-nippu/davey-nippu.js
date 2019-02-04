@@ -9,9 +9,10 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 var sceneStartRotation = { y: -TAU/8 };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: sceneStartRotation,
@@ -42,7 +43,7 @@ var bluePale = '#CCF';
 
 // -- models --- //
 
-var ground = new Anchor({
+var ground = new Zdog.Anchor({
   addTo: illo,
   translate: { y: 56 },
 });
@@ -51,13 +52,13 @@ var ground = new Anchor({
 
 ( function() {
 
-  var dude = new Anchor({
+  var dude = new Zdog.Anchor({
     addTo: ground,
     translate: { x : -24, z: -12 },
   });
 
   var hipX = ( 8 / quarterTurn ) / 2;
-  var hips = new Shape({
+  var hips = new Zdog.Shape({
     path: [
       { x: -hipX },
       { x:  hipX },
@@ -70,7 +71,7 @@ var ground = new Anchor({
   });
 
   // right thigh
-  var rightThigh = new Shape({
+  var rightThigh = new Zdog.Shape({
     path: [
       { y: 0 },
       { y: 18 },
@@ -107,7 +108,7 @@ var ground = new Anchor({
     addTo: rightShin,
   });
 
-  var rightAnkle = new Shape({
+  var rightAnkle = new Zdog.Shape({
     path: [
       { y: 3 },
       { y: 4 },
@@ -151,7 +152,7 @@ var ground = new Anchor({
   // shoes
   [ true, false ].forEach( function( isRight ) {
     var shoeAngleX = isRight ? -TAU/16 : -hips.rotate.x;
-    var shoe = new RoundedRect({
+    var shoe = new Zdog.RoundedRect({
       width: 2,
       height: 10,
       radius: 2,
@@ -164,11 +165,11 @@ var ground = new Anchor({
     });
 
     // laces
-    var lacesGroup = new Group({
+    var lacesGroup = new Zdog.Group({
       addTo: shoe,
       translate: { z: -3 },
     });
-    var shoeLace = new Shape({
+    var shoeLace = new Zdog.Shape({
       path: [ { x: -1 }, { x: 1 } ],
       scale: { x: 2 },
       addTo: lacesGroup,
@@ -180,14 +181,14 @@ var ground = new Anchor({
       translate: { y: -4 },
     });
     // HACK, add invisible shape so laces better render on top
-    new Shape({
+    new Zdog.Shape({
       visible: false,
       addTo: lacesGroup,
       translate: { y: 4 },
     });
 
     // soles
-    new RoundedRect({
+    new Zdog.RoundedRect({
       width: 6,
       height: 13,
       radius: 3,
@@ -201,7 +202,7 @@ var ground = new Anchor({
   });
 
   var torsoX = 6 / quarterTurn;
-  var torso = new Shape({
+  var torso = new Zdog.Shape({
     path: [
       { x: -torsoX },
       { x:  torsoX },
@@ -213,7 +214,7 @@ var ground = new Anchor({
   });
 
   var shoulderX = torsoX + 1.5;
-  var rightShoulder = new Shape({
+  var rightShoulder = new Zdog.Shape({
     path: [
       { y: 0 },
       { y: 14 },
@@ -231,7 +232,7 @@ var ground = new Anchor({
     color: midnight,
   });
 
-  var rightArm = new Shape({
+  var rightArm = new Zdog.Shape({
     path: [
       { y: 0 },
       { y: 14 },
@@ -249,7 +250,7 @@ var ground = new Anchor({
     rotate: { x: TAU/4, z: TAU/8 },
   });
 
-  var rightHand = new Shape({
+  var rightHand = new Zdog.Shape({
     addTo: rightArm,
     translate: { x: -0.5, y: 14, z: 1 },
     stroke: 10,
@@ -263,7 +264,7 @@ var ground = new Anchor({
   });
 
   // jacketZip
-  new Ellipse({
+  new Zdog.Ellipse({
     addTo: torso,
     diameter: torso.stroke,
     quarters: 1,
@@ -273,7 +274,7 @@ var ground = new Anchor({
   });
 
   var neckY = -torso.stroke/2;
-  var neck = new Shape({
+  var neck = new Zdog.Shape({
     path: [ { y: neckY }, { y: neckY - 4 } ],
     addTo: torso,
     // translate: { y: }
@@ -282,14 +283,14 @@ var ground = new Anchor({
     color: skinMedium,
   });
   // chin
-  var chin = new Shape({
+  var chin = new Zdog.Shape({
     addTo: neck,
     translate: { y: neckY - 5, z: 2 },
     stroke: 8,
     color: skinMedium,
   });
   // forehead
-  var forehead = new Ellipse({
+  var forehead = new Zdog.Ellipse({
     diameter: 2,
     addTo: chin,
     translate: { y: -4 },
@@ -297,7 +298,7 @@ var ground = new Anchor({
     color: skinMedium,
   });
   // hair big
-  new Shape({
+  new Zdog.Shape({
     path: [
       { y: -1 },
       { y: -7 },
@@ -308,7 +309,7 @@ var ground = new Anchor({
     color: auburn,
   });
   // hair small
-  new Shape({
+  new Zdog.Shape({
     path: [
       { y: 0 },
       { y: -6 },
@@ -319,7 +320,7 @@ var ground = new Anchor({
     color: red,
   });
   // hair back
-  new Ellipse({
+  new Zdog.Ellipse({
     diameter: 3,
     addTo: chin,
     translate: { y: -4, z: -4 },
@@ -327,7 +328,7 @@ var ground = new Anchor({
     color: auburn,
   });
   // smile
-  new Ellipse({
+  new Zdog.Ellipse({
     addTo: chin,
     quarters: 2,
     translate: { y: -1.5, z: 3 },
@@ -339,7 +340,7 @@ var ground = new Anchor({
     closed: true,
   });
   // eyes
-  var eye = new Ellipse({
+  var eye = new Zdog.Ellipse({
     addTo: forehead,
     quarters: 2,
     scale: 1,
@@ -354,7 +355,7 @@ var ground = new Anchor({
     translate: { x: 1, y: 0.5, z: 2 },
   });
 
-  var ear = new Ellipse({
+  var ear = new Zdog.Ellipse({
     diameter: 1.5,
     addTo: forehead,
     translate: { x: 3.5, y: 1, z: -1 },
@@ -373,24 +374,24 @@ var ground = new Anchor({
 // lady
 ( function() {
 
-  var lady = new Anchor({
+  var lady = new Zdog.Anchor({
     addTo: ground,
     translate: { x : 24, z: 12 },
   });
 
-  var hips = new Shape({
+  var hips = new Zdog.Shape({
     addTo: lady,
     translate: { y: -38 },
     stroke: 15,
     color: navy,
   });
 
-  var torsoAnchor = new Anchor({
+  var torsoAnchor = new Zdog.Anchor({
     addTo: hips,
     rotate: { x: -TAU/8 },
   });
 
-  var torso = new Rect({
+  var torso = new Zdog.Rect({
     width: 1,
     height: 5,
     addTo: torsoAnchor,
@@ -401,7 +402,7 @@ var ground = new Anchor({
 
   // ----- lady head ----- //
 
-  var neck = new Shape({
+  var neck = new Zdog.Shape({
     path: [ {}, { y: -2 }],
     addTo: torso,
     translate: { y: -7 },
@@ -409,7 +410,7 @@ var ground = new Anchor({
     color: skinLight,
   });
 
-  var collar = new RoundedRect({
+  var collar = new Zdog.RoundedRect({
     width: 3,
     height: 5,
     radius: 1.5,
@@ -424,16 +425,16 @@ var ground = new Anchor({
     rotate: { x: -TAU/4, z: -TAU/8 },
   });
 
-  var head = new Anchor({
+  var head = new Zdog.Anchor({
     addTo: neck,
     translate: { y: -6 },
     rotate: { x: TAU/8 },
   });
-  // var faceGroup = new Group({
+  // var faceGroup = new Zdog.Group({
   //   addTo: head,
   // });
   // hair cap
-  new Hemisphere({
+  new Zdog.Hemisphere({
     addTo: head,
     diameter: 11,
     color: midnight,
@@ -442,7 +443,7 @@ var ground = new Anchor({
     rotate: { x: TAU/8 * 3, y: 0 },
   });
   // face
-  new Hemisphere({
+  new Zdog.Hemisphere({
     addTo: head,
     diameter: 9,
     color: skinLight,
@@ -452,7 +453,7 @@ var ground = new Anchor({
     rotate: { x: TAU/8 * 3, y: TAU/2 },
   });
   // smile
-  new Ellipse({
+  new Zdog.Ellipse({
     addTo: head,
     diameter: 3,
     quarters: 1,
@@ -464,7 +465,7 @@ var ground = new Anchor({
   });
 
   // hair locks
-  new RoundedRect({
+  new Zdog.RoundedRect({
     width: 6,
     height: 10,
     radius: 3,
@@ -481,12 +482,12 @@ var ground = new Anchor({
 
 
   // glasses
-  var glasses = new Group({
+  var glasses = new Zdog.Group({
     addTo: head,
     translate: { y: -1, z: 5 },
   });
 
-  var lens = new Ellipse({
+  var lens = new Zdog.Ellipse({
     diameter: 4,
     addTo: glasses,
     translate: { x: -2.5 },
@@ -513,7 +514,7 @@ var ground = new Anchor({
 
   var leftWrist = { z: 14, y: -14 };
 
-  var leftArm = new Shape({
+  var leftArm = new Zdog.Shape({
     path: [
       { z: -0, y: 0 },
       { z: 12, y: -2 }, // elbow
@@ -529,7 +530,7 @@ var ground = new Anchor({
   });
 
   // leftHand
-  var leftHand = new Shape({
+  var leftHand = new Zdog.Shape({
     path: [ { x: -1, z: -0.5 } ],
     addTo: leftArm,
     translate: leftWrist,
@@ -537,21 +538,21 @@ var ground = new Anchor({
     stroke: 6,
   });
 
-  var phoneAnchor = new Anchor({
+  var phoneAnchor = new Zdog.Anchor({
     addTo: leftHand,
     translate: { x: -2, y: -0, z: -4 },
     rotate: { x: TAU/8 },
   });
 
-  var phoneBack = new Group({
+  var phoneBack = new Zdog.Group({
     addTo: phoneAnchor,
   });
-  var phoneFront = new Group({
+  var phoneFront = new Zdog.Group({
     addTo: phoneAnchor,
     translate: { z: -0.5 },
   });
   // back phone panel
-  var phonePanel = new RoundedRect({
+  var phonePanel = new Zdog.RoundedRect({
     width: 4,
     height: 8,
     radius: 1,
@@ -561,7 +562,7 @@ var ground = new Anchor({
     fill: true,
   });
   // phone logo dot
-  new Ellipse({
+  new Zdog.Ellipse({
     diameter: 1.25,
     addTo: phoneBack,
     translate: { y: -1 },
@@ -570,7 +571,7 @@ var ground = new Anchor({
     color: sky,
   });
   // phone camera dot
-  new Shape({
+  new Zdog.Shape({
     path: [
       // z-sort hack
       { move: [{ z: 8 }]},
@@ -601,7 +602,7 @@ var ground = new Anchor({
     color: skinLight,
   });
 
-  var rightHandPosition = new Vector( rightWrist ).add({ x: -0.5, z: -1 });
+  var rightHandPosition = new Zdog.Vector( rightWrist ).add({ x: -0.5, z: -1 });
 
   var rightHand = leftHand.copy({
     path: [{}],
@@ -610,13 +611,13 @@ var ground = new Anchor({
     color: skinLight,
   });
 
-  var suitCase = new Anchor({
+  var suitCase = new Zdog.Anchor({
     addTo: rightHand,
     translate: { y: 12 },
     rotate: { y: TAU/4 }
   });
 
-  var suitCaseFrontPanel = new RoundedRect({
+  var suitCaseFrontPanel = new Zdog.RoundedRect({
     addTo: suitCase,
     width: 24,
     height: 14,
@@ -630,7 +631,7 @@ var ground = new Anchor({
     color: '#606',
   });
 
-  var suitCaseTopPanel = new Rect({
+  var suitCaseTopPanel = new Zdog.Rect({
     addTo: suitCase,
     width: 20,
     height: 5,
@@ -653,7 +654,7 @@ var ground = new Anchor({
     translate: { x: -12 },
   });
   // suit case filler
-  new Rect({
+  new Zdog.Rect({
     addTo: suitCase,
     width: 20,
     height: 10,
@@ -661,7 +662,7 @@ var ground = new Anchor({
     color: '#606',
   });
   // suit case handle
-  var suitCaseHandle = new Shape({
+  var suitCaseHandle = new Zdog.Shape({
     addTo: suitCase,
     path: [
       {},
@@ -685,7 +686,7 @@ var ground = new Anchor({
 
   // left leg
   var leftAnkle = { y: 28 };
-  var leftLeg = new Shape({
+  var leftLeg = new Zdog.Shape({
     addTo: hips,
     path: [ { y: 0 }, leftAnkle ],
     translate: { x: 3.5, y: 4, z: 0 },
@@ -696,7 +697,7 @@ var ground = new Anchor({
 
   // right thigh
   var rightKnee = { y: 16 };
-  var rightThigh = new Shape({
+  var rightThigh = new Zdog.Shape({
     addTo: hips,
     path: [ { y: 0 }, rightKnee ],
     translate: { x: -3.5, y: 4, z: 0 },
@@ -706,7 +707,7 @@ var ground = new Anchor({
   });
   // rightShin
   var rightAnkle = { y: 10 };
-  var rightShin = new Shape({
+  var rightShin = new Zdog.Shape({
     addTo: rightThigh,
     path: [ { y: 0 }, rightAnkle ],
     translate: rightKnee,
@@ -716,7 +717,7 @@ var ground = new Anchor({
   });
 
   // lady feet
-  var rightFoot = new Shape({
+  var rightFoot = new Zdog.Shape({
     addTo: rightShin,
     path: [ { y: 2 }, { y: 8 } ],
     translate: rightAnkle,
@@ -724,7 +725,7 @@ var ground = new Anchor({
     color: skinLight,
   });
   // heel
-  new Shape({
+  new Zdog.Shape({
     addTo: rightFoot,
     path: [ { x: -1 }, { x: 1 } ],
     translate: { y: 5, z: -3 },
@@ -732,7 +733,7 @@ var ground = new Anchor({
     color: beigeLight,
   });
   // sole edge
-  var soleEdge = new Shape({
+  var soleEdge = new Zdog.Shape({
     addTo: rightFoot,
     path: [
       { x: -2, z: -2 },
@@ -752,7 +753,7 @@ var ground = new Anchor({
   });
 
   // heel spike
-  new Shape({
+  new Zdog.Shape({
     addTo: rightFoot,
     path: [ {}, { y: 5 } ],
     translate: { y: 6, z: -4 },
@@ -771,7 +772,7 @@ var ground = new Anchor({
   
 
   // big puff
-  var cloud = new Shape({
+  var cloud = new Zdog.Shape({
     addTo: illo,
     translate: { x: 34, y: -26, z: -20 },
     rotate: { y: -sceneStartRotation.y },
@@ -780,7 +781,7 @@ var ground = new Anchor({
   });
 
   // left small puff
-  var smallPuff = new Shape({
+  var smallPuff = new Zdog.Shape({
     addTo: cloud,
     translate: { x: -9, y: 4, z: 4 },
     stroke: 8,
@@ -791,7 +792,7 @@ var ground = new Anchor({
     stroke: 10,
   });
 
-  var disk = new RoundedRect({
+  var disk = new Zdog.RoundedRect({
     addTo: cloud,
     width: 26,
     height: 12,
@@ -807,7 +808,7 @@ var ground = new Anchor({
   });
 
   // sun
-  new Shape({
+  new Zdog.Shape({
     addTo: cloud,
     translate: { x: -13, y: 0, z: -14 },
     stroke: 8,
@@ -825,7 +826,7 @@ function animate() {
   // update
   if ( isRotating ) {
     t += tSpeed;
-    var theta = easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t ) * TAU;
     illo.rotate.y = -theta + sceneStartRotation.y;
   }
 

@@ -8,8 +8,9 @@ var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -30,7 +31,7 @@ var pupils = {};
 
 // head
 
-var head = new Shape({
+var head = new Zdog.Shape({
   translate: { y: -20 },
   rotate: { y: 0.5 },
   stroke: 21,
@@ -40,7 +41,7 @@ var head = new Shape({
 
 // helmet details
 [ 1, 3, 4, 5, 6, 7, 8, 9 ].forEach( function( i ) {
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -1.25, y: -1.5, z: 11.25 },
       { x:  1.25, y: -1.5, z: 11.25 },
@@ -57,7 +58,7 @@ var head = new Shape({
 
 
 // upper body
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -2, y: -1.25 },
     { x:  0, y: -1.5 },
@@ -80,7 +81,7 @@ var undieY1 = 0;
 var undieZ = 2.5;
 
 // front undie panel
-var undiePanel = new Shape({
+var undiePanel = new Zdog.Shape({
   path: [
     { x: -undieX, y: undieY0 },
     { x:  undieX, y: undieY0 },
@@ -100,7 +101,7 @@ undiePanel.copy({
 });
 
 // right undie panel
-var sideUndiePanel = new Shape({
+var sideUndiePanel = new Zdog.Shape({
   path: [
     { y: undieY0, z:  undieZ },
     { y: undieY0, z: -undieZ },
@@ -123,7 +124,7 @@ var shoulderX = 5;
 var shoulderY = -7;
 
 // right upper arm
-var rightUpperArm = new Shape({
+var rightUpperArm = new Zdog.Shape({
   path: [
     { x: 0 },
     { x: -7 },
@@ -135,7 +136,7 @@ var rightUpperArm = new Shape({
   addTo: illo,
 });
 
-var rightForeArm = new Shape({
+var rightForeArm = new Zdog.Shape({
   path: [
     { x: -4 },
     { x: -8 },
@@ -147,7 +148,7 @@ var rightForeArm = new Shape({
   addTo: rightUpperArm,
 });
 
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -4 },
   ],
@@ -159,7 +160,7 @@ new Shape({
 });
 
 // left arm, the gun arm
-var leftUpperArm = new Shape({
+var leftUpperArm = new Zdog.Shape({
   path: [
     { x: 0 },
     { x: 11 },
@@ -171,7 +172,7 @@ var leftUpperArm = new Shape({
   addTo: illo,
 });
 
-var leftForeArm = new Shape({
+var leftForeArm = new Zdog.Shape({
   path: [
     { x: 5 },
     { x: 10 },
@@ -183,7 +184,7 @@ var leftForeArm = new Shape({
   addTo: leftUpperArm,
 });
 
-new Shape({
+new Zdog.Shape({
   path: [ { x: 4 } ],
   translate: leftForeArm.path[1],
   stroke: 7,
@@ -193,7 +194,7 @@ new Shape({
 
 [ -1, 1 ].forEach( function( xSide ) {
   // face panel
-  var facePanel = new Shape({
+  var facePanel = new Zdog.Shape({
     path: [
       { x: 4*xSide, y: -4, z: -1 }, // top inside brow
       { arc: [
@@ -219,7 +220,7 @@ new Shape({
   });
 
   // eye whites
-  var eyeWhite = new Ellipse({
+  var eyeWhite = new Zdog.Ellipse({
     width: 4,
     height: 5,
     addTo: facePanel,
@@ -231,7 +232,7 @@ new Shape({
   });
 
   // pupils
-  var pupil = new Ellipse({
+  var pupil = new Zdog.Ellipse({
     width: 1,
     height: 4,
     translate: { x: -0.4*xSide, y: -0.2, z: 1 },
@@ -245,7 +246,7 @@ new Shape({
   pupils[ xSide ] = pupil;
 
   // ear cone outer
-  var earCone = new Ellipse({
+  var earCone = new Zdog.Ellipse({
     diameter:  5.5,
     translate: { x: 10*xSide, y: 3, z: -1 },
     rotate: { y: (TAU/4+0.2)*-xSide, x: TAU/4, z: 1 },
@@ -256,7 +257,7 @@ new Shape({
   });
   
   // ear cone inner inner
-  new Ellipse({
+  new Zdog.Ellipse({
     diameter: 5,
     addTo: earCone,
     translate: { z: -1 },
@@ -266,7 +267,7 @@ new Shape({
   });
 
   // thigh
-  var thigh = new Shape({
+  var thigh = new Zdog.Shape({
     path: [ { y: 0 }, { y: 3 } ],
     translate: { x: 4.5*xSide, y: 8 },
     rotate: { z: -0.35*xSide, x: -0.1 },
@@ -276,7 +277,7 @@ new Shape({
   });
 
   // shin
-  var shin = new Shape({
+  var shin = new Zdog.Shape({
     path: [
       { y: 5, z: 0 },
       { y: 14, z: 2 },
@@ -291,7 +292,7 @@ new Shape({
   });
 
   // sole
-  new Shape({
+  new Zdog.Shape({
     path: [
       { y: 2.5, x: (0.5 + 2)*xSide, z: -3 },
       { y: 2.5, x: (0.5 + -2)*xSide, z: -3 },
@@ -330,8 +331,8 @@ function update() {
   var isAngleXFlip = illo.rotate.x > TAU/4 && illo.rotate.x < TAU * 3/4;
   var angleXOffset = isAngleXFlip ? 0 : TAU/2;
   // angleXFlip *= 
-  var headAngleY = modulo( illo.rotate.y + head.rotate.y + angleXOffset, TAU );
-  var headAngleX = modulo( illo.rotate.x + angleXOffset, TAU );
+  var headAngleY = Zdog.modulo( illo.rotate.y + head.rotate.y + angleXOffset, TAU );
+  var headAngleX = Zdog.modulo( illo.rotate.x + angleXOffset, TAU );
   var stareX = (headAngleY / TAU * 2 - 1) * 8;
   var stareY = (headAngleX / TAU * 2 - 1) * 8;
   stareX = Math.max( -2, Math.min( 2, stareX ) );

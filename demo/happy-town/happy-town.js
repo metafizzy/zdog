@@ -11,8 +11,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: { y: TAU/8 },
@@ -23,7 +24,7 @@ var illo = new Illo({
 });
 
 // default to flat, filled shapes
-[ Shape, Rect, Ellipse ].forEach( function( ItemClass ) {
+[ Zdog.Shape, Zdog.Rect, Zdog.Ellipse ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
   ItemClass.defaults.stroke = false;
 });
@@ -33,7 +34,7 @@ var illo = new Illo({
 var quarterView = 1/Math.sin(TAU/8);
 
 // anchor
-var town = new Group({
+var town = new Zdog.Group({
   addTo: illo,
   translate: { y: 36 },
   scale: { x: quarterView, z: quarterView },
@@ -42,7 +43,7 @@ var town = new Group({
 
 // ----- front building ----- //
 
-var frontAnchor = new Anchor({
+var frontAnchor = new Zdog.Anchor({
   addTo: town,
   translate: { x: 16, y: -4, z: 20 },
 });
@@ -60,7 +61,7 @@ var frontBuilding = makeBuilding({
 });
 
 // east gable dot
-var gableDot = new Ellipse({
+var gableDot = new Zdog.Ellipse({
   diameter: 2,
   addTo: frontBuilding.eastWall,
   color: blue,
@@ -73,7 +74,7 @@ gableDot.copy({
 });
 
 // south doors
-var door = new Shape({
+var door = new Zdog.Shape({
   path: [
     { x: -2.5, y: 0 },
     { x: -2.5, y: -5.5 },
@@ -96,13 +97,13 @@ door.copy({
 });
 
 [ -1, 1 ].forEach( function( zSide ) {
-  var frontGableGroup = new Group({
+  var frontGableGroup = new Zdog.Group({
     addTo: frontAnchor,
     translate: { y: -20, z: -8*zSide },
   });
 
   // front building gable
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x:  0, y: -6 },
       { x: -6, y: 0 },
@@ -119,7 +120,7 @@ door.copy({
     color: zSide == -1 ? navy : red,
   });
 
-  var frontGableSide = new Shape({
+  var frontGableSide = new Zdog.Shape({
     path: [
       { x: 0, y: 0, z: 0 },
       { x: 5, y: 5, z: 0 },
@@ -139,7 +140,7 @@ door.copy({
 
 // ----- left building ----- //
 
-var leftAnchor = new Anchor({
+var leftAnchor = new Zdog.Anchor({
   addTo: town,
   translate: { x: -13, y: -10, z: 23 },
 });
@@ -168,7 +169,7 @@ door.copy({
 // ----- cupola ----- //
 
 
-var cupolaNSPanel = new Shape({
+var cupolaNSPanel = new Zdog.Shape({
   path: [
     { x: -1, y: 0 },
     { x: 3, y: 0 },
@@ -196,12 +197,12 @@ cupolaNSPanel.copy({
 });
 
 [ -1, 1 ].forEach( function( xSide ) {
-  var group = new Group({
+  var group = new Zdog.Group({
     addTo: leftAnchor,
     translate: { y: -34, x: 3*xSide },
   });
   // ew panel
-  new Shape({
+  new Zdog.Shape({
     path: [
       { z:  3, y:  0 },
       { z:  0, y: -3 },
@@ -223,7 +224,7 @@ cupolaNSPanel.copy({
 });
 
 // cupola roof panel
-var cupolaRoofPanel = new Shape({
+var cupolaRoofPanel = new Zdog.Shape({
   path: [
     { x: -3, y: -3, z:  0 },
     { x:  3, y: -3, z:  0 },
@@ -243,7 +244,7 @@ cupolaRoofPanel.copy({
 // ----- left building slopes ----- //
 
 // east slope
-var leftEWSlope = new Shape({
+var leftEWSlope = new Zdog.Shape({
   path: [
     { x: 0, y: 0, z:  11 },
     { x: 0, y: 0, z: -11 },
@@ -262,7 +263,7 @@ leftEWSlope.copy({
 });
 
 // south slope
-new Shape({
+new Zdog.Shape({
   path: [
     { z:  0, y: 0, x: -8 },
     { z:  0, y: 0, x:  8 },
@@ -275,7 +276,7 @@ new Shape({
 });
 
 // south east corner
-var leftCorner = new Shape({
+var leftCorner = new Zdog.Shape({
   path: [
     { x: 0, y: 0, z:  0 },
     { x: 6, y: 6, z:  0 },
@@ -296,7 +297,7 @@ leftCorner.copy({
 
 // ----- back tower ----- //
 
-var towerAnchor = new Anchor({
+var towerAnchor = new Zdog.Anchor({
   addTo: town,
   translate: { x: -13, y: -24, z: -4 },
 });
@@ -331,7 +332,7 @@ gableDot.copy({
   color: red,
 });
 
-var towerChimney = new Shape({
+var towerChimney = new Zdog.Shape({
   addTo: towerAnchor,
   path: [ { y: 0 }, { y: 4 } ],
   translate: { x: -2, y: -37, z: 1 },
@@ -343,7 +344,7 @@ towerChimney.copy({
 });
 
 // plume
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -3, y: 1 },
     { arc: [
@@ -366,7 +367,7 @@ new Shape({
 // ----- tower slopes ----- //
 
 // big east slope
-var towerEWSlope = new Shape({
+var towerEWSlope = new Zdog.Shape({
   path: [
     { x: 0, y: 0, z:  1 },
     { x: 0, y: 0, z: -1 },
@@ -381,7 +382,7 @@ var towerEWSlope = new Shape({
 });
 
 // south slope down to left building
-var towerNSSLope = new Shape({
+var towerNSSLope = new Zdog.Shape({
   path: [
     { z: 0, y: 0, x:  1 },
     { z: 0, y: 0, x: -1 },
@@ -395,7 +396,7 @@ var towerNSSLope = new Shape({
 });
 
 // south east corner
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: 20, y: 20, z: 0 },
@@ -415,7 +416,7 @@ towerNSSLope.copy({
 });
 
 // north east corner
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: 20, y: 20, z: 0 },
@@ -434,7 +435,7 @@ towerEWSlope.copy({
 });
 
 // north west corner
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: -12, y: 20, z: 0 },
@@ -446,7 +447,7 @@ new Shape({
 });
 
 // south west corner back to left building
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 0, y: 0, z: 0 },
     { x: -12, y: 20, z: 0 },
@@ -460,7 +461,7 @@ new Shape({
 
 // ----- church ----- //
 
-var churchAnchor = new Anchor({
+var churchAnchor = new Zdog.Anchor({
   addTo: town,
   translate: { x: -5, y: -4, z: -27 },
 });
@@ -487,7 +488,7 @@ door.copy({
 });
 
 // big circle window
-new Ellipse({
+new Zdog.Ellipse({
   diameter: 8,
   addTo: church.westWall,
   translate: { y: -22 },
@@ -498,13 +499,13 @@ new Ellipse({
 
 ( function() {
 
-  var bellTowerAnchor = new Anchor({
+  var bellTowerAnchor = new Zdog.Anchor({
     addTo: churchAnchor,
     translate: { x: -7, y: -36, z: -4 },
   });
 
   // tower ledge
-  new Rect({
+  new Zdog.Rect({
     width: 8,
     height: 8,
     addTo: bellTowerAnchor,
@@ -518,11 +519,11 @@ new Ellipse({
   var roofColors = [ navy, gold, red, navy ];
 
   for ( var i=0; i < 4; i++ ) {
-    var wallAnchor = new Anchor({
+    var wallAnchor = new Zdog.Anchor({
       addTo: bellTowerAnchor,
       rotate: { y: TAU/4 * -i },
     });
-    var bottomWallGroup = new Group({
+    var bottomWallGroup = new Zdog.Group({
       addTo: wallAnchor,
       translate: { z: 4 }
     });
@@ -532,7 +533,7 @@ new Ellipse({
     var roofColor = roofColors[i];
 
     // bottom wall
-    new Rect({
+    new Zdog.Rect({
       width: 8,
       height: 12,
       addTo: bottomWallGroup,
@@ -540,14 +541,14 @@ new Ellipse({
       color: wallColor,
     });
     // circle cut-out
-    new Ellipse({
+    new Zdog.Ellipse({
       diameter: 4,
       addTo: bottomWallGroup,
       translate: { y: -4 },
       color: accentColor,
     });
     // top stripe
-    new Rect({
+    new Zdog.Rect({
       width: 8,
       height: 2,
       addTo: bottomWallGroup,
@@ -555,12 +556,12 @@ new Ellipse({
       color: accentColor,
     });
 
-    var topWallGroup = new Group({
+    var topWallGroup = new Zdog.Group({
       addTo: wallAnchor,
       translate: { y: -12, z: 3 },
     });
     // top wall
-    new Rect({
+    new Zdog.Rect({
       width: 6,
       height: 7,
       addTo: topWallGroup,
@@ -568,7 +569,7 @@ new Ellipse({
       color: wallColor,
     });
     // top window
-    new Rect({
+    new Zdog.Rect({
       width: 2,
       height: 5,
       addTo: topWallGroup,
@@ -577,7 +578,7 @@ new Ellipse({
     });
 
     // roof
-    new Shape({
+    new Zdog.Shape({
       path: [
         { x:  0, y: 0, z:  0 },
         { x: -3, y: 6, z: 3 },
@@ -591,7 +592,7 @@ new Ellipse({
 
   // roof connectors
   // south, white side
-  new Shape({
+  new Zdog.Shape({
     path: [
       { z:  4, y:  0 },
       { z: -4, y: -1 },
@@ -602,7 +603,7 @@ new Ellipse({
     color: white,
   });
   // east gold side
-  var connector = new Rect({
+  var connector = new Zdog.Rect({
     width: 8,
     height: 10,
     addTo: bellTowerAnchor,
@@ -620,7 +621,7 @@ new Ellipse({
 
 // ----- hill ----- //
 
-new Shape({
+new Zdog.Shape({
   path: [
     { x:  0, y: 2 },
     { x:  10, y: 2 },
@@ -704,7 +705,7 @@ hedge({
 
 // ----- sun ----- //
 
-new Shape({
+new Zdog.Shape({
   addTo: town,
   translate: { x: -6, y: -52, z: -42 },
   stroke: 6,
@@ -714,7 +715,7 @@ new Shape({
 // ----- sky particles ----- //
 
 // dot above left building
-var skyDot = new Shape({
+var skyDot = new Zdog.Shape({
   translate: { x: -3, y: -48, z: 42 },
   addTo: town,
   stroke: 2,
@@ -726,7 +727,7 @@ skyDot.copy({
   translate: { x: 30, y: -28, z: -28 },
 });
 
-var skyDiamond = new Shape({
+var skyDiamond = new Zdog.Shape({
   path: [
     { x:  0, y: -1 },
     { x:  1, y:  0 },
@@ -750,7 +751,7 @@ skyDiamond2.copy({
   rotate: { y: TAU/4, },
 });
 
-var skyStar = new Shape({
+var skyStar = new Zdog.Shape({
   path: [
     { x: 0, y: -1 },
     { arc: [
@@ -791,7 +792,7 @@ skyStar2.copy({
 
 // ----- clouds ----- //
 
-var cloud = new Ellipse({
+var cloud = new Zdog.Ellipse({
   addTo: town,
   diameter: 3,
   quarters: 2,
@@ -809,7 +810,7 @@ cloud.copy({
 });
 
 // line underneath
-new Shape({
+new Zdog.Shape({
   addTo: town,
   path: [ { x: -1 }, { x: 1 } ],
   translate: { x: -30, y: -56, z: 6 },
@@ -821,7 +822,7 @@ new Shape({
 
 // ----- flat earth ----- //
 
-var flatEarth = new Ellipse({
+var flatEarth = new Zdog.Ellipse({
   diameter: 128,
   addTo: illo,
   translate: town.translate,
@@ -832,7 +833,7 @@ var flatEarth = new Ellipse({
 
 // ----- sky ----- //
 
-var sky = new Group({
+var sky = new Zdog.Group({
   addTo: illo,
   translate: town.translate,
   // translate: { y: 2 },
@@ -861,12 +862,12 @@ var sky = new Group({
     var topYB = topYs[ nextI ];
     var bottomYA = bottomYs[ i ];
     var bottomYB = bottomYs[ nextI ];
-    var panelAnchor = new Anchor({
+    var panelAnchor = new Zdog.Anchor({
       addTo: sky,
       rotate: { y: angle * i  - TAU/4 },
       translate: { y: 1 },
     });
-    new Shape({
+    new Zdog.Shape({
       path: [
         { x: -panelWidth/2, y: topYA },
         { bezier: [
@@ -912,7 +913,7 @@ function update() {
 
   if ( isRotating ) {
     t += tSpeed * delta/60;
-    var theta = easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t ) * TAU;
     var rev = 1;
     var spin = -theta * rev + TAU/8;
     var extraRotation = TAU * rev * Math.floor( ( t % 4 ) );

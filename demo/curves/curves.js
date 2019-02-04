@@ -6,7 +6,7 @@ canvas.width =  w * zoom;
 canvas.height = h * zoom;
 // colors
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -15,7 +15,7 @@ var illo = new Illo({
 // -- illustration shapes --- //
 
 // rectangle with curve
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -6, y: -8 },
     { bezier: [
@@ -37,7 +37,7 @@ new Shape({
 });
 
 // quarter circle
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 10, y: 0 },
     { arc: [

@@ -16,10 +16,11 @@ var canvasHeight = canvas.height = h * zoom;
 unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
 unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 
-var camera = new Anchor();
+var camera = new Zdog.Anchor();
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var mainIllo = new Illo({
+var mainIllo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: camera,
@@ -28,18 +29,18 @@ var mainIllo = new Illo({
   },
 });
 
-var unibodyIllo = new Illo({
+var unibodyIllo = new Zdog.Illo({
   canvas: unibodyCanvas,
   zoom: zoom,
 });
 
-var bodyLinesIllo = new Illo({
+var bodyLinesIllo = new Zdog.Illo({
   canvas: bodyLinesCanvas,
   zoom: zoom,
 });
 
 
-var jumpRotation = new Vector({
+var jumpRotation = new Zdog.Vector({
   x: 12/360 * TAU,
   y: -15/360 * TAU,
   z: -31/360 * TAU,
@@ -52,18 +53,18 @@ var gold = '#EA0';
 var blue = '#19F';
 var black = '#333';
 
-var bearAnchor = new Anchor({
+var bearAnchor = new Zdog.Anchor({
   addTo: camera,
 });
 
-var positiveAnchor = new Group({
+var positiveAnchor = new Zdog.Group({
   addTo: bearAnchor,
   updateSort: true,
 });
-var outlineAnchor = new Group({
+var outlineAnchor = new Zdog.Group({
   addTo: bearAnchor,
 });
-var bodySectionsAnchor = new Group({
+var bodySectionsAnchor = new Zdog.Group({
   addTo: bearAnchor,
   updateSort: true,
 });
@@ -81,7 +82,7 @@ var bodyLineWidth = 28;
   var outlineWidth = isOutline ? 8 : 0;
 
   // unibody
-  var unibody = new Rect({
+  var unibody = new Zdog.Rect({
     width: bodyWidth,
     height: bodyHeight,
     addTo: anchor,
@@ -96,10 +97,10 @@ var bodyLineWidth = 28;
     positiveUnibody = unibody;
     // body cut-in
     // cut-in points
-    var ciA = new Vector({ z: 0, y: -23 });
-    var ciB = new Vector({ z: 16, y: -7 });
-    var ciC = new Vector({ z: 16, y: 7 });
-    var ciD = new Vector({ z: 0, y: 23 });
+    var ciA = new Zdog.Vector({ z: 0, y: -23 });
+    var ciB = new Zdog.Vector({ z: 16, y: -7 });
+    var ciC = new Zdog.Vector({ z: 16, y: 7 });
+    var ciD = new Zdog.Vector({ z: 0, y: 23 });
     // 45 degree points
     var topPoints = getQuarterArcPoints( ciA, ciB );
     var bottomPoints = getQuarterArcPoints( ciD, ciC );
@@ -111,7 +112,7 @@ var bodyLineWidth = 28;
       { bezier: [ bottomPoints[2], bottomPoints[1], bottomPoints[0] ] },
     ];
 
-    bodyCutIn = new Shape({
+    bodyCutIn = new Zdog.Shape({
       path: cutInPath,
       translate: { x: 3 },
       addTo: unibody,
@@ -123,7 +124,7 @@ var bodyLineWidth = 28;
   }
 
   // right ear
-  var ear = new Ellipse({
+  var ear = new Zdog.Ellipse({
     diameter: 4,
     addTo: unibody,
     translate: { x: -14, y: -19, z: -2 },
@@ -137,13 +138,13 @@ var bodyLineWidth = 28;
 
 
   // face container
-  var face = new Anchor({
+  var face = new Zdog.Anchor({
     translate: { y: -2, z: 14 },
     addTo: unibody,
   });
 
   // snout
-  new Ellipse({
+  new Zdog.Ellipse({
     width: 8,
     height: 4,
     addTo: face,
@@ -155,7 +156,7 @@ var bodyLineWidth = 28;
 
   if ( !isOutline ) {
     // nose
-    new Shape({
+    new Zdog.Shape({
       path: [
         { x: -1.5, y: 0 },
         { x: 1.5, y: 0 },
@@ -169,7 +170,7 @@ var bodyLineWidth = 28;
     });
 
     // right eye
-    var eye = new Shape({
+    var eye = new Zdog.Shape({
       path: [
         { x: -4, y: 0 },
         { arc: [
@@ -206,7 +207,7 @@ var bodyLineWidth = 28;
 
 
   // right arm
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -1 },
       { x: -8 },
@@ -218,7 +219,7 @@ var bodyLineWidth = 28;
     stroke: 12 + outlineWidth,
   });
   // left arm
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: 0 },
       {
@@ -238,7 +239,7 @@ var bodyLineWidth = 28;
   });
 
   // right leg
-  var rightLeg = new Shape({
+  var rightLeg = new Zdog.Shape({
     path: [
       { y: 4 },
       { y: 15 },
@@ -252,7 +253,7 @@ var bodyLineWidth = 28;
 
   // right leg cut-in
   if ( !isOutline ) {
-    rightLegCutInA = new Shape({
+    rightLegCutInA = new Zdog.Shape({
       path: [
         { z: 8, y: 4 },
         { z: 8, y: 15 },
@@ -276,7 +277,7 @@ var bodyLineWidth = 28;
 
 
   // left leg
-  var leftThigh = new Shape({
+  var leftThigh = new Zdog.Shape({
     path: [
       { y: 2 },
       { y: 12 },
@@ -288,7 +289,7 @@ var bodyLineWidth = 28;
     stroke: 12 + outlineWidth,
   });
   // left shin
-  var leftShin = new Shape({
+  var leftShin = new Zdog.Shape({
     path: [
       { y: 0 },
       { y: 12 },
@@ -301,7 +302,7 @@ var bodyLineWidth = 28;
   });
 
   if ( !isOutline ) {
-    backLegCutIn = new Shape({
+    backLegCutIn = new Zdog.Shape({
       path: [
         { z: 8, y: -14 },
         { z: 8, y: -8 },
@@ -318,7 +319,7 @@ var bodyLineWidth = 28;
       stroke: 4,
     });
 
-    crotchCutIn = new Shape({
+    crotchCutIn = new Zdog.Shape({
       path: [
         { x: -1.5, z: -2 },
         { x:  1, z: 0 }
@@ -340,11 +341,11 @@ var sectionSize = unibodyHeight / 4;
 
 // body lines
 [ magenta, orange, gold, blue ].forEach( function( color, i ) {
-  var stripeGroup = new Group({
+  var stripeGroup = new Zdog.Group({
     addTo: bodySectionsAnchor,
     translate: { y: ( i - 1.5 ) * 10.5 },
   });
-  var cylinder = new Cylinder({
+  var cylinder = new Zdog.Cylinder({
     diameter: bodyLineWidth,
     length: sectionSize,
     addTo: stripeGroup,
@@ -358,7 +359,7 @@ var sectionSize = unibodyHeight / 4;
     translate: { x: bodyWidth/2 },
   });
   // panel to cover cylinders overlap
-  var panel = new Rect({
+  var panel = new Zdog.Rect({
     width: bodyWidth,
     height: sectionSize,
     addTo: stripeGroup,
@@ -411,13 +412,12 @@ animate();
 function update() {
   if ( isRotating ) {
     t += 1/180;
-    var easeT = easeInOut( t, 3 );
+    var easeT = Zdog.easeInOut( t, 3 );
     camera.rotate.y = easeT*TAU*2 + jumpRotation.y;
   }
 
   camera.normalizeRotate();
-  // normalize angle y
-  var cameraRY = camera.rotate.y = modulo( camera.rotate.y, TAU );
+  var cameraRY = camera.rotate.y;
   // update cut-in rotates
   rightLegCutInA.rotate.y = -1.2 - cameraRY;
   rightLegCutInB.rotate.y = -1.2 - cameraRY;
@@ -466,18 +466,18 @@ function setJumpRotate() {
 }
 
 function getQuarterArcPoints( a, b ) {
-  var start = new Vector({
-    z: lerp( a.z, b.z, 5/7 ),
-    y: lerp( a.y, b.y, 2/7 ),
+  var start = new Zdog.Vector({
+    z: Zdog.lerp( a.z, b.z, 5/7 ),
+    y: Zdog.lerp( a.y, b.y, 2/7 ),
   });
   // control points
-  var cp0 = new Vector({
-    z: lerp( a.z, b.z, 24/28 ),
-    y: lerp( a.y, b.y, 12/28 ),
+  var cp0 = new Zdog.Vector({
+    z: Zdog.lerp( a.z, b.z, 24/28 ),
+    y: Zdog.lerp( a.y, b.y, 12/28 ),
   });
-  var cp1 = new Vector({
+  var cp1 = new Zdog.Vector({
     z: b.z,
-    y: lerp( a.y, b.y, 5/7 ),
+    y: Zdog.lerp( a.y, b.y, 5/7 ),
   });
 
   return [ start, cp0, cp1 ];

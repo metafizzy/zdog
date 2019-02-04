@@ -1,6 +1,23 @@
-/* globals Hemisphere: true */
+/**
+ * Hemisphere composite shape
+ */
 
-// -------------------------- Hemisphere -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils', './shape', './group', './ellipse' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( depends, factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Hemisphere = factory( Zdog, Zdog.Shape, Zdog.Group, Zdog.Ellipse );
+  }
+}( this, function factory( utils, Shape, Group, Ellipse ) {
 
 var Hemisphere = Group.subclass({
   diameter: 1,
@@ -9,6 +26,8 @@ var Hemisphere = Group.subclass({
   fill: true,
   stroke: 1,
 });
+
+var TAU = utils.TAU;
 
 Hemisphere.prototype.create = function(/* options */) {
   // call super
@@ -59,3 +78,7 @@ Hemisphere.prototype.renderDome = function( ctx ) {
     ctx.fill();
   }
 };
+
+return Hemisphere;
+
+}));

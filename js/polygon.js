@@ -1,11 +1,30 @@
-/* globals Polygon: true */
+/**
+ * Shape
+ */
 
-// -------------------------- Polygon -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils', './shape' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( depends, factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Polygon = factory( Zdog, Zdog.Shape );
+  }
+}( this, function factory( utils, Shape ) {
 
 var Polygon = Shape.subclass({
   sides: 3,
   radius: 0.5,
 });
+
+var TAU = utils.TAU;
 
 Polygon.prototype.setPath = function() {
   this.path = [];
@@ -16,3 +35,7 @@ Polygon.prototype.setPath = function() {
     this.path.push({ x: x, y: y });
   }
 };
+
+return Polygon;
+
+}));

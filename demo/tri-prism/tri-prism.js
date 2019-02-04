@@ -13,9 +13,9 @@ var canvasHeight = canvas.height = h * zoom;
 var shrink = 1/3;
 proxyCanvas.width = canvasWidth * shrink;
 proxyCanvas.height = canvasHeight * shrink;
+var TAU = Zdog.TAU;
 
-
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: proxyCanvas,
   rotate: { x: -35/360 * TAU, y: 45/360 * TAU },
   zoom: zoom,
@@ -33,21 +33,21 @@ document.body.style.backgroundColor = '#EDC';
 // -- illustration shapes --- //
 
 function makePrism( options ) {
-  var prism = new Anchor({
+  var prism = new Zdog.Anchor({
     addTo: illo,
     rotate: options.rotate,
   });
 
-  var rotor = new Anchor({
+  var rotor = new Zdog.Anchor({
     addTo: prism,
   });
 
-  var positioner = new Anchor({
+  var positioner = new Zdog.Anchor({
     addTo: rotor,
     translate: { z: 1, y: -1 },
   });
 
-  var triangle = new Shape({
+  var triangle = new Zdog.Shape({
     addTo: positioner,
     path: [
       { z:  1, y:  1 },
@@ -64,7 +64,7 @@ function makePrism( options ) {
   });
 
   // slope
-  new Shape({
+  new Zdog.Shape({
     addTo: positioner,
     path: [
       { x: -2, y: 1, z: 1 },
@@ -77,7 +77,7 @@ function makePrism( options ) {
     stroke: 1/zoom,
   });
 
-  var base = new Rect({
+  var base = new Zdog.Rect({
     addTo: positioner,
     width: 2,
     height: 2,
@@ -141,7 +141,7 @@ var transforms = {
 };
 
 function update() {
-  var easeT = easeInOut( t, 4 ) * TAU/4;
+  var easeT = Zdog.easeInOut( t, 4 ) * TAU/4;
 
   var turn = Math.floor( t % 6 );
   var transform = transforms[ turn ];
@@ -192,7 +192,7 @@ animate();
 // click drag to rotate
 var dragStartAngleX, dragStartAngleY;
 
-new Dragger({
+new Zdog.Dragger({
   startElement: canvas,
   onPointerDown: function() {
     isRotating = false;

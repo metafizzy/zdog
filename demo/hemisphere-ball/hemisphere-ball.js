@@ -9,8 +9,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -28,7 +29,7 @@ var eggplant = '#636';
 
 // -- illustration shapes --- //
 
-var hemi = new Hemisphere({
+var hemi = new Zdog.Hemisphere({
   diameter: 13,
   addTo: illo,
   translate: { y: -16 },
@@ -48,11 +49,11 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
 
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
-    var rotor1 = new Anchor({
+    var rotor1 = new Zdog.Anchor({
       addTo: illo,
       rotate: { y: TAU/5 * i },
     });
-    var rotor2 = new Anchor({
+    var rotor2 = new Zdog.Anchor({
       addTo: rotor1,
       rotate: { x: TAU/6 },
     });
@@ -92,7 +93,7 @@ function rotate() {
   t = t % 1;
   var isFirstHalf = t < 0.5;
   var halfT = isFirstHalf ? t : t - 0.5;
-  var doubleEaseT = easeInOut( halfT * 2, 3 ) / 2;
+  var doubleEaseT = Zdog.easeInOut( halfT * 2, 3 ) / 2;
   doubleEaseT += isFirstHalf ? 0 : 0.5;
   illo.rotate.y = doubleEaseT * TAU;
   illo.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;

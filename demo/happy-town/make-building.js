@@ -14,7 +14,7 @@ function makeBuilding( options ) {
   // south/noth walls
   [ true, false ].forEach( function( isSouth ) {
     var wallTZ = isSouth ? -wallZ : wallZ;
-    var wallGroup = new Group({
+    var wallGroup = new Zdog.Group({
       addTo: options.addTo,
       translate: { z: -wallTZ },
     });
@@ -34,7 +34,7 @@ function makeBuilding( options ) {
     ]);
 
     // wall
-    new Shape({
+    new Zdog.Shape({
       path: wallPath,
       addTo: wallGroup,
       color: isSouth ? red : gold,
@@ -51,7 +51,7 @@ function makeBuilding( options ) {
 
   // east/west wall
   [ true, false ].forEach( function( isWest ) {
-    var wallGroup = new Group({
+    var wallGroup = new Zdog.Group({
       addTo: options.addTo,
       translate: { x: isWest ? -wallX : wallX },
       rotate: { y: TAU/4 },
@@ -72,7 +72,7 @@ function makeBuilding( options ) {
     ]);
 
     // wall
-    new Shape({
+    new Zdog.Shape({
       path: wallPath,
       addTo: wallGroup,
       color: isWest ? blue : white,
@@ -90,7 +90,7 @@ function makeBuilding( options ) {
   var roofMakers = {
     ns: function() {
       var y0 = -wallY - wallX;
-      var roofPanel = new Shape({
+      var roofPanel = new Zdog.Shape({
         path: [
           { x: 0, y: y0, z: wallZ },
           { x: 0, y: y0, z: -wallZ },
@@ -109,7 +109,7 @@ function makeBuilding( options ) {
     ew: function() {
       var y0 = -wallY - wallZ;
       var xA = options.isChurch ? -wallX + 8 : -wallX;
-      var roofPanel = new Shape({
+      var roofPanel = new Zdog.Shape({
         path: [
           { z: 0, y: y0, x: xA },
           { z: 0, y: y0, x: wallX },
@@ -159,7 +159,7 @@ function handleWindows( options, windowProperty, wallGroup, color ) {
         { x: x +  1, y: y +  2 },
         { x: x + -1, y: y +  2 },
       ];
-      new Shape({
+      new Zdog.Shape({
         path: windowPath,
         addTo: wallGroup,
         color: color,

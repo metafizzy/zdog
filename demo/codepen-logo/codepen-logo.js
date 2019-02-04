@@ -8,9 +8,10 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var TAU = Zdog.TAU;
 var isRotating = true;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   scale: 4,
   zoom: zoom,
@@ -22,7 +23,7 @@ var illo = new Illo({
 
 var tiltAngle = Math.asin(2/3);
 
-var prism = new Anchor({
+var prism = new Zdog.Anchor({
   addTo: illo,
 });
 
@@ -33,7 +34,7 @@ var capLength = 6/RT2;
 var sideLength =  2 / Math.cos( tiltAngle );
 var sideZ = sideLength/2;
 
-var cap = new Rect({
+var cap = new Zdog.Rect({
   width: capLength,
   height: capLength,
   addTo: prism,
@@ -46,7 +47,7 @@ cap.copy({
   translate: { z: sideZ },
 });
 
-var side = new Shape({
+var side = new Zdog.Shape({
   addTo: prism,
   path: [ { z: -1 }, { z: 1 } ],
   scale: sideZ,
@@ -73,13 +74,13 @@ var tSpeed = 1/90;
 function animate() {
   // update
   if ( isRotating ) {
-    var easeT = easeInOut( t, 3 );
+    var easeT = Zdog.easeInOut( t, 3 );
     var turn = Math.floor( t );
     if ( turn === 0 ) {
-      illo.rotate.z = lerp( TAU/8 * -3, TAU/8, easeT );
-      illo.rotate.x = lerp( 0, tiltAngle, easeT );
+      illo.rotate.z = Zdog.lerp( TAU/8 * -3, TAU/8, easeT );
+      illo.rotate.x = Zdog.lerp( 0, tiltAngle, easeT );
     } else if ( turn == 1 ) {
-      illo.rotate.x = lerp( -TAU/2, 0, easeT );
+      illo.rotate.x = Zdog.lerp( -TAU/2, 0, easeT );
     }
     t += tSpeed;
   }

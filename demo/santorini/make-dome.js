@@ -1,9 +1,10 @@
 var roof = '#06B';
+var TAU = Zdog.TAU;
 
 function makeDome( options ) {
   var d = options.size;
   var r = d/2;
-  var domePanel = new Shape( extend( options, {
+  var domePanel = new Zdog.Shape( Zdog.extend( options, {
     path: [
       { x: -r, y: 0, z: r },
       { arc: [

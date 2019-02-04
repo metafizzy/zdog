@@ -1,6 +1,23 @@
-/* globals Ellipse: true */
+/**
+ * Ellipse
+ */
 
-// -------------------------- Ellipse -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [ './shape' ], factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory( require('./shape') );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Ellipse = factory( Zdog.Shape );
+  }
+
+}( this, function factory( Shape ) {
 
 var Ellipse = Shape.subclass({
   diameter: 1,
@@ -44,3 +61,7 @@ Ellipse.prototype.setPath = function() {
     ]});
   }
 };
+
+return Ellipse;
+
+}));

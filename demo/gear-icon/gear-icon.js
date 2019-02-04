@@ -8,8 +8,9 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: { x: -TAU/8 },
@@ -45,17 +46,17 @@ var gearPath = ( function() {
   return path;
 })();
 
-var gear = new Anchor({
+var gear = new Zdog.Anchor({
   addTo: illo,
   rotate: { x: TAU/4 },
 });
 
-var faceGroup = new Group({
+var faceGroup = new Zdog.Group({
   addTo: gear,
   translate: frontZ,
 });
 // gear face
-new Shape({
+new Zdog.Shape({
   addTo: faceGroup,
   path: gearPath,
   color: colorA,
@@ -66,7 +67,7 @@ new Shape({
   // visible: false,
 });
 // nub
-new Cylinder({
+new Zdog.Cylinder({
   addTo: faceGroup,
   diameter: 6,
   length: 2,
@@ -85,13 +86,13 @@ faceGroup.copyGraph({
 gearPath.forEach( function( corner, i ) {
   // return;
   var nextCorner = gearPath[ i + 1 ] || gearPath[0];
-  new Shape({
+  new Zdog.Shape({
     addTo: gear,
     path: [
-      new Vector( corner ).add( frontZ ),
-      new Vector( corner ).add( backZ ),
-      new Vector( nextCorner ).add( backZ ),
-      new Vector( nextCorner ).add( frontZ ),
+      new Zdog.Vector( corner ).add( frontZ ),
+      new Zdog.Vector( corner ).add( backZ ),
+      new Zdog.Vector( nextCorner ).add( backZ ),
+      new Zdog.Vector( nextCorner ).add( frontZ ),
     ],
     color: i % 2 ? colorA : colorB,
     fill: true,

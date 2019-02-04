@@ -11,9 +11,10 @@ var zoom = 5;
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = false;
+var TAU = Zdog.TAU;
 var initRotate = { y: TAU/8 };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: initRotate,
@@ -34,12 +35,12 @@ var illo = new Illo({
 // var midnight = '#024';
 
 // default to flat, filled shapes
-[ Shape, Rect, Ellipse ].forEach( function( ItemClass ) {
+[ Zdog.Shape, Zdog.Rect, Zdog.Ellipse ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
   ItemClass.defaults.stroke = false;
 });
 
-var island = new Anchor({
+var island = new Zdog.Anchor({
   addTo: illo,
   scale: { x: 1/Math.sin(TAU/8), z: -1/Math.sin(TAU/8) }
 });
@@ -95,7 +96,7 @@ oneStorySlanter({
 // -----  ----- //
 
 // 2.5 story slantS, east
-var buildAnchor4 = new Anchor({
+var buildAnchor4 = new Zdog.Anchor({
   addTo: island,
   translate: { x: 42, z: -6 },
 });
@@ -118,7 +119,7 @@ makeBuilding({
 
 // ----- cathedral ----- //
 
-var cathBaseAnchor = new Anchor({
+var cathBaseAnchor = new Zdog.Anchor({
   addTo: island,
   translate: { x: 28, z: -12 },
 });
@@ -149,7 +150,7 @@ makeBuilding({
 });
 
 // cathedral 2nd story
-var cath2ndAnchor = new Anchor({
+var cath2ndAnchor = new Zdog.Anchor({
   addTo: cathBaseAnchor,
   translate: { y: -14 },
 });
@@ -170,7 +171,7 @@ makeBuilding({
 
 // cathedral 3rd story
 
-var cath3rdAnchor = new Anchor({
+var cath3rdAnchor = new Zdog.Anchor({
   addTo: cathBaseAnchor,
   translate: { y: -24 },
 });
@@ -200,7 +201,7 @@ makeDome({
 // -----  ----- //
 
 // 2 story gable, east, behind cathdral on hill
-var anchor6 = new Anchor({
+var anchor6 = new Zdog.Anchor({
   addTo: island,
   translate: { x: 27, z: 6, y: -14 },
 });
@@ -226,7 +227,7 @@ makeBuilding({
 
 
 // shack, west end
-var anchor9 = new Anchor({
+var anchor9 = new Zdog.Anchor({
   addTo: island,
   translate: { x: -13, z: -34 },
 });
@@ -246,7 +247,7 @@ makeBuilding({
 });
 
 // 2 story, west center, 1st hill
-var anchor10 = new Anchor({
+var anchor10 = new Zdog.Anchor({
   addTo: island,
   translate: { x: 3, z: -10, y: -8 },
 });
@@ -269,7 +270,7 @@ makeBuilding({
 });
 
 // west mansion
-var mansionAnchor = new Anchor({
+var mansionAnchor = new Zdog.Anchor({
   addTo: island,
   translate: { x: -14, z: -14, y: -8 },
 });
@@ -308,7 +309,7 @@ makeRock({
 
 // ----- central tower ----- //
 
-var centralTowerAnchor = new Anchor({
+var centralTowerAnchor = new Zdog.Anchor({
   addTo: island,
   translate: { y: -14 },
 });
@@ -328,7 +329,7 @@ makeBuilding({
 });
 
 // central tower 2nd story
-var centralTower2ndAnchor = new Anchor({
+var centralTower2ndAnchor = new Zdog.Anchor({
   addTo: centralTowerAnchor,
   translate: { y: -20 },
 });
@@ -355,7 +356,7 @@ makeDome({
 
 // ----- temple ----- //
 
-var templeAnchor = new Anchor({
+var templeAnchor = new Zdog.Anchor({
   addTo: island,
   translate: { x: -20, y: -14, z: 1 },
 });
@@ -376,7 +377,7 @@ makeBuilding({
   ],
 });
 
-var temple2ndFloor = new Anchor({
+var temple2ndFloor = new Zdog.Anchor({
   addTo: templeAnchor,
   translate: { y: -10 },
 });
@@ -395,7 +396,7 @@ makeBuilding({
   ],
 });
 
-var temple3rdFloor = new Anchor({
+var temple3rdFloor = new Zdog.Anchor({
   addTo: temple2ndFloor,
   translate: { y: -10 },
 });
@@ -422,7 +423,7 @@ makeDome({
 
 // ----- west perch ----- //
 
-var westPerchAnchor = new Anchor({
+var westPerchAnchor = new Zdog.Anchor({
   addTo: island,
   translate: { x: -39, z: 11, y: -44 }
 });
@@ -476,7 +477,7 @@ makeRock({
 
 // perch staircase
 
-var staircaseAnchor = new Shape({
+var staircaseAnchor = new Zdog.Shape({
   addTo: island,
   visible: false,
   translate: { x: -35, y: -14, z: 5 },
@@ -519,7 +520,7 @@ oneStoryBuilding({
 
 // ----- back tower ----- //
 
-var backTowerAnchor = new Anchor({
+var backTowerAnchor = new Zdog.Anchor({
   addTo: island,
   translate: { x: -15, y: -18, z: 35 }
 });

@@ -4,14 +4,18 @@ var green = '#692';
 var egg = '#FED';
 var ochre = '#E83';
 
-[ Shape, Rect, Ellipse, Cylinder, Cone ].forEach( function( ItemClass ) {
-  ItemClass.defaults.fill = true;
-  ItemClass.defaults.stroke = false;
-});
+var TAU = Zdog.TAU;
+
+[ Zdog.Shape, Zdog.Rect, Zdog.Ellipse, Zdog.Cylinder, Zdog.Cone ]
+  .forEach( function( ItemClass ) {
+    ItemClass.defaults.fill = true;
+    ItemClass.defaults.stroke = false;
+  }
+);
 
 
 // triangle
-var isoTriangle = new Shape({
+var isoTriangle = new Zdog.Shape({
   path: [
     { x: 1, y: 1 },
     { x: -1, y: 1  },
@@ -22,17 +26,17 @@ var isoTriangle = new Shape({
 
 function Shifter( options ) {
 
-  var shifterAnchor = this.anchor = new Anchor( options );
+  var shifterAnchor = this.anchor = new Zdog.Anchor( options );
 
   this.pyramid = ( function() {
-    var pyramid = new Group({
+    var pyramid = new Zdog.Group({
       addTo: shifterAnchor,
       visible: false,
       // translate: { x: -3, y: -3 },
       updateSort: true,
     });
 
-    var base = new Rect({
+    var base = new Zdog.Rect({
       addTo: pyramid,
       width: 2,
       height: 2,
@@ -42,7 +46,7 @@ function Shifter( options ) {
     });
 
 
-    var triangle = new Shape({
+    var triangle = new Zdog.Shape({
       addTo: base,
       path: [
         { x: 1, y: -1, z: 0 },
@@ -65,7 +69,7 @@ function Shifter( options ) {
   })();
 
   // cylinder 1
-  this.cylinder1 = new Cylinder({
+  this.cylinder1 = new Zdog.Cylinder({
     addTo: shifterAnchor,
     visible: false,
     diameter: 2,
@@ -83,14 +87,14 @@ function Shifter( options ) {
   // });
 
   this.cone = ( function() {
-    var anchor = new Group({
+    var anchor = new Zdog.Group({
       addTo: shifterAnchor,
       visible: false,
       // translate: { x: 3, y: -3 },
       updateSort: true,
     });
 
-    new Cone({
+    new Zdog.Cone({
       addTo: anchor,
       diameter: 2,
       length: 2,
@@ -106,7 +110,7 @@ function Shifter( options ) {
   // triangular prism
 
   this.prism = ( function() {
-    var prism = new Group({
+    var prism = new Zdog.Group({
       addTo: shifterAnchor,
       visible: false,
       // translate: { x: -3, y: 0 },
@@ -124,7 +128,7 @@ function Shifter( options ) {
       translate: { x: 1 },
     });
 
-    var angleFace = new Shape({
+    var angleFace = new Zdog.Shape({
       addTo: prism,
       path: [
         { x: -1, y: -1, z: 1 },
@@ -139,7 +143,7 @@ function Shifter( options ) {
     });
 
     // base
-    new Rect({
+    new Zdog.Rect({
       addTo: prism,
       width: 2,
       height: 2,
@@ -154,7 +158,7 @@ function Shifter( options ) {
   // eccentric cylinder, triangle contour
 
   this.triCylinder = ( function() {
-    var cylinder = new Group({
+    var cylinder = new Zdog.Group({
       addTo: shifterAnchor,
       visible: false,
       // translate: { x: 3 },
@@ -168,7 +172,7 @@ function Shifter( options ) {
 
     var tilt = Math.atan(1/2);
 
-    var capAnchor = new Anchor({
+    var capAnchor = new Zdog.Anchor({
       addTo: cylinder,
       translate: { x: -0.5 },
       rotate: { y: TAU/4 },
@@ -176,7 +180,7 @@ function Shifter( options ) {
 
 
     // left outside cap
-    var cap = new Ellipse({
+    var cap = new Zdog.Ellipse({
       addTo: capAnchor,
       diameter: 2,
       color: egg,
@@ -209,7 +213,7 @@ Shifter.prototype.update = function( t ) {
 
   var turn = Math.floor( t % 6 );
 
-  var easeT = easeInOut( t, 4 ) * TAU/4;
+  var easeT = Zdog.easeInOut( t, 4 ) * TAU/4;
   this.pyramid.rotate.x = easeT;
   this.cylinder1.rotate.y = easeT + TAU/4;
   this.cone.rotate.x = easeT + TAU/4;

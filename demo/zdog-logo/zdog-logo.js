@@ -9,9 +9,10 @@ var zoom = Math.floor( (minWindowSize*2) / w ) / 2;
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = true;
+var TAU = Zdog.TAU;
 var initRotate = { x: 20/360 * TAU, y: -50/360 * TAU };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: initRotate,
@@ -30,18 +31,18 @@ var lineWidth = 8;
 
 // -- illustration shapes --- //
 
-var bigGroup = new Group({
+var bigGroup = new Zdog.Group({
   addTo: illo,
 });
 
-var backGroup = new Group({
+var backGroup = new Zdog.Group({
   addTo: bigGroup,
   updateSort: true,
 });
 
 
 // top
-var topSide = new Rect({
+var topSide = new Zdog.Rect({
   addTo: backGroup,
   width: 40,
   height: depth,
@@ -56,7 +57,7 @@ topSide.copy({
   rotate: { x: -TAU/4 },
 });
 
-var endCap = new Rect({
+var endCap = new Zdog.Rect({
   addTo: backGroup,
   width: depth,
   height: 8,
@@ -78,7 +79,7 @@ endCap.copy({
   rotate: { y: -TAU/4 },
 });
 
-var underside = new Rect({
+var underside = new Zdog.Rect({
   addTo: backGroup,
   width: 30,
   height: depth,
@@ -97,7 +98,7 @@ var slopeW = 30;
 var slopeH = 22;
 var slopeAngle = Math.atan( slopeH/slopeW );
 
-var slope = new Rect({
+var slope = new Zdog.Rect({
   addTo: backGroup,
   width: Math.sqrt( slopeH*slopeH + slopeW*slopeW ),
   height: depth,
@@ -114,7 +115,7 @@ slope.copy({
 });
 
 // tail
-new Ellipse({
+new Zdog.Ellipse({
   addTo: backGroup,
   diameter: 32,
   quarters: 1,
@@ -127,7 +128,7 @@ new Ellipse({
 
 // tongue
 
-var tongueAnchor = new Anchor({
+var tongueAnchor = new Zdog.Anchor({
   addTo: backGroup,
   translate: { x: -6, y: -7 },
   rotate: {  y: TAU/4  },
@@ -138,7 +139,7 @@ var tongueH = 12;
 var tongueS = 5;
 var tongueTip  = tongueH + tongueS;
 
-new Shape({
+new Zdog.Shape({
   addTo: tongueAnchor,
   path: [
     { x: -tongueS, y: 0 },
@@ -160,12 +161,12 @@ new Shape({
 
 });
 
-var foreGroup = new Group({
+var foreGroup = new Zdog.Group({
   addTo: bigGroup,
   updateSort: true,
 });
 
-var zFace = new Shape({
+var zFace = new Zdog.Shape({
   addTo: foreGroup,
   path: [
     { x: -20, y: -20 },
@@ -193,7 +194,7 @@ zFace.copy({
 });
 
 // nose
-var semiCircle = new Ellipse({
+var semiCircle = new Zdog.Ellipse({
   addTo: backGroup,
   quarters: 2,
   scale: 8,
@@ -208,7 +209,7 @@ var semiCircle = new Ellipse({
 
 // ears
 // group & extra shape are hacks
-var earGroup = new Group({
+var earGroup = new Zdog.Group({
   addTo: illo,
 });
 
@@ -220,7 +221,7 @@ var ear = semiCircle.copy({
   translate: { x: 10, y: -14, z: depth },
 });
 
-new Shape({
+new Zdog.Shape({
   visible: false,
   addTo: ear,
   translate: { z: 0.5, x: -0.5 },
@@ -240,10 +241,10 @@ function animate() {
   if ( isRotating ) {
     var turn = Math.floor( t % 2 );
     if ( turn == 0 ) {
-      illo.rotate.y = easeInOut( t, 4 ) * TAU + initRotate.y;
+      illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU + initRotate.y;
     } else if ( turn == 1 ) {
-      illo.rotate.z = easeInOut( t, 4 ) * TAU;
-      // scene.rotate.x = easeInOut( t, 4 ) * TAU + initRotate.x;
+      illo.rotate.z = Zdog.easeInOut( t, 4 ) * TAU;
+      // scene.rotate.x = Zdog.easeInOut( t, 4 ) * TAU + initRotate.x;
     }
     t += tSpeed;
   }

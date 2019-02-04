@@ -1,12 +1,12 @@
 // -------------------------- lilPyramid -------------------------- //
 
 function lilPyramid( options ) {
-  var anchor = new Anchor({
+  var anchor = new Zdog.Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });
 
-  var panel = new Shape({
+  var panel = new Zdog.Shape({
     path: [
       { x: 0, y: -3, z: 0 },
       { x: 3, y:  0, z: 0 },

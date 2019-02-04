@@ -10,7 +10,7 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,

@@ -11,21 +11,17 @@ canvas.height = h * zoom;
 var orange = '#E62';
 var eggplant = '#636';
 
-Shape.defaults.closed = false;
-[ Shape, Ellipse ].forEach( function( ShapeClass ) {
+Zdog.Shape.defaults.closed = false;
+[ Zdog.Shape, Zdog.Ellipse ].forEach( function( ShapeClass ) {
   ShapeClass.defaults.stroke = 3;
   ShapeClass.defaults.color = orange;
 });
 
-Shape.defaults.stroke = 3;
-Shape.defaults.color = orange;
-Ellipse.defaults.stroke = 3;
-Ellipse.defaults.color = orange;
-
 var isRotating = true;
+var TAU = Zdog.TAU;
 var initialRotate = { y: -TAU/8 };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: initialRotate,
@@ -39,7 +35,7 @@ var illo = new Illo({
 
 // cap top
 [ 0, 1, 2, 3, 4 ].forEach( function( i ) {
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -20, y: 4 },
       { x: -20, y: 0 },
@@ -54,7 +50,7 @@ var illo = new Illo({
 });
 
 // cap back
-new Ellipse({
+new Zdog.Ellipse({
   addTo: illo,
   diameter: 40,
   quarters: 2,
@@ -63,7 +59,7 @@ new Ellipse({
 });
 
 // cap back to brim bottom connect
-var brimConnector = new Shape({
+var brimConnector = new Zdog.Shape({
   path: [
     { x: -20, z: 0 },
     { arc: [
@@ -80,7 +76,7 @@ brimConnector.copy({
 });
 
 // brim back arch
-new Ellipse({
+new Zdog.Ellipse({
   addTo: illo,
   diameter: 32,
   quarters: 2,
@@ -88,12 +84,12 @@ new Ellipse({
   rotate: { z: -TAU/4 },
 });
 
-var brimTip = new Vector({ x: 0, y: -12, z: 34 });
+var brimTip = new Zdog.Vector({ x: 0, y: -12, z: 34 });
 var brimEdge = brimTip.copy();
 brimEdge.x = -14;
 
 // brim top line
-new Shape({
+new Zdog.Shape({
   addTo: illo,
   path: [
     { x: 0, y: -12, z: 12 },
@@ -101,7 +97,7 @@ new Shape({
   ],
 });
 
-var brimBridge = new Shape({
+var brimBridge = new Zdog.Shape({
   addTo: illo,
   path: [
     { x: -16, y: 4, z: 12 },
@@ -118,7 +114,7 @@ brimBridge.copy({
 });
 
 // glasses front top
-var glassFront = new Shape({
+var glassFront = new Zdog.Shape({
   addTo: illo,
   path: [
     { x: -16 },
@@ -129,7 +125,7 @@ var glassFront = new Shape({
 });
 
 // glass lens
-var glassLens = new Shape({
+var glassLens = new Zdog.Shape({
   addTo: glassFront,
   path: [
     { x: -1, y: -1 },
@@ -156,7 +152,7 @@ glassLens.copy({
 });
 
 // glasses arm
-var glassesArm = new Shape({
+var glassesArm = new Zdog.Shape({
   addTo: illo,
   path: [
     { x: 12, y: 0 },
@@ -184,7 +180,7 @@ var t = 0;
 
 function animate() {
   if ( isRotating ) {
-    illo.rotate.y = easeInOut( t, 4 ) * TAU + initialRotate.y;
+    illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU + initialRotate.y;
     t += 1/150;
   }
 

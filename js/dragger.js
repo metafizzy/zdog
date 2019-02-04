@@ -1,4 +1,21 @@
-// -------------------------- Dragger -------------------------- //
+/**
+ * Dragger
+ */
+
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory();
+  } else {
+    // browser global
+    root.Zdog.Dragger = factory();
+  }
+}( this, function factory() {
 
 // quick & dirty drag event stuff
 // messes up if multiple pointers/touches
@@ -80,3 +97,7 @@ Dragger.prototype.pointerUp = function( event ) {
   window.removeEventListener( upEvent, this );
   this.onPointerUp( event );
 };
+
+return Dragger;
+
+}));

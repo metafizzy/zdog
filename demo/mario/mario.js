@@ -9,8 +9,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -33,7 +34,7 @@ var colors = {
 // -- illustration shapes --- //
 
 // head
-var head = new Shape({
+var head = new Zdog.Shape({
   addTo: illo,
   translate: { y: -12, z: 1 },
   color: colors.skin,
@@ -41,7 +42,7 @@ var head = new Shape({
 });
 
 // nose
-new Shape({
+new Zdog.Shape({
   addTo: head,
   translate: { y: 5, z: 13 },
   color: colors.skin,
@@ -51,7 +52,7 @@ new Shape({
 
 
 // chin
-var chin = new Shape({
+var chin = new Zdog.Shape({
   addTo: head,
   path: [
     { x: -5, y: 6, z: 4 },
@@ -65,7 +66,7 @@ chin.copy({
 });
 
 // mouth
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -3, y: -3 },
     { x: -1, y: -1 },
@@ -80,19 +81,19 @@ new Shape({
 });
 
 
-var hat = new Anchor({
+var hat = new Zdog.Anchor({
   addTo: head,
   translate: { y: -8 },
 });
 
 // hat front
-var hatFrontA = new Vector({ x: -8, y: 0, z: 5 });
-var hatFrontB = new Vector({ x: -4, y: -3, z: 7 });
+var hatFrontA = new Zdog.Vector({ x: -8, y: 0, z: 5 });
+var hatFrontB = new Zdog.Vector({ x: -4, y: -3, z: 7 });
 var hatFrontC = hatFrontB.copy().multiply({ x: -1 });
 var hatFrontD = hatFrontA.copy().multiply({ x: -1 });
 
 // hat front
-new Shape({
+new Zdog.Shape({
   path: [
     hatFrontA,
     hatFrontB,
@@ -106,12 +107,12 @@ new Shape({
   addTo: hat,
 });
 
-var hatTopFront = new Vector({ x: 10, y: 1, z: 5 });
-var hatTopBackA = new Vector({ x: 7, y: 3, z: -10 });
+var hatTopFront = new Zdog.Vector({ x: 10, y: 1, z: 5 });
+var hatTopBackA = new Zdog.Vector({ x: 7, y: 3, z: -10 });
 var hatTopBackB = hatTopBackA.copy().multiply({ x: -1 });
 
 // hat top
-new Shape({
+new Zdog.Shape({
   path: [
     hatTopFront.copy().multiply({ x: -1 }),
     hatTopFront,
@@ -124,7 +125,7 @@ new Shape({
   addTo: hat,
 });
 // hat top back
-new Shape({
+new Zdog.Shape({
   path: [
     hatTopBackA,
     hatTopBackB,
@@ -135,7 +136,7 @@ new Shape({
 });
 
 // hat top side
-var hatTopSide = new Shape({
+var hatTopSide = new Zdog.Shape({
   path: [
     hatTopFront,
     hatTopBackA,
@@ -150,7 +151,7 @@ hatTopSide.copy({
 
 
 // hat top cover
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -3, y:  0, z: -8 },
     { x:  3, y:  0, z: -8 },
@@ -164,7 +165,7 @@ new Shape({
 
 // hat brim
 // brim has left & right side
-var hatBrim = new Shape({
+var hatBrim = new Zdog.Shape({
   path: [
     { x: 10, y: 4, z: -0 },
     { x: 8, y: 4, z: 5 },
@@ -182,7 +183,7 @@ hatBrim.copy({
 });
 
 // eyes pupil
-var eye = new Shape({
+var eye = new Zdog.Shape({
   path: [
     { y: 2 },
     { y: 4 },
@@ -196,7 +197,7 @@ eye.copy({
   translate: { x: -5, z: 9 },
 });
 
-var brow = new Shape({
+var brow = new Zdog.Shape({
   path: [
     { x: 3, y: 0, z: -0 },
     { x: 1.5, y: -0.5, z: 1 },
@@ -213,12 +214,12 @@ brow.copy({
   translate: { x: -4, y: -1.5, z: 9 },
 });
 
-var mustache = new Group({
+var mustache = new Zdog.Group({
   addTo: head,
   translate: { y: 6.5, z: 10 },
 });
 // mustache line
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 2, y: 1, z: 1.5 },
     { x: 6.5, y: 0, z: -0 },
@@ -228,7 +229,7 @@ new Shape({
   addTo: mustache,
 });
 // mustache sections
-var mustacheSection = new Shape({
+var mustacheSection = new Zdog.Shape({
   translate: { x: 1.75, y: 1.5, z: 1 },
   color: colors.hair,
   stroke: 4,
@@ -242,7 +243,7 @@ mustache.copyGraph({
   scale: { x: -1 },
 });
 
-var sideburns = new Shape({
+var sideburns = new Zdog.Shape({
   path: [
     { y:  0, z:  0 },
     { y: -4, z:  1.5 },
@@ -260,7 +261,7 @@ sideburns.copy({
   translate: sideburns.translate.copy().multiply({ x: -1 }),
 });
 
-var ear = new Shape({
+var ear = new Zdog.Shape({
   path: [
     { x: 0, y:  0, z: -0 },
     { x: 0, y: -4, z: -0 },
@@ -278,12 +279,12 @@ ear.copy({
   translate: ear.translate.copy().multiply({ x: -1 }),
 });
 
-var sideHair = new Anchor({
+var sideHair = new Zdog.Anchor({
   addTo: head,
 });
 
 // hair side panel
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 4, y: -7,   z: -1 },
     { x: 3, y:  0,   z: -0 },
@@ -297,7 +298,7 @@ new Shape({
   addTo: sideHair,
 });
 // hair balls
-var hairBall = new Shape({
+var hairBall = new Zdog.Shape({
   translate: { x: 6, y: 8, z: -8 },
   color: colors.hair,
   stroke: 6,
@@ -312,7 +313,7 @@ sideHair.copyGraph({
 });
 
 // hair back panel
-new Shape({
+new Zdog.Shape({
   path: [
     { x:  5, y:  0,   z: -0 },
     { x:  6, y: -6.5, z: -1 },
@@ -327,7 +328,7 @@ new Shape({
 });
 
 
-var body = new Shape({
+var body = new Zdog.Shape({
   translate: { x: 0, y: 10, z: 1 },
   color: colors.overalls,
   stroke: 20,
@@ -336,8 +337,8 @@ var body = new Shape({
 
 // right arm
 var rightShoulder = { x: -8, y: -8, z: -3 };
-var rightWrist = new Vector({ x: -14, y: -17, z: -0 });
-new Shape({
+var rightWrist = new Zdog.Vector({ x: -14, y: -17, z: -0 });
+new Zdog.Shape({
   path: [
     rightShoulder,
     rightWrist,
@@ -348,7 +349,7 @@ new Shape({
 });
 
 // right hand
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -17, y: -23, z: 1 },
   ],
@@ -360,7 +361,7 @@ new Shape({
 // left arm
 var leftShoulder = { x: 6, y: -7, z: -4 };
 var leftElbow = { x: 8, y: -4, z: -8 };
-new Shape({
+new Zdog.Shape({
   path: [
     leftShoulder,
     leftElbow,
@@ -369,7 +370,7 @@ new Shape({
   stroke: 8,
   addTo: body,
 });
-new Shape({
+new Zdog.Shape({
   path: [
     leftElbow,
     { x: 12, y: -2, z: -9 },
@@ -379,7 +380,7 @@ new Shape({
   addTo: body,
 });
 // left hand
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 17, y: 1, z: -8 },
   ],
@@ -388,7 +389,7 @@ new Shape({
   addTo: body,
 });
 
-new Shape({
+new Zdog.Shape({
   path: [
     leftShoulder,
     rightShoulder,
@@ -399,7 +400,7 @@ new Shape({
 });
 
 // right leg
-var rightLeg = new Shape({
+var rightLeg = new Zdog.Shape({
   path: [
     { y:  4, z: 2 },
     { y: 10, z: 1 },
@@ -412,7 +413,7 @@ var rightLeg = new Shape({
   addTo: body,
 });
 
-var shoe = new Rect({
+var shoe = new Zdog.Rect({
   addTo: rightLeg,
   width: 4,
   height: 7,
@@ -423,7 +424,7 @@ var shoe = new Rect({
 });
 
 // toe ball
-new Shape({
+new Zdog.Shape({
   addTo: shoe,
   translate: { y: 3, z: 2.5 },
   color: colors.leather,
@@ -431,7 +432,7 @@ new Shape({
 });
 
 // left leg
-var leftLeg = new Shape({
+var leftLeg = new Zdog.Shape({
   path: [
     { y: 4, z: 2 },
     { y: 2, z: 7 },

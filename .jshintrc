@@ -1,30 +1,8 @@
 {
   "browser": true,
-  "devel": true,
   "unused": true,
   "undef": true,
   "globals": {
-    "Anchor": false,
-    "Box": false,
-    "Cone": false,
-    "Cylinder": false,
-    "Dragger": false,
-    "easeInOut": false,
-    "Ellipse": false,
-    "extend": false,
-    "getDistance1": false,
-    "Group": false,
-    "Hemisphere": false,
-    "Illo": false,
-    "lerp": false,
-    "modulo": false,
-    "PathDirection": false,
-    "Polygon": false,
-    "Rect": false,
-    "RoundedRect": false,
-    "Shape": false,
-    "shapeSorter": false,
-    "TAU": false,
-    "Vector": false
+    "Zdog": false
   }
 }

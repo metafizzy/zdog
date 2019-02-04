@@ -1,24 +1,26 @@
 /* jshint unused: false */
 
+var TAU = Zdog.TAU;
+
 function makeMadeline( isGood, colors, options ) {
 
-  var rotor = new Anchor( options );
+  var rotor = new Zdog.Anchor( options );
 
-  var body = new Group({
+  var body = new Zdog.Group({
     addTo: rotor,
     rotate: { x: -TAU/8 },
     translate: { z: -48 },
     updateSort: true,
   });
 
-  var head = new Anchor({
+  var head = new Zdog.Anchor({
     addTo: body,
     translate: { y: -11, z: -2 },
     rotate: { x: TAU/8 },
   });
 
   // face
-  var face = new Ellipse({
+  var face = new Zdog.Ellipse({
     diameter: 6,
     addTo: head,
     translate: { z: 4 },
@@ -26,7 +28,7 @@ function makeMadeline( isGood, colors, options ) {
     color: colors.skin,
   });
 
-  var eyeGroup = new Group({
+  var eyeGroup = new Zdog.Group({
     addTo: face,
     translate: { z: face.stroke/2 - 0.5 },
   });
@@ -36,7 +38,7 @@ function makeMadeline( isGood, colors, options ) {
   [ -1, 1 ].forEach( function( xSide ) {
     // cheek blush
     if ( isGood ) {
-      new Ellipse({
+      new Zdog.Ellipse({
         width: 2,
         height: 1.3,
         addTo: eyeGroup,
@@ -51,7 +53,7 @@ function makeMadeline( isGood, colors, options ) {
     var eyeX = 3.5*xSide;
 
     // eye
-    new Ellipse({
+    new Zdog.Ellipse({
       width: 0.75,
       height: 1.5,
       addTo: eyeGroup,
@@ -62,7 +64,7 @@ function makeMadeline( isGood, colors, options ) {
     });
 
     // eye brow
-    new Ellipse({
+    new Zdog.Ellipse({
       addTo: eyeGroup,
       height: 3,
       width: 1.2,
@@ -79,7 +81,7 @@ function makeMadeline( isGood, colors, options ) {
 
 
   // hair ball
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -1 },
       { x: 1 },
@@ -91,7 +93,7 @@ function makeMadeline( isGood, colors, options ) {
     color: colors.hair,
   });
 
-  var bang = new Shape({
+  var bang = new Zdog.Shape({
     path: [
       {},
       { arc: [
@@ -130,7 +132,7 @@ function makeMadeline( isGood, colors, options ) {
   });
 
   // hair cover
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -3 },
       { x:  3 },
@@ -143,7 +145,7 @@ function makeMadeline( isGood, colors, options ) {
 
   // trail locks
 
-  var trailLock = new Shape({
+  var trailLock = new Zdog.Shape({
     path: [
       { y: -4, z: 0 },
       { bezier: [
@@ -179,7 +181,7 @@ function makeMadeline( isGood, colors, options ) {
   // ----- torso ----- //
 
   // 2nd rib
-  var torsoRib = new Ellipse({
+  var torsoRib = new Zdog.Ellipse({
     width: 12,
     height: 10,
     addTo: body,
@@ -205,7 +207,7 @@ function makeMadeline( isGood, colors, options ) {
     color: colors.parkaDark,
   });
   // waist
-  new Ellipse({
+  new Zdog.Ellipse({
     width: 10,
     height: 8,
     addTo: body,
@@ -220,21 +222,21 @@ function makeMadeline( isGood, colors, options ) {
   [ -1, 1 ].forEach( function( xSide ) {
     var isLeft = xSide == 1;
     // shoulder ball
-    new Shape({
+    new Zdog.Shape({
       addTo: body,
       stroke: 6,
       translate: { x: 6*xSide, y: -5, z: -1 },
       color: colors.parkaLight,
     });
 
-    var shoulderJoint = new Anchor({
+    var shoulderJoint = new Zdog.Anchor({
       addTo: body,
       translate: { x: 9*xSide, y: -3, z: -2 },
       rotate: isLeft ? { x: TAU/8*3, z: -TAU/32 } : { z: TAU/16*2, x: -TAU/16*2 },
     });
 
     // top shoulder rib
-    var armRib = new Ellipse({
+    var armRib = new Zdog.Ellipse({
       diameter: 2,
       rotate: { x: -TAU/4 },
       addTo: shoulderJoint,
@@ -247,7 +249,7 @@ function makeMadeline( isGood, colors, options ) {
       translate: { y: 4 },
     });
 
-    var elbowJoint = new Anchor({
+    var elbowJoint = new Zdog.Anchor({
       addTo: shoulderJoint,
       translate: { y: 8 },
       rotate: isLeft ? {} : { z: TAU/8 },
@@ -264,7 +266,7 @@ function makeMadeline( isGood, colors, options ) {
     });
 
     // hand
-    new Shape({
+    new Zdog.Shape({
       addTo: elbowJoint,
       translate: { y: 9, z: -1 },
       stroke: 8,
@@ -273,7 +275,7 @@ function makeMadeline( isGood, colors, options ) {
 
     // ----- legs ----- //
     var knee = { y: 7 };
-    var thigh = new Shape({
+    var thigh = new Zdog.Shape({
       path: [ { y: 0 }, knee ],
       addTo: body,
       translate: { x: 4*xSide, y: 13 },
@@ -282,7 +284,7 @@ function makeMadeline( isGood, colors, options ) {
       color: colors.tight,
     });
 
-    var shin = new Shape({
+    var shin = new Zdog.Shape({
       path: [ { y: 0 }, { y: 8 } ],
       addTo: thigh,
       stroke: 6,
@@ -294,7 +296,7 @@ function makeMadeline( isGood, colors, options ) {
   });
 
   // butt
-  new Shape({
+  new Zdog.Shape({
     path: [
       { x: -3 },
       { x: 3 },

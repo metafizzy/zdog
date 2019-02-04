@@ -1,6 +1,22 @@
-/* globals Rect: true */
+/**
+ * Rect
+ */
 
-// -------------------------- Rect -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [ './shape' ], factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory( require('./shape') );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Rect = factory( Zdog.Shape );
+  }
+}( this, function factory( Shape ) {
 
 var Rect = Shape.subclass({
   width: 1,
@@ -17,3 +33,7 @@ Rect.prototype.setPath = function() {
     { x: -x, y:  y },
   ];
 };
+
+return Rect;
+
+}));

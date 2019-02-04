@@ -1,6 +1,24 @@
-/* globals Cone: true */
+/**
+ * Cone composite shape
+ */
 
-// -------------------------- Cone -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils', './vector', './shape', './group', './ellipse' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( depends, factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Cone = factory( Zdog, Zdog.Vector, Zdog.Shape,
+      Zdog.Group, Zdog.Ellipse );
+  }
+}( this, function factory( utils, Vector, Shape, Group, Ellipse ) {
 
 var Cone = Group.subclass({
   diameter: 1,
@@ -11,6 +29,8 @@ var Cone = Group.subclass({
   stroke: 1,
   updateSort: true,
 });
+
+var TAU = utils.TAU;
 
 Cone.prototype.create = function(/* options */) {
   // call super
@@ -53,8 +73,8 @@ Cone.prototype.renderCone = function( ctx ) {
   this.renderApex.set( this.apex.renderOrigin )
     .subtract( this.renderOrigin );
   var scale = this.renderNormal.magnitude();
-  var apexDistance = getDistance1( this.renderApex.x, this.renderApex.y );
-  var normalDistance = getDistance1( this.renderNormal.x, this.renderNormal.y );
+  var apexDistance = this.renderApex.magnitude2d();
+  var normalDistance = this.renderNormal.magnitude2d();
   // eccentricity
   var eccenAngle = Math.acos( normalDistance / scale );
   var eccen = Math.sin( eccenAngle );
@@ -99,3 +119,6 @@ Cone.prototype.renderCone = function( ctx ) {
   }
 };
 
+return Cone;
+
+}));

@@ -1,8 +1,26 @@
-/* globals Illo: true */
+/**
+ * Illo
+ */
 
-// -------------------------- Illo -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils', './anchor', './dragger' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( depends, factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Illo = factory( Zdog, Zdog.Anchor, Zdog.Dragger );
+  }
+}( this, function factory( utils, Anchor, Dragger ) {
 
-var noop = function() {};
+function noop() {}
+var TAU = utils.TAU;
 
 var Illo = Anchor.subclass({
   canvas: undefined,
@@ -97,3 +115,7 @@ Illo.prototype.dragMove = function( pointer, moveX, moveY ) {
   this.dragRotate.rotate.y = this.dragStartY + rotateYMove;
   this.onDragMove( pointer, moveX, moveY );
 };
+
+return Illo;
+
+}));

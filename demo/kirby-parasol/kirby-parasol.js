@@ -9,8 +9,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -29,7 +30,7 @@ var yellow = '#FD0';
 
 // -- illustration shapes --- //
 
-var body = new Shape({
+var body = new Zdog.Shape({
   stroke: 22,
   translate: { y: 11 },
   rotate: { x: 0.3, z: 0.1 },
@@ -37,19 +38,19 @@ var body = new Shape({
   color: pink,
 });
 
-var face = new Anchor({
+var face = new Zdog.Anchor({
   translate: { z: 10.5 },
   addTo: body,
 });
 
 [ -1, 1 ].forEach( function( xSide ) {
-  var eyeGroup = new Group({
+  var eyeGroup = new Zdog.Group({
     addTo: face,
     translate: { x: 2.4*xSide, y: -2 },
     rotate: { x: -0.1 },
   });
   // eye
-  new Ellipse({
+  new Zdog.Ellipse({
     width: 1.4,
     height: 5.5,
     addTo: eyeGroup,
@@ -58,7 +59,7 @@ var face = new Anchor({
     fill: true,
   });
   // eye highlight
-  new Ellipse({
+  new Zdog.Ellipse({
     width: 1,
     height: 2,
     addTo: eyeGroup,
@@ -69,12 +70,12 @@ var face = new Anchor({
   });
 
   // cheek holder
-  var cheekHolder = new Anchor({
+  var cheekHolder = new Zdog.Anchor({
     addTo: body,
     rotate: { y: 0.6*xSide },
   });
 
-  new Ellipse({
+  new Zdog.Ellipse({
     width: 2.5,
     height: 1,
     translate: { y: 1, z: 10.5 },
@@ -86,7 +87,7 @@ var face = new Anchor({
 });
 
 // mouth
-new Shape({
+new Zdog.Shape({
   path: [
     { x: 0, y: 0 },
     { bezier: [
@@ -117,7 +118,7 @@ new Shape({
   fill: true,
 });
 
-var rightArm = new Shape({
+var rightArm = new Zdog.Shape({
   path: [
     { y: 0 },
     { y: -7 },
@@ -138,7 +139,7 @@ rightArm.copy({
 });
 
 // right foot
-var rightFoot = new Shape({
+var rightFoot = new Zdog.Shape({
   path: [
     { x: 0, y: -2 },
     { arc: [
@@ -175,7 +176,7 @@ rightFoot.copy({
 // ----- umbrella ----- //
 
 // umbrella rod
-var umbrella = new Shape({
+var umbrella = new Zdog.Shape({
   path: [
     { y: 0 },
     { y: 22 },
@@ -204,7 +205,7 @@ var starPath = ( function() {
   return path;
 })();
 // star shape
-var star = new Shape({
+var star = new Zdog.Shape({
   path: starPath,
   addTo: umbrella,
   translate: { y: -4.5 },
@@ -214,7 +215,7 @@ var star = new Shape({
 });
 
 // umbrella handle
-new Shape({
+new Zdog.Shape({
   path: [
     { z: 0, y: 0 },
     { z: 0, y: 1 },
@@ -240,7 +241,7 @@ new Shape({
   var umbPanelZ = 14 * Math.cos( TAU/24 );
   for ( var i=0; i<12; i++ ) {
     var colorSide = Math.floor( i / 2 ) % 2;
-    new Shape({
+    new Zdog.Shape({
       path: [
         { x: 0, y: 0, z: 0 },
         { arc: [
@@ -266,7 +267,7 @@ new Shape({
 
 ( function() {
   for ( var i=0; i < 6; i++ ) {
-    var starHolder = new Anchor({
+    var starHolder = new Zdog.Anchor({
       addTo: umbrella,
       translate: { y: 10 },
       rotate: { y: TAU/6 * i + TAU/24 },

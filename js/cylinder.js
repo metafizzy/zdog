@@ -1,6 +1,23 @@
-/* globals Cylinder: true */
+/**
+ * Cylinder composite shape
+ */
 
-// -------------------------- Cylinder -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils', './shape', './group', './ellipse' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( depends, factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Cylinder = factory( Zdog, Zdog.Shape, Zdog.Group, Zdog.Ellipse );
+  }
+}( this, function factory( utils, Shape, Group, Ellipse ) {
 
 var Cylinder = Group.subclass({
   diameter: 1,
@@ -11,6 +28,8 @@ var Cylinder = Group.subclass({
   stroke: 1,
   updateSort: true,
 });
+
+var TAU = utils.TAU;
 
 Cylinder.prototype.create = function(/* options */) {
   // call super
@@ -63,3 +82,7 @@ Cylinder.prototype.renderRing = function( ctx ) {
 
   ctx.lineCap = 'round'; // reset
 };
+
+return Cylinder;
+
+}));

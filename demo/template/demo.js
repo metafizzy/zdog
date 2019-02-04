@@ -1,15 +1,16 @@
 // -------------------------- demo -------------------------- //
 
 var canvas = document.querySelector('canvas');
-var w = 96;
-var h = 96;
+var w = 48;
+var h = 48;
 var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
 var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -20,7 +21,7 @@ var illo = new Illo({
 
 // -- illustration shapes --- //
 
-new Rect({
+new Zdog.Rect({
   width: 20,
   height: 20,
   addTo: illo,
@@ -29,7 +30,7 @@ new Rect({
   color: '#E21',
 });
 
-new Ellipse({
+new Zdog.Ellipse({
   diameter: 16,
   addTo: illo,
   translate: { z: 10 },
@@ -37,7 +38,7 @@ new Ellipse({
   color: '#19F',
 });
 
-new Shape({
+new Zdog.Shape({
   path: [
     { x:  0, z:  1 },
     { x: -1, z: -1 },

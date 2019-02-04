@@ -8,13 +8,14 @@ var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
 var canvasWidth = canvas.width = w * zoom;
 canvas.height = h * zoom;
 
+var TAU = Zdog.TAU;
 var ROOT3 = Math.sqrt(3);
 var ROOT5 = Math.sqrt(5);
 var PHI = ( 1 + ROOT5 ) / 2;
 var isRotating = true;
 var t = 0;
 var tSpeed = 1/180;
-var viewRotation = new Vector();
+var viewRotation = new Zdog.Vector();
 
 // warm colors
 var eggplant = '#636';
@@ -23,7 +24,7 @@ var orange = '#E62';
 var gold = '#EA0';
 var yellow = '#ED0';
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   scale: 8,
@@ -35,14 +36,14 @@ var solids = [];
 
 ( function() {
 
-  var hourglass = new Anchor({
+  var hourglass = new Zdog.Anchor({
     addTo: illo,
     translate: { x: 0, y: -4 },
   });
 
   solids.push( hourglass );
 
-  var hemi = new Hemisphere({
+  var hemi = new Zdog.Hemisphere({
     diameter: 2,
     translate: { z: -1 },
     addTo: hourglass,
@@ -64,14 +65,14 @@ var solids = [];
 
 ( function() {
 
-  var sphere = new Anchor({
+  var sphere = new Zdog.Anchor({
     addTo: illo,
     translate: { x: -4, y: -4 },
   });
 
   solids.push( sphere );
 
-  var hemi = new Hemisphere({
+  var hemi = new Zdog.Hemisphere({
     diameter: 2,
     addTo: sphere,
     color: orange,
@@ -89,7 +90,7 @@ var solids = [];
 
 // ----- cylinder ----- //
 
-var cylinder = new Cylinder({
+var cylinder = new Zdog.Cylinder({
   diameter: 2,
   length: 2,
   addTo: illo,
@@ -104,14 +105,14 @@ solids.push( cylinder );
 
 // ----- cone ----- //
 
-var cone = new Anchor({
+var cone = new Zdog.Anchor({
   addTo: illo,
   translate: { x: -4, y: 0 },
 });
 
 solids.push( cone );
 
-new Cone({
+new Zdog.Cone({
   diameter: 2,
   length: 2,
   addTo: cone,
@@ -126,7 +127,7 @@ new Cone({
 
 ( function() {
 
-  var tetrahedron = new Anchor({
+  var tetrahedron = new Zdog.Anchor({
     addTo: illo,
     translate: { x: 0, y: 0 },
     scale: 2.5,
@@ -138,7 +139,7 @@ new Cone({
 
   solids.push( tetrahedron );
 
-  var triangle = new Polygon({
+  var triangle = new Zdog.Polygon({
     sides: 3,
     radius: radius,
     addTo: tetrahedron,
@@ -151,11 +152,11 @@ new Cone({
 
 
   for ( var i=0; i < 3; i++ ) {
-    var rotor1 = new Anchor({
+    var rotor1 = new Zdog.Anchor({
       addTo: tetrahedron,
       rotate: { y: TAU/3 * -i },
     });
-    var rotor2 = new Anchor({
+    var rotor2 = new Zdog.Anchor({
       addTo: rotor1,
       translate: { z: inradius, y: height/2 },
       rotate: { x: Math.acos(1/3) * -1 + TAU/4  },
@@ -175,7 +176,7 @@ new Cone({
 
 ( function() {
 
-  var octahedron = new Anchor({
+  var octahedron = new Zdog.Anchor({
     addTo: illo,
     translate: { x: -4, y: 4 },
     scale: 1.75,
@@ -192,19 +193,19 @@ new Cone({
 
   [ -1, 1 ].forEach( function( ySide ) {
     for ( var i=0; i < 4; i++ ) {
-      var rotor = new Anchor({
+      var rotor = new Zdog.Anchor({
         addTo: octahedron,
         rotate: { y: TAU/4 * (i + 1.5) * -1 },
       });
 
-      var anchor = new Anchor({
+      var anchor = new Zdog.Anchor({
         addTo: rotor,
         translate: { z: 0.5 },
         rotate: { x: tilt * ySide },
         // scale: { y: -ySide },
       });
 
-      new Polygon({
+      new Zdog.Polygon({
         sides: 3,
         radius: radius,
         addTo: anchor,
@@ -223,7 +224,7 @@ new Cone({
 
 // ----- cube ----- //
 
-var cube = new Box({
+var cube = new Zdog.Box({
   addTo: illo,
   width: 2,
   height: 2,
@@ -244,7 +245,7 @@ solids.push( cube );
 
 ( function() {
 
-  var dodecahedron = new Anchor({
+  var dodecahedron = new Zdog.Anchor({
     addTo: illo,
     translate: { x: 0, y: 4 },
     scale: 0.75,
@@ -256,7 +257,7 @@ solids.push( cube );
   var midradius = ( PHI * PHI ) / 2;
 
   // top & bottom faces
-  var face = new Polygon({
+  var face = new Zdog.Polygon({
     sides: 5,
     radius: 1,
     addTo: dodecahedron,
@@ -284,11 +285,11 @@ solids.push( cube );
     }[ ySide ];
 
     for ( var i=0; i < 5; i++ ) {
-      var rotor1 = new Anchor({
+      var rotor1 = new Zdog.Anchor({
         addTo: dodecahedron,
         rotate: { y: TAU/5 * (i) },
       });
-      var rotor2 = new Anchor({
+      var rotor2 = new Zdog.Anchor({
         addTo: rotor1,
         rotate: { x: TAU/4*ySide - Math.atan(2) },
       });
@@ -308,7 +309,7 @@ solids.push( cube );
 
 ( function() {
 
-  var isocahedron = new Anchor({
+  var isocahedron = new Zdog.Anchor({
     addTo: illo,
     translate: { x: 4, y: 4 },
     scale: 1.2,
@@ -341,7 +342,7 @@ solids.push( cube );
     }[ ySide ];
 
     for ( var i=0; i < 5; i++ ) {
-      var rotor = new Anchor({
+      var rotor = new Zdog.Anchor({
         addTo: isocahedron,
         rotate: { y: TAU/5 * -i },
         translate: { y: sideHeight/2 * ySide },
@@ -351,14 +352,14 @@ solids.push( cube );
       var isYPos = ySide > 0;
       capRotateX += isYPos ? TAU/2 : 0;
 
-      var capAnchor = new Anchor({
+      var capAnchor = new Zdog.Anchor({
         addTo: rotor,
         translate: { z: capApothem * ySide },
         rotate: { x: capRotateX },
       });
 
       // cap face
-      var face = new Polygon({
+      var face = new Zdog.Polygon({
         sides: 3,
         radius: faceRadius,
         addTo: capAnchor,
@@ -402,7 +403,7 @@ function update() {
 
   if ( isRotating ) {
     t += tSpeed;
-    var theta = easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t ) * TAU;
     var everyOtherCycle = t % 2 < 1;
     viewRotation.y = everyOtherCycle ? theta : 0;
     viewRotation.x = everyOtherCycle ? 0 : -theta;
@@ -419,7 +420,7 @@ function update() {
 
 var dragStartAngleX, dragStartAngleY;
 
-new Dragger({
+new Zdog.Dragger({
   startElement: canvas,
   onPointerDown: function() {
     isRotating = false;

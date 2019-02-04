@@ -8,6 +8,7 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = false;
+var TAU = Zdog.TAU;
 // colors
 var yellow = "#ED0";
 var gold = '#EA0';
@@ -15,12 +16,12 @@ var orange = '#E62';
 var garnet = '#C25';
 var eggplant = '#636';
 
-[ Shape, Ellipse, Rect ].forEach( function( ShapeClass ) {
+[ Zdog.Shape, Zdog.Ellipse, Zdog.Rect ].forEach( function( ShapeClass ) {
   ShapeClass.defaults.stroke = 1/zoom;
   ShapeClass.defaults.fill = true;
 });
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -31,17 +32,17 @@ var illo = new Illo({
 
 // -- illustration shapes --- //
 
-var house = new Anchor({
+var house = new Zdog.Anchor({
   addTo: illo,
   scale: 4,
 });
 
-var frontGroup = new Group({
+var frontGroup = new Zdog.Group({
   addTo: house,
   translate: { z: 2 },
 });
 
-var gable = new Shape({
+var gable = new Zdog.Shape({
   addTo: frontGroup,
   path: [
     { x: 0, y: -2 },
@@ -60,14 +61,14 @@ gable.copy({
 });
 
 // hole
-new Ellipse({
+new Zdog.Ellipse({
   addTo: frontGroup,
   diameter: 1.25,
   color: eggplant,
   stroke: false,
 });
 
-var side = new Rect({
+var side = new Zdog.Rect({
   addTo: house,
   width: 4,
   height: 2,
@@ -80,7 +81,7 @@ side.copy({
   color: garnet,
 });
 
-var roofAnchor = new Anchor({
+var roofAnchor = new Zdog.Anchor({
   addTo: house,
   translate: { y: -2 },
   rotate: { z: -TAU/8 },
@@ -89,7 +90,7 @@ var roofAnchor = new Anchor({
 var roofW = Math.sqrt(2) * 2;
 // var roofW = 4;
 
-var roof = new Rect({
+var roof = new Zdog.Rect({
   addTo: roofAnchor,
   width: roofW,
   height: 4,
@@ -114,7 +115,7 @@ roofCopy.children[0].color = yellow;
 roofCopy.children[1].color = yellow;
 
 // base
-new Rect({
+new Zdog.Rect({
   addTo: house,
   width: 4,
   height: 4,

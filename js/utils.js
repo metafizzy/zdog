@@ -1,37 +1,41 @@
-/* jshint unused: false */
-/* globals TAU: true */
+/**
+ * Boilerplate & utils
+ */
 
-// Hi! This 3D model was built using the <canvas> 2D drawing API.
-// It uses lineWidth to give the illusion of form.
-// I'm working on a library to make these sort of 3D illustrations,
-// But it's not ready for prime-time. Stay tuned! *~ dd ~*
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory();
+  } else {
+    // browser global
+    root.Zdog = factory();
+  }
 
-// -------------------------- utils -------------------------- //
+}( this, function factory() {
 
-var TAU = Math.PI * 2;
+var Zdog = {};
 
-function extend( a, b ) {
+Zdog.TAU = Math.PI * 2;
+
+Zdog.extend = function( a, b ) {
   for ( var prop in b ) {
     a[ prop ] = b[ prop ];
   }
   return a;
-}
+};
 
-function lerp( a, b, t ) {
+Zdog.lerp = function( a, b, t ) {
   return ( b - a ) * t + a;
-}
+};
 
-function modulo( num, div ) {
+Zdog.modulo = function( num, div ) {
   return ( ( num % div ) + div ) % div;
-}
-
-function getDistance1( x, y ) {
-  return Math.sqrt( x * x + y * y );
-}
-
-function shapeSorter( a, b ) {
-  return a.sortValue - b.sortValue;
-}
+};
 
 var powerMultipliers = {
   2: function( i ) {
@@ -48,7 +52,7 @@ var powerMultipliers = {
   }
 };
 
-function easeInOut( i, power ) {
+Zdog.easeInOut = function( i, power ) {
   if ( power == 1 ) {
     return i;
   }
@@ -62,4 +66,8 @@ function easeInOut( i, power ) {
   var curve = powerMultiplier( slope );
   curve = curve / 2;
   return isFirstHalf ? curve : 1 - curve;
-}
+};
+
+return Zdog;
+
+}));

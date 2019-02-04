@@ -1,6 +1,23 @@
-/* globals Shape: true */
+/**
+ * Rect
+ */
 
-// -------------------------- Shape -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils',  './vector', './path-direction', './anchor' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( './vector', factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Shape = factory( Zdog, Zdog.Vector, Zdog.PathDirection, Zdog.Anchor );
+  }
+}( this, function factory( utils, Vector, PathDirection, Anchor ) {
 
 var Shape = Anchor.subclass({
   stroke: 1,
@@ -127,6 +144,7 @@ Shape.prototype.render = function( ctx ) {
   }
 };
 
+var TAU = utils.TAU;
 // Safari does not render lines with no size, have to render circle instead
 Shape.prototype.renderDot = function( ctx ) {
   var lineWidth = this.getLineWidth();
@@ -181,3 +199,7 @@ Shape.prototype.renderPath = function( ctx ) {
     ctx.fill();
   }
 };
+
+return Shape;
+
+}));

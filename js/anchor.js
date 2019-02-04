@@ -1,4 +1,25 @@
-// -------------------------- Anchor -------------------------- //
+/**
+ * Anchor
+ */
+
+( function( root, factory ) {
+  // universal module definition
+  var depends = [ './utils', './vector' ];
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( depends, factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory.apply( root, depends.map( require ) );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Anchor = factory( Zdog, Zdog.Vector );
+  }
+}( this, function factory( utils, Vector ) {
+
+var TAU = utils.TAU;
 
 function Anchor( options ) {
   this.create( options || {} );
@@ -6,7 +27,7 @@ function Anchor( options ) {
 
 Anchor.prototype.create = function( options ) {
   // set defaults & options
-  extend( this, this.constructor.defaults );
+  utils.extend( this, this.constructor.defaults );
   this.setOptions( options );
 
   // transform
@@ -96,7 +117,6 @@ Anchor.prototype.transform = function( translation, rotation, scale ) {
   });
 };
 
-
 Anchor.prototype.updateGraph = function() {
   this.update();
   this.checkFlatGraph();
@@ -104,7 +124,11 @@ Anchor.prototype.updateGraph = function() {
     item.updateSortValue();
   });
   // z-sort
-  this.flatGraph.sort( shapeSorter );
+  this.flatGraph.sort( Anchor.shapeSorter );
+};
+
+Anchor.shapeSorter = function( a, b ) {
+  return a.sortValue - b.sortValue;
 };
 
 Anchor.prototype.checkFlatGraph = function() {
@@ -156,7 +180,7 @@ Anchor.prototype.copy = function( options ) {
     itemOptions[ key ] = this[ key ];
   }, this );
   // add set options
-  extend( itemOptions, options );
+  utils.extend( itemOptions, options );
   var ItemClass = this.constructor;
   return new ItemClass( itemOptions );
 };
@@ -172,9 +196,9 @@ Anchor.prototype.copyGraph = function( options ) {
 };
 
 Anchor.prototype.normalizeRotate = function() {
-  this.rotate.x = modulo( this.rotate.x, TAU );
-  this.rotate.y = modulo( this.rotate.y, TAU );
-  this.rotate.z = modulo( this.rotate.z, TAU );
+  this.rotate.x = utils.modulo( this.rotate.x, TAU );
+  this.rotate.y = utils.modulo( this.rotate.y, TAU );
+  this.rotate.z = utils.modulo( this.rotate.z, TAU );
 };
 
 // ----- subclass ----- //
@@ -189,8 +213,8 @@ function getSubclass( Super ) {
     Item.prototype = Object.create( Super.prototype );
     Item.prototype.constructor = Item;
 
-    Item.defaults = extend( {}, Super.defaults );
-    extend( Item.defaults, defaults );
+    Item.defaults = utils.extend( {}, Super.defaults );
+    utils.extend( Item.defaults, defaults );
     // create optionKeys
     Item.optionKeys = Super.optionKeys.slice(0);
     // add defaults keys to optionKeys, dedupe
@@ -207,3 +231,7 @@ function getSubclass( Super ) {
 }
 
 Anchor.subclass = getSubclass( Anchor );
+
+return Anchor;
+
+}));

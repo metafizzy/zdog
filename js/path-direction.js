@@ -1,4 +1,22 @@
-// -------------------------- PathDirection -------------------------- //
+/**
+ * PathDirection
+ */
+
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [ './vector' ], factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory( require('./vector') );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.PathDirection = factory( Zdog.Vector );
+  }
+}( this, function factory( Vector ) {
 
 function PathDirection( method, points, previousPoint ) {
   this.method = method;
@@ -63,3 +81,7 @@ PathDirection.prototype.arc = function( ctx ) {
   cp1.set( end ).lerp( corner, 9/16 );
   ctx.bezierCurveTo( cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y );
 };
+
+return PathDirection;
+
+}));

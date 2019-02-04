@@ -9,16 +9,17 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
 // default to flat, filled shapes
-[ Shape, Rect, Ellipse ].forEach( function( ItemClass ) {
+[ Zdog.Shape, Zdog.Rect, Zdog.Ellipse ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
   ItemClass.defaults.stroke = false;
   ItemClass.defaults.backface = false;
   ItemClass.defaults.front = { z: 1 };
 });
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -29,12 +30,12 @@ var illo = new Illo({
 
 // -- house --- //
 
-var house = new Anchor({
+var house = new Zdog.Anchor({
   addTo: illo,
   scale: 10,
 });
 
-var nsWall = new Shape({
+var nsWall = new Zdog.Shape({
   path: [
     { x: -1, y: -1 },
     { x:  0, y: -2 },
@@ -53,7 +54,7 @@ nsWall.copy({
   rotate: { y: TAU/2 },
 });
 
-var ewWall = new Rect({
+var ewWall = new Zdog.Rect({
   width: 2,
   height: 2,
   addTo: house,
@@ -69,7 +70,7 @@ ewWall.copy({
 });
 
 // floor
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -1, z: -1 },
     { x:  1, z: -1 },
@@ -79,14 +80,14 @@ new Shape({
   addTo: house,
   backface: true,
   translate: { y: 1 },
-  front: { y: Shape.defaults.front.z * -1 },
+  // front: { y: Zdog.Shape.defaults.front.z * -1 },
   fill: true,
   color: 'hsla(120, 100%, 40%, 0.8)',
 });
 
 // roof
 var roofLength = Math.sqrt(2);
-var roof = new Shape({
+var roof = new Zdog.Shape({
   path: [
     { x: 0, y: -1 },
     { x: roofLength, y: -1 },
@@ -107,13 +108,13 @@ roof.copy({
 
 // -- chair --- //
 
-var chair = new Anchor({
+var chair = new Zdog.Group({
   addTo: illo,
   scale: 2,
   translate: { y: 5 },
 });
 // chair back
-var chairLegs = new Shape({
+var chairLegs = new Zdog.Shape({
   path: [
     { x: -1, y:  2 },
     { x: -1, y: -2 },
@@ -139,7 +140,7 @@ chairLegs.copy({
   translate: { z: -1 },
 });
 // chair seat
-new Rect({
+new Zdog.Rect({
   width: 2,
   height: 2,
   addTo: chair,

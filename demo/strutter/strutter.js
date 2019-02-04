@@ -14,8 +14,9 @@ var gold = '#EA0';
 var orange = '#C25';
 var eggplant = '#636';
 var midnight = '#424';
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: { y: -TAU/8 },
@@ -30,7 +31,7 @@ var illo = new Illo({
 
 var hipX = 3;
 
-new Shape({
+new Zdog.Shape({
   addTo: illo,
   path: [ { x: -1 }, { x: 1 } ],
   scale: hipX,
@@ -38,7 +39,7 @@ new Shape({
   stroke: 4,
 });
 
-var rightLeg = new Shape({
+var rightLeg = new Zdog.Shape({
   addTo: illo,
   path: [ { y: 0 }, { y: 12 } ],
   translate: { x: -hipX },
@@ -47,7 +48,7 @@ var rightLeg = new Shape({
   stroke: 4,
 });
 // foot
-new RoundedRect({
+new Zdog.RoundedRect({
   addTo: rightLeg,
   width: 2,
   height: 4,
@@ -69,7 +70,7 @@ var leftLeg = rightLeg.copyGraph({
 leftLeg.children[0].rotate.set({ x: TAU/4 - plantAngle });
 
 // chest
-new Shape({
+new Zdog.Shape({
   addTo: illo,
   path: [ { x: -1 }, { x:  1 } ],
   scale: 1.5,
@@ -84,7 +85,7 @@ var armSize = 6;
 [ true, false ].forEach( function( isRight ) {
   var xSide = isRight ? -1 : 1;
 
-  var upperArm = new Shape({
+  var upperArm = new Zdog.Shape({
     addTo: illo,
     path: [ { x: 0 }, { x: armSize } ],
     scale: { x: xSide },
@@ -94,7 +95,7 @@ var armSize = 6;
     stroke: 4,
   });
 
-  var forearm = new Shape({
+  var forearm = new Zdog.Shape({
     addTo: upperArm,
     path: [ { x: 0 }, { x: armSize-2 } ],
     translate: { x: armSize },
@@ -103,7 +104,7 @@ var armSize = 6;
     stroke: 4,
   });
   // hand
-  new Shape({
+  new Zdog.Shape({
     addTo: forearm,
     translate: { x: armSize, z: 1 },
     stroke: 6,
@@ -112,14 +113,14 @@ var armSize = 6;
 
 });
 
-var head = new Anchor({
+var head = new Zdog.Anchor({
   addTo: illo,
   translate: { y: -12, z: -10 },
   rotate: { x: TAU/8 },
 });
 
 // face
-new Hemisphere({
+new Zdog.Hemisphere({
   addTo: head,
   diameter: 12,
   color: gold,
@@ -128,7 +129,7 @@ new Hemisphere({
   stroke: false,
 });
 
-var eye = new Ellipse({
+var eye = new Zdog.Ellipse({
   addTo: head,
   diameter: 2,
   quarters: 2,
@@ -143,7 +144,7 @@ eye.copy({
   rotate: { z: -TAU/4 },
 });
 // smile
-new Ellipse({
+new Zdog.Ellipse({
   addTo: head,
   diameter: 3,
   quarters: 2,
@@ -156,7 +157,7 @@ new Ellipse({
   backface: false,
 });
 
-new Hemisphere({
+new Zdog.Hemisphere({
   addTo: head,
   diameter: 12,
   color: orange,
@@ -165,13 +166,13 @@ new Hemisphere({
   stroke: false,
 });
 
-var brim = new Anchor({
+var brim = new Zdog.Anchor({
   addTo: head,
   scale: 5.5,
   translate: { y: -0.5, z: 6 },
 });
 
-new Shape({
+new Zdog.Shape({
   addTo: brim,
   path: [
     { x:  0, z: 0 },
@@ -185,7 +186,7 @@ new Shape({
   fill: true,
 });
 
-new Shape({
+new Zdog.Shape({
   addTo: brim,
   path: [
     { x: -1, z:  0 },
@@ -210,7 +211,7 @@ var t = 0;
 
 function animate() {
   if ( isRotating ) {
-    illo.rotate.y = easeInOut( t, 4 ) * TAU - TAU/8;
+    illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU - TAU/8;
     t += 1/150;
   }
   illo.updateGraph();

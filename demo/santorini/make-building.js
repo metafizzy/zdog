@@ -9,6 +9,7 @@
 // ewWindows: function() {}
 // gable: flat, ew, ns, slantS, slandN
 
+var TAU = Zdog.TAU;
 // colors
 var white = 'white';
 var southWall = white;
@@ -29,7 +30,7 @@ function makeBuilding( options ) {
   // south/noth walls
   [ true, false ].forEach( function( isSouth ) {
     var wallTZ = isSouth ? -wallZ : wallZ;
-    var wallGroup = new Group({
+    var wallGroup = new Zdog.Group({
       addTo: options.addTo,
       translate: { z: wallTZ },
     });
@@ -52,7 +53,7 @@ function makeBuilding( options ) {
     ]);
 
     // wall
-    new Shape({
+    new Zdog.Shape({
       path: wallPath,
       addTo: wallGroup,
       color: isSouth ? southWall : northWall,
@@ -63,7 +64,7 @@ function makeBuilding( options ) {
 
     // cap border
     if ( options.gable == 'cap' ) {
-      new Rect({
+      new Zdog.Rect({
         width: options.width,
         height: 2,
         addTo: wallGroup,
@@ -76,7 +77,7 @@ function makeBuilding( options ) {
 
   // east/west wall
   [ true, false ].forEach( function( isWest ) {
-    var wallGroup = new Group({
+    var wallGroup = new Zdog.Group({
       addTo: options.addTo,
       translate: { x: isWest ? -wallX : wallX },
       rotate: { y: TAU/4 },
@@ -99,7 +100,7 @@ function makeBuilding( options ) {
     ]);
 
     // wall
-    new Shape({
+    new Zdog.Shape({
       path: wallPath,
       addTo: wallGroup,
       color: isWest ? westWall : eastWall,
@@ -110,7 +111,7 @@ function makeBuilding( options ) {
 
     // cap border
     if ( options.gable == 'cap' ) {
-      new Rect({
+      new Zdog.Rect({
         width: options.depth,
         height: 2,
         addTo: wallGroup,
@@ -125,7 +126,7 @@ function makeBuilding( options ) {
   var roofMakers = {
     ns: function() {
       var y0 = -wallY - wallX;
-      var roofPanel = new Shape({
+      var roofPanel = new Zdog.Shape({
         path: [
           { x: 0, y: y0, z: -wallZ },
           { x: 0, y: y0, z: wallZ },
@@ -142,7 +143,7 @@ function makeBuilding( options ) {
 
     ew: function() {
       var y0 = -wallY - wallZ;
-      var roofPanel = new Shape({
+      var roofPanel = new Zdog.Shape({
         path: [
           { z: 0, y: y0, x: -wallX },
           { z: 0, y: y0, x: wallX },
@@ -160,7 +161,7 @@ function makeBuilding( options ) {
     slantS: function() {
       var roofY0 = -wallY;
       var roofY1 = -wallY - wallZ*2;
-      new Shape({
+      new Zdog.Shape({
         path: [
           { x: -wallX, y: roofY0, z: -wallZ },
           { x:  wallX, y: roofY0, z: -wallZ },
@@ -173,7 +174,7 @@ function makeBuilding( options ) {
     },
 
     flat: function() {
-      new Rect({
+      new Zdog.Rect({
         width: options.width,
         height: options.depth,
         addTo: options.addTo,
@@ -184,7 +185,7 @@ function makeBuilding( options ) {
     },
 
     cap: function() {
-      new Rect({
+      new Zdog.Rect({
         width: options.width,
         height: options.depth,
         addTo: options.addTo,

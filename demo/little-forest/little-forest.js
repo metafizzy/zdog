@@ -9,8 +9,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -32,13 +33,13 @@ var layerSpace = 56;
 // -- illustration shapes --- //
 
 // background
-var background = new Shape({
+var background = new Zdog.Shape({
   translate: { z: layerSpace*-2 },
   visible: false,
   addTo: illo,
 });
 
-var bgStripe = new Rect({
+var bgStripe = new Zdog.Rect({
   width: 180,
   height: 44,
   addTo: background,
@@ -48,7 +49,7 @@ var bgStripe = new Rect({
   fill: true,
 });
 // magenta circle
-var bgCircle = new Ellipse({
+var bgCircle = new Zdog.Ellipse({
   diameter: 96,
   addTo: background,
   translate: { y: -16, z: -24 },
@@ -85,7 +86,7 @@ bgCircle.copy({
 });
 
 // sun
-new Shape({
+new Zdog.Shape({
   addTo: background,
   translate: { y: -16, z: 48 },
   stroke: 24,
@@ -94,12 +95,12 @@ new Shape({
 
 // ----- midBackground ----- //
 
-var midBackground = new Group({
+var midBackground = new Zdog.Group({
   addTo: illo,
   translate: { z: layerSpace*-1 },
 });
 
-var midBGDot = new Shape({
+var midBGDot = new Zdog.Shape({
   addTo: midBackground,
   translate: { x: -36, y: 18 },
   stroke: 24,
@@ -139,11 +140,11 @@ midBGBigDot.copy({
 
 // ----- midground ----- //
 
-var midground = new Anchor({
+var midground = new Zdog.Anchor({
   addTo: illo,
 });
 
-var midgroundGroundA = new Shape({
+var midgroundGroundA = new Zdog.Shape({
   path: [
     { x: -96, y: 10 },
     { x: -86, y: 10 },
@@ -172,7 +173,7 @@ midgroundGroundA.copy({
 });
 
 function tree( groupOptions, options ) {
-  options = extend( options, groupOptions );
+  options = Zdog.extend( options, groupOptions );
   var treeW = options.width/2;
   var treeH = options.height/2;
 
@@ -180,7 +181,7 @@ function tree( groupOptions, options ) {
   var pointB = { x: treeW, y: treeH };
   var pointC = { x: -treeW, y: treeH };
 
-  var treeOptions = extend({
+  var treeOptions = Zdog.extend({
     path: [
       pointA,
       { bezier: [
@@ -198,7 +199,7 @@ function tree( groupOptions, options ) {
     fill: true,
   }, options );
 
-  var treePlane = new Shape( treeOptions );
+  var treePlane = new Zdog.Shape( treeOptions );
   treePlane.copy({
     rotate: { y: TAU/4 },
   });
@@ -249,7 +250,7 @@ tree( midgroundTree, {
   translate: lonelyTranslate,
 });
 // lonely tree stump
-new Shape({
+new Zdog.Shape({
   path: [
     { y: 18 },
     { y: 28 },
@@ -274,13 +275,13 @@ tree( midgroundTree, {
 
 // ----- midForeground ----- //
 
-var midForeground = new Anchor({
+var midForeground = new Zdog.Anchor({
   addTo: illo,
   translate: { z: layerSpace },
 });
 
 // midForeground ground part A
-var midForegroundGround = new Shape({
+var midForegroundGround = new Zdog.Shape({
   path: [
     { x: 96, y: 26 },
     { x: 72, y: 26 },
@@ -310,7 +311,7 @@ midForegroundGround.copy({
   ],
 });
 
-var midForeBall = new Shape({
+var midForeBall = new Zdog.Shape({
   addTo: midForeground,
   translate: { x: -92, y: 18 },
   stroke: 20,
@@ -371,7 +372,7 @@ tree( midForeTree, {
 
 // ----- foregroundA ----- //
 
-var foregroundA = new Shape({
+var foregroundA = new Zdog.Shape({
   path: [
     { x: -96, y: 52 },
     { x: -84, y: 52 },
@@ -412,7 +413,7 @@ tree( foregroundTree, {
   translate: { x: -44, y: 14 },
 });
 // trunk
-new Shape({
+new Zdog.Shape({
   path: [
     { y: 22 },
     { y: 38 },
@@ -430,7 +431,7 @@ tree( foregroundTree, {
   translate: { x: -2, y: 64 },
 });
 
-var grassBlade = new Shape({
+var grassBlade = new Zdog.Shape({
   path: [
     // semi-circle outside on left
     { x: 0, y: 1 },
@@ -480,7 +481,7 @@ grassBlade.copy({
 
 // ----- foregroundB ----- //
 
-var foregroundB = new Shape({
+var foregroundB = new Zdog.Shape({
   path: [
     { x: 96, y: 52 },
     { arc: [
@@ -517,7 +518,7 @@ tree( foregroundTree, {
   translate: bigTreeTranslate,
 });
 // big tree trunk
-new Shape({
+new Zdog.Shape({
   path: [
     { y: 32 },
     { y: 48 },
@@ -550,7 +551,7 @@ grassBlade.copy({
 
 // ----- particles ----- //
 
-var particle = new Shape({
+var particle = new Zdog.Shape({
   addTo: illo,
   translate: { x: -70, y: -50, z: layerSpace*-0.25 },
   stroke: 4,
@@ -579,7 +580,7 @@ particle.copy({
 
 // ----- clouds ----- //
 
-var twoCloud = new Shape({
+var twoCloud = new Zdog.Shape({
   path: [
     { x: -20, y: 0 },
     { bezier: [
@@ -619,7 +620,7 @@ twoCloud.copy({
 });
 
 // triple cloud
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -32, y: 0 },
     { x: -28, y: 0 },
@@ -666,7 +667,7 @@ new Shape({
 
 // ----- stars ----- //
 
-var starA = new Shape({
+var starA = new Zdog.Shape({
   path: [
     { x: 0, y: -4 },
     { arc: [
@@ -705,7 +706,7 @@ starB.copy({
 
 // ----- bird ----- //
 
-new Shape({
+new Zdog.Shape({
   path: [
     { x: -6, y: -4 },
     { x: -4, y: -4 },
@@ -738,7 +739,7 @@ function animate() {
   // update
   if ( isRotating ) {
     t += tSpeed;
-    var theta = easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t ) * TAU;
     var delta = TAU * -3/64;
     illo.rotate.y = Math.sin( theta ) * delta;
     illo.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;

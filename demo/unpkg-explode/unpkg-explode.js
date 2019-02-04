@@ -8,10 +8,11 @@ var zoom = Math.floor( minWindowSize / w );
 // var zoom = 6;
 canvas.width = w * zoom;
 canvas.height = h * zoom;
+var TAU = Zdog.TAU;
 
 var isRotating = false;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: { x: TAU * (35/360), y: TAU/8 },
@@ -43,19 +44,19 @@ var outlines = [];
   { x: TAU/4 },
 ].forEach( function( rotation, i ) {
 
-  var rotor = new Anchor({
+  var rotor = new Zdog.Anchor({
     addTo: illo,
     rotate: rotation,
   });
 
-  var anchor = new Anchor({
+  var anchor = new Zdog.Anchor({
     addTo: rotor,
     translate: { z: -8 },
   });
   
   panelAnchors.push( anchor );
 
-  var panel = new RoundedRect({
+  var panel = new Zdog.RoundedRect({
     width: 16,
     height: 16,
     radius: 3,
@@ -120,12 +121,12 @@ function startAnimation() {
   animation( 2000, function( t ) {
     // var negT = 1 - t;
     // var easeT = 1 - negT * negT * negT;
-    var easeT = easeInOut( t, 3 );
+    var easeT = Zdog.easeInOut( t, 3 );
     panelAnchors.forEach( function( panelAnchor ) {
-      panelAnchor.translate.z = lerp( -8, -11, easeT );
+      panelAnchor.translate.z = Zdog.lerp( -8, -11, easeT );
     });
-    illo.rotate.x = lerp( TAU/4, TAU * (35/360), easeT );
-    illo.rotate.y = lerp( -TAU/2, TAU/8, easeT );
+    illo.rotate.x = Zdog.lerp( TAU/4, TAU * (35/360), easeT );
+    illo.rotate.y = Zdog.lerp( -TAU/2, TAU/8, easeT );
   });
 }
 

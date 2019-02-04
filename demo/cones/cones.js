@@ -9,8 +9,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,
@@ -34,7 +35,7 @@ var colorWheel = [ beige, magenta, orange, blue, yellow ];
 // -- illustration shapes --- //
 
 // top & bottom
-var cone = new Cone({
+var cone = new Zdog.Cone({
   diameter: 8,
   length: 10,
   addTo: illo,
@@ -54,11 +55,11 @@ cone.copy({
 
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
-    var rotor1 = new Anchor({
+    var rotor1 = new Zdog.Anchor({
       addTo: illo,
       rotate: { y: TAU/5 * i },
     });
-    var rotor2 = new Anchor({
+    var rotor2 = new Zdog.Anchor({
       addTo: rotor1,
       rotate: { x: TAU/6 },
     });
@@ -75,11 +76,11 @@ cone.copy({
 
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
-    var rotor1 = new Anchor({
+    var rotor1 = new Zdog.Anchor({
       addTo: illo,
       rotate: { y: TAU/5 * (i+0.5) },
     });
-    var rotor2 = new Anchor({
+    var rotor2 = new Zdog.Anchor({
       addTo: rotor1,
       rotate: { x: TAU/10 },
     });
@@ -96,11 +97,11 @@ cone.copy({
 
 [ -1, 1 ].forEach( function( ySide ) {
   for ( var i=0; i < 5; i++ ) {
-    var rotor1 = new Anchor({
+    var rotor1 = new Zdog.Anchor({
       addTo: illo,
       rotate: { y: TAU/5 * (i+0.5) },
     });
-    var rotor2 = new Anchor({
+    var rotor2 = new Zdog.Anchor({
       addTo: rotor1,
       rotate: { x: TAU/4.5 },
     });
@@ -141,7 +142,7 @@ function rotate() {
   t = t % 1;
   var isFirstHalf = t < 0.5;
   var halfT = isFirstHalf ? t : t - 0.5;
-  var doubleEaseT = easeInOut( halfT * 2, 3 ) / 2;
+  var doubleEaseT = Zdog.easeInOut( halfT * 2, 3 ) / 2;
   doubleEaseT += isFirstHalf ? 0 : 0.5;
   illo.rotate.y = doubleEaseT * TAU;
   illo.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;

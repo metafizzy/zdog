@@ -8,6 +8,7 @@ var zoom = Math.floor( minWindowSize / w );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 var isRotating = true;
+var TAU = Zdog.TAU;
 // colors
 // var white = 'white';
 var yellow = '#ED0';
@@ -20,7 +21,7 @@ var eggplant = '#636';
 
 var initRotate = { x: (35/360) * TAU, y: TAU/8 };
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: initRotate,
@@ -32,7 +33,7 @@ var illo = new Illo({
 
 // -- illustration shapes --- //
 
-var model = new Anchor({
+var model = new Zdog.Anchor({
   addTo: illo,
 });
 
@@ -47,9 +48,9 @@ function addBox( options ) {
     front: garnet,
     bottom: eggplant,
   };
-  extend( boxOptions, options );
+  Zdog.extend( boxOptions, options );
 
-  new Box( boxOptions );
+  new Zdog.Box( boxOptions );
 }
 
 // top
@@ -83,7 +84,7 @@ addBox({
   translate: { x: 1 },
 });
 
-var dot = new Shape({
+var dot = new Zdog.Shape({
   addTo: model,
   translate: { y: -2 },
   stroke: 1,
@@ -117,7 +118,7 @@ var t = 0;
 function animate() {
   if ( isRotating ) {
     var turn = Math.floor( t % 4 );
-    var theta = easeInOut( t%1, 3 ) * TAU;
+    var theta = Zdog.easeInOut( t%1, 3 ) * TAU;
     if ( turn === 0  || turn == 2 ) {
       model.rotate.y = theta;
     } else if ( turn == 1 ) {

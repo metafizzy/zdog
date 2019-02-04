@@ -1,8 +1,29 @@
-// -------------------------- Vector -------------------------- //
+/**
+ * Vector
+ */
+
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [ './utils' ], factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory( require('./utils') );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Vector = factory( Zdog );
+  }
+
+}( this, function factory( utils ) {
 
 function Vector( position ) {
   this.set( position );
 }
+
+var TAU = utils.TAU;
 
 Vector.prototype.set = function( pos ) {
   pos = Vector.sanitize( pos );
@@ -97,19 +118,28 @@ Vector.prototype.transform = function( translation, rotation, scale ) {
 
 Vector.prototype.lerp = function( vec, t ) {
   vec = Vector.sanitize( vec );
-  this.x = lerp( this.x, vec.x, t );
-  this.y = lerp( this.y, vec.y, t );
-  this.z = lerp( this.z, vec.z, t );
+  this.x = utils.lerp( this.x, vec.x, t );
+  this.y = utils.lerp( this.y, vec.y, t );
+  this.z = utils.lerp( this.z, vec.z, t );
   return this;
 };
 
 Vector.prototype.magnitude = function() {
   var sum = this.x*this.x + this.y*this.y + this.z*this.z;
+  return getMagnitudeSqrt( sum );
+};
+
+function getMagnitudeSqrt( sum ) {
   // PERF: check if sum ~= 1 and skip sqrt
   if ( Math.abs( sum - 1 ) < 0.00000001 ) {
     return 1;
   }
   return Math.sqrt( sum );
+}
+
+Vector.prototype.magnitude2d = function() {
+  var sum = this.x*this.x + this.y*this.y;
+  return getMagnitudeSqrt( sum );
 };
 
 Vector.prototype.copy = function() {
@@ -127,3 +157,7 @@ Vector.sanitize = function( vec, value ) {
   vec.z = vec.z === undefined ? value : vec.z;
   return vec;
 };
+
+return Vector;
+
+}));

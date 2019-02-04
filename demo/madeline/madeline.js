@@ -11,8 +11,9 @@ canvas.width = w * zoom;
 canvas.height = h * zoom;
 
 var isRotating = true;
+var TAU = Zdog.TAU;
 
-var illo = new Illo({
+var illo = new Zdog.Illo({
   canvas: canvas,
   zoom: zoom,
   rotate: { y: -TAU/4 },
@@ -55,7 +56,7 @@ makeMadeline( false, badColor, {
 
 // ----- feather ----- //
 
-var feather = new Group({
+var feather = new Zdog.Group({
   addTo: illo,
   rotate: { y: -TAU/4 },
 });
@@ -76,7 +77,7 @@ var feather = new Group({
     var y3 = isLast ? sector * -1 : -y0;
     var z1 = -radius + 2 + curve*-1.5;
     var z2 = isLast ? -radius : -radius;
-    var barb = new Shape({
+    var barb = new Zdog.Shape({
       path: [
         { x: 0, y: y0, z: -radius },
         { x: x, y: -sector/2, z: z1 },
@@ -95,7 +96,7 @@ var feather = new Group({
   }
 
   // rachis
-  var rachis = new Ellipse({
+  var rachis = new Zdog.Ellipse({
     addTo: feather,
     diameter: radius*2,
     quarters: 2,
@@ -116,7 +117,7 @@ var feather = new Group({
 
   var rodCount = 14;
   for ( var i=0; i < rodCount; i++ ) {
-    var zRotor = new Anchor({
+    var zRotor = new Zdog.Anchor({
       addTo: illo,
       rotate: { z: TAU/rodCount * i },
     });
@@ -145,7 +146,7 @@ var feather = new Group({
   var dotCount = 64;
 
   for ( var i=0; i < dotCount; i++ ) {
-    var yRotor = new Anchor({
+    var yRotor = new Zdog.Anchor({
       addTo: illo,
       rotate: { y: TAU/dotCount * i },
     });
@@ -167,7 +168,7 @@ var feather = new Group({
 
 // ----- birds ----- //
 
-var birdRotor = new Anchor({
+var birdRotor = new Zdog.Anchor({
   addTo: illo,
   rotate: { y: TAU*-1/8 },
 });

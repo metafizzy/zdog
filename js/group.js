@@ -1,6 +1,22 @@
-/* globals Group: true */
+/**
+ * Group
+ */
 
-// -------------------------- Group -------------------------- //
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [ './anchor' ], factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory( require('./anchor') );
+  } else {
+    // browser global
+    var Zdog = root.Zdog;
+    Zdog.Group = factory( Zdog.Anchor );
+  }
+}( this, function factory( Anchor ) {
 
 var Group = Anchor.subclass({
   updateSort: false,
@@ -21,7 +37,7 @@ Group.prototype.updateSortValue = function() {
   this.sortValue = sortValueTotal / this.flatGraph.length;
 
   if ( this.updateSort ) {
-    this.flatGraph.sort( shapeSorter );
+    this.flatGraph.sort( Anchor.shapeSorter );
   }
 };
 
@@ -54,3 +70,7 @@ Group.prototype.updateFlatGraph = function() {
   });
   this.flatGraph = flatGraph;
 };
+
+return Group;
+
+}));

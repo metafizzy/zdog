@@ -29,13 +29,13 @@ function makeRock( options ) {
   var topEastSouth = { x:  topEastX, y: y, z: -topSouthZ };
   var topWestSouth = { x: -topWestX, y: y, z: -topSouthZ };
 
-  var anchor = new Anchor({
+  var anchor = new Zdog.Anchor({
     addTo: options.addTo,
     translate: options.translate,
   });
 
   function makeRockFace( path ) {
-    new Shape({
+    new Zdog.Shape({
       path: path,
       addTo: anchor,
       color: midnight,
