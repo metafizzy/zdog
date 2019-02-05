@@ -41,8 +41,8 @@ var leg = new Zdog.Shape({
       { z: 0, y: 0 },
       { z: -8, y: 0 }
     ]},
-    { move: [ { y: -4 } ] },
-    { line: [ { y: 12 } ] },
+    { move: { y: -4 } },
+    { line: { y: 12 } },
   ],
   addTo: illo,
   translate: { x: 16, y: 16, z: 8 },

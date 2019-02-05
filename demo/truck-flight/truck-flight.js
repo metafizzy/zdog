@@ -264,7 +264,7 @@ new Zdog.Shape({
   path: [
     { x: -11 },
     { x: 11 },
-    { move: [{ z: 64 }] }, // 'nother hack
+    { move: { z: 64 } }, // 'nother hack
   ],
   addTo: tailGroup,
   translate: { y: 5, z: 1 },
@@ -335,7 +335,7 @@ var lightFillWheel = new Zdog.Shape( Zdog.extend({
       { x: 0, y: -6 },
     ]},
     // hack, add a big move up to fix z-sort bug
-    { move: [ { x: 0, y: -64, z: 64 } ] },
+    { move: { x: 0, y: -64, z: 64 } },
   ],
   closed: false,
   translate: { x: 18, y: 8, z: 14 },

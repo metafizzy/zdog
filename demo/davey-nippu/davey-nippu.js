@@ -520,7 +520,7 @@ var ground = new Zdog.Anchor({
       { z: 12, y: -2 }, // elbow
       leftWrist,
       // hack for z-sort probs
-      { move: [{ x: 16, z: -16 } ]},
+      { move: { x: 16, z: -16 } },
     ],
     addTo: torso,
     translate: { x: 5, y: -3 },
@@ -572,16 +572,17 @@ var ground = new Zdog.Anchor({
   });
   // phone camera dot
   new Zdog.Shape({
-    path: [
-      // z-sort hack
-      { move: [{ z: 8 }]},
-      { move: [{ z: -0 }]},
-      {},
-    ],
     addTo: phoneBack,
     translate: { x: -1, y: -3 },
     color: midnight,
     stroke: 0.5,
+  });
+
+  // z-sort hack
+  new Zdog.Shape({
+    path: [ { z: 16 } ],
+    addTo: phoneBack,
+    visible: false,
   });
 
   // phone front

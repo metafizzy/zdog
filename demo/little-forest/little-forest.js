@@ -719,7 +719,7 @@ new Zdog.Shape({
       { x: 4, y: -4 },
     ]},
     { x: 6, y: -4 },
-    { move: [{ z: -2, y: 0 }] },
+    { move: { z: -2, y: 0 } },
     { z: 3, y: 0 },
   ],
   addTo: illo,

@@ -168,7 +168,6 @@ door.copy({
 
 // ----- cupola ----- //
 
-
 var cupolaNSPanel = new Zdog.Shape({
   path: [
     { x: -1, y: 0 },
@@ -176,7 +175,7 @@ var cupolaNSPanel = new Zdog.Shape({
     { x: 3, y: 9 },
     { x: -1, y: 5 },
       // HACK add point to sort in front of roof
-      { move: [ { x: 8, z: 4 } ] },
+      { move: { x: 8, z: 4 } },
   ],
   addTo: leftAnchor,
   translate: { y: -34, z: 3 },
@@ -210,7 +209,7 @@ cupolaNSPanel.copy({
       { z: -3, y:  9 },
       { z:  3, y:  9 },
       // HACK add point to sort in front of roof
-      { move: [ { x: 16*xSide } ] },
+      { move: { x: 16*xSide } },
     ],
     addTo: group,
     color: xSide == -1 ? blue : white,
