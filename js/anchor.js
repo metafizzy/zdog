@@ -35,8 +35,10 @@ Anchor.prototype.create = function( options ) {
   this.rotate = new Vector( options.rotate );
   // scale
   if ( typeof options.scale == 'number' ) {
+    // number, set all properties to number { x: 3, y: 3, z: 3 }
     this.scale = Vector.sanitize( {}, options.scale );
   } else {
+    // object, set undefined properties to 1 { x: 3, y: 1, z: 1 }
     this.scale = Vector.sanitize( options.scale, 1 );
   }
   this.scale = new Vector( this.scale );
