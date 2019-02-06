@@ -39,13 +39,22 @@ if ( window.PointerEvent ) {
 function noop() {}
 
 function Dragger( options ) {
-  this.startElement = options.startElement;
-  this.onPointerDown = options.onPointerDown || noop;
-  this.onPointerMove = options.onPointerMove || noop;
-  this.onPointerUp = options.onPointerUp || noop;
-  
-  this.startElement.addEventListener( downEvent, this );
+  this.create( options || {} );
 }
+
+Dragger.prototype.create = function( options ) {
+  this.onDragStart = options.onDragStart || noop;
+  this.onDragMove = options.onDragMove || noop;
+  this.onDragEnd = options.onDragEnd || noop;
+
+  this.bindDrag( options.startElement );
+};
+
+Dragger.prototype.bindDrag = function( element ) {
+  if ( element ) {
+    element.addEventListener( downEvent , this );
+  }
+};
 
 Dragger.prototype.handleEvent = function( event ) {
   var method = this[ 'on' + event.type ];
@@ -56,46 +65,46 @@ Dragger.prototype.handleEvent = function( event ) {
 
 Dragger.prototype.onmousedown =
 Dragger.prototype.onpointerdown = function( event ) {
-  this.pointerDown( event, event );
+  this.dragStart( event, event );
 };
 
 Dragger.prototype.ontouchstart = function( event ) {
-  this.pointerDown( event, event.changedTouches[0] );
+  this.dragStart( event, event.changedTouches[0] );
 };
 
-Dragger.prototype.pointerDown = function( event, pointer ) {
+Dragger.prototype.dragStart = function( event, pointer ) {
   event.preventDefault();
   this.dragStartX = pointer.pageX;
   this.dragStartY = pointer.pageY;
   window.addEventListener( moveEvent, this );
   window.addEventListener( upEvent, this );
-  this.onPointerDown( pointer );
+  this.onDragStart( pointer );
 };
 
 Dragger.prototype.ontouchmove = function( event ) {
   // HACK, moved touch may not be first
-  this.pointerMove( event, event.changedTouches[0] );
+  this.dragMove( event, event.changedTouches[0] );
 };
 
 Dragger.prototype.onmousemove =
 Dragger.prototype.onpointermove = function( event ) {
-  this.pointerMove( event, event );
+  this.dragMove( event, event );
 };
 
-Dragger.prototype.pointerMove = function( event, pointer ) {
+Dragger.prototype.dragMove = function( event, pointer ) {
   event.preventDefault();
   var moveX = this.dragStartX - pointer.pageX;
   var moveY = this.dragStartY - pointer.pageY;
-  this.onPointerMove( pointer, moveX, moveY );
+  this.onDragMove( pointer, moveX, moveY );
 };
 
-Dragger.prototype.onmouseup = 
+Dragger.prototype.onmouseup =
 Dragger.prototype.onpointerup =
 Dragger.prototype.ontouchend =
-Dragger.prototype.pointerUp = function( event ) {
+Dragger.prototype.dragEnd = function( event ) {
   window.removeEventListener( moveEvent, this );
   window.removeEventListener( upEvent, this );
-  this.onPointerUp( event );
+  this.onDragEnd( event );
 };
 
 return Dragger;

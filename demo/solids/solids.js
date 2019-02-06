@@ -422,12 +422,12 @@ var dragStartAngleX, dragStartAngleY;
 
 new Zdog.Dragger({
   startElement: canvas,
-  onPointerDown: function() {
+  onDragStart: function() {
     isRotating = false;
     dragStartAngleX = viewRotation.x;
     dragStartAngleY = viewRotation.y;
   },
-  onPointerMove: function( pointer, moveX, moveY ) {
+  onDragMove: function( pointer, moveX, moveY ) {
     var angleXMove = moveY / canvasWidth * TAU;
     var angleYMove = moveX / canvasWidth * TAU;
     viewRotation.x = dragStartAngleX + angleXMove;

@@ -1,15 +1,15 @@
 var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-var w = 72;
-var h = 72;
+var illoSize = 72;
 var zoom = 6;
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
+canvas.width = canvas.height = illoSize * zoom;
 var TAU = Zdog.TAU;
 
-var rZSpeed = 0;
 
-var camera = new Zdog.Anchor();
+var illo = new Zdog.Illo({
+  canvas: canvas,
+  zoom: zoom,
+  dragRotate: true,
+});
 
 // -- illustration shapes --- //
 
@@ -21,7 +21,7 @@ var rect1 = new Zdog.Rect({
   stroke: 2,
   // fill: true,
   color: '#08D',
-  addTo: camera,
+  addTo: illo,
 });
 
 var moon1 = new Zdog.Shape({
@@ -43,7 +43,7 @@ new Zdog.Rect({
   stroke: 2,
   fill: true,
   color: '#E21',
-  addTo: camera,
+  addTo: illo,
 });
 
 new Zdog.Shape({
@@ -56,66 +56,28 @@ new Zdog.Shape({
   stroke: 1,
   fill: true,
   color: '#F80',
-  addTo: camera,
+  addTo: illo,
 });
 
 // -- animate --- //
 
+var rZSpeed = 0;
+
 function animate() {
-  update();
-  render();
+  // rotate
+  moon1.rotate.y += 0.03;
+  rect1.rotate.z -= 0.02;
+  illo.rotate.z += rZSpeed;
+  // update & render
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
-
-// -- update -- //
-
-function update() {
-  // rotate
-  moon1.rotate.y += 0.03;
-  rect1.rotate.z -= 0.02;
-  camera.rotate.z += rZSpeed;
-  
-  camera.updateGraph();
-}
-
-// -- render -- //
-
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-
-function render() {
-  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-
-  ctx.save();
-  ctx.scale( zoom, zoom );
-  ctx.translate( w/2, h/2 );
-
-  camera.renderGraph( ctx );
-
-  ctx.restore();
-}
 
 // ----- inputs ----- //
 
 document.querySelector('.toggle-z-rotation-button').onclick = function() {
   rZSpeed = rZSpeed ? 0 : TAU/360;
 };
-
-// click drag to rotate
-var dragStartAngleX, dragStartAngleY;
-
-new Zdog.Dragger({
-  startElement: canvas,
-  onPointerDown: function() {
-    dragStartAngleX = camera.rotate.x;
-    dragStartAngleY = camera.rotate.y;
-  },
-  onPointerMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    camera.rotate.x = dragStartAngleX + angleXMove;
-    camera.rotate.y = dragStartAngleY + angleYMove;
-  },
-});
