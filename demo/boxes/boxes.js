@@ -21,7 +21,7 @@ var eggplant = '#636';
 
 var initRotate = { x: (35/360) * TAU, y: TAU/8 };
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   rotate: initRotate,

@@ -19,7 +19,7 @@ var TAU = Zdog.TAU;
   ItemClass.defaults.front = { z: 1 };
 });
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,

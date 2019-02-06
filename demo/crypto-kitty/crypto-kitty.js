@@ -11,7 +11,7 @@ canvas.height = h * zoom;
 var isRotating = true;
 var TAU = Zdog.TAU;
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   rotate: { x: -TAU/32 },

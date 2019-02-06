@@ -24,7 +24,7 @@ var orange = '#E62';
 var gold = '#EA0';
 var yellow = '#ED0';
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   scale: 8,

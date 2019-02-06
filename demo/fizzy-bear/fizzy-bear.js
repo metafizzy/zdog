@@ -20,7 +20,7 @@ var camera = new Zdog.Anchor();
 var isRotating = true;
 var TAU = Zdog.TAU;
 
-var mainIllo = new Zdog.Illo({
+var mainIllo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   dragRotate: camera,
@@ -29,12 +29,12 @@ var mainIllo = new Zdog.Illo({
   },
 });
 
-var unibodyIllo = new Zdog.Illo({
+var unibodyIllo = new Zdog.Illustration({
   canvas: unibodyCanvas,
   zoom: zoom,
 });
 
-var bodyLinesIllo = new Zdog.Illo({
+var bodyLinesIllo = new Zdog.Illustration({
   canvas: bodyLinesCanvas,
   zoom: zoom,
 });

@@ -16,7 +16,7 @@ var blue = '#19F';
 
 var initialRotate = { y: TAU/8 };
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   scale: { x: antiTwist, z: antiTwist },

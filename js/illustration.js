@@ -1,5 +1,5 @@
 /**
- * Illo
+ * Illustration
  */
 
 ( function( root, factory ) {
@@ -15,14 +15,14 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Illo = factory( Zdog, Zdog.Anchor, Zdog.Dragger );
+    Zdog.Illustration = factory( Zdog, Zdog.Anchor, Zdog.Dragger );
   }
 }( this, function factory( utils, Anchor, Dragger ) {
 
 function noop() {}
 var TAU = utils.TAU;
 
-var Illo = Anchor.subclass({
+var Illustration = Anchor.subclass({
   canvas: undefined,
   centered: true,
   zoom: 1,
@@ -33,16 +33,16 @@ var Illo = Anchor.subclass({
   onDragEnd: noop,
 });
 
-utils.extend( Illo.prototype, Dragger.prototype );
+utils.extend( Illustration.prototype, Dragger.prototype );
 
-Illo.prototype.create = function( options ) {
+Illustration.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
   Dragger.prototype.create.call( this, options );
   this.setCanvas( this.canvas );
   this.setDragRotate( this.dragRotate );
 };
 
-Illo.prototype.setCanvas = function( canvas ) {
+Illustration.prototype.setCanvas = function( canvas ) {
   if ( typeof canvas == 'string' ) {
     // with string, query selector
     this.canvas = document.querySelector( canvas );
@@ -65,7 +65,7 @@ Illo.prototype.setCanvas = function( canvas ) {
   }
 };
 
-Illo.prototype.prerender = function() {
+Illustration.prototype.prerender = function() {
   var ctx = this.ctx;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -79,18 +79,18 @@ Illo.prototype.prerender = function() {
   this.onPrerender( ctx );
 };
 
-Illo.prototype.renderGraph = function( item ) {
+Illustration.prototype.renderGraph = function( item ) {
   item = item || this;
   this.prerender();
   Anchor.prototype.renderGraph.call( item, this.ctx );
   this.postrender();
 };
 
-Illo.prototype.postrender = function () {
+Illustration.prototype.postrender = function () {
   this.ctx.restore();
 };
 
-Illo.prototype.setDragRotate = function( item ) {
+Illustration.prototype.setDragRotate = function( item ) {
   if ( !item ) {
     return;
   } else if ( item === true ) {
@@ -101,13 +101,13 @@ Illo.prototype.setDragRotate = function( item ) {
   this.bindDrag( this.canvas );
 };
 
-Illo.prototype.dragStart = function(/* event, pointer */) {
+Illustration.prototype.dragStart = function(/* event, pointer */) {
   this.dragStartRX = this.dragRotate.rotate.x;
   this.dragStartRY = this.dragRotate.rotate.y;
   Dragger.prototype.dragStart.apply( this, arguments );
 };
 
-Illo.prototype.dragMove = function( event, pointer ) {
+Illustration.prototype.dragMove = function( event, pointer ) {
   var moveX = this.dragStartX - pointer.pageX;
   var moveY = this.dragStartY - pointer.pageY;
   var displaySize = this.width / this.pixelRatio;
@@ -118,6 +118,6 @@ Illo.prototype.dragMove = function( event, pointer ) {
   Dragger.prototype.dragMove.apply( this, arguments );
 };
 
-return Illo;
+return Illustration;
 
 }));

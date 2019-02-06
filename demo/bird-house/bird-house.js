@@ -21,7 +21,7 @@ var eggplant = '#636';
   ShapeClass.defaults.fill = true;
 });
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,

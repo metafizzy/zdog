@@ -9,7 +9,7 @@ canvas.height = h * zoom;
 var TAU = Zdog.TAU;
 var initRotate = { x: TAU/16, y: TAU/8 };
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   rotate: initRotate,

@@ -8,7 +8,7 @@ var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
 canvas.width = w * zoom;
 canvas.height = h * zoom;
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
 });
@@ -22,7 +22,7 @@ var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;
 var isRotating = true;
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   onDragStart: function() {

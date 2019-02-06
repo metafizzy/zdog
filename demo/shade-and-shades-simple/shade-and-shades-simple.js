@@ -21,7 +21,7 @@ var isRotating = true;
 var TAU = Zdog.TAU;
 var initialRotate = { y: -TAU/8 };
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   rotate: initialRotate,

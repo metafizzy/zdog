@@ -5,7 +5,7 @@ canvas.width = canvas.height = illoSize * zoom;
 var TAU = Zdog.TAU;
 
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   dragRotate: true,

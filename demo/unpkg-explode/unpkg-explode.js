@@ -12,7 +12,7 @@ var TAU = Zdog.TAU;
 
 var isRotating = false;
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   rotate: { x: TAU * (35/360), y: TAU/8 },

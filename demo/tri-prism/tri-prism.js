@@ -15,7 +15,7 @@ proxyCanvas.width = canvasWidth * shrink;
 proxyCanvas.height = canvasHeight * shrink;
 var TAU = Zdog.TAU;
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: proxyCanvas,
   rotate: { x: -35/360 * TAU, y: 45/360 * TAU },
   zoom: zoom,

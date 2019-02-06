@@ -16,7 +16,7 @@ var eggplant = '#636';
 var midnight = '#424';
 var TAU = Zdog.TAU;
 
-var illo = new Zdog.Illo({
+var illo = new Zdog.Illustration({
   canvas: canvas,
   zoom: zoom,
   rotate: { y: -TAU/8 },
