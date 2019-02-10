@@ -66,7 +66,7 @@ new Zdog.Shape({
 new Zdog.RoundedRect({
   width: 5,
   height: 7,
-  radius: 2.5,
+  cornerRadius: 2.5,
   addTo: cat,
   translate: { y: 3.5, z: 5 },
   // rotate: { x: TAU/64 },

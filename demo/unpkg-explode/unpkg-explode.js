@@ -59,7 +59,7 @@ var outlines = [];
   var panel = new Zdog.RoundedRect({
     width: 16,
     height: 16,
-    radius: 3,
+    cornerRadius: 3,
     addTo: anchor,
     stroke: false,
     fill: true,

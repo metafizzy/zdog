@@ -155,7 +155,7 @@ var ground = new Zdog.Anchor({
     var shoe = new Zdog.RoundedRect({
       width: 2,
       height: 10,
-      radius: 2,
+      cornerRadius: 2,
       addTo: isRight ? rightAnkle : leftAnkle,
       translate: { y: 6, z: 4 },
       rotate: { x: -TAU/4 - shoeAngleX },
@@ -191,7 +191,7 @@ var ground = new Zdog.Anchor({
     new Zdog.RoundedRect({
       width: 6,
       height: 13,
-      radius: 3,
+      cornerRadius: 3,
       addTo: shoe,
       translate: { z: 3.5 },
       // rotate: { x: -TAU/4 },
@@ -413,7 +413,7 @@ var ground = new Zdog.Anchor({
   var collar = new Zdog.RoundedRect({
     width: 3,
     height: 5,
-    radius: 1.5,
+    cornerRadius: 1.5,
     addTo: neck,
     translate: { x: 1, y: 2, z: 0 },
     rotate: { x: -TAU/4, z: TAU/8 },
@@ -468,7 +468,7 @@ var ground = new Zdog.Anchor({
   new Zdog.RoundedRect({
     width: 6,
     height: 10,
-    radius: 3,
+    cornerRadius: 3,
     addTo: head,
     translate: { y: 2, x: 4.5, z: -2 },
     rotate: { y: TAU/4 },
@@ -555,7 +555,7 @@ var ground = new Zdog.Anchor({
   var phonePanel = new Zdog.RoundedRect({
     width: 4,
     height: 8,
-    radius: 1,
+    cornerRadius: 1,
     addTo: phoneBack,
     stroke: 0.5,
     color: bluePale,
@@ -622,7 +622,7 @@ var ground = new Zdog.Anchor({
     addTo: suitCase,
     width: 24,
     height: 14,
-    radius: 2,
+    cornerRadius: 2,
     translate: { z: 3 },
     color: '#848',
     fill: true,
@@ -797,7 +797,7 @@ var ground = new Zdog.Anchor({
     addTo: cloud,
     width: 26,
     height: 12,
-    radius: 6,
+    cornerRadius: 6,
     translate: { x: -6, y: 7, z: 4 },
     rotate: { x: TAU/4 },
     stroke: 3,

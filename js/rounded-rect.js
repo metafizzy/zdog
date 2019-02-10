@@ -21,7 +21,7 @@
 var RoundedRect = Shape.subclass({
   width: 1,
   height: 1,
-  radius: 0.25,
+  cornerRadius: 0.25,
   closed: false,
 });
 
@@ -29,9 +29,9 @@ RoundedRect.prototype.setPath = function() {
   var xA = this.width / 2;
   var yA = this.height / 2;
   var shortSide = Math.min( xA, yA );
-  var radius = Math.min( this.radius, shortSide );
-  var xB = xA - radius;
-  var yB = yA - radius;
+  var cornerRadius = Math.min( this.cornerRadius, shortSide );
+  var xB = xA - cornerRadius;
+  var yB = yA - cornerRadius;
   var path = [
     // top right corner
     { x: xB, y: -yA },

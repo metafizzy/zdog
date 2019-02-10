@@ -52,7 +52,7 @@ new Zdog.RoundedRect({
   addTo: rightLeg,
   width: 2,
   height: 4,
-  radius: 1,
+  cornerRadius: 1,
   translate: { y: 14, z: 2 },
   rotate: { x: TAU/4 },
   color: orange,
