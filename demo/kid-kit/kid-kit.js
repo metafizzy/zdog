@@ -309,8 +309,7 @@ cloakSide.copyGraph({
 // -- animate --- //
 
 function animate() {
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

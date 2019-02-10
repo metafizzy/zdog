@@ -129,8 +129,7 @@ function animate() {
     t += 1/150;
   }
 
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

@@ -172,6 +172,12 @@ Anchor.prototype.renderGraph = function( ctx ) {
   });
 };
 
+// combo method
+Anchor.prototype.updateRenderGraph = function( ctx ) {
+  this.updateGraph();
+  this.renderGraph( ctx );
+};
+
 // ----- misc ----- //
 
 Anchor.prototype.copy = function( options ) {

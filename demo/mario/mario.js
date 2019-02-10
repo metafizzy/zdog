@@ -455,8 +455,7 @@ shoe.copyGraph({
 
 function animate() {
   illo.rotate.y += isRotating ? -0.05 : 0;
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

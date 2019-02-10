@@ -84,8 +84,7 @@ var outlines = [];
 illo.ctx.globalCompositeOperation = 'multiply';
 
 function animate() {
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
   illo.rotate.y += isRotating ? +TAU/150 : 0;
 }

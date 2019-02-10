@@ -214,10 +214,8 @@ function animate() {
     illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU - TAU/8;
     t += 1/150;
   }
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 
 animate();
-

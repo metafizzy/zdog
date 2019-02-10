@@ -55,8 +55,7 @@ new Zdog.Shape({
 
 function animate() {
   illo.rotate.y += isRotating ? +TAU/150 : 0;
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

@@ -69,8 +69,7 @@ function animate() {
   rect1.rotate.z -= 0.02;
   illo.rotate.z += rZSpeed;
   // update & render
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

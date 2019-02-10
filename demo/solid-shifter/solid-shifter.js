@@ -43,8 +43,7 @@ function animate() {
 
   t += tSpeed;
 
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

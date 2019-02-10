@@ -80,8 +80,7 @@ var cycleFrame = 360;
 
 function animate() {
   rotate();
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

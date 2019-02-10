@@ -831,8 +831,7 @@ function animate() {
     illo.rotate.y = -theta + sceneStartRotation.y;
   }
 
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

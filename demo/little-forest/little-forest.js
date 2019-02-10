@@ -745,8 +745,7 @@ function animate() {
     illo.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;
   }
 
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 
