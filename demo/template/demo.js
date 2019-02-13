@@ -1,12 +1,10 @@
-// -------------------------- demo -------------------------- //
+// ------------------------- demo ------------------------- //
 
 var canvas = document.querySelector('canvas');
-var w = 48;
-var h = 48;
+var illoSize = 48;
 var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / w );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+var zoom = Math.floor( minWindowSize / illoSize );
+canvas.width = canvas.height = illoSize * zoom;
 var isRotating = true;
 var TAU = Zdog.TAU;
 
@@ -19,7 +17,7 @@ var illo = new Zdog.Illustration({
   },
 });
 
-// -- illustration shapes --- //
+// ----- model ----- //
 
 new Zdog.Rect({
   width: 20,
@@ -51,7 +49,7 @@ new Zdog.Shape({
   color: '#EA0',
 });
 
-// -- animate --- //
+// ----- animate ----- //
 
 function animate() {
   illo.rotate.y += isRotating ? +TAU/150 : 0;
