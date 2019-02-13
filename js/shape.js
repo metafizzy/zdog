@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils',  './vector', './path-direction', './anchor' ];
+  var depends = [ './utils',  './vector', './path-command', './anchor' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -15,9 +15,9 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Shape = factory( Zdog, Zdog.Vector, Zdog.PathDirection, Zdog.Anchor );
+    Zdog.Shape = factory( Zdog, Zdog.Vector, Zdog.PathCommand, Zdog.Anchor );
   }
-}( this, function factory( utils, Vector, PathDirection, Anchor ) {
+}( this, function factory( utils, Vector, PathCommand, Anchor ) {
 
 var Shape = Anchor.subclass({
   stroke: 1,
@@ -48,16 +48,16 @@ var actionNames = [
 
 Shape.prototype.updatePath = function() {
   this.setPath();
-  this.updatePathDirections();
+  this.updatePathCommands();
 };
 
 // place holder for Ellipse, Rect, etc.
 Shape.prototype.setPath = function() {};
 
-// parse path into PathDirections
-Shape.prototype.updatePathDirections = function() {
+// parse path into PathCommands
+Shape.prototype.updatePathCommands = function() {
   var previousPoint;
-  this.pathDirections = this.path.map( function( pathPart, i ) {
+  this.pathCommands = this.path.map( function( pathPart, i ) {
     // pathPart can be just vector coordinates -> { x, y, z }
     // or path instruction -> { arc: [ {x0,y0,z0}, {x1,y1,z1} ] }
     var keys = Object.keys( pathPart );
@@ -79,10 +79,10 @@ Shape.prototype.updatePathDirections = function() {
     // first action is always move
     method = i === 0 ? 'move' : method;
     // arcs require previous last point
-    var direction = new PathDirection( method, points, previousPoint );
+    var command = new PathCommand( method, points, previousPoint );
     // update previousLastPoint
-    previousPoint = direction.endRenderPoint;
-    return direction;
+    previousPoint = command.endRenderPoint;
+    return command;
   });
 };
 
@@ -91,9 +91,9 @@ Shape.prototype.updatePathDirections = function() {
 Shape.prototype.reset = function() {
   this.renderOrigin.set( this.origin );
   this.renderFront.set( this.front );
-  // reset direction render points
-  this.pathDirections.forEach( function( direction ) {
-    direction.reset();
+  // reset command render points
+  this.pathCommands.forEach( function( command ) {
+    command.reset();
   });
 };
 
@@ -103,8 +103,8 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   this.renderFront.transform( translation, rotation, scale );
   this.renderNormal.set( this.renderOrigin ).subtract( this.renderFront );
   // transform points
-  this.pathDirections.forEach( function( direction ) {
-    direction.transform( translation, rotation, scale );
+  this.pathCommands.forEach( function( command ) {
+    command.transform( translation, rotation, scale );
   });
   // transform children
   this.children.forEach( function( child ) {
@@ -115,18 +115,18 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
 
 Shape.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
-  this.pathDirections.forEach( function( direction ) {
-    sortValueTotal += direction.endRenderPoint.z;
+  this.pathCommands.forEach( function( command ) {
+    sortValueTotal += command.endRenderPoint.z;
   });
   // average sort value of all points
   // def not geometrically correct, but works for me
-  this.sortValue = sortValueTotal / this.pathDirections.length;
+  this.sortValue = sortValueTotal / this.pathCommands.length;
 };
 
 // ----- render ----- //
 
 Shape.prototype.render = function( ctx ) {
-  var length = this.pathDirections.length;
+  var length = this.pathCommands.length;
   if ( !this.visible || !length ) {
     return;
   }
@@ -152,7 +152,7 @@ Shape.prototype.renderDot = function( ctx ) {
     return;
   }
   ctx.fillStyle = this.getRenderColor();
-  var point = this.pathDirections[0].endRenderPoint;
+  var point = this.pathCommands[0].endRenderPoint;
   ctx.beginPath();
   var radius = lineWidth/2;
   ctx.arc( point.x, point.y, radius, 0, TAU );
@@ -179,11 +179,11 @@ Shape.prototype.getRenderColor = function() {
 Shape.prototype.renderPath = function( ctx ) {
   // render points
   ctx.beginPath();
-  this.pathDirections.forEach( function( direction ) {
-    direction.render( ctx );
+  this.pathCommands.forEach( function( command ) {
+    command.render( ctx );
   });
-  var isTwoPoints = this.pathDirections.length == 2 &&
-    this.pathDirections[1].method == 'line';
+  var isTwoPoints = this.pathCommands.length == 2 &&
+    this.pathCommands[1].method == 'line';
   if ( !isTwoPoints && this.closed ) {
     ctx.closePath();
   }

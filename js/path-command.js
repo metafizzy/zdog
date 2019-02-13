@@ -1,5 +1,5 @@
 /**
- * PathDirection
+ * PathCommand
  */
 
 ( function( root, factory ) {
@@ -14,11 +14,11 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.PathDirection = factory( Zdog.Vector );
+    Zdog.PathCommand = factory( Zdog.Vector );
   }
 }( this, function factory( Vector ) {
 
-function PathDirection( method, points, previousPoint ) {
+function PathCommand( method, points, previousPoint ) {
   this.method = method;
   this.points = points.map( mapVectorPoint );
   this.renderPoints = points.map( mapVectorPoint );
@@ -35,7 +35,7 @@ function mapVectorPoint( point ) {
   return new Vector( point );
 }
 
-PathDirection.prototype.reset = function() {
+PathCommand.prototype.reset = function() {
   // reset renderPoints back to orignal points position
   var points = this.points;
   this.renderPoints.forEach( function( renderPoint, i ) {
@@ -44,34 +44,34 @@ PathDirection.prototype.reset = function() {
   });
 };
 
-PathDirection.prototype.transform = function( translation, rotation, scale ) {
+PathCommand.prototype.transform = function( translation, rotation, scale ) {
   this.renderPoints.forEach( function( renderPoint ) {
     renderPoint.transform( translation, rotation, scale );
   });
 };
 
-PathDirection.prototype.render = function( ctx ) {
+PathCommand.prototype.render = function( ctx ) {
   this[ this.method ]( ctx );
 };
 
-PathDirection.prototype.move = function( ctx ) {
+PathCommand.prototype.move = function( ctx ) {
   var point = this.renderPoints[0];
   ctx.moveTo( point.x, point.y );
 };
 
-PathDirection.prototype.line = function( ctx ) {
+PathCommand.prototype.line = function( ctx ) {
   var point = this.renderPoints[0];
   ctx.lineTo( point.x, point.y );
 };
 
-PathDirection.prototype.bezier = function( ctx ) {
+PathCommand.prototype.bezier = function( ctx ) {
   var cp0 = this.renderPoints[0];
   var cp1 = this.renderPoints[1];
   var end = this.renderPoints[2];
   ctx.bezierCurveTo( cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y );
 };
 
-PathDirection.prototype.arc = function( ctx ) {
+PathCommand.prototype.arc = function( ctx ) {
   var prev = this.previousPoint;
   var corner = this.renderPoints[0];
   var end = this.renderPoints[1];
@@ -82,6 +82,6 @@ PathDirection.prototype.arc = function( ctx ) {
   ctx.bezierCurveTo( cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y );
 };
 
-return PathDirection;
+return PathCommand;
 
 }));
