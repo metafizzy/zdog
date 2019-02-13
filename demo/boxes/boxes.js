@@ -41,12 +41,12 @@ function addBox( options ) {
   var boxOptions = {
     addTo: model,
     stroke: false,
-    top: yellow,
-    back: gold,
-    left: orange,
-    right: orange,
-    front: garnet,
-    bottom: eggplant,
+    topFace: yellow,
+    rearFace: gold,
+    leftFace: orange,
+    rightFace: orange,
+    frontFace: garnet,
+    bottomFace: eggplant,
   };
   Zdog.extend( boxOptions, options );
 
@@ -55,32 +55,32 @@ function addBox( options ) {
 
 // top
 addBox({
-  bottom: false,
+  bottomFace: false,
   translate: { y: -1 },
 });
 // bottom
 addBox({
-  top: false,
+  topFace: false,
   translate: { y: 1 },
 });
 // front
 addBox({
-  back: false,
+  rearFace: false,
   translate: { z: 1 },
 });
 // back
 addBox({
-  front: false,
+  frontFace: false,
   translate: { z: -1 },
 });
 // left
 addBox({
-  right: false,
+  rightFace: false,
   translate: { x: -1 },
 });
 // right
 addBox({
-  left: false,
+  leftFace: false,
   translate: { x: 1 },
 });
 

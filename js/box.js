@@ -23,12 +23,12 @@ var boxDefaults = utils.extend( {
   width: 1,
   height: 1,
   depth: 1,
-  front: true,
-  back: true,
-  left: true,
-  right: true,
-  top: true,
-  bottom: true,
+  frontFace: true,
+  rearFace: true,
+  leftFace: true,
+  rightFace: true,
+  topFace: true,
+  bottomFace: true,
 }, Shape.defaults );
 // default fill
 boxDefaults.fill = true;
@@ -44,36 +44,36 @@ Box.prototype.create = function( options ) {
 };
 
 Box.prototype.updatePath = function() {
-  this.setFace( 'front', {
+  this.setFace( 'frontFace', {
     width: this.width,
     height: this.height,
     translate: { z: this.depth/2 },
   });
-  this.setFace( 'back', {
+  this.setFace( 'rearFace', {
     width: this.width,
     height: this.height,
     translate: { z: -this.depth/2 },
     rotate: { y: TAU/2 },
   });
-  this.setFace( 'left', {
+  this.setFace( 'leftFace', {
     width: this.depth,
     height: this.height,
     translate: { x: -this.width/2 },
     rotate: { y: -TAU/4 },
   });
-  this.setFace( 'right', {
+  this.setFace( 'rightFace', {
     width: this.depth,
     height: this.height,
     translate: { x: this.width/2 },
     rotate: { y: TAU/4 },
   });
-  this.setFace( 'top', {
+  this.setFace( 'topFace', {
     width: this.width,
     height: this.depth,
     translate: { y: -this.height/2 },
     rotate: { x: -TAU/4 },
   });
-  this.setFace( 'bottom', {
+  this.setFace( 'bottomFace', {
     width: this.width,
     height: this.depth,
     translate: { y: this.height/2 },
@@ -84,11 +84,12 @@ Box.prototype.updatePath = function() {
 
 Box.prototype.setFace = function( faceName, options ) {
   var property = this[ faceName ];
-  var face = this[ faceName + 'Face' ];
+  var rectProperty = faceName + 'Rect';
+  var rect = this[ rectProperty ];
   // remove if false
   if ( !property ) {
-    if ( face ) {
-      this.removeChild( face );
+    if ( rect ) {
+      this.removeChild( rect );
     }
     return;
   }
@@ -102,15 +103,15 @@ Box.prototype.setFace = function( faceName, options ) {
     front: this.front,
     visible: this.visible,
   });
-  if ( face ) {
+  if ( rect ) {
     // update previous
-    face.setOptions( options );
+    rect.setOptions( options );
   } else {
     // create new
-    face = this[ faceName + 'Face' ] = new Rect( options );
+    rect = this[ rectProperty ] = new Rect( options );
   }
-  face.updatePath();
-  this.addChild( face );
+  rect.updatePath();
+  this.addChild( rect );
 };
 
 return Box;

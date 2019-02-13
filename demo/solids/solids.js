@@ -230,12 +230,12 @@ var cube = new Zdog.Box({
   height: 2,
   depth: 2,
   translate: { x: 4, y: 0 },
-  top: yellow,
-  front: gold,
-  left: orange,
-  right: orange,
-  back: garnet,
-  bottom: eggplant,
+  topFace: yellow,
+  frontFace: gold,
+  leftFace: orange,
+  rightFace: orange,
+  rearFace: garnet,
+  bottomFace: eggplant,
   stroke: false,
 });
 
