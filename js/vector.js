@@ -33,6 +33,17 @@ Vector.prototype.set = function( pos ) {
   return this;
 };
 
+// set coordinates without sanitizing
+// vec.write({ y: 2 }) only sets y coord
+Vector.prototype.write = function( pos ) {
+  if ( !pos ) {
+    return;
+  }
+  this.x = pos.x != undefined ? pos.x : this.x;
+  this.y = pos.y != undefined ? pos.y : this.y;
+  this.z = pos.z != undefined ? pos.z : this.z;
+};
+
 Vector.prototype.rotate = function( rotation ) {
   if ( !rotation ) {
     return;
@@ -152,9 +163,9 @@ Vector.prototype.copy = function() {
 Vector.sanitize = function( vec, value ) {
   vec = vec || {};
   value = value || 0;
-  vec.x = vec.x === undefined ? value : vec.x;
-  vec.y = vec.y === undefined ? value : vec.y;
-  vec.z = vec.z === undefined ? value : vec.z;
+  vec.x = vec.x == undefined ? value : vec.x;
+  vec.y = vec.y == undefined ? value : vec.y;
+  vec.z = vec.z == undefined ? value : vec.z;
   return vec;
 };
 
