@@ -88,9 +88,7 @@ Box.prototype.setFace = function( faceName, options ) {
   var rect = this[ rectProperty ];
   // remove if false
   if ( !property ) {
-    if ( rect ) {
-      this.removeChild( rect );
-    }
+    this.removeChild( rect );
     return;
   }
   // update & add face

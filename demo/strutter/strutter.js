@@ -124,7 +124,7 @@ new Zdog.Hemisphere({
   addTo: head,
   diameter: 12,
   color: gold,
-  baseColor: orange,
+  backface: orange,
   rotate: { x: -TAU/4 },
   stroke: false,
 });
@@ -161,7 +161,7 @@ new Zdog.Hemisphere({
   addTo: head,
   diameter: 12,
   color: orange,
-  baseColor: gold,
+  backface: gold,
   rotate: { x: TAU/4 },
   stroke: false,
 });

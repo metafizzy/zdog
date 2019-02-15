@@ -61,18 +61,18 @@ new Zdog.Hemisphere({
   addTo: illo,
   translate: { x: 8 },
   color: '#EA0',
-  baseColor: '#456',
+  backface: '#456',
   stroke: false,
 });
 
-new Zdog.Cylinder({
+var cyl = new Zdog.Cylinder({
   diameter: 4,
   length: 4,
   scale: 2,
   addTo: illo,
   translate: { x: 0 },
   color: '#C25',
-  baseColor: '#E62',
+  backface: '#E62',
   frontBaseColor: '#EA0',
   rearBaseColor: '#636',
   stroke: false,
@@ -85,7 +85,7 @@ new Zdog.Cone({
   addTo: illo,
   translate: { x: -8 },
   color: '#456',
-  baseColor: '#EA0',
+  backface: '#EA0',
   stroke: false,
 });
 

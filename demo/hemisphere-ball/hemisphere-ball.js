@@ -35,14 +35,14 @@ var hemi = new Zdog.Hemisphere({
   translate: { y: -16 },
   rotate: { x: -TAU/4 },
   color: garnet,
-  baseColor: eggplant,
+  backface: eggplant,
   stroke: false,
 });
 hemi.copy({
   translate: { y: 16 },
   rotate: { x: TAU/4 },
   color: garnet,
-  baseColor: eggplant,
+  backface: eggplant,
 });
 
 var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
@@ -63,7 +63,7 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
       translate: { y: 16*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[i],
-      baseColor: colorWheel[ (i+7) % 5 ],
+      backface: colorWheel[ (i+7) % 5 ],
     });
   }
 });

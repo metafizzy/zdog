@@ -43,7 +43,7 @@ var cone = new Zdog.Cone({
   // scale: { x: 2, y: 2 },
   rotate: { x: -TAU/4 },
   color: colorWheel[1],
-  baseColor: colorWheel[0],
+  backface: colorWheel[0],
   stroke: false,
 });
 cone.copy({
@@ -69,7 +69,7 @@ cone.copy({
       translate: { y: 16*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[i],
-      baseColor: colorWheel[ (i+7) % 5 ],
+      backface: colorWheel[ (i+7) % 5 ],
     });
   }
 });
@@ -90,7 +90,7 @@ cone.copy({
       translate: { y: -16*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[ (i+3) % 5 ],
-      baseColor: colorWheel[i],
+      backface: colorWheel[i],
     });
   }
 });
@@ -112,7 +112,7 @@ cone.copy({
       // scale: { y: -1 },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[ (i+1) % 5 ],
-      baseColor: colorWheel[ (i+4) % 5 ],
+      backface: colorWheel[ (i+4) % 5 ],
     });
   }
 });

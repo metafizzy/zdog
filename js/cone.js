@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './vector', './shape', './group', './ellipse' ];
+  var depends = [ './utils', './vector', './anchor', './ellipse' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -15,44 +15,26 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Cone = factory( Zdog, Zdog.Vector, Zdog.Shape,
-      Zdog.Group, Zdog.Ellipse );
+    Zdog.Cone = factory( Zdog, Zdog.Vector, Zdog.Anchor, Zdog.Ellipse );
   }
-}( this, function factory( utils, Vector, Shape, Group, Ellipse ) {
+}( this, function factory( utils, Vector, Anchor, Ellipse ) {
 
-var Cone = Group.subclass({
-  diameter: 1,
+var Cone = Ellipse.subclass({
   length: 1,
-  color: '#333',
-  baseColor: undefined,
   fill: true,
-  stroke: 1,
-  updateSort: true,
 });
 
 var TAU = utils.TAU;
 
 Cone.prototype.create = function(/* options */) {
   // call super
-  Group.prototype.create.apply( this, arguments );
+  Ellipse.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
-  this.apex = new Shape({
-    visible: false,
+  this.apex = new Anchor({
+    addTo: this,
     translate: { z: this.length },
-    addTo: this,
-  });
-  // outside base
-  var base = new Ellipse({
-    diameter: this.diameter,
-    addTo: this,
-    color: this.color,
-    stroke: this.stroke,
-    fill: this.fill,
-    backface: this.baseColor || true,
   });
 
-  // used for calculating contour angle
-  this.renderNormal = base.renderNormal;
   // vectors used for calculation
   this.renderApex = new Vector();
   this.tangentA = new Vector();
@@ -64,10 +46,8 @@ Cone.prototype.render = function( ctx ) {
     return;
   }
   this.renderCone( ctx );
-  Group.prototype.render.call( this, ctx );
+  Ellipse.prototype.render.call( this, ctx );
 };
-
-Cone.prototype.getLineWidth = Shape.prototype.getLineWidth;
 
 Cone.prototype.renderCone = function( ctx ) {
   this.renderApex.set( this.apex.renderOrigin )

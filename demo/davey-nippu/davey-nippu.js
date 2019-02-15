@@ -447,7 +447,7 @@ var ground = new Zdog.Anchor({
     addTo: head,
     diameter: 9,
     color: skinLight,
-    baseColor: midnight,
+    backface: midnight,
     stroke: 0.5,
     translate: { y: -0.95 },
     rotate: { x: TAU/8 * 3, y: TAU/2 },

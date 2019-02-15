@@ -72,7 +72,7 @@ new Zdog.Cylinder({
   diameter: 6,
   length: 2,
   color: colorB,
-  baseColor: 'white',
+  backface: 'white',
   translate: { z: 1 },
   fill: true,
   stroke: false,

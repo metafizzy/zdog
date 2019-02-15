@@ -35,7 +35,7 @@ var hemi = new Zdog.Hemisphere({
   translate: { y: -16 },
   rotate: { x: -TAU/4 },
   color: garnet,
-  baseColor: eggplant,
+  backface: eggplant,
   stroke: false,
 });
 var cone = new Zdog.Cone({
@@ -45,7 +45,7 @@ var cone = new Zdog.Cone({
   translate: { y: 16 },
   rotate: { x: TAU/4 },
   color: garnet,
-  baseColor: eggplant,
+  backface: eggplant,
   stroke: false,
 });
 
@@ -68,7 +68,7 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
     shape.copy({
       addTo: rotor2,
       color: colorWheel[i],
-      baseColor: colorWheel[ (i+7) % 5 ],
+      backface: colorWheel[ (i+7) % 5 ],
     });
   }
 });

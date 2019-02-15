@@ -77,7 +77,7 @@ function Shifter( options ) {
     // translate: { x: 0, y: -3 },
     rotate: { y: TAU/4 },
     color: navy,
-    baseColor: egg,
+    backface: egg,
   });
 
   // cone 1
@@ -101,7 +101,7 @@ function Shifter( options ) {
       rotate: { x: TAU/4 },
       translate: { y: 1 },
       color: ochre,
-      baseColor: egg,
+      backface: egg,
     });
 
     return anchor;

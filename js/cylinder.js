@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './shape', './group', './ellipse' ];
+  var depends = [ './utils', './shape', './ellipse' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -15,32 +15,28 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Cylinder = factory( Zdog, Zdog.Shape, Zdog.Group, Zdog.Ellipse );
+    Zdog.Cylinder = factory( Zdog, Zdog.Shape, Zdog.Ellipse );
   }
-}( this, function factory( utils, Shape, Group, Ellipse ) {
+}( this, function factory( utils, Shape, Ellipse ) {
 
-var Cylinder = Group.subclass({
+var Cylinder = Shape.subclass({
   diameter: 1,
   length: 1,
-  color: '#333',
-  baseColor: undefined,
   frontBaseColor: undefined,
   rearBaseColor: undefined,
   fill: true,
-  stroke: 1,
-  updateSort: true,
 });
 
 var TAU = utils.TAU;
 
 Cylinder.prototype.create = function(/* options */) {
   // call super
-  Group.prototype.create.apply( this, arguments );
+  Shape.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
   var baseZ = this.length/2;
+  var baseColor = this.backface || true;
   // front outside base
-  var baseColor = this.baseColor || true;
-  var frontBase = new Ellipse({
+  this.frontBase = new Ellipse({
     diameter: this.diameter,
     addTo: this,
     translate: { z: baseZ },
@@ -49,43 +45,59 @@ Cylinder.prototype.create = function(/* options */) {
     stroke: this.stroke,
     fill: this.fill,
     backface: this.frontBaseColor || baseColor,
+    visible: this.visible,
   });
   // back outside base
-  var backBase = frontBase.copy({
+  this.rearBase = this.frontBase.copy({
     translate: { z: -baseZ },
     rotate: { y: 0 },
     backface: this.rearBaseColor || baseColor,
   });
-
-  // used for rendering ring
-  this.frontOrigin = frontBase.renderOrigin;
-  this.backOrigin = backBase.renderOrigin;
-  this.renderNormal = frontBase.renderNormal;
 };
 
 Cylinder.prototype.render = function( ctx ) {
   if ( !this.visible ) {
     return;
   }
-  this.renderRing( ctx );
-  Group.prototype.render.call( this, ctx );
-};
-
-Cylinder.prototype.getLineWidth = Shape.prototype.getLineWidth;
-
-Cylinder.prototype.renderRing = function( ctx ) {
+  // render tube
   ctx.strokeStyle = this.color;
   // apply scale
-  ctx.lineWidth = this.diameter * this.renderNormal.magnitude() + this.getLineWidth();
+  ctx.lineWidth = this.diameter * this.renderNormal.magnitude() +
+    this.getLineWidth();
   ctx.lineCap = 'butt'; // nice
+  var front = this.frontBase.renderOrigin;
+  var rear = this.rearBase.renderOrigin;
 
   ctx.beginPath();
-  ctx.moveTo( this.frontOrigin.x, this.frontOrigin.y );
-  ctx.lineTo( this.backOrigin.x, this.backOrigin.y );
+  ctx.moveTo( front.x, front.y );
+  ctx.lineTo( rear.x, rear.y );
   ctx.stroke();
 
   ctx.lineCap = 'round'; // reset
 };
+
+// ----- set child properties ----- //
+
+var childProperties = [ 'stroke', 'fill', 'color', 'visible' ];
+childProperties.forEach( function( property ) {
+  // use proxy property for custom getter & setter
+  var _prop = '_' + property;
+  Object.defineProperty( Cylinder.prototype, property, {
+    get: function() {
+      return this[ _prop ];
+    },
+    set: function( value ) {
+      this[ _prop ] = value;
+      // set property on children
+      if ( this.frontBase ) {
+        this.frontBase[ property ] = value;
+        this.rearBase[ property ] = value;
+      }
+    },
+  });
+});
+
+// TODO child property setter for backface, frontBaseColor, & rearBaseColor
 
 return Cylinder;
 

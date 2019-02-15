@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './shape', './group', './ellipse' ];
+  var depends = [ './utils', './ellipse' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -15,48 +15,26 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Hemisphere = factory( Zdog, Zdog.Shape, Zdog.Group, Zdog.Ellipse );
+    Zdog.Hemisphere = factory( Zdog, Zdog.Ellipse );
   }
-}( this, function factory( utils, Shape, Group, Ellipse ) {
+}( this, function factory( utils, Ellipse ) {
 
-var Hemisphere = Group.subclass({
-  diameter: 1,
-  color: '#333',
-  baseColor: undefined,
+var Hemisphere = Ellipse.subclass({
   fill: true,
-  stroke: 1,
 });
 
 var TAU = utils.TAU;
 
-Hemisphere.prototype.create = function(/* options */) {
+Hemisphere.prototype.render = function( ctx ) {
+  this.renderDome( ctx );
   // call super
-  Group.prototype.create.apply( this, arguments );
-  // composite shape, create child shapes
-  // outside base
-  var base = new Ellipse({
-    diameter: this.diameter,
-    addTo: this,
-    color: this.color,
-    stroke: this.stroke,
-    fill: this.fill,
-    backface: this.baseColor || true,
-  });
-  // used for calculating contour angle
-  this.renderNormal = base.renderNormal;
+  Ellipse.prototype.render.apply( this, arguments );
 };
 
-Hemisphere.prototype.render = function( ctx ) {
+Hemisphere.prototype.renderDome = function( ctx ) {
   if ( !this.visible ) {
     return;
   }
-  this.renderDome( ctx );
-  Group.prototype.render.call( this, ctx );
-};
-
-Hemisphere.prototype.getLineWidth = Shape.prototype.getLineWidth;
-
-Hemisphere.prototype.renderDome = function( ctx ) {
   var contourAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x );
   var startAngle = contourAngle + TAU/4;
   var endAngle = contourAngle - TAU/4;

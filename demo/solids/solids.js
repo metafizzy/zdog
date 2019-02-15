@@ -48,7 +48,7 @@ var solids = [];
     translate: { z: -1 },
     addTo: hourglass,
     color: garnet,
-    baseColor: orange,
+    backface: orange,
     stroke: false,
   });
 
@@ -56,7 +56,7 @@ var solids = [];
     translate: { z: 1 },
     rotate: { y: TAU/2 },
     color: eggplant,
-    baseColor: gold,
+    backface: gold,
   });
 
 })();
@@ -76,14 +76,14 @@ var solids = [];
     diameter: 2,
     addTo: sphere,
     color: orange,
-    baseColor: eggplant,
+    backface: eggplant,
     stroke: false,
   });
 
   hemi.copy({
     rotate: { y: TAU/2 },
     color: eggplant,
-    baseColor: orange,
+    backface: orange,
   });
 
 })();
@@ -97,7 +97,7 @@ var cylinder = new Zdog.Cylinder({
   translate: { x: 4, y: -4 },
   // rotate: { x: TAU/4 },
   color: gold,
-  baseColor: garnet,
+  backface: garnet,
   stroke: false,
 });
 
@@ -119,7 +119,7 @@ new Zdog.Cone({
   translate: { z: 1 },
   rotate: { y: TAU/2 },
   color: garnet,
-  baseColor: gold,
+  backface: gold,
   stroke: false,
 });
 

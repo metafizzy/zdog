@@ -39,7 +39,7 @@ var cylinder = new Zdog.Cylinder({
   rotate: { x: -TAU/4 },
   // rotate: { x: -TAU/8 },
   color: magenta,
-  baseColor: navy,
+  backface: navy,
   stroke: false,
 });
 cylinder.copy({
@@ -47,7 +47,7 @@ cylinder.copy({
   translate: { y: y },
   rotate: { x: TAU/4 },
   color: magenta,
-  baseColor: navy,
+  backface: navy,
 });
 
 var colorWheel = [ navy, magenta, orange, gold, yellow, ];
@@ -68,7 +68,7 @@ var colorWheel = [ navy, magenta, orange, gold, yellow, ];
       translate: { y: y*ySide },
       rotate: { x: TAU/4*ySide },
       color: colorWheel[i],
-      baseColor: colorWheel[ (i+7) % 5 ],
+      backface: colorWheel[ (i+7) % 5 ],
     });
   }
 });
