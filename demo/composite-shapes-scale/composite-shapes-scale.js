@@ -73,6 +73,8 @@ new Zdog.Cylinder({
   translate: { x: 0 },
   color: '#C25',
   baseColor: '#E62',
+  frontBaseColor: '#EA0',
+  rearBaseColor: '#636',
   stroke: false,
 });
 

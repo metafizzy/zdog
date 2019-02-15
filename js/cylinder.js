@@ -24,6 +24,8 @@ var Cylinder = Group.subclass({
   length: 1,
   color: '#333',
   baseColor: undefined,
+  frontBaseColor: undefined,
+  rearBaseColor: undefined,
   fill: true,
   stroke: 1,
   updateSort: true,
@@ -37,6 +39,7 @@ Cylinder.prototype.create = function(/* options */) {
   // composite shape, create child shapes
   var baseZ = this.length/2;
   // front outside base
+  var baseColor = this.baseColor || true;
   var frontBase = new Ellipse({
     diameter: this.diameter,
     addTo: this,
@@ -45,12 +48,13 @@ Cylinder.prototype.create = function(/* options */) {
     color: this.color,
     stroke: this.stroke,
     fill: this.fill,
-    backface: this.baseColor || true,
+    backface: this.frontBaseColor || baseColor,
   });
   // back outside base
   var backBase = frontBase.copy({
     translate: { z: -baseZ },
     rotate: { y: 0 },
+    backface: this.rearBaseColor || baseColor,
   });
 
   // used for rendering ring
