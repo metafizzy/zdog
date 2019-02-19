@@ -82,6 +82,38 @@ PathCommand.prototype.arc = function( ctx ) {
   ctx.bezierCurveTo( cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y );
 };
 
+PathCommand.prototype.renderSvg = function() {
+  return this[ this.method + 'Svg' ]();
+};
+
+PathCommand.prototype.moveSvg = function() {
+  var point = this.renderPoints[0];
+  return 'M' + point.x + ',' + point.y;
+};
+
+PathCommand.prototype.lineSvg = function() {
+  var point = this.renderPoints[0];
+  return 'L' + point.x + ',' + point.y;
+};
+
+PathCommand.prototype.bezierSvg = function() {
+  var cp0 = this.renderPoints[0];
+  var cp1 = this.renderPoints[1];
+  var end = this.renderPoints[2];
+  return 'C' + [ cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y ].join(' ');
+};
+
+PathCommand.prototype.arcSvg = function() {
+  var prev = this.previousPoint;
+  var corner = this.renderPoints[0];
+  var end = this.renderPoints[1];
+  var cp0 = this.controlPoints[0];
+  var cp1 = this.controlPoints[1];
+  cp0.set( prev ).lerp( corner, 9/16 );
+  cp1.set( end ).lerp( corner, 9/16 );
+  return 'C' + [ cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y ].join(' ');
+};
+
 return PathCommand;
 
 }));

@@ -144,6 +144,25 @@ Shape.prototype.render = function( ctx ) {
   }
 };
 
+Shape.prototype.renderSvg = function( svg ) {
+  var length = this.pathCommands.length;
+  if ( !this.visible || !length ) {
+    return;
+  }
+  // do not render if hiding backface
+  this.isFacingBack = this.renderNormal.z > 0;
+  if ( !this.backface && this.isFacingBack ) {
+    return;
+  }
+  // render dot or path
+  var isDot = length == 1;
+  if ( false ) {
+    this.renderDotSvg( svg );
+  } else {
+    this.renderPathSvg( svg );
+  }
+};
+
 var TAU = utils.TAU;
 // Safari does not render lines with no size, have to render circle instead
 Shape.prototype.renderDot = function( ctx ) {
@@ -198,6 +217,41 @@ Shape.prototype.renderPath = function( ctx ) {
     ctx.fillStyle = color;
     ctx.fill();
   }
+};
+
+
+var svgURI = 'http://www.w3.org/2000/svg';
+
+Shape.prototype.renderPathSvg = function( svg ) {
+  if ( !this.svgElement ) {
+    // create svgElement
+    this.svgElement = document.createElementNS( svgURI, 'path');
+    this.svgElement.setAttribute( 'stroke-linecap', 'round' );
+    this.svgElement.setAttribute( 'stroke-linejoin', 'round' );
+  }
+  var dValue = '';
+  // render pathCommands
+  this.pathCommands.forEach( function( command ) {
+    dValue += command.renderSvg( dValue );
+  });
+  var isTwoPoints = this.pathCommands.length == 2 &&
+    this.pathCommands[1].method == 'line';
+  if ( !isTwoPoints && this.closed ) {
+    dValue += 'Z';
+  }
+
+  this.svgElement.setAttribute( 'd', dValue );
+
+  var color = this.getRenderColor();
+  if ( this.stroke ) {
+    this.svgElement.setAttribute( 'stroke', color );
+    this.svgElement.setAttribute( 'stroke-width', this.getLineWidth() );
+  }
+  // fill
+  var fill = this.fill ? color : 'none';
+  this.svgElement.setAttribute( 'fill', fill );
+
+  svg.appendChild( this.svgElement );
 };
 
 return Shape;

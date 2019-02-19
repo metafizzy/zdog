@@ -172,6 +172,19 @@ Anchor.prototype.renderGraph = function( ctx ) {
   });
 };
 
+Anchor.prototype.renderSvg = function(/* svg */) {};
+
+Anchor.prototype.renderGraphSvg = function( svg ) {
+  if ( !svg ) {
+    throw new Error( 'svg is ' + svg + '. ' +
+      'SVG required for render. Check .renderGraphSvg( svg ).' );
+  }
+  this.checkFlatGraph();
+  this.flatGraph.forEach( function( item ) {
+    item.renderSvg( svg );
+  });
+};
+
 // combo method
 Anchor.prototype.updateRenderGraph = function( ctx ) {
   this.updateGraph();
