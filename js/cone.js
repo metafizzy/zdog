@@ -45,11 +45,72 @@ Cone.prototype.render = function( ctx ) {
   if ( !this.visible ) {
     return;
   }
-  this.renderCone( ctx );
+  this.renderConeSurfaceCanvas( ctx );
   Ellipse.prototype.render.call( this, ctx );
 };
 
-Cone.prototype.renderCone = function( ctx ) {
+Cone.prototype.renderSvg = function( svg ) {
+  if ( !this.visible ) {
+    return;
+  }
+  this.renderConeSurfaceSvg( svg );
+  Ellipse.prototype.renderSvg.call( this, svg );
+};
+
+Cone.prototype.renderConeSurfaceCanvas = function( ctx ) {
+  var isApexVisible = this.updateSurfaceVectors();
+  if ( !isApexVisible ) {
+    return;
+  }
+  // render path
+  ctx.beginPath();
+  ctx.moveTo( this.tangentA.x, this.tangentA.y );
+  ctx.lineTo( this.apex.renderOrigin.x, this.apex.renderOrigin.y );
+  ctx.lineTo( this.tangentB.x, this.tangentB.y );
+
+  if ( this.stroke ) {
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.getLineWidth();
+    ctx.stroke();
+  }
+  if ( this.fill ) {
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+var svgURI = 'http://www.w3.org/2000/svg';
+
+Cone.prototype.renderConeSurfaceSvg = function( svg ) {
+  var isApexVisible = this.updateSurfaceVectors();
+  // console.log('render cone surface svg', isApexVisible);
+  if ( !isApexVisible ) {
+    return;
+  }
+  if ( !this.surfaceSvgElement ) {
+    // create svgElement
+    this.surfaceSvgElement = document.createElementNS( svgURI, 'path');
+    this.surfaceSvgElement.setAttribute( 'stroke-linecap', 'round' );
+    this.surfaceSvgElement.setAttribute( 'stroke-linejoin', 'round' );
+  }
+  // render path
+  var dValue = 'M' + this.tangentA.x + ',' + this.tangentA.y;
+  dValue += 'L' + this.apex.renderOrigin.x + ',' + this.apex.renderOrigin.y;
+  dValue += 'L' + this.tangentB.x + ',' + this.tangentB.y;
+  this.surfaceSvgElement.setAttribute( 'd', dValue );
+  // stroke
+  if ( this.stroke ) {
+    this.surfaceSvgElement.setAttribute( 'stroke', this.color );
+    this.surfaceSvgElement.setAttribute( 'stroke-width', this.getLineWidth() );
+  }
+  // fill
+  var fill = this.fill ? this.color : 'none';
+  this.surfaceSvgElement.setAttribute( 'fill', fill );
+
+  svg.appendChild( this.surfaceSvgElement );
+};
+
+Cone.prototype.updateSurfaceVectors = function() {
   this.renderApex.set( this.apex.renderOrigin )
     .subtract( this.renderOrigin );
   var scale = this.renderNormal.magnitude();
@@ -62,7 +123,7 @@ Cone.prototype.renderCone = function( ctx ) {
   // does apex extend beyond eclipse of face
   var isApexVisible = radius * eccen < apexDistance;
   if ( !isApexVisible ) {
-    return;
+    return false;
   }
   // update tangents
   var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) + TAU/2;
@@ -82,21 +143,7 @@ Cone.prototype.renderCone = function( ctx ) {
   tangentB.rotateZ( apexAngle );
   tangentA.add( this.renderOrigin );
   tangentB.add( this.renderOrigin );
-  // render
-  ctx.beginPath();
-  ctx.moveTo( tangentA.x, tangentA.y );
-  ctx.lineTo( this.apex.renderOrigin.x, this.apex.renderOrigin.y );
-  ctx.lineTo( tangentB.x, tangentB.y );
-
-  if ( this.stroke ) {
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = this.getLineWidth();
-    ctx.stroke();
-  }
-  if ( this.fill ) {
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
+  return true;
 };
 
 return Cone;
