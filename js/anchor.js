@@ -167,8 +167,9 @@ Anchor.prototype.renderGraph = function( ctx ) {
       'Canvas context required for render. Check .renderGraph( ctx ).' );
   }
   this.checkFlatGraph();
+
   this.flatGraph.forEach( function( item ) {
-    item.render( ctx );
+    item.render( ctx, Zdog.CanvasRenderer );
   });
 };
 
@@ -181,7 +182,7 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
   }
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
-    item.renderSvg( svg );
+    item.render( svg, Zdog.SvgRenderer );
   });
 };
 

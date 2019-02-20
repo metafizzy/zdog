@@ -125,7 +125,7 @@ Shape.prototype.updateSortValue = function() {
 
 // ----- render ----- //
 
-Shape.prototype.render = function( ctx ) {
+Shape.prototype.render = function( ctx, renderer ) {
   var length = this.pathCommands.length;
   if ( !this.visible || !length ) {
     return;
@@ -137,29 +137,16 @@ Shape.prototype.render = function( ctx ) {
   }
   // render dot or path
   var isDot = length == 1;
-  if ( isDot ) {
-    this.renderDot( ctx );
+  if ( renderer.isCanvas && isDot ) {
+    this.renderCanvasDot( ctx, renderer );
   } else {
-    this.renderPath( ctx );
+    this.renderPath( ctx, renderer );
   }
-};
-
-Shape.prototype.renderSvg = function( svg ) {
-  var length = this.pathCommands.length;
-  if ( !this.visible || !length ) {
-    return;
-  }
-  // do not render if hiding backface
-  this.isFacingBack = this.renderNormal.z > 0;
-  if ( !this.backface && this.isFacingBack ) {
-    return;
-  }
-  this.renderPathSvg( svg );
 };
 
 var TAU = utils.TAU;
 // Safari does not render lines with no size, have to render circle instead
-Shape.prototype.renderDot = function( ctx ) {
+Shape.prototype.renderCanvasDot = function( ctx ) {
   var lineWidth = this.getLineWidth();
   if ( !lineWidth ) {
     return;
@@ -189,65 +176,40 @@ Shape.prototype.getRenderColor = function() {
   return color;
 };
 
-Shape.prototype.renderPath = function( ctx ) {
+Shape.prototype.renderPath = function( ctx, renderer ) {
+  var elem = this.getRenderElement( ctx, renderer );
   // render points
-  ctx.beginPath();
+  renderer.begin( ctx, elem );
+  var pathValue = '';
   this.pathCommands.forEach( function( command ) {
-    command.render( ctx );
+    pathValue += command.render( ctx, elem, renderer );
   });
   var isTwoPoints = this.pathCommands.length == 2 &&
     this.pathCommands[1].method == 'line';
   if ( !isTwoPoints && this.closed ) {
-    ctx.closePath();
+    pathValue += renderer.closePath( ctx, elem );
   }
+  renderer.setPath( ctx, elem, pathValue );
 
   var color = this.getRenderColor();
-  if ( this.stroke ) {
-    ctx.strokeStyle = color;
-    ctx.lineWidth = this.getLineWidth();
-    ctx.stroke();
-  }
-  if ( this.fill ) {
-    ctx.fillStyle = color;
-    ctx.fill();
-  }
+  renderer.stroke( ctx, elem, this.stroke, color, this.getLineWidth() );
+  renderer.fill( ctx, elem, this.fill, color );
+  renderer.end( ctx, elem );
 };
-
-// ----- svg ----- //
 
 var svgURI = 'http://www.w3.org/2000/svg';
 
-Shape.prototype.renderPathSvg = function( svg ) {
+Shape.prototype.getRenderElement = function( ctx, renderer ) {
+  if ( !renderer.isSvg ) {
+    return;
+  }
   if ( !this.svgElement ) {
     // create svgElement
     this.svgElement = document.createElementNS( svgURI, 'path');
     this.svgElement.setAttribute( 'stroke-linecap', 'round' );
     this.svgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
-  var dValue = '';
-  // render pathCommands
-  this.pathCommands.forEach( function( command ) {
-    dValue += command.renderSvg( dValue );
-  });
-  var isTwoPoints = this.pathCommands.length == 2 &&
-    this.pathCommands[1].method == 'line';
-  if ( !isTwoPoints && this.closed ) {
-    dValue += 'Z';
-  }
-
-  this.svgElement.setAttribute( 'd', dValue );
-
-  var color = this.getRenderColor();
-  if ( this.stroke ) {
-    this.svgElement.setAttribute( 'stroke', color );
-    this.svgElement.setAttribute( 'stroke-width', this.getLineWidth() );
-  }
-  // fill
-  var fill = this.fill ? color : 'none';
-  this.svgElement.setAttribute( 'fill', fill );
-
-  svg.appendChild( this.svgElement );
-  
+  return this.svgElement;
 };
 
 return Shape;

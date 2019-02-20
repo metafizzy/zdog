@@ -50,28 +50,26 @@ PathCommand.prototype.transform = function( translation, rotation, scale ) {
   });
 };
 
-PathCommand.prototype.render = function( ctx ) {
-  this[ this.method ]( ctx );
+PathCommand.prototype.render = function( ctx, elem, renderer ) {
+  return this[ this.method ]( ctx, elem, renderer );
 };
 
-PathCommand.prototype.move = function( ctx ) {
-  var point = this.renderPoints[0];
-  ctx.moveTo( point.x, point.y );
+PathCommand.prototype.move = function( ctx, elem, renderer ) {
+  return renderer.move( ctx, elem, this.renderPoints[0] );
 };
 
-PathCommand.prototype.line = function( ctx ) {
-  var point = this.renderPoints[0];
-  ctx.lineTo( point.x, point.y );
+PathCommand.prototype.line = function( ctx, elem, renderer ) {
+  return renderer.line( ctx, elem, this.renderPoints[0] );
 };
 
-PathCommand.prototype.bezier = function( ctx ) {
+PathCommand.prototype.bezier = function( ctx, elem, renderer ) {
   var cp0 = this.renderPoints[0];
   var cp1 = this.renderPoints[1];
   var end = this.renderPoints[2];
-  ctx.bezierCurveTo( cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y );
+  return renderer.bezier( ctx, elem, cp0, cp1, end );
 };
 
-PathCommand.prototype.arc = function( ctx ) {
+PathCommand.prototype.arc = function( ctx, elem, renderer ) {
   var prev = this.previousPoint;
   var corner = this.renderPoints[0];
   var end = this.renderPoints[1];
@@ -79,39 +77,7 @@ PathCommand.prototype.arc = function( ctx ) {
   var cp1 = this.controlPoints[1];
   cp0.set( prev ).lerp( corner, 9/16 );
   cp1.set( end ).lerp( corner, 9/16 );
-  ctx.bezierCurveTo( cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y );
-};
-
-PathCommand.prototype.renderSvg = function() {
-  return this[ this.method + 'Svg' ]();
-};
-
-PathCommand.prototype.moveSvg = function() {
-  var point = this.renderPoints[0];
-  return 'M' + point.x + ',' + point.y;
-};
-
-PathCommand.prototype.lineSvg = function() {
-  var point = this.renderPoints[0];
-  return 'L' + point.x + ',' + point.y;
-};
-
-PathCommand.prototype.bezierSvg = function() {
-  var cp0 = this.renderPoints[0];
-  var cp1 = this.renderPoints[1];
-  var end = this.renderPoints[2];
-  return 'C' + [ cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y ].join(' ');
-};
-
-PathCommand.prototype.arcSvg = function() {
-  var prev = this.previousPoint;
-  var corner = this.renderPoints[0];
-  var end = this.renderPoints[1];
-  var cp0 = this.controlPoints[0];
-  var cp1 = this.controlPoints[1];
-  cp0.set( prev ).lerp( corner, 9/16 );
-  cp1.set( end ).lerp( corner, 9/16 );
-  return 'C' + [ cp0.x, cp0.y, cp1.x, cp1.y, end.x, end.y ].join(' ');
+  return renderer.bezier( ctx, elem, cp0, cp1, end );
 };
 
 return PathCommand;
