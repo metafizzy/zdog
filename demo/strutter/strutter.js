@@ -1,23 +1,21 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
-var w = 48;
-var h = 48;
+var illoElem = document.querySelector('.illo');
+var sceneSize = 48;
 var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / w );
-// zoom = Math.min( zoom, 8 );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+var zoom = Math.floor( minWindowSize / sceneSize );
+illoElem.setAttribute( 'width', sceneSize * zoom );
+illoElem.setAttribute( 'height', sceneSize * zoom );
 var isRotating = true;
+var TAU = Zdog.TAU;
 // colors
 var gold = '#EA0';
 var orange = '#C25';
 var eggplant = '#636';
 var midnight = '#424';
-var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  element: canvas,
+  element: illoElem,
   zoom: zoom,
   rotate: { y: -TAU/8 },
   translate: { y: 4 },
@@ -215,7 +213,7 @@ function animate() {
     t += 1/150;
   }
   illo.updateGraph();
-  illo.renderGraphCanvas();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 

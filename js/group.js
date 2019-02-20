@@ -54,6 +54,17 @@ Group.prototype.render = function( ctx ) {
   });
 };
 
+Group.prototype.renderSvg = function( svg ) {
+  if ( !this.visible ) {
+    return;
+  }
+
+  this.checkFlatGraph();
+  this.flatGraph.forEach( function( item ) {
+    item.renderSvg( svg );
+  });
+};
+
 // do not include children, group handles rendering & sorting internally
 Group.prototype.getFlatGraph = function() {
   return [ this ];
