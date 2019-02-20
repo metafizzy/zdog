@@ -55,56 +55,42 @@ Cylinder.prototype.create = function(/* options */) {
   });
 };
 
-Cylinder.prototype.setPath = function() {
-  // path commands will be overwritten in render
-  this.path = [ {}, {} ];
-};
-
-Cylinder.prototype.render = function( ctx ) {
+Cylinder.prototype.render = function( ctx, renderer ) {
   if ( !this.visible ) {
     return;
   }
-  // render tube
-  ctx.strokeStyle = this.color;
-  // apply scale
-  ctx.lineWidth = this.diameter * this.renderNormal.magnitude() +
+  // render cylinder surface
+  var elem = this.getRenderElement( ctx, renderer );
+
+  if ( renderer.isCanvas ) {
+    ctx.lineCap = 'butt'; // nice
+  }
+  renderer.begin( ctx, elem );
+  var pathValue = renderer.move( ctx, elem, this.frontBase.renderOrigin );
+  pathValue += renderer.line( ctx, elem, this.rearBase.renderOrigin );
+  renderer.setPath( ctx, elem, pathValue );
+
+  var strokeWidth = this.diameter * this.renderNormal.magnitude() +
     this.getLineWidth();
-  ctx.lineCap = 'butt'; // nice
-  var front = this.frontBase.renderOrigin;
-  var rear = this.rearBase.renderOrigin;
+  renderer.stroke( ctx, elem, true, this.color, strokeWidth );
+  renderer.end( ctx, elem );
 
-  ctx.beginPath();
-  ctx.moveTo( front.x, front.y );
-  ctx.lineTo( rear.x, rear.y );
-  ctx.stroke();
-
-  ctx.lineCap = 'round'; // reset
+  if ( renderer.isCanvas ) {
+    ctx.lineCap = 'round'; // reset
+  }
 };
 
 var svgURI = 'http://www.w3.org/2000/svg';
 
-Cylinder.prototype.renderSvg = function( svg ) {
-  if ( !this.visible ) {
+Cylinder.prototype.getRenderElement = function( ctx, renderer ) {
+  if ( !renderer.isSvg ) {
     return;
   }
-  // create svgElement
   if ( !this.svgElement ) {
+    // create svgElement
     this.svgElement = document.createElementNS( svgURI, 'path');
   }
-
-  // render tube
-  this.svgElement.setAttribute( 'stroke', this.color );
-  // apply scale
-  var strokeWidth = this.diameter * this.renderNormal.magnitude() +
-    this.getLineWidth();
-  this.svgElement.setAttribute( 'stroke-width', strokeWidth );
-  var front = this.frontBase.renderOrigin;
-  var rear = this.rearBase.renderOrigin;
-
-  var dValue = [  'M', front.x, front.y, 'L', rear.x, rear.y ].join(' ');
-  this.svgElement.setAttribute( 'd', dValue );
-
-  svg.appendChild( this.svgElement );
+  return this.svgElement;
 };
 
 // ----- set child properties ----- //

@@ -41,78 +41,18 @@ Cone.prototype.create = function(/* options */) {
   this.tangentB = new Vector();
 };
 
-Cone.prototype.render = function( ctx ) {
+Cone.prototype.render = function( ctx, renderer ) {
+  this.renderConeSurface( ctx, renderer );
+  Ellipse.prototype.render.apply( this, arguments );
+};
+
+Cone.prototype.renderConeSurface = function( ctx, renderer ) {
   if ( !this.visible ) {
     return;
   }
-  this.renderConeSurfaceCanvas( ctx );
-  Ellipse.prototype.render.call( this, ctx );
-};
-
-Cone.prototype.renderSvg = function( svg ) {
-  if ( !this.visible ) {
-    return;
-  }
-  this.renderConeSurfaceSvg( svg );
-  Ellipse.prototype.renderSvg.call( this, svg );
-};
-
-Cone.prototype.renderConeSurfaceCanvas = function( ctx ) {
-  var isApexVisible = this.updateSurfaceVectors();
-  if ( !isApexVisible ) {
-    return;
-  }
-  // render path
-  ctx.beginPath();
-  ctx.moveTo( this.tangentA.x, this.tangentA.y );
-  ctx.lineTo( this.apex.renderOrigin.x, this.apex.renderOrigin.y );
-  ctx.lineTo( this.tangentB.x, this.tangentB.y );
-
-  if ( this.stroke ) {
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = this.getLineWidth();
-    ctx.stroke();
-  }
-  if ( this.fill ) {
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-};
-
-var svgURI = 'http://www.w3.org/2000/svg';
-
-Cone.prototype.renderConeSurfaceSvg = function( svg ) {
-  var isApexVisible = this.updateSurfaceVectors();
-  // console.log('render cone surface svg', isApexVisible);
-  if ( !isApexVisible ) {
-    return;
-  }
-  if ( !this.surfaceSvgElement ) {
-    // create svgElement
-    this.surfaceSvgElement = document.createElementNS( svgURI, 'path');
-    this.surfaceSvgElement.setAttribute( 'stroke-linecap', 'round' );
-    this.surfaceSvgElement.setAttribute( 'stroke-linejoin', 'round' );
-  }
-  // render path
-  var dValue = 'M' + this.tangentA.x + ',' + this.tangentA.y;
-  dValue += 'L' + this.apex.renderOrigin.x + ',' + this.apex.renderOrigin.y;
-  dValue += 'L' + this.tangentB.x + ',' + this.tangentB.y;
-  this.surfaceSvgElement.setAttribute( 'd', dValue );
-  // stroke
-  if ( this.stroke ) {
-    this.surfaceSvgElement.setAttribute( 'stroke', this.color );
-    this.surfaceSvgElement.setAttribute( 'stroke-width', this.getLineWidth() );
-  }
-  // fill
-  var fill = this.fill ? this.color : 'none';
-  this.surfaceSvgElement.setAttribute( 'fill', fill );
-
-  svg.appendChild( this.surfaceSvgElement );
-};
-
-Cone.prototype.updateSurfaceVectors = function() {
   this.renderApex.set( this.apex.renderOrigin )
     .subtract( this.renderOrigin );
+
   var scale = this.renderNormal.magnitude();
   var apexDistance = this.renderApex.magnitude2d();
   var normalDistance = this.renderNormal.magnitude2d();
@@ -123,7 +63,7 @@ Cone.prototype.updateSurfaceVectors = function() {
   // does apex extend beyond eclipse of face
   var isApexVisible = radius * eccen < apexDistance;
   if ( !isApexVisible ) {
-    return false;
+    return;
   }
   // update tangents
   var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) + TAU/2;
@@ -143,7 +83,36 @@ Cone.prototype.updateSurfaceVectors = function() {
   tangentB.rotateZ( apexAngle );
   tangentA.add( this.renderOrigin );
   tangentB.add( this.renderOrigin );
-  return true;
+
+  // render
+  var elem = this.getSurfaceRenderElement( ctx, renderer );
+  renderer.begin( ctx, elem );
+
+  var pathValue = '';
+  pathValue += renderer.move( ctx, elem, this.tangentA );
+  pathValue += renderer.line( ctx, elem, this.apex.renderOrigin );
+  pathValue += renderer.line( ctx, elem, this.tangentB );
+  renderer.setPath( ctx, elem, pathValue );
+
+  renderer.stroke( ctx, elem, this.stroke, this.color, this.getLineWidth() );
+  renderer.fill( ctx, elem, this.fill, this.color );
+  renderer.end( ctx, elem );
+
+};
+
+var svgURI = 'http://www.w3.org/2000/svg';
+
+Cone.prototype.getSurfaceRenderElement = function( ctx, renderer ) {
+  if ( !renderer.isSvg ) {
+    return;
+  }
+  if ( !this.surfaceSvgElement ) {
+    // create svgElement
+    this.surfaceSvgElement = document.createElementNS( svgURI, 'path');
+    this.surfaceSvgElement.setAttribute( 'stroke-linecap', 'round' );
+    this.surfaceSvgElement.setAttribute( 'stroke-linejoin', 'round' );
+  }
+  return this.surfaceSvgElement;
 };
 
 return Cone;
