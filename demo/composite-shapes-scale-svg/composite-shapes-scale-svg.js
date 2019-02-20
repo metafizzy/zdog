@@ -1,18 +1,16 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
-var w = 48;
-var h = 48;
-var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
-
-var TAU = Zdog.TAU;
+var svg = document.querySelector('svg');
+var sceneSize = 48;
+var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
+var zoom = Math.floor( minWindowSize / sceneSize );
+svg.setAttribute( 'width', sceneSize * zoom );
+svg.setAttribute( 'height', sceneSize * zoom );
 var isRotating = true;
+var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  element: canvas,
+  element: svg,
   zoom: zoom,
   scale: 2,
   dragRotate: true,

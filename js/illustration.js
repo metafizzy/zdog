@@ -23,7 +23,7 @@ function noop() {}
 var TAU = utils.TAU;
 
 var Illustration = Anchor.subclass({
-  canvas: undefined,
+  element: undefined,
   centered: true,
   zoom: 1,
   dragRotate: undefined,
@@ -38,34 +38,64 @@ utils.extend( Illustration.prototype, Dragger.prototype );
 Illustration.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
   Dragger.prototype.create.call( this, options );
-  this.setCanvas( this.canvas );
+  this.setElement( this.element );
   this.setDragRotate( this.dragRotate );
 };
 
-Illustration.prototype.setCanvas = function( canvas ) {
-  if ( typeof canvas == 'string' ) {
+Illustration.prototype.setElement = function( element ) {
+  if ( typeof element == 'string' ) {
     // with string, query selector
-    this.canvas = document.querySelector( canvas );
-  } else {
-    this.canvas = canvas;
+    element = document.querySelector( element );
   }
-  // update related properties
-  this.ctx = this.canvas.getContext('2d');
+  if ( !element ) {
+    throw new Error( 'Zdog.Illustration element required. Set to ' + element );
+  }
 
-  var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
-  // sizes
-  this.width = this.canvas.width * pixelRatio;
-  this.height = this.canvas.height * pixelRatio;
-  // up-rez for hi-DPI devices
-  if ( pixelRatio > 1 ) {
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-    canvas.style.width = this.width / pixelRatio + 'px';
-    canvas.style.height = this.height / pixelRatio + 'px';
+  var nodeName = element.nodeName.toLowerCase();
+  if ( nodeName == 'canvas'  ) {
+    this.setCanvas( element );
+  } else if ( nodeName == 'svg' ) {
+    this.setSvg( element );
   }
 };
 
-Illustration.prototype.prerender = function() {
+Illustration.prototype.renderGraph = function( item ) {
+  if ( this.isCanvas ) {
+    this.renderGraphCanvas( item );
+  } else if ( this.isSvg ) {
+    this.renderGraphSvg( item );
+  }
+};
+
+// ----- canvas ----- //
+
+Illustration.prototype.setCanvas = function( element ) {
+  this.element = element;
+  this.isCanvas = true;
+  // update related properties
+  this.ctx = this.element.getContext('2d');
+
+  var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
+  // sizes
+  this.width = element.width * pixelRatio;
+  this.height = element.height * pixelRatio;
+  // up-rez for hi-DPI devices
+  if ( pixelRatio > 1 ) {
+    element.width = this.width;
+    element.height = this.height;
+    element.style.width = this.width / pixelRatio + 'px';
+    element.style.height = this.height / pixelRatio + 'px';
+  }
+};
+
+Illustration.prototype.renderGraphCanvas = function( item ) {
+  item = item || this;
+  this.prerenderCanvas();
+  Anchor.prototype.renderGraph.call( item, this.ctx );
+  this.postrenderCanvas();
+};
+
+Illustration.prototype.prerenderCanvas = function() {
   var ctx = this.ctx;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -79,16 +109,41 @@ Illustration.prototype.prerender = function() {
   this.onPrerender( ctx );
 };
 
-Illustration.prototype.renderGraph = function( item ) {
-  item = item || this;
-  this.prerender();
-  Anchor.prototype.renderGraph.call( item, this.ctx );
-  this.postrender();
-};
-
-Illustration.prototype.postrender = function () {
+Illustration.prototype.postrenderCanvas = function () {
   this.ctx.restore();
 };
+
+// ----- svg ----- //
+
+Illustration.prototype.setSvg = function( element ) {
+  this.element = element;
+  this.isSvg = true;
+  this.pixelRatio = 1;
+  this.width = element.getAttribute('width');
+  this.height = element.getAttribute('height');
+  // TODO set viewBox
+  var viewWidth = this.width / this.zoom;
+  var viewHeight = this.height / this.zoom;
+  var viewX = this.centered ? -viewWidth/2 : 0;
+  var viewY = this.centered ? -viewHeight/2 : 0;
+  element.setAttribute( 'viewBox', viewX + ' ' + viewY + ' ' +
+    viewWidth + ' ' + viewHeight );
+};
+
+Illustration.prototype.renderGraphSvg = function( item ) {
+  item = item || this;
+  empty( this.element );
+  this.onPrerender( this.element );
+  Anchor.prototype.renderGraphSvg.call( item, this.element );
+};
+
+function empty( element ) {
+  while ( element.firstChild ) {
+    element.removeChild( element.firstChild );
+  }
+}
+
+// ----- drag ----- //
 
 Illustration.prototype.setDragRotate = function( item ) {
   if ( !item ) {
@@ -98,7 +153,7 @@ Illustration.prototype.setDragRotate = function( item ) {
   }
   this.dragRotate = item;
 
-  this.bindDrag( this.canvas );
+  this.bindDrag( this.element );
 };
 
 Illustration.prototype.dragStart = function(/* event, pointer */) {

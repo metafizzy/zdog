@@ -55,6 +55,11 @@ Cylinder.prototype.create = function(/* options */) {
   });
 };
 
+Cylinder.prototype.setPath = function() {
+  // path commands will be overwritten in render
+  this.path = [ {}, {} ];
+};
+
 Cylinder.prototype.render = function( ctx ) {
   if ( !this.visible ) {
     return;
@@ -74,6 +79,32 @@ Cylinder.prototype.render = function( ctx ) {
   ctx.stroke();
 
   ctx.lineCap = 'round'; // reset
+};
+
+var svgURI = 'http://www.w3.org/2000/svg';
+
+Cylinder.prototype.renderSvg = function( svg ) {
+  if ( !this.visible ) {
+    return;
+  }
+  // create svgElement
+  if ( !this.svgElement ) {
+    this.svgElement = document.createElementNS( svgURI, 'path');
+  }
+
+  // render tube
+  this.svgElement.setAttribute( 'stroke', this.color );
+  // apply scale
+  var strokeWidth = this.diameter * this.renderNormal.magnitude() +
+    this.getLineWidth();
+  this.svgElement.setAttribute( 'stroke-width', strokeWidth );
+  var front = this.frontBase.renderOrigin;
+  var rear = this.rearBase.renderOrigin;
+
+  var dValue = [  'M', front.x, front.y, 'L', rear.x, rear.y ].join(' ');
+  this.svgElement.setAttribute( 'd', dValue );
+
+  svg.appendChild( this.svgElement );
 };
 
 // ----- set child properties ----- //

@@ -17,7 +17,7 @@ var midnight = '#424';
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: canvas,
   zoom: zoom,
   rotate: { y: -TAU/8 },
   translate: { y: 4 },
@@ -214,7 +214,8 @@ function animate() {
     illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU - TAU/8;
     t += 1/150;
   }
-  illo.updateRenderGraph();
+  illo.updateGraph();
+  illo.renderGraphCanvas();
   requestAnimationFrame( animate );
 }
 

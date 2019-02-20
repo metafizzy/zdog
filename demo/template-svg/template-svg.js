@@ -1,16 +1,16 @@
 // ------------------------- demo ------------------------- //
 
-var canvas = document.querySelector('canvas');
+var svg = document.querySelector('svg');
 var sceneSize = 48;
 var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
 var zoom = Math.floor( minWindowSize / sceneSize );
-canvas.setAttribute( 'width', sceneSize * zoom );
-canvas.setAttribute( 'height', sceneSize * zoom );
+svg.setAttribute( 'width', sceneSize * zoom );
+svg.setAttribute( 'height', sceneSize * zoom );
 var isRotating = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  element: canvas,
+  element: svg,
   zoom: zoom,
   dragRotate: true,
   onDragStart: function() {
@@ -50,11 +50,22 @@ new Zdog.Shape({
   color: '#EA0',
 });
 
+
+new Zdog.Shape({
+  addTo: illo,
+  translate: { x: 12, y: -6 },
+  stroke: 8,
+  color: '#6A6',
+});
+
+
+
 // ----- animate ----- //
 
 function animate() {
   illo.rotate.y += isRotating ? +TAU/150 : 0;
-  illo.updateRenderGraph();
+  illo.updateGraph();
+  illo.renderGraph();
   requestAnimationFrame( animate );
 }
 

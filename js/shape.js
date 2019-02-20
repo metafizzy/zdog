@@ -154,13 +154,7 @@ Shape.prototype.renderSvg = function( svg ) {
   if ( !this.backface && this.isFacingBack ) {
     return;
   }
-  // render dot or path
-  var isDot = length == 1;
-  if ( false ) {
-    this.renderDotSvg( svg );
-  } else {
-    this.renderPathSvg( svg );
-  }
+  this.renderPathSvg( svg );
 };
 
 var TAU = utils.TAU;
@@ -219,6 +213,7 @@ Shape.prototype.renderPath = function( ctx ) {
   }
 };
 
+// ----- svg ----- //
 
 var svgURI = 'http://www.w3.org/2000/svg';
 
@@ -252,6 +247,7 @@ Shape.prototype.renderPathSvg = function( svg ) {
   this.svgElement.setAttribute( 'fill', fill );
 
   svg.appendChild( this.svgElement );
+  
 };
 
 return Shape;

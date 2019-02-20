@@ -31,6 +31,12 @@ Hemisphere.prototype.render = function( ctx ) {
   Ellipse.prototype.render.apply( this, arguments );
 };
 
+Hemisphere.prototype.renderSvg = function( svg ) {
+  this.renderDomeSvg( svg );
+  // call super
+  Ellipse.prototype.renderSvg.apply( this, arguments );
+};
+
 Hemisphere.prototype.renderDome = function( ctx ) {
   if ( !this.visible ) {
     return;
@@ -55,6 +61,41 @@ Hemisphere.prototype.renderDome = function( ctx ) {
     ctx.fillStyle = this.color;
     ctx.fill();
   }
+};
+
+
+var svgURI = 'http://www.w3.org/2000/svg';
+
+Hemisphere.prototype.renderDomeSvg = function( svg ) {
+  if ( !this.visible ) {
+    return;
+  }
+
+  if ( !this.domeSvgElement ) {
+    // create svgElement
+    this.domeSvgElement = document.createElementNS( svgURI, 'path');
+    this.domeSvgElement.setAttribute( 'stroke-linecap', 'round' );
+    this.domeSvgElement.setAttribute( 'stroke-linejoin', 'round' );
+  }
+
+  var contourAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x );
+  contourAngle = (contourAngle - TAU/4) / TAU * 360;
+  var domeRadius = this.diameter/2 * this.renderNormal.magnitude();
+  this.domeSvgElement.setAttribute( 'd', 'M ' + (-domeRadius) + ',0 A ' +
+    domeRadius + ',' + domeRadius + ' 0 0 1 ' + domeRadius  + ',0' );
+  var x = this.renderOrigin.x;
+  var y = this.renderOrigin.y;
+  this.domeSvgElement.setAttribute( 'transform',
+    'translate(' + x + ',' + y + ' ) rotate(' + contourAngle + ')' );
+  if ( this.stroke ) {
+    this.domeSvgElement.setAttribute( 'stroke', this.color );
+    this.domeSvgElement.setAttribute( 'stroke-width', this.getLineWidth() );
+  }
+  // fill
+  var fill = this.fill ? this.color : 'none';
+  this.domeSvgElement.setAttribute( 'fill', fill );
+
+  svg.appendChild( this.domeSvgElement );
 };
 
 return Hemisphere;
