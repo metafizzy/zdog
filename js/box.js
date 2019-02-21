@@ -19,6 +19,15 @@
   }
 }( this, function factory( utils, Anchor, Shape, Rect ) {
 
+// ----- BoxRect ----- //
+
+var BoxRect = Rect.subclass();
+// prevent double-creation in parent.copyGraph()
+// only create in Box.create()
+BoxRect.prototype.copyGraph = function() {};
+
+// ----- Box ----- //
+
 var boxDefaults = utils.extend( {
   width: 1,
   height: 1,
@@ -79,7 +88,6 @@ Box.prototype.updatePath = function() {
     translate: { y: this.height/2 },
     rotate: { x: -TAU/4 },
   });
-  
 };
 
 Box.prototype.setFace = function( faceName, options ) {
@@ -106,7 +114,7 @@ Box.prototype.setFace = function( faceName, options ) {
     rect.setOptions( options );
   } else {
     // create new
-    rect = this[ rectProperty ] = new Rect( options );
+    rect = this[ rectProperty ] = new BoxRect( options );
   }
   rect.updatePath();
   this.addChild( rect );

@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './shape', './ellipse' ];
+  var depends = [ './utils', './shape', './group', './ellipse' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -15,9 +15,75 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Cylinder = factory( Zdog, Zdog.Shape, Zdog.Ellipse );
+    Zdog.Cylinder = factory( Zdog, Zdog.Shape, Zdog.Group, Zdog.Ellipse );
   }
-}( this, function factory( utils, Shape, Ellipse ) {
+}( this, function factory( utils, Shape, Group, Ellipse ) {
+
+function noop() {}
+
+// ----- CylinderGroup ----- //
+  
+var CylinderGroup = Group.subclass({
+  color: '#333',
+  updateSort: true,
+});
+
+CylinderGroup.prototype.render = function( ctx, renderer ) {
+  this.renderCylinderSurface( ctx, renderer );
+  Group.prototype.render.apply( this, arguments );
+};
+
+CylinderGroup.prototype.renderCylinderSurface = function( ctx, renderer ) {
+  if ( !this.visible ) {
+    return;
+  }
+  // render cylinder surface
+  var elem = this.getRenderElement( ctx, renderer );
+  var frontBase = this.frontBase;
+  var rearBase = this.rearBase;
+
+  if ( renderer.isCanvas ) {
+    ctx.lineCap = 'butt'; // nice
+  }
+  renderer.begin( ctx, elem );
+  var pathValue = renderer.move( ctx, elem, frontBase.renderOrigin );
+  pathValue += renderer.line( ctx, elem, rearBase.renderOrigin );
+  renderer.setPath( ctx, elem, pathValue );
+
+  var scale = frontBase.renderNormal.magnitude();
+  var strokeWidth = frontBase.diameter * scale + frontBase.getLineWidth();
+  renderer.stroke( ctx, elem, true, this.color, strokeWidth );
+  renderer.end( ctx, elem );
+
+  if ( renderer.isCanvas ) {
+    ctx.lineCap = 'round'; // reset
+  }
+};
+
+var svgURI = 'http://www.w3.org/2000/svg';
+
+CylinderGroup.prototype.getRenderElement = function( ctx, renderer ) {
+  if ( !renderer.isSvg ) {
+    return;
+  }
+  if ( !this.svgElement ) {
+    // create svgElement
+    this.svgElement = document.createElementNS( svgURI, 'path');
+  }
+  return this.svgElement;
+};
+
+// prevent double-creation in parent.copyGraph()
+// only create in Cylinder.create()
+CylinderGroup.prototype.copyGraph = noop;
+
+// ----- CylinderEllipse ----- //
+
+var CylinderEllipse = Ellipse.subclass();
+
+CylinderEllipse.prototype.copyGraph = noop;
+
+// ----- Cylinder ----- //
 
 var Cylinder = Shape.subclass({
   diameter: 1,
@@ -33,12 +99,18 @@ Cylinder.prototype.create = function(/* options */) {
   // call super
   Shape.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
+  // CylinderGroup to render cylinder surface then bases
+  this.group = new CylinderGroup({
+    addTo: this,
+    color: this.color,
+    visible: this.visible,
+  });
   var baseZ = this.length/2;
   var baseColor = this.backface || true;
   // front outside base
-  this.frontBase = new Ellipse({
+  this.frontBase = this.group.frontBase = new Ellipse({
+    addTo: this.group,
     diameter: this.diameter,
-    addTo: this,
     translate: { z: baseZ },
     rotate: { y: TAU/2 },
     color: this.color,
@@ -48,50 +120,15 @@ Cylinder.prototype.create = function(/* options */) {
     visible: this.visible,
   });
   // back outside base
-  this.rearBase = this.frontBase.copy({
+  this.rearBase = this.group.rearBase = this.frontBase.copy({
     translate: { z: -baseZ },
     rotate: { y: 0 },
     backface: this.rearBaseColor || baseColor,
   });
 };
 
-Cylinder.prototype.render = function( ctx, renderer ) {
-  if ( !this.visible ) {
-    return;
-  }
-  // render cylinder surface
-  var elem = this.getRenderElement( ctx, renderer );
-
-  if ( renderer.isCanvas ) {
-    ctx.lineCap = 'butt'; // nice
-  }
-  renderer.begin( ctx, elem );
-  var pathValue = renderer.move( ctx, elem, this.frontBase.renderOrigin );
-  pathValue += renderer.line( ctx, elem, this.rearBase.renderOrigin );
-  renderer.setPath( ctx, elem, pathValue );
-
-  var strokeWidth = this.diameter * this.renderNormal.magnitude() +
-    this.getLineWidth();
-  renderer.stroke( ctx, elem, true, this.color, strokeWidth );
-  renderer.end( ctx, elem );
-
-  if ( renderer.isCanvas ) {
-    ctx.lineCap = 'round'; // reset
-  }
-};
-
-var svgURI = 'http://www.w3.org/2000/svg';
-
-Cylinder.prototype.getRenderElement = function( ctx, renderer ) {
-  if ( !renderer.isSvg ) {
-    return;
-  }
-  if ( !this.svgElement ) {
-    // create svgElement
-    this.svgElement = document.createElementNS( svgURI, 'path');
-  }
-  return this.svgElement;
-};
+// Cylinder shape does not render anything
+Cylinder.prototype.render = function() {};
 
 // ----- set child properties ----- //
 
@@ -109,6 +146,7 @@ childProperties.forEach( function( property ) {
       if ( this.frontBase ) {
         this.frontBase[ property ] = value;
         this.rearBase[ property ] = value;
+        this.group[ property ] = value;
       }
     },
   });
