@@ -8,7 +8,7 @@
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
-    define( './vector', factory );
+    define( depends, factory );
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory.apply( root, depends.map( require ) );
