@@ -42,6 +42,13 @@ new Zdog.Shape({
   color: '#EA0',
 });
 
+new Zdog.Shape({
+  addTo: scene,
+  translate: { y: 8 },
+  stroke: 8,
+  color: '#6A6',
+});
+
 // ----- animate ----- //
 
 ctx.lineJoin = 'round';
@@ -59,7 +66,7 @@ function render() {
   ctx.save();
   ctx.translate( canvasSize/2, canvasSize/2 );
   ctx.scale( zoom, zoom );
-  scene.renderGraph( ctx );
+  scene.renderGraphCanvas( ctx );
   ctx.restore();
 }
 
@@ -68,7 +75,7 @@ animate();
 // ----- drag ----- //
 
 // click drag to rotate
-var dragStartAngleX, dragStartAngleY;
+var dragStartRX, dragStartRY;
 
 new Zdog.Dragger({
   startElement: canvas,

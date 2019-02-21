@@ -1,12 +1,12 @@
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 var w = 72;
 var h = 72;
 var zoom = 6;
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+illoElem.setAttribute( 'width', w * zoom );
+illoElem.setAttribute( 'height', h * zoom );
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   dragRotate: true,
 });

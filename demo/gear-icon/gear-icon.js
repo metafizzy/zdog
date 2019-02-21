@@ -1,17 +1,17 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 var w = 48;
 var h = 48;
 var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
 var zoom = Math.floor( minWindowSize / w );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+illoElem.setAttribute( 'width', w * zoom );
+illoElem.setAttribute( 'height', h * zoom );
 var isRotating = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   rotate: { x: -TAU/8 },
   dragRotate: true,

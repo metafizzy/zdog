@@ -16,7 +16,7 @@ proxyCanvas.height = canvasHeight * shrink;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  canvas: proxyCanvas,
+  element: proxyCanvas,
   rotate: { x: -35/360 * TAU, y: 45/360 * TAU },
   zoom: zoom,
 });
@@ -172,7 +172,7 @@ function render() {
     for ( var row = -2; row < 3; row++ ) {
       var x = col * shiftX;
       var y = ( row * 2 + col % 2 ) * shiftY;
-      ctx.drawImage( illo.canvas, x, y );
+      ctx.drawImage( illo.element, x, y );
     }
   }
 

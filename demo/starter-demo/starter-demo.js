@@ -2,7 +2,7 @@ var isRotating = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  canvas: '.zdog-canvas',
+  element: '.illo',
   zoom: 4,
   dragRotate: true,
   onDragStart: function() {

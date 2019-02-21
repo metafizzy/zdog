@@ -1,12 +1,7 @@
-var TAU = Zdog.TAU;
-
-function BokehShape( options ) {
-  this.create( options );
-  this.bokehSize = options.bokehSize || 5;
-  this.bokehLimit = options.bokehLimit || 64;
-}
-
-BokehShape.prototype = Object.create( Zdog.Shape.prototype );
+var BokehShape = Zdog.Shape.subclass({
+  bokehSize: 5,
+  bokehLimit: 64,
+});
 
 BokehShape.prototype.updateBokeh = function() {
   // bokeh 0 -> 1
@@ -15,54 +10,32 @@ BokehShape.prototype.updateBokeh = function() {
   return this.bokeh;
 };
 
-BokehShape.prototype.getBokehStroke = function() {
+BokehShape.prototype.getLineWidth = function() {
   return this.stroke + this.bokehSize * this.bokeh * this.bokeh;
 };
 
 BokehShape.prototype.getBokehAlpha = function() {
-  var revBokeh = 1 - this.bokeh;
-  revBokeh *= revBokeh;
-  return revBokeh * 0.8 + 0.2;
+  var alpha = 1 - this.bokeh;
+  alpha *= alpha;
+  return alpha * 0.8 + 0.2;
 };
 
-
-
-// Safari does not render lines with no size, have to render circle instead
-BokehShape.prototype.renderDot = function( ctx ) {
+BokehShape.prototype.renderCanvasDot = function( ctx ) {
   this.updateBokeh();
-  ctx.globalAlpha = this.getBokehAlpha();
-  ctx.fillStyle = this.color;
-  var point = this.pathDirections[0].endRenderPoint;
-  ctx.beginPath();
-  var radius = this.getBokehStroke()/2;
-  ctx.arc( point.x, point.y, radius, 0, TAU );
-  ctx.fill();
-  ctx.globalAlpha = 1;
+  ctx.globalAlpha = this.getBokehAlpha(); // set opacity
+  Zdog.Shape.prototype.renderCanvasDot.apply( this, arguments );
+  ctx.globalAlpha = 1; // reset
 };
 
-BokehShape.prototype.renderPath = function( ctx ) {
+BokehShape.prototype.renderPath = function( ctx, renderer ) {
   this.updateBokeh();
-  ctx.globalAlpha = this.getBokehAlpha();
-  // set render properties
-  ctx.fillStyle = this.color;
-  ctx.strokeStyle = this.color;
-  ctx.lineWidth = this.getBokehStroke();
-
-  // render points
-  ctx.beginPath();
-  this.pathDirections.forEach( function( direction ) {
-    direction.render( ctx );
-  });
-  var isTwoPoints = this.pathDirections.length == 2 &&
-    this.pathDirections[1].method == 'line';
-  if ( !isTwoPoints && this.closed ) {
-    ctx.closePath();
+  // set opacity
+  if ( renderer.isCanvas ) {
+    ctx.globalAlpha = this.getBokehAlpha();
   }
-  if ( this.stroke ) {
-    ctx.stroke();
+  Zdog.Shape.prototype.renderPath.apply( this, arguments );
+  // reset opacity
+  if ( renderer.isCanvas ) {
+    ctx.globalAlpha = 1;
   }
-  if ( this.fill ) {
-    ctx.fill();
-  }
-  ctx.globalAlpha = 1;
 };

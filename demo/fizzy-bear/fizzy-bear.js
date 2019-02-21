@@ -1,6 +1,6 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 // unibody canvas for compositing
 var unibodyCanvas = document.createElement('canvas');
 var bodyLinesCanvas = document.createElement('canvas');
@@ -11,8 +11,8 @@ var h = 88;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
 
-var canvasWidth = canvas.width = w * zoom;
-var canvasHeight = canvas.height = h * zoom;
+var canvasWidth = illoElem.width = w * zoom;
+var canvasHeight = illoElem.height = h * zoom;
 unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
 unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 
@@ -21,7 +21,7 @@ var isRotating = true;
 var TAU = Zdog.TAU;
 
 var mainIllo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   dragRotate: camera,
   onDragStart: function() {
@@ -30,12 +30,12 @@ var mainIllo = new Zdog.Illustration({
 });
 
 var unibodyIllo = new Zdog.Illustration({
-  canvas: unibodyCanvas,
+  element: unibodyCanvas,
   zoom: zoom,
 });
 
 var bodyLinesIllo = new Zdog.Illustration({
-  canvas: bodyLinesCanvas,
+  element: bodyLinesCanvas,
   zoom: zoom,
 });
 
@@ -377,10 +377,10 @@ var sectionSize = unibodyHeight / 4;
 var unibodyRender = positiveUnibody.render;
 var bodyLinesCtx = bodyLinesIllo.ctx;
 positiveUnibody.render = function( ctx ) {
-  unibodyRender.call( positiveUnibody, unibodyIllo.ctx );
+  unibodyRender.call( positiveUnibody, unibodyIllo.ctx, Zdog.CanvasRenderer );
   // render body lines separately, on its own canvas
   bodyLinesCtx.globalCompositeOperation = 'source-over';
-  bodySectionsAnchor.renderGraph( bodyLinesCtx );
+  bodySectionsAnchor.renderGraphCanvas( bodyLinesCtx );
   // composite bodyLines in unibody
   bodyLinesCtx.restore();
   bodyLinesCtx.globalCompositeOperation = 'destination-in';
@@ -441,16 +441,16 @@ setJumpRotate();
 
 function render() {
   var ctx = mainIllo.ctx;
-  mainIllo.prerender();
-  unibodyIllo.prerender();
-  bodyLinesIllo.prerender();
+  mainIllo.prerenderCanvas();
+  unibodyIllo.prerenderCanvas();
+  bodyLinesIllo.prerenderCanvas();
 
-  outlineAnchor.renderGraph( ctx );
-  positiveAnchor.renderGraph( ctx );
+  outlineAnchor.renderGraphCanvas( ctx );
+  positiveAnchor.renderGraphCanvas( ctx );
 
-  mainIllo.postrender();
-  unibodyIllo.postrender();
-  bodyLinesIllo.postrender();
+  mainIllo.postrenderCanvas();
+  unibodyIllo.postrenderCanvas();
+  bodyLinesIllo.postrenderCanvas();
 }
 
 // ----- inputs ----- //

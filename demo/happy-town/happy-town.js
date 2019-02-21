@@ -2,19 +2,19 @@
 
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 var w = 160;
 var h = 160;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+illoElem.setAttribute( 'width', w * zoom );
+illoElem.setAttribute( 'height', h * zoom );
 
 var isRotating = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   rotate: { y: TAU/8 },
   dragRotate: true,
@@ -932,23 +932,23 @@ function update() {
 
 function render() {
   var ctx = illo.ctx;
-  illo.prerender();
+  illo.prerenderCanvas();
 
   // render shapes
   var isCameraXUp = illo.rotate.x < 0 || illo.rotate.x > TAU/2;
 
-  sky.renderGraph( ctx );
+  sky.renderGraphCanvas( ctx );
 
   // HACK sort flat earth & town shapes manually
   if ( isCameraXUp ) {
-    flatEarth.render( ctx );
+    flatEarth.renderGraphCanvas( ctx );
   }
-  town.renderGraph( ctx );
+  town.renderGraphCanvas( ctx );
   if ( !isCameraXUp ) {
-    flatEarth.render( ctx );
+    flatEarth.renderGraphCanvas( ctx );
   }
 
-  illo.postrender();
+  illo.postrenderCanvas();
   ctx.restore();
 }
 

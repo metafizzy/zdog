@@ -1,12 +1,12 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 var w = 96;
 var h = 96;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+illoElem.setAttribute( 'width', w * zoom );
+illoElem.setAttribute( 'height', h * zoom );
 // colors
 var orange = '#E62';
 var eggplant = '#636';
@@ -22,7 +22,7 @@ var TAU = Zdog.TAU;
 var initialRotate = { y: -TAU/8 };
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   rotate: initialRotate,
   dragRotate: true,

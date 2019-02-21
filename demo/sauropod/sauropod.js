@@ -1,12 +1,12 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 var w = 104;
 var h = 104;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+illoElem.setAttribute( 'width', w * zoom );
+illoElem.setAttribute( 'height', h * zoom );
 var isRotating = true;
 var TAU = Zdog.TAU;
 // ratio to make things look square when rotated a quarter
@@ -17,7 +17,7 @@ var blue = '#19F';
 var initialRotate = { y: TAU/8 };
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   scale: { x: antiTwist, z: antiTwist },
   rotate: initialRotate,

@@ -8,7 +8,7 @@ var eggplant = '#636';
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  canvas: 'canvas',
+  element: '.illo',
   zoom: 5,
   rotate: { y: -TAU/8 },
   dragRotate: true,

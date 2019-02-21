@@ -1,11 +1,9 @@
 // ------------------------- demo ------------------------- //
 
 var svg = document.querySelector('svg');
-// var svgURI = 'http://www.w3.org/2000/svg';
 var sceneSize = 48;
 var zoom = 8;
 var illoSize = sceneSize * zoom;
-var viewCorner = sceneSize/2;
 svg.setAttribute( 'viewBox', -sceneSize/2 + ' ' + -sceneSize/2 + ' ' +
   sceneSize + ' ' + sceneSize );
 svg.style.width = svg.style.height = illoSize + 'px';
@@ -50,7 +48,7 @@ new Zdog.Shape({
 
 new Zdog.Shape({
   addTo: scene,
-  translate: { x: 12, y: -6 },
+  translate: { y: 8 },
   stroke: 8,
   color: '#6A6',
 });

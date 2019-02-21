@@ -1,12 +1,12 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 var w = 24;
 var h = 24;
 var minWindowSize = Math.min( window.innerWidth - 20, window.innerHeight - 40 );
 var zoom = Math.floor( minWindowSize / w );
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+illoElem.setAttribute( 'width', w * zoom );
+illoElem.setAttribute( 'height', h * zoom );
 
 [ Zdog.Shape, Zdog.Rect ].forEach( function( ItemClass ) {
   ItemClass.defaults.fill = true;
@@ -22,7 +22,7 @@ var TAU = Zdog.TAU;
 var initRotate = { y: TAU/4 };
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   rotate: initRotate,
   dragRotate: true,
