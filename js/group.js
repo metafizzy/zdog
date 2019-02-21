@@ -43,25 +43,14 @@ Group.prototype.updateSortValue = function() {
 
 // ----- render ----- //
 
-Group.prototype.render = function( ctx ) {
+Group.prototype.render = function( ctx, renderer ) {
   if ( !this.visible ) {
     return;
   }
 
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
-    item.render( ctx );
-  });
-};
-
-Group.prototype.renderSvg = function( svg ) {
-  if ( !this.visible ) {
-    return;
-  }
-
-  this.checkFlatGraph();
-  this.flatGraph.forEach( function( item ) {
-    item.renderSvg( svg );
+    item.render( ctx, renderer );
   });
 };
 

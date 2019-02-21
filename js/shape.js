@@ -135,6 +135,9 @@ Shape.prototype.render = function( ctx, renderer ) {
   if ( !this.backface && this.isFacingBack ) {
     return;
   }
+  if ( !renderer ) {
+    throw new Error( 'Zdog renderer required. Set to ' + renderer );
+  }
   // render dot or path
   var isDot = length == 1;
   if ( renderer.isCanvas && isDot ) {

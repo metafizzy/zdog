@@ -1,12 +1,12 @@
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
-var w = 96;
-var h = 96;
+var illoElem = document.querySelector('.illo');
+var sceneSize = 96;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 6, Math.floor( minWindowSize / w ) );
-var canvasWidth = canvas.width = w * zoom;
-canvas.height = h * zoom;
+var zoom = Math.min( 6, Math.floor( minWindowSize / sceneSize ) );
+var illoSize = sceneSize * zoom;
+illoElem.setAttribute( 'width', illoSize );
+illoElem.setAttribute( 'height', illoSize );
 
 var TAU = Zdog.TAU;
 var ROOT3 = Math.sqrt(3);
@@ -25,7 +25,7 @@ var gold = '#EA0';
 var yellow = '#ED0';
 
 var illo = new Zdog.Illustration({
-  canvas: canvas,
+  element: illoElem,
   zoom: zoom,
   scale: 8,
 });
@@ -421,15 +421,15 @@ function update() {
 var dragStartAngleX, dragStartAngleY;
 
 new Zdog.Dragger({
-  startElement: canvas,
+  startElement: illoElem,
   onDragStart: function() {
     isRotating = false;
     dragStartAngleX = viewRotation.x;
     dragStartAngleY = viewRotation.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
+    var angleXMove = moveY / illoSize * TAU;
+    var angleYMove = moveX / illoSize * TAU;
     viewRotation.x = dragStartAngleX + angleXMove;
     viewRotation.y = dragStartAngleY + angleYMove;
   },

@@ -2,20 +2,20 @@
 
 // -------------------------- demo -------------------------- //
 
-var canvas = document.querySelector('canvas');
+var illoElem = document.querySelector('.illo');
 var w = 192;
 var h = 164;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
 var zoom = 5;
-canvas.width = w * zoom;
-canvas.height = h * zoom;
+illoElem.setAttribute( 'width', w * zoom );
+illoElem.setAttribute( 'height', h * zoom );
 var isRotating = false;
 var TAU = Zdog.TAU;
 var initRotate = { y: TAU/8 };
 
 var illo = new Zdog.Illustration({
-  element: canvas,
+  element: illoElem,
   zoom: zoom,
   rotate: initRotate,
   dragRotate: true,
@@ -545,8 +545,7 @@ makeDome({
 
 function animate() {
   illo.rotate.y += isRotating ? TAU/150 : 0;
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

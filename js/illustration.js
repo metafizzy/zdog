@@ -67,6 +67,12 @@ Illustration.prototype.renderGraph = function( item ) {
   }
 };
 
+// combo method
+Illustration.prototype.updateRenderGraph = function( item ) {
+  this.updateGraph();
+  this.renderGraph( item );
+};
+
 // ----- canvas ----- //
 
 Illustration.prototype.setCanvas = function( element ) {
@@ -91,7 +97,7 @@ Illustration.prototype.setCanvas = function( element ) {
 Illustration.prototype.renderGraphCanvas = function( item ) {
   item = item || this;
   this.prerenderCanvas();
-  Anchor.prototype.renderGraph.call( item, this.ctx );
+  Anchor.prototype.renderGraphCanvas.call( item, this.ctx );
   this.postrenderCanvas();
 };
 
@@ -121,7 +127,7 @@ Illustration.prototype.setSvg = function( element ) {
   this.pixelRatio = 1;
   this.width = element.getAttribute('width');
   this.height = element.getAttribute('height');
-  // TODO set viewBox
+
   var viewWidth = this.width / this.zoom;
   var viewHeight = this.height / this.zoom;
   var viewX = this.centered ? -viewWidth/2 : 0;

@@ -1,4 +1,21 @@
-( function() {
+/**
+ * CanvasRenderer
+ */
+
+( function( root, factory ) {
+  // universal module definition
+  /* globals define, module */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory();
+  } else {
+    // browser global
+    root.Zdog.CanvasRenderer = factory();
+  }
+}( this, function factory() {
 
 var CanvasRenderer = { isCanvas: true };
 
@@ -43,6 +60,6 @@ CanvasRenderer.fill = function( ctx, elem, isFill, color ) {
 
 CanvasRenderer.end = function() {};
 
-Zdog.CanvasRenderer = CanvasRenderer;
+return CanvasRenderer;
 
-})();
+}));

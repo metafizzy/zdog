@@ -161,19 +161,16 @@ Anchor.prototype.updateSortValue = function() {
 
 Anchor.prototype.render = function() {};
 
-Anchor.prototype.renderGraph = function( ctx ) {
+Anchor.prototype.renderGraphCanvas = function( ctx ) {
   if ( !ctx ) {
     throw new Error( 'ctx is ' + ctx + '. ' +
-      'Canvas context required for render. Check .renderGraph( ctx ).' );
+      'Canvas context required for render. Check .renderGraphCanvas( ctx ).' );
   }
   this.checkFlatGraph();
-
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, Zdog.CanvasRenderer );
   });
 };
-
-Anchor.prototype.renderSvg = function(/* svg */) {};
 
 Anchor.prototype.renderGraphSvg = function( svg ) {
   if ( !svg ) {
@@ -184,12 +181,6 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
   this.flatGraph.forEach( function( item ) {
     item.render( svg, Zdog.SvgRenderer );
   });
-};
-
-// combo method
-Anchor.prototype.updateRenderGraph = function( ctx ) {
-  this.updateGraph();
-  this.renderGraph( ctx );
 };
 
 // ----- misc ----- //
