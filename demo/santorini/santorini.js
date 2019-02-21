@@ -1,4 +1,4 @@
-/* globals makeBuilding, makeDome, oneStoryBuilding, twoStoryBuilding, oneStorySlanter, makeRock */
+/* globals makeBuilding, oneStoryBuilding, twoStoryBuilding, oneStorySlanter, makeRock */
 
 // -------------------------- demo -------------------------- //
 
@@ -29,7 +29,7 @@ var illo = new Zdog.Illustration({
 // var southWall = white;
 // var westWall = '#CDE';
 // var eastWall = '#8AD';
-// var roof = '#06B';
+var roof = '#06B';
 // var northWall = roof;
 // var navy = '#037';
 // var midnight = '#024';
@@ -191,11 +191,13 @@ makeBuilding({
 });
 
 // cathedral dome
-
-makeDome({
-  size: 6,
+var dome = new Zdog.Hemisphere({
   addTo: cathBaseAnchor,
+  diameter: 6,
   translate: { y: -30 },
+  rotate: { x: TAU/4 },
+  color: roof,
+  stroke: false,
 });
 
 // -----  ----- //
@@ -348,8 +350,8 @@ makeBuilding({
   ],
 });
 
-makeDome({
-  size: 4,
+dome.copy({
+  diameter: 4,
   addTo: centralTower2ndAnchor,
   translate: { y: -8 },
 });
@@ -415,8 +417,8 @@ makeBuilding({
   ],
 });
 
-makeDome({
-  size: 4,
+dome.copy({
+  diameter: 4,
   addTo: temple3rdFloor,
   translate: { y: -6 },
 });
@@ -442,8 +444,8 @@ makeBuilding({
   ],
 });
 
-makeDome({
-  size: 6,
+dome.copy({
+  diameter: 6,
   addTo: westPerchAnchor,
   translate: { y: -6 },
 });
@@ -535,10 +537,10 @@ makeBuilding({
   ewWindows: [ { y: -27 } ],
 });
 
-makeDome({
+dome.copy({
   addTo: backTowerAnchor,
   translate: { y: -30 },
-  size: 4,
+  diameter: 4,
 });
 
 // -- animate --- //

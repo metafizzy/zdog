@@ -158,41 +158,26 @@ glassLens.copy({
   scale: { x: -lensScale },
 });
 
-// glasses arm
-var glassesArmA = new Zdog.Shape({
+var glassesArm = new Zdog.Shape({
   path: [
-    { z: 12, y: 0 },
-    { z: -1, y: 0 },
+    { x: 12, y: 0 },
+    { x: -1, y: 0 },
     { arc: [
-      { z: -1 - 8*quarterView, y: 0 },
-      { z: -1 - 8*quarterView, y: 8 },
+      { x: -1 - 8*quarterView, y: 0 },
+      { x: -1 - 8*quarterView, y: 8 },
     ]},
   ],
   addTo: hat,
   translate: { x: -16, y: 8 },
+  rotate: { y: TAU/4 },
+  // only see one arm at time
+  backface: false,
 });
-var glassesArmB = glassesArmA.copy({
+glassesArm.copy({
+  scale: { x: -1 },
   translate: { x: 16, y: 8 },
+  rotate: { y: -TAU/4 },
 });
-
-// do not display glassesArm if behind lenses
-glassesArmA.render = function() {
-  var ry = hat.rotate.y;
-  var isRotateYBlocking = ry > 0 && ry < TAU/4;
-  if ( isRotateXFlat && isRotateYBlocking ) {
-    return;
-  }
-  Zdog.Shape.prototype.render.apply( this, arguments );
-};
-
-glassesArmB.render = function() {
-  var ry = hat.rotate.y;
-  var isRotateYBlocking = ry > TAU*3/4 && ry < TAU;
-  if ( isRotateXFlat && isRotateYBlocking ) {
-    return;
-  }
-  Zdog.Shape.prototype.render.apply( this, arguments );
-};
 
 // -- animate --- //
 
