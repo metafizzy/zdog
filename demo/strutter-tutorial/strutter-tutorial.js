@@ -6,11 +6,12 @@ var gold = '#EA0';
 var garnet = '#C25';
 var eggplant = '#636';
 var TAU = Zdog.TAU;
+var initalRotate = { y: -TAU/8 };
 
 var illo = new Zdog.Illustration({
   element: '.illo',
   zoom: 5,
-  rotate: { y: -TAU/8 },
+  rotate: initalRotate,
   dragRotate: true,
   onDragStart: function() {
     isRotating = false;
@@ -151,7 +152,7 @@ var t = 0;
 
 function animate() {
   if ( isRotating ) {
-    illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU - TAU/8;
+    illo.rotate.y = Zdog.easeInOut( t % 1, 4 ) * TAU + initalRotate.y;
     t += 1/150;
   }
   illo.updateRenderGraph();

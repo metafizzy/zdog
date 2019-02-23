@@ -101,8 +101,7 @@ function animation( duration, onFrame ) {
 
   animateFrame = function() {
     var ellasped = now() - start;
-    // HACK, should be 1
-    var t = Math.min( ellasped / duration, 0.999 ); // 0 -> 1;
+    var t = ellasped / duration;
     onFrame( t );
     if ( ellasped < duration ) {
       requestAnimationFrame( animateFrame );
@@ -118,8 +117,6 @@ function now() {
 
 function startAnimation() {
   animation( 2000, function( t ) {
-    // var negT = 1 - t;
-    // var easeT = 1 - negT * negT * negT;
     var easeT = Zdog.easeInOut( t, 3 );
     panelAnchors.forEach( function( panelAnchor ) {
       panelAnchor.translate.z = Zdog.lerp( -8, -11, easeT );

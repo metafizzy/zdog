@@ -196,7 +196,7 @@ var t = 0;
 function animate() {
   // update
   if ( isRotating ) {
-    var easeT = Zdog.easeInOut( t, 3 );
+    var easeT = Zdog.easeInOut( t % 1, 3 );
     illo.rotate.y = easeT*-TAU + TAU/8;
     illo.rotate.x = ( Math.cos( easeT * TAU ) * 0.5 + -0.5 ) * TAU/12;
     t += 1/210;

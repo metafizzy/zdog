@@ -250,7 +250,7 @@ var keyframes = [
 function animate() {
   // update
   if ( isRotating ) {
-    var easeT = Zdog.easeInOut( t, 4 );
+    var easeT = Zdog.easeInOut( t % 1, 4 );
     var turnLimit = keyframes.length - 1;
     var turn = Math.floor( t % turnLimit );
     var keyframeA = keyframes[ turn ];

@@ -912,7 +912,7 @@ function update() {
 
   if ( isRotating ) {
     t += tSpeed * delta/60;
-    var theta = Zdog.easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t % 1 ) * TAU;
     var rev = 1;
     var spin = -theta * rev + TAU/8;
     var extraRotation = TAU * rev * Math.floor( ( t % 4 ) );

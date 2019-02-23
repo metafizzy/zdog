@@ -141,7 +141,7 @@ var transforms = {
 };
 
 function update() {
-  var easeT = Zdog.easeInOut( t, 4 ) * TAU/4;
+  var easeT = Zdog.easeInOut( t % 1, 4 ) * TAU/4;
 
   var turn = Math.floor( t % 6 );
   var transform = transforms[ turn ];

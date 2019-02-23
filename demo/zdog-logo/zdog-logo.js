@@ -240,11 +240,12 @@ function animate() {
   // update
   if ( isRotating ) {
     var turn = Math.floor( t % 2 );
+    var easeT = Zdog.easeInOut( t % 1, 4 );
     if ( turn == 0 ) {
-      illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU + initRotate.y;
+      illo.rotate.y = easeT * TAU + initRotate.y;
     } else if ( turn == 1 ) {
-      illo.rotate.z = Zdog.easeInOut( t, 4 ) * TAU;
-      // scene.rotate.x = Zdog.easeInOut( t, 4 ) * TAU + initRotate.x;
+      illo.rotate.z = easeT * TAU;
+      // scene.rotate.x = easeT * TAU + initRotate.x;
     }
     t += tSpeed;
   }

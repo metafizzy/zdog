@@ -412,7 +412,7 @@ animate();
 function update() {
   if ( isRotating ) {
     t += 1/180;
-    var easeT = Zdog.easeInOut( t, 3 );
+    var easeT = Zdog.easeInOut( t % 1, 3 );
     camera.rotate.y = easeT*TAU*2 + jumpRotation.y;
   }
 

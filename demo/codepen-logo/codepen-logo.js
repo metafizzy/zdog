@@ -74,7 +74,7 @@ var tSpeed = 1/90;
 function animate() {
   // update
   if ( isRotating ) {
-    var easeT = Zdog.easeInOut( t, 3 );
+    var easeT = Zdog.easeInOut( t % 1, 3 );
     var turn = Math.floor( t );
     if ( turn === 0 ) {
       illo.rotate.z = Zdog.lerp( TAU/8 * -3, TAU/8, easeT );

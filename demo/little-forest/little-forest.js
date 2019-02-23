@@ -739,7 +739,7 @@ function animate() {
   // update
   if ( isRotating ) {
     t += tSpeed;
-    var theta = Zdog.easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t % 1 ) * TAU;
     var delta = TAU * -3/64;
     illo.rotate.y = Math.sin( theta ) * delta;
     illo.rotate.x = ( Math.cos( theta ) * -0.5 + 0.5 ) * delta;

@@ -213,7 +213,7 @@ Shifter.prototype.update = function( t ) {
 
   var turn = Math.floor( t % 6 );
 
-  var easeT = Zdog.easeInOut( t, 4 ) * TAU/4;
+  var easeT = Zdog.easeInOut( t % 1, 4 ) * TAU/4;
   this.pyramid.rotate.x = easeT;
   this.cylinder1.rotate.y = easeT + TAU/4;
   this.cone.rotate.x = easeT + TAU/4;

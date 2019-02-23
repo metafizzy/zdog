@@ -141,7 +141,7 @@ function rotate() {
   t = t % 1;
   var isFirstHalf = t < 0.5;
   var halfT = isFirstHalf ? t : t - 0.5;
-  var doubleEaseT = Zdog.easeInOut( halfT * 2, 3 ) / 2;
+  var doubleEaseT = Zdog.easeInOut( halfT*2 % 1, 3 ) / 2;
   doubleEaseT += isFirstHalf ? 0 : 0.5;
   illo.rotate.y = doubleEaseT * TAU;
   illo.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;

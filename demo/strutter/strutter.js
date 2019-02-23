@@ -209,7 +209,7 @@ var t = 0;
 
 function animate() {
   if ( isRotating ) {
-    illo.rotate.y = Zdog.easeInOut( t, 4 ) * TAU - TAU/8;
+    illo.rotate.y = Zdog.easeInOut( t % 1, 4 ) * TAU - TAU/8;
     t += 1/150;
   }
   illo.updateGraph();

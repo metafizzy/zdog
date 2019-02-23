@@ -403,7 +403,7 @@ function update() {
 
   if ( isRotating ) {
     t += tSpeed;
-    var theta = Zdog.easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t % 1 ) * TAU;
     var everyOtherCycle = t % 2 < 1;
     viewRotation.y = everyOtherCycle ? theta : 0;
     viewRotation.x = everyOtherCycle ? 0 : -theta;

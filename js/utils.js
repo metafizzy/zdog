@@ -38,31 +38,30 @@ Zdog.modulo = function( num, div ) {
 };
 
 var powerMultipliers = {
-  2: function( i ) {
-    return i * i;
+  2: function( a ) {
+    return a * a;
   },
-  3: function( i ) {
-    return i * i * i;
+  3: function( a ) {
+    return a * a * a;
   },
-  4: function( i ) {
-    return i * i * i * i;
+  4: function( a ) {
+    return a * a * a * a;
   },
-  5: function( i ) {
-    return i * i * i * i * i;
+  5: function( a ) {
+    return a * a * a * a * a;
   }
 };
 
-Zdog.easeInOut = function( i, power ) {
+Zdog.easeInOut = function( alpha, power ) {
   if ( power == 1 ) {
-    return i;
+    return alpha;
   }
-  var powerMultiplier = powerMultipliers[ power ] || powerMultipliers[2];
-
-  i = i % 1;
-  var isFirstHalf = i < 0.5;
-  var slope = isFirstHalf ? i : 1 - i;
+  alpha = Math.max( 0, Math.min( 1, alpha ) );
+  var isFirstHalf = alpha < 0.5;
+  var slope = isFirstHalf ? alpha : 1 - alpha;
   slope = slope / 0.5;
   // make easing steeper with more multiples
+  var powerMultiplier = powerMultipliers[ power ] || powerMultipliers[2];
   var curve = powerMultiplier( slope );
   curve = curve / 2;
   return isFirstHalf ? curve : 1 - curve;

@@ -827,7 +827,7 @@ function animate() {
   // update
   if ( isRotating ) {
     t += tSpeed;
-    var theta = Zdog.easeInOut( t ) * TAU;
+    var theta = Zdog.easeInOut( t % 1 ) * TAU;
     illo.rotate.y = -theta + sceneStartRotation.y;
   }
 
