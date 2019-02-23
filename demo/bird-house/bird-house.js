@@ -7,7 +7,7 @@ var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 )
 var zoom = Math.floor( minWindowSize / w );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
-var isRotating = false;
+var isSpinning = false;
 var TAU = Zdog.TAU;
 // colors
 var yellow = "#ED0";
@@ -26,7 +26,7 @@ var illo = new Zdog.Illustration({
   zoom: zoom,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -127,7 +127,7 @@ new Zdog.Rect({
 // -- animate --- //
 
 function animate() {
-  illo.rotate.y += isRotating ? +TAU/150 : 0;
+  illo.rotate.y += isSpinning ? +TAU/150 : 0;
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }

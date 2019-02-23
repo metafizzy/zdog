@@ -17,7 +17,7 @@ unibodyCanvas.width = bodyLinesCanvas.width = canvasWidth;
 unibodyCanvas.height = bodyLinesCanvas.height = canvasHeight;
 
 var camera = new Zdog.Anchor();
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 var mainIllo = new Zdog.Illustration({
@@ -25,7 +25,7 @@ var mainIllo = new Zdog.Illustration({
   zoom: zoom,
   dragRotate: camera,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -410,7 +410,7 @@ animate();
 // -- update -- //
 
 function update() {
-  if ( isRotating ) {
+  if ( isSpinning ) {
     t += 1/180;
     var easeT = Zdog.easeInOut( t % 1, 3 );
     camera.rotate.y = easeT*TAU*2 + jumpRotation.y;

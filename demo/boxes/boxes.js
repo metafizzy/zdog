@@ -7,7 +7,7 @@ var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 )
 var zoom = Math.floor( minWindowSize / w );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 // colors
 // var white = 'white';
@@ -27,7 +27,7 @@ var illo = new Zdog.Illustration({
   rotate: initRotate,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -116,7 +116,7 @@ dot.copy({
 var t = 0;
 
 function animate() {
-  if ( isRotating ) {
+  if ( isSpinning ) {
     var turn = Math.floor( t % 4 );
     var theta = Zdog.easeInOut( t%1, 3 ) * TAU;
     if ( turn === 0  || turn == 2 ) {

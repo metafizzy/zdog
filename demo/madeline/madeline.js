@@ -10,7 +10,7 @@ var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
 
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
@@ -19,7 +19,7 @@ var illo = new Zdog.Illustration({
   rotate: { y: -TAU/4 },
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -205,7 +205,7 @@ makeBird({
 
 // -- animate --- //
 
-var isRotating = true;
+var isSpinning = true;
 var rotateSpeed = -TAU/60;
 var xClock = 0;
 var then = new Date() - 1/60;
@@ -224,7 +224,7 @@ function update() {
   var now = new Date();
   var delta = now - then;
   // auto rotate
-  if ( isRotating ) {
+  if ( isSpinning ) {
     var theta = rotateSpeed/60 * delta * -1;
     illo.rotate.y += theta;
     xClock += theta/4;

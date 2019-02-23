@@ -8,7 +8,7 @@ var zoom = Math.min( 3, Math.floor( minWindowSize / (w/2) ) / 2 );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
 
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
@@ -16,7 +16,7 @@ var illo = new Zdog.Illustration({
   zoom: zoom,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -737,7 +737,7 @@ var tSpeed = 1/240;
 
 function animate() {
   // update
-  if ( isRotating ) {
+  if ( isSpinning ) {
     t += tSpeed;
     var theta = Zdog.easeInOut( t % 1 ) * TAU;
     var delta = TAU * -3/64;
@@ -755,6 +755,6 @@ animate();
 // ----- inputs ----- //
 
 document.querySelector('.reset-button').onclick = function() {
-  isRotating = false;
+  isSpinning = false;
   illo.rotate.set({});
 };

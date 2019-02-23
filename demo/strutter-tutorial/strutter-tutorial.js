@@ -1,6 +1,6 @@
 // -------------------------- demo -------------------------- //
 
-var isRotating = true;
+var isSpinning = true;
 // colors
 var gold = '#EA0';
 var garnet = '#C25';
@@ -14,7 +14,7 @@ var illo = new Zdog.Illustration({
   rotate: initalRotate,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -151,7 +151,7 @@ upperArm.copyGraph({
 var t = 0;
 
 function animate() {
-  if ( isRotating ) {
+  if ( isSpinning ) {
     illo.rotate.y = Zdog.easeInOut( t % 1, 4 ) * TAU + initalRotate.y;
     t += 1/150;
   }

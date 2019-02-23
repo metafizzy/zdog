@@ -17,7 +17,7 @@ Zdog.Shape.defaults.closed = false;
   ShapeClass.defaults.color = orange;
 });
 
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 var initialRotate = { y: -TAU/8 };
 
@@ -27,7 +27,7 @@ var illo = new Zdog.Illustration({
   rotate: initialRotate,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   }
 });
 
@@ -179,7 +179,7 @@ glassesArm.copy({
 var t = 0;
 
 function animate() {
-  if ( isRotating ) {
+  if ( isSpinning ) {
     illo.rotate.y = Zdog.easeInOut( t % 1, 4 ) * TAU + initialRotate.y;
     t += 1/150;
   }

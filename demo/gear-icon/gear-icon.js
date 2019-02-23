@@ -7,7 +7,7 @@ var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 )
 var zoom = Math.floor( minWindowSize / w );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
@@ -16,7 +16,7 @@ var illo = new Zdog.Illustration({
   rotate: { x: -TAU/8 },
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -103,7 +103,7 @@ gearPath.forEach( function( corner, i ) {
 // -- animate --- //
 
 function animate() {
-  illo.rotate.y += isRotating ? +TAU/240 : 0;
+  illo.rotate.y += isSpinning ? +TAU/240 : 0;
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }

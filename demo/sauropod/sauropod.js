@@ -7,7 +7,7 @@ var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
 var zoom = Math.min( 5, Math.floor( minWindowSize / w ) );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 // ratio to make things look square when rotated a quarter
 var antiTwist = 1 / Math.cos( TAU/8 );
@@ -23,7 +23,7 @@ var illo = new Zdog.Illustration({
   rotate: initialRotate,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -195,7 +195,7 @@ var t = 0;
 
 function animate() {
   // update
-  if ( isRotating ) {
+  if ( isSpinning ) {
     var easeT = Zdog.easeInOut( t % 1, 3 );
     illo.rotate.y = easeT*-TAU + TAU/8;
     illo.rotate.x = ( Math.cos( easeT * TAU ) * 0.5 + -0.5 ) * TAU/12;
@@ -211,11 +211,11 @@ animate();
 
 document.querySelector('.reset-button').onclick = function() {
   illo.rotate.set( initialRotate );
-  isRotating = false;
+  isSpinning = false;
 };
 
 document.querySelector('.rotate-button').onclick = function() {
-  isRotating = true;
+  isSpinning = true;
   t = 0;
 };
 

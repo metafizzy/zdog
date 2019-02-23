@@ -12,7 +12,7 @@ var TAU = Zdog.TAU;
 var ROOT3 = Math.sqrt(3);
 var ROOT5 = Math.sqrt(5);
 var PHI = ( 1 + ROOT5 ) / 2;
-var isRotating = true;
+var isSpinning = true;
 var t = 0;
 var tSpeed = 1/180;
 var viewRotation = new Zdog.Vector();
@@ -399,9 +399,9 @@ function animate() {
 animate();
 
 function update() {
-  viewRotation.y += isRotating ? +TAU/150 : 0;
+  viewRotation.y += isSpinning ? +TAU/150 : 0;
 
-  if ( isRotating ) {
+  if ( isSpinning ) {
     t += tSpeed;
     var theta = Zdog.easeInOut( t % 1 ) * TAU;
     var everyOtherCycle = t % 2 < 1;
@@ -423,7 +423,7 @@ var dragStartAngleX, dragStartAngleY;
 new Zdog.Dragger({
   startElement: illoElem,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
     dragStartAngleX = viewRotation.x;
     dragStartAngleY = viewRotation.y;
   },

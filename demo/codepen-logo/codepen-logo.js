@@ -9,7 +9,7 @@ illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
 
 var TAU = Zdog.TAU;
-var isRotating = true;
+var isSpinning = true;
 
 var illo = new Zdog.Illustration({
   element: illoElem,
@@ -17,7 +17,7 @@ var illo = new Zdog.Illustration({
   zoom: zoom,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -73,7 +73,7 @@ var tSpeed = 1/90;
 
 function animate() {
   // update
-  if ( isRotating ) {
+  if ( isSpinning ) {
     var easeT = Zdog.easeInOut( t % 1, 3 );
     var turn = Math.floor( t );
     if ( turn === 0 ) {
@@ -101,5 +101,5 @@ document.querySelector('.reset-button').onclick = reset;
 function reset() {
   t = 0;
   illo.rotate.set({});
-  isRotating = true;
+  isSpinning = true;
 }

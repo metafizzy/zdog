@@ -8,7 +8,7 @@ var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
 
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 // default to flat, filled shapes
@@ -24,7 +24,7 @@ var illo = new Zdog.Illustration({
   zoom: zoom,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -154,7 +154,7 @@ new Zdog.Rect({
 // -- animate --- //
 
 function animate() {
-  illo.rotate.y += isRotating ? +TAU/240 : 0;
+  illo.rotate.y += isSpinning ? +TAU/240 : 0;
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }

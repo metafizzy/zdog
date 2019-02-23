@@ -8,7 +8,7 @@ var zoom = Math.floor( minWindowSize / w );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
 
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 var sceneStartRotation = { y: -TAU/8 };
 
@@ -18,7 +18,7 @@ var illo = new Zdog.Illustration({
   rotate: sceneStartRotation,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -825,7 +825,7 @@ var tSpeed = 1/240;
 
 function animate() {
   // update
-  if ( isRotating ) {
+  if ( isSpinning ) {
     t += tSpeed;
     var theta = Zdog.easeInOut( t % 1 ) * TAU;
     illo.rotate.y = -theta + sceneStartRotation.y;

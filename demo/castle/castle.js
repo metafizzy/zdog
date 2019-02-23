@@ -17,7 +17,7 @@ illoElem.setAttribute( 'height', h * zoom );
 
 var white = 'white';
 var black = '#333';
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 var initRotate = { y: TAU/4 };
 
@@ -27,7 +27,7 @@ var illo = new Zdog.Illustration({
   rotate: initRotate,
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -249,7 +249,7 @@ var keyframes = [
 
 function animate() {
   // update
-  if ( isRotating ) {
+  if ( isSpinning ) {
     var easeT = Zdog.easeInOut( t % 1, 4 );
     var turnLimit = keyframes.length - 1;
     var turn = Math.floor( t % turnLimit );

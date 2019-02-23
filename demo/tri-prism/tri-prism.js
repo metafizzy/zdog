@@ -22,7 +22,7 @@ var illo = new Zdog.Illustration({
 });
 
 
-var isRotating = false;
+var isSpinning = false;
 
 var navy = '#456';
 var red = '#D21';
@@ -195,7 +195,7 @@ var dragStartAngleX, dragStartAngleY;
 new Zdog.Dragger({
   startElement: canvas,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
     dragStartAngleX = illo.rotate.x;
     dragStartAngleY = illo.rotate.y;
   },

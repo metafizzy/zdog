@@ -5,7 +5,7 @@ var ctx = canvas.getContext('2d');
 var illoSize = 48;
 var zoom = 8;
 var canvasSize = canvas.width = canvas.height = illoSize * zoom;
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 var scene = new Zdog.Anchor();
@@ -55,7 +55,7 @@ ctx.lineJoin = 'round';
 ctx.lineCap = 'round';
 
 function animate() {
-  scene.rotate.y += isRotating ? +TAU/150 : 0;
+  scene.rotate.y += isSpinning ? +TAU/150 : 0;
   scene.updateGraph();
   render();
   requestAnimationFrame( animate );
@@ -80,7 +80,7 @@ var dragStartRX, dragStartRY;
 new Zdog.Dragger({
   startElement: canvas,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
     dragStartRX = scene.rotate.x;
     dragStartRY = scene.rotate.y;
   },

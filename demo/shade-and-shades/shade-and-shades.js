@@ -20,13 +20,13 @@ Zdog.Ellipse.defaults.stroke = 3;
 var TAU = Zdog.TAU;
 var quarterView = 1/Math.sin(TAU/8);
 var isRotateXFlat;
-var isRotating = true;
+var isSpinning = true;
 
 var illo = new Zdog.Illustration({
   element: illoElem,
   zoom: zoom,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   }
 });
 
@@ -198,7 +198,7 @@ animate();
 function update() {
 
 
-  if ( isRotating ) {
+  if ( isSpinning ) {
     t += 1/cycleFrame;
     t = t % 1;
     var isFirstHalf = t < 0.5;

@@ -8,7 +8,7 @@ svg.setAttribute( 'viewBox', -sceneSize/2 + ' ' + -sceneSize/2 + ' ' +
   sceneSize + ' ' + sceneSize );
 svg.style.width = svg.style.height = illoSize + 'px';
 
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 var scene = new Zdog.Anchor();
@@ -58,7 +58,7 @@ new Zdog.Shape({
 // ----- animate ----- //
 
 function animate() {
-  scene.rotate.y += isRotating ? +TAU/150 : 0;
+  scene.rotate.y += isSpinning ? +TAU/150 : 0;
   scene.updateGraph();
   render();
   requestAnimationFrame( animate );
@@ -83,7 +83,7 @@ var dragStartRX, dragStartRY;
 new Zdog.Dragger({
   startElement: svg,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
     dragStartRX = scene.rotate.x;
     dragStartRY = scene.rotate.y;
   },

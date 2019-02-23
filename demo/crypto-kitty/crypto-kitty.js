@@ -8,7 +8,7 @@ var zoom = Math.min( 10, Math.floor( minWindowSize / w ) );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
 
-var isRotating = true;
+var isSpinning = true;
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
@@ -17,7 +17,7 @@ var illo = new Zdog.Illustration({
   rotate: { x: -TAU/32 },
   dragRotate: true,
   onDragStart: function() {
-    isRotating = false;
+    isSpinning = false;
   },
 });
 
@@ -227,7 +227,7 @@ diamondPanel.copy({
 // -- animate --- //
 
 function animate() {
-  illo.rotate.y += isRotating ? -TAU/150 : 0;
+  illo.rotate.y += isSpinning ? -TAU/150 : 0;
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
