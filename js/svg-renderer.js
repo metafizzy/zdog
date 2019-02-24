@@ -24,20 +24,23 @@ var round = SvgRenderer.round = function( num ) {
   return Math.round( num * 1000 ) / 1000;
 };
 
+function getPointString( point ) {
+  return round( point.x ) + ',' + round( point.y ) + ' ';
+}
+
 SvgRenderer.begin = function() {};
 
 SvgRenderer.move = function( svg, elem, point ) {
-  return 'M' + round( point.x ) + ',' + round( point.y );
+  return 'M' + getPointString( point );
 };
 
 SvgRenderer.line = function( svg, elem, point ) {
-  return 'L' + round( point.x ) + ',' + round( point.y );
+  return 'L' + getPointString( point );
 };
 
 SvgRenderer.bezier = function( svg, elem, cp0, cp1, end ) {
-  return 'C' + round( cp0.x ) + ',' + round( cp0.y ) +
-    ' ' + round( cp1.x ) + ',' + round( cp1.y ) + 
-    ' ' + round( end.x ) + ',' + round( end.y );
+  return 'C' + getPointString( cp0 ) + getPointString( cp1 ) +
+    getPointString( end );
 };
 
 SvgRenderer.closePath = function(/* elem */) {
