@@ -51,6 +51,17 @@ SvgRenderer.setPath = function( svg, elem, pathValue ) {
   elem.setAttribute( 'd', pathValue );
 };
 
+SvgRenderer.renderPath = function( svg, elem, pathCommands, isClosed ) {
+  var pathValue = '';
+  pathCommands.forEach( function( command ) {
+    pathValue += command.render( svg, elem, SvgRenderer );
+  });
+  if ( isClosed ) {
+    pathValue += this.closePath( svg, elem );
+  }
+  this.setPath( svg, elem, pathValue );
+};
+
 SvgRenderer.stroke = function( svg, elem, isStroke, color, lineWidth ) {
   if ( !isStroke ) {
     return;

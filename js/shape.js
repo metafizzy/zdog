@@ -181,20 +181,12 @@ Shape.prototype.getRenderColor = function() {
 
 Shape.prototype.renderPath = function( ctx, renderer ) {
   var elem = this.getRenderElement( ctx, renderer );
-  // render points
-  renderer.begin( ctx, elem );
-  var pathValue = '';
-  this.pathCommands.forEach( function( command ) {
-    pathValue += command.render( ctx, elem, renderer );
-  });
   var isTwoPoints = this.pathCommands.length == 2 &&
     this.pathCommands[1].method == 'line';
-  if ( !isTwoPoints && this.closed ) {
-    pathValue += renderer.closePath( ctx, elem );
-  }
-  renderer.setPath( ctx, elem, pathValue );
-
+  var isClosed = !isTwoPoints && this.closed;
   var color = this.getRenderColor();
+
+  renderer.renderPath( ctx, elem, this.pathCommands, isClosed );
   renderer.stroke( ctx, elem, this.stroke, color, this.getLineWidth() );
   renderer.fill( ctx, elem, this.fill, color );
   renderer.end( ctx, elem );

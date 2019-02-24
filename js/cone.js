@@ -4,7 +4,8 @@
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './vector', './anchor', './ellipse' ];
+  var depends = [ './utils', './vector', './path-command',
+    './anchor', './ellipse' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -15,9 +16,10 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Cone = factory( Zdog, Zdog.Vector, Zdog.Anchor, Zdog.Ellipse );
+    Zdog.Cone = factory( Zdog, Zdog.Vector, Zdog.PathCommand,
+      Zdog.Anchor, Zdog.Ellipse );
   }
-}( this, function factory( utils, Vector, Anchor, Ellipse ) {
+}( this, function factory( utils, Vector, PathCommand, Anchor, Ellipse ) {
 
 var Cone = Ellipse.subclass({
   length: 1,
@@ -39,6 +41,12 @@ Cone.prototype.create = function(/* options */) {
   this.renderApex = new Vector();
   this.tangentA = new Vector();
   this.tangentB = new Vector();
+
+  this.surfacePathCommands = [
+    new PathCommand( 'move', [ {} ] ), // points set in renderConeSurface
+    new PathCommand( 'line', [ {} ] ),
+    new PathCommand( 'line', [ {} ] ),
+  ];
 };
 
 Cone.prototype.render = function( ctx, renderer ) {
@@ -84,20 +92,16 @@ Cone.prototype.renderConeSurface = function( ctx, renderer ) {
   tangentA.add( this.renderOrigin );
   tangentB.add( this.renderOrigin );
 
+  this.setSurfaceRenderPoint( 0, tangentA );
+  this.setSurfaceRenderPoint( 1, this.apex.renderOrigin );
+  this.setSurfaceRenderPoint( 2, tangentB );
+
   // render
   var elem = this.getSurfaceRenderElement( ctx, renderer );
-  renderer.begin( ctx, elem );
-
-  var pathValue = '';
-  pathValue += renderer.move( ctx, elem, this.tangentA );
-  pathValue += renderer.line( ctx, elem, this.apex.renderOrigin );
-  pathValue += renderer.line( ctx, elem, this.tangentB );
-  renderer.setPath( ctx, elem, pathValue );
-
+  renderer.renderPath( ctx, elem, this.surfacePathCommands );
   renderer.stroke( ctx, elem, this.stroke, this.color, this.getLineWidth() );
   renderer.fill( ctx, elem, this.fill, this.color );
   renderer.end( ctx, elem );
-
 };
 
 var svgURI = 'http://www.w3.org/2000/svg';
@@ -113,6 +117,11 @@ Cone.prototype.getSurfaceRenderElement = function( ctx, renderer ) {
     this.surfaceSvgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
   return this.surfaceSvgElement;
+};
+
+Cone.prototype.setSurfaceRenderPoint = function( index, point ) {
+  var renderPoint = this.surfacePathCommands[ index ].renderPoints[0];
+  renderPoint.set( point );
 };
 
 return Cone;

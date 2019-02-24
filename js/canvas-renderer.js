@@ -41,6 +41,16 @@ CanvasRenderer.closePath = function( ctx ) {
 
 CanvasRenderer.setPath = function() {};
 
+CanvasRenderer.renderPath = function( ctx, elem, pathCommands, isClosed ) {
+  this.begin( ctx, elem );
+  pathCommands.forEach( function( command ) {
+    command.render( ctx, elem, CanvasRenderer );
+  });
+  if ( isClosed ) {
+    this.closePath( ctx, elem );
+  }
+};
+
 CanvasRenderer.stroke = function( ctx, elem, isStroke, color, lineWidth ) {
   if ( !isStroke ) {
     return;

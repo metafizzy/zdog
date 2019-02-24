@@ -4,7 +4,8 @@
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './shape', './group', './ellipse' ];
+  var depends = [ './utils', '/path-command', './shape',
+    './group', './ellipse' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -15,9 +16,10 @@
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Cylinder = factory( Zdog, Zdog.Shape, Zdog.Group, Zdog.Ellipse );
+    Zdog.Cylinder = factory( Zdog, Zdog.PathCommand, Zdog.Shape,
+      Zdog.Group, Zdog.Ellipse );
   }
-}( this, function factory( utils, Shape, Group, Ellipse ) {
+}( this, function factory( utils, PathCommand, Shape, Group, Ellipse ) {
 
 function noop() {}
 
@@ -27,6 +29,14 @@ var CylinderGroup = Group.subclass({
   color: '#333',
   updateSort: true,
 });
+
+CylinderGroup.prototype.create = function() {
+  Group.prototype.create.apply( this, arguments );
+  this.pathCommands = [
+    new PathCommand( 'move', [ {} ] ),
+    new PathCommand( 'line', [ {} ] ),
+  ];
+};
 
 CylinderGroup.prototype.render = function( ctx, renderer ) {
   this.renderCylinderSurface( ctx, renderer );
@@ -41,17 +51,16 @@ CylinderGroup.prototype.renderCylinderSurface = function( ctx, renderer ) {
   var elem = this.getRenderElement( ctx, renderer );
   var frontBase = this.frontBase;
   var rearBase = this.rearBase;
+  var scale = frontBase.renderNormal.magnitude();
+  var strokeWidth = frontBase.diameter * scale + frontBase.getLineWidth();
+  // set path command render points
+  this.pathCommands[0].renderPoints[0].set( frontBase.renderOrigin );
+  this.pathCommands[1].renderPoints[0].set( rearBase.renderOrigin );
 
   if ( renderer.isCanvas ) {
     ctx.lineCap = 'butt'; // nice
   }
-  renderer.begin( ctx, elem );
-  var pathValue = renderer.move( ctx, elem, frontBase.renderOrigin );
-  pathValue += renderer.line( ctx, elem, rearBase.renderOrigin );
-  renderer.setPath( ctx, elem, pathValue );
-
-  var scale = frontBase.renderNormal.magnitude();
-  var strokeWidth = frontBase.diameter * scale + frontBase.getLineWidth();
+  renderer.renderPath( ctx, elem, this.pathCommands );
   renderer.stroke( ctx, elem, true, this.color, strokeWidth );
   renderer.end( ctx, elem );
 
