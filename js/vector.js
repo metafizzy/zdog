@@ -42,6 +42,7 @@ Vector.prototype.write = function( pos ) {
   this.x = pos.x != undefined ? pos.x : this.x;
   this.y = pos.y != undefined ? pos.y : this.y;
   this.z = pos.z != undefined ? pos.z : this.z;
+  return this;
 };
 
 Vector.prototype.rotate = function( rotation ) {
@@ -81,7 +82,7 @@ function rotateProperty( vec, angle, propA, propB ) {
 
 Vector.prototype.add = function( vec ) {
   if ( !vec ) {
-    return;
+    return this;
   }
   vec = Vector.sanitize( vec );
   this.x += vec.x;
@@ -92,7 +93,7 @@ Vector.prototype.add = function( vec ) {
 
 Vector.prototype.subtract = function( vec ) {
   if ( !vec ) {
-    return;
+    return this;
   }
   vec = Vector.sanitize( vec );
   this.x -= vec.x;
@@ -103,14 +104,14 @@ Vector.prototype.subtract = function( vec ) {
 
 Vector.prototype.multiply = function( value ) {
   if ( value === undefined ) {
-    return;
+    return this;
   }
   // multiple all values by same number
   if ( typeof value == 'number' ) {
     this.x *= value;
     this.y *= value;
     this.z *= value;
-    return;
+    return this;
   }
   // multiply object
   var vec = Vector.sanitize( value, 1 );
