@@ -73,6 +73,14 @@ RoundedRect.prototype.setPath = function() {
   this.path = path;
 };
 
+RoundedRect.prototype.updateSortValue = function() {
+  Shape.prototype.updateSortValue.apply( this, arguments );
+  // ellipse is self closing, do not count last point twice
+  var length = this.pathCommands.length;
+  var lastPoint = this.pathCommands[ length - 1 ].endRenderPoint;
+  this.sortValue -= lastPoint.z / length;
+};
+
 return RoundedRect;
 
 }));

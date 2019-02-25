@@ -51,13 +51,13 @@ var gear = new Zdog.Anchor({
   rotate: { x: TAU/4 },
 });
 
-var faceGroup = new Zdog.Group({
+var gearSide = new Zdog.Anchor({
   addTo: gear,
   translate: frontZ,
 });
 // gear face
 new Zdog.Shape({
-  addTo: faceGroup,
+  addTo: gearSide,
   path: gearPath,
   color: colorA,
   backface: false,
@@ -68,7 +68,7 @@ new Zdog.Shape({
 });
 // nub
 new Zdog.Cylinder({
-  addTo: faceGroup,
+  addTo: gearSide,
   diameter: 6,
   length: 2,
   color: colorB,
@@ -78,13 +78,12 @@ new Zdog.Cylinder({
   stroke: false,
 });
 
-faceGroup.copyGraph({
+gearSide.copyGraph({
   rotate: { y: TAU/2 },
   translate: backZ,
 });
 
 gearPath.forEach( function( corner, i ) {
-  // return;
   var nextCorner = gearPath[ i + 1 ] || gearPath[0];
   new Zdog.Shape({
     addTo: gear,
