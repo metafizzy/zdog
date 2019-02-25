@@ -240,11 +240,11 @@ var tSpeed = 1/105;
 // ];
 
 var keyframes = [
-  { x: 0, y: 1/4 },
-  { x: -35/350, y: 5/8 },
-  { x: -1/4, y: 3/4 },
-  { x: -35/350, y: 9/8 },
-  { x: 0, y: 5/4 },
+  { x: TAU * 0,       y: TAU * 1/4 },
+  { x: TAU * -35/360, y: TAU * 5/8 },
+  { x: TAU * -1/4,    y: TAU * 3/4 },
+  { x: TAU * -35/360, y: TAU * 9/8 },
+  { x: TAU * 0,       y: TAU * 5/4 },
 ];
 
 function animate() {
@@ -253,10 +253,10 @@ function animate() {
     var easeT = Zdog.easeInOut( t % 1, 4 );
     var turnLimit = keyframes.length - 1;
     var turn = Math.floor( t % turnLimit );
-    var keyframeA = keyframes[ turn ];
-    var keyframeB = keyframes[ turn + 1 ];
-    illo.rotate.x = Zdog.lerp( keyframeA.x * TAU, keyframeB.x * TAU, easeT );
-    illo.rotate.y = Zdog.lerp( keyframeA.y * TAU, keyframeB.y * TAU, easeT );
+    var keyA = keyframes[ turn ];
+    var keyB = keyframes[ turn + 1 ];
+    illo.rotate.x = Zdog.lerp( keyA.x, keyB.x, easeT );
+    illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, easeT );
     t += tSpeed;
   }
 

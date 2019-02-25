@@ -75,6 +75,12 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
 
 // -- animate --- //
 
+var keyframes = [
+  { x: TAU * 0,   y: TAU * 0 },
+  { x: TAU * 1/2, y: TAU * 1/2 },
+  { x: TAU * 1,   y: TAU * 1 },
+];
+
 var t = 0;
 var cycleFrame = 360;
 
@@ -92,13 +98,13 @@ function rotate() {
   if ( !isSpinning ) {
     return;
   }
-
-  t += 1/cycleFrame;
-  t = t % 1;
-  var isFirstHalf = t < 0.5;
-  var halfT = isFirstHalf ? t : t - 0.5;
-  var doubleEaseT = Zdog.easeInOut( halfT*2 % 1, 3 ) / 2;
-  doubleEaseT += isFirstHalf ? 0 : 0.5;
-  illo.rotate.y = doubleEaseT * TAU;
-  illo.rotate.x = Math.cos( doubleEaseT * TAU ) * TAU/12;
+  var easeT = Zdog.easeInOut( t % 1, 3 );
+  var turnLimit = keyframes.length - 1;
+  var turn = Math.floor( t % turnLimit );
+  var keyA = keyframes[ turn ];
+  var keyB = keyframes[ turn + 1 ];
+  var thetaX = Zdog.lerp( keyA.x, keyB.x, easeT );
+  illo.rotate.x = Math.cos( thetaX ) * TAU/12;
+  illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, easeT ) ;
+  t += 1/180;
 }

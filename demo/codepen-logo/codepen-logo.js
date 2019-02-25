@@ -80,14 +80,12 @@ function animate() {
       illo.rotate.z = Zdog.lerp( TAU/8 * -3, TAU/8, easeT );
       illo.rotate.x = Zdog.lerp( 0, tiltAngle, easeT );
     } else if ( turn == 1 ) {
-      illo.rotate.x = Zdog.lerp( -TAU/2, 0, easeT );
+      prism.rotate.x = Zdog.lerp( -TAU/2, 0, easeT );
     }
     t += tSpeed;
   }
 
-  illo.updateGraph();
-
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

@@ -97,9 +97,7 @@ function makePrism( options ) {
   return prism;
 }
 
-var prismA = makePrism({
-
-});
+var prismA = makePrism({});
 
 var prismB = makePrism({
   rotate: { x: TAU/4, z: TAU/4 },
@@ -116,39 +114,31 @@ var tSpeed = 1/80;
 
 // -- update -- //
 
-var transforms = {
-  0: function( prism, easeT ) {
-    prism.children[0].rotate.y = 0;
-    prism.children[0].rotate.z = 0;
-    prism.children[0].rotate.x = easeT;
-  },
-  1: function( prism, easeT ) {
-    prism.children[0].rotate.y = -easeT;
-  },
-  2: function( prism, easeT ) {
-    prism.children[0].rotate.y = -easeT - TAU/4;
-  },
-  3: function( prism, easeT ) {
-    prism.children[0].rotate.z = -easeT;
-  },
-  4: function( prism, easeT ) {
-    prism.children[0].rotate.z = -easeT - TAU/4;
-  },
-  5: function( prism, easeT ) {
-    prism.children[0].rotate.x = easeT + TAU/4;
-  },
+var keyframes = [
+  { x: 0, y:  0, z:  0 },
+  { x: 1, y:  0, z:  0 },
+  { x: 1, y: -1, z:  0 },
+  { x: 1, y: -2, z:  0 },
+  { x: 1, y: -2, z: -1 },
+  { x: 1, y: -2, z: -2 },
+  { x: 2, y: -2, z: -2 },
+];
 
-};
+function transform( shape, turn, alpha ) {
+  var keyA = keyframes[ turn ];
+  var keyB = keyframes[ turn + 1 ];
+  shape.rotate.x = Zdog.lerp( keyA.x, keyB.x, alpha ) * TAU/4;
+  shape.rotate.y = Zdog.lerp( keyA.y, keyB.y, alpha ) * TAU/4;
+  shape.rotate.z = Zdog.lerp( keyA.z, keyB.z, alpha ) * TAU/4;
+}
 
 function update() {
-  var easeT = Zdog.easeInOut( t % 1, 4 ) * TAU/4;
-
+  var easeT = Zdog.easeInOut( t % 1, 4 );
   var turn = Math.floor( t % 6 );
-  var transform = transforms[ turn ];
 
-  transform( prismA, easeT );
-  transform( prismB, easeT );
-  transform( prismC, easeT );
+  transform( prismA.children[0], turn, easeT );
+  transform( prismB.children[0], turn, easeT );
+  transform( prismC.children[0], turn, easeT );
 
   t += tSpeed;
 
