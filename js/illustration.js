@@ -26,11 +26,13 @@ var Illustration = Anchor.subclass({
   element: undefined,
   centered: true,
   zoom: 1,
-  dragRotate: undefined,
+  dragRotate: false,
+  resize: false,
   onPrerender: noop,
   onDragStart: noop,
   onDragMove: noop,
   onDragEnd: noop,
+  onResize: noop,
 });
 
 utils.extend( Illustration.prototype, Dragger.prototype );
@@ -40,6 +42,7 @@ Illustration.prototype.create = function( options ) {
   Dragger.prototype.create.call( this, options );
   this.setElement( this.element );
   this.setDragRotate( this.dragRotate );
+  this.setResize( this.resize );
 };
 
 Illustration.prototype.setElement = function( element ) {
@@ -58,6 +61,40 @@ Illustration.prototype.setElement = function( element ) {
     this.setSvg( element );
   }
 };
+
+Illustration.prototype.setSize = function( width, height ) {
+  if ( this.isCanvas ) {
+    this.setSizeCanvas( width, height );
+  } else if ( this.isSvg ) {
+    this.setSizeSvg( width, height );
+  }
+};
+
+Illustration.prototype.measureSize = function() {
+  var rect = this.element.getBoundingClientRect();
+  this.setSize( Math.round( rect.width ), Math.round( rect.height ) );
+};
+
+Illustration.prototype.setResize = function( resize ) {
+  this.resize = resize;
+  // create resize event listener
+  if ( !this.resizeListener ) {
+    this.resizeListener = this.onWindowResize.bind( this );
+  }
+  // add/remove event listener
+  if ( resize ) {
+    window.addEventListener( 'resize', this.resizeListener );
+  } else {
+    window.removeEventListener( 'resize', this.resizeListener );
+  }
+};
+
+Illustration.prototype.onWindowResize = function() {
+  this.measureSize();
+  this.onResize( this.width, this.height );
+};
+
+// ----- render ----- //
 
 Illustration.prototype.renderGraph = function( item ) {
   if ( this.isCanvas ) {
@@ -80,17 +117,20 @@ Illustration.prototype.setCanvas = function( element ) {
   this.isCanvas = true;
   // update related properties
   this.ctx = this.element.getContext('2d');
+  // set initial size
+  this.setSizeCanvas( element.width, element.height );
+};
 
-  var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
-  // sizes
-  this.width = element.width * pixelRatio;
-  this.height = element.height * pixelRatio;
+Illustration.prototype.setSizeCanvas = function( width, height ) {
+  this.width = width;
+  this.height = height;
   // up-rez for hi-DPI devices
+  var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
+  this.element.width = width * pixelRatio;
+  this.element.height = height * pixelRatio;
   if ( pixelRatio > 1 ) {
-    element.width = this.width;
-    element.height = this.height;
-    element.style.width = this.width / pixelRatio + 'px';
-    element.style.height = this.height / pixelRatio + 'px';
+    this.element.style.width = width + 'px';
+    this.element.style.height = height + 'px';
   }
 };
 
@@ -125,14 +165,23 @@ Illustration.prototype.setSvg = function( element ) {
   this.element = element;
   this.isSvg = true;
   this.pixelRatio = 1;
-  this.width = element.getAttribute('width');
-  this.height = element.getAttribute('height');
+  // set initial size from width & height attributes
+  var width = element.getAttribute('width');
+  var height = element.getAttribute('height');
+  this.setSizeSvg( width, height );
+  // remove size attributes, let size be determined by viewbox
+  element.removeAttribute('width');
+  element.removeAttribute('height');
+};
 
-  var viewWidth = this.width / this.zoom;
-  var viewHeight = this.height / this.zoom;
+Illustration.prototype.setSizeSvg = function( width, height ) {
+  this.width = width;
+  this.height = height;
+  var viewWidth = width / this.zoom;
+  var viewHeight = height / this.zoom;
   var viewX = this.centered ? -viewWidth/2 : 0;
   var viewY = this.centered ? -viewHeight/2 : 0;
-  element.setAttribute( 'viewBox', viewX + ' ' + viewY + ' ' +
+  this.element.setAttribute( 'viewBox', viewX + ' ' + viewY + ' ' +
     viewWidth + ' ' + viewHeight );
 };
 
@@ -171,7 +220,7 @@ Illustration.prototype.dragStart = function(/* event, pointer */) {
 Illustration.prototype.dragMove = function( event, pointer ) {
   var moveX = this.dragStartX - pointer.pageX;
   var moveY = this.dragStartY - pointer.pageY;
-  var displaySize = this.width / this.pixelRatio;
+  var displaySize = this.width;
   var rotateXMove = moveY / displaySize * TAU;
   var rotateYMove = moveX / displaySize * TAU;
   this.dragRotate.rotate.x = this.dragStartRX + rotateXMove;
