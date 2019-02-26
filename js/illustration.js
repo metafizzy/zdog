@@ -63,6 +63,8 @@ Illustration.prototype.setElement = function( element ) {
 };
 
 Illustration.prototype.setSize = function( width, height ) {
+  width = Math.round( width );
+  height = Math.round( height );
   if ( this.isCanvas ) {
     this.setSizeCanvas( width, height );
   } else if ( this.isSvg ) {
@@ -71,8 +73,16 @@ Illustration.prototype.setSize = function( width, height ) {
 };
 
 Illustration.prototype.measureSize = function() {
-  var rect = this.element.getBoundingClientRect();
-  this.setSize( Math.round( rect.width ), Math.round( rect.height ) );
+  var width, height;
+  if ( this.resize == 'fullscreen' ) {
+    width = window.innerWidth;
+    height = window.innerHeight;
+  } else {
+    var rect = this.element.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+  }
+  this.setSize( width, height );
 };
 
 Illustration.prototype.setResize = function( resize ) {
@@ -84,11 +94,13 @@ Illustration.prototype.setResize = function( resize ) {
   // add/remove event listener
   if ( resize ) {
     window.addEventListener( 'resize', this.resizeListener );
+    this.onWindowResize();
   } else {
     window.removeEventListener( 'resize', this.resizeListener );
   }
 };
 
+// TODO debounce this?
 Illustration.prototype.onWindowResize = function() {
   this.measureSize();
   this.onResize( this.width, this.height );
@@ -220,7 +232,7 @@ Illustration.prototype.dragStart = function(/* event, pointer */) {
 Illustration.prototype.dragMove = function( event, pointer ) {
   var moveX = this.dragStartX - pointer.pageX;
   var moveY = this.dragStartY - pointer.pageY;
-  var displaySize = this.width;
+  var displaySize = Math.min( this.width, this.height );
   var rotateXMove = moveY / displaySize * TAU;
   var rotateYMove = moveX / displaySize * TAU;
   this.dragRotate.rotate.x = this.dragStartRX + rotateXMove;
