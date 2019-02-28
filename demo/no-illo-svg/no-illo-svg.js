@@ -66,10 +66,6 @@ function animate() {
 
 function render() {
   // clear
-  // translate
-  // ctx.clearRect( 0, 0, canvasSize, canvasSize );
-  // ctx.translate( canvasSize/2, canvasSize/2 );
-  // ctx.scale( zoom, zoom );
   scene.renderGraphSvg( svg );
 }
 
@@ -88,7 +84,7 @@ new Zdog.Dragger({
     dragStartRY = scene.rotate.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    scene.rotate.x = moveY / illoSize * TAU + dragStartRX;
-    scene.rotate.y = moveX / illoSize * TAU + dragStartRY;
+    scene.rotate.x = dragStartRX - ( moveY / illoSize * TAU );
+    scene.rotate.y = dragStartRY - ( moveX / illoSize * TAU );
   },
 });

@@ -85,7 +85,7 @@ new Zdog.Dragger({
     dragStartRY = scene.rotate.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    scene.rotate.x = moveY / canvasSize * TAU + dragStartRX;
-    scene.rotate.y = moveX / canvasSize * TAU + dragStartRY;
+    scene.rotate.x = dragStartRX - ( moveY / canvasSize * TAU );
+    scene.rotate.y = dragStartRY - ( moveX / canvasSize * TAU );
   },
 });

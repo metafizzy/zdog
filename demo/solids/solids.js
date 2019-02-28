@@ -418,19 +418,17 @@ function update() {
 
 // ----- inputs ----- //
 
-var dragStartAngleX, dragStartAngleY;
+var dragStartRX, dragStartRY;
 
 new Zdog.Dragger({
   startElement: illoElem,
   onDragStart: function() {
     isSpinning = false;
-    dragStartAngleX = viewRotation.x;
-    dragStartAngleY = viewRotation.y;
+    dragStartRX = viewRotation.x;
+    dragStartRY = viewRotation.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / illoSize * TAU;
-    var angleYMove = moveX / illoSize * TAU;
-    viewRotation.x = dragStartAngleX + angleXMove;
-    viewRotation.y = dragStartAngleY + angleYMove;
+    viewRotation.x = dragStartRX - ( moveY / illoSize * TAU );
+    viewRotation.y = dragStartRY - ( moveX / illoSize * TAU );
   },
 });

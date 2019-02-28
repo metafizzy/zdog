@@ -230,13 +230,13 @@ Illustration.prototype.dragStart = function(/* event, pointer */) {
 };
 
 Illustration.prototype.dragMove = function( event, pointer ) {
-  var moveX = this.dragStartX - pointer.pageX;
-  var moveY = this.dragStartY - pointer.pageY;
+  var moveX = pointer.pageX - this.dragStartX;
+  var moveY = pointer.pageY - this.dragStartY;
   var displaySize = Math.min( this.width, this.height );
-  var rotateXMove = moveY / displaySize * TAU;
-  var rotateYMove = moveX / displaySize * TAU;
-  this.dragRotate.rotate.x = this.dragStartRX + rotateXMove;
-  this.dragRotate.rotate.y = this.dragStartRY + rotateYMove;
+  var moveRX = moveX / displaySize * TAU;
+  var moveRY = moveY / displaySize * TAU;
+  this.dragRotate.rotate.x = this.dragStartRX - moveRY;
+  this.dragRotate.rotate.y = this.dragStartRY - moveRX;
   Dragger.prototype.dragMove.apply( this, arguments );
 };
 

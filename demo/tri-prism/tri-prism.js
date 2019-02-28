@@ -180,20 +180,18 @@ animate();
 // ----- inputs ----- //
 
 // click drag to rotate
-var dragStartAngleX, dragStartAngleY;
+var dragStartRX, dragStartRY;
 
 new Zdog.Dragger({
   startElement: canvas,
   onDragStart: function() {
     isSpinning = false;
-    dragStartAngleX = illo.rotate.x;
-    dragStartAngleY = illo.rotate.y;
+    dragStartRX = illo.rotate.x;
+    dragStartRY = illo.rotate.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    var angleXMove = moveY / canvasWidth * TAU;
-    var angleYMove = moveX / canvasWidth * TAU;
-    illo.rotate.x = dragStartAngleX + angleXMove;
-    illo.rotate.y = dragStartAngleY + angleYMove;
+    illo.rotate.x = dragStartRX - moveY / canvasWidth * TAU;
+    illo.rotate.y = dragStartRY - moveX / canvasWidth * TAU;
   },
 });
 
