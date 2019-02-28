@@ -4,11 +4,13 @@ var zoom = 4;
 var isSpinning = true;
 var TAU = Zdog.TAU;
 
+var model = new Zdog.Anchor();
+
 var canvasIllo = new Zdog.Illustration({
   element: 'canvas',
   zoom: zoom,
   resize: true,
-  dragRotate: true,
+  dragRotate: model,
   onDragStart: function() {
     isSpinning = false;
   },
@@ -20,17 +22,13 @@ var canvasIllo = new Zdog.Illustration({
 var svgIllo = new Zdog.Illustration({
   element: 'svg',
   zoom: zoom,
-  dragRotate: true,
+  dragRotate: model,
   onDragStart: function() {
     isSpinning = false;
   },
 });
 
 // ----- model ----- //
-
-var model = new Zdog.Anchor({
-  addTo: canvasIllo,
-});
 
 new Zdog.Rect({
   width: 20,
@@ -76,10 +74,10 @@ model.copyGraph({
 // ----- animate ----- //
 
 function animate() {
-  svgIllo.rotate.y += isSpinning ? +TAU/150 : 0;
-  canvasIllo.rotate.y += isSpinning ? +TAU/150 : 0;
-  svgIllo.updateRenderGraph();
-  canvasIllo.updateRenderGraph();
+  model.rotate.y += isSpinning ? +TAU/150 : 0;
+  model.updateGraph();
+  svgIllo.renderGraph( model );
+  canvasIllo.renderGraph( model );
   requestAnimationFrame( animate );
 }
 
