@@ -46,10 +46,7 @@ Illustration.prototype.create = function( options ) {
 };
 
 Illustration.prototype.setElement = function( element ) {
-  if ( typeof element == 'string' ) {
-    // with string, query selector
-    element = document.querySelector( element );
-  }
+  element = this.getQueryElement( element );
   if ( !element ) {
     throw new Error( 'Zdog.Illustration element required. Set to ' + element );
   }

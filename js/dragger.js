@@ -51,9 +51,18 @@ Dragger.prototype.create = function( options ) {
 };
 
 Dragger.prototype.bindDrag = function( element ) {
+  element = this.getQueryElement( element );
   if ( element ) {
     element.addEventListener( downEvent , this );
   }
+};
+
+Dragger.prototype.getQueryElement = function( element ) {
+  if ( typeof element == 'string' ) {
+    // with string, query selector
+    element = document.querySelector( element );
+  }
+  return element;
 };
 
 Dragger.prototype.handleEvent = function( event ) {
@@ -101,10 +110,10 @@ Dragger.prototype.dragMove = function( event, pointer ) {
 Dragger.prototype.onmouseup =
 Dragger.prototype.onpointerup =
 Dragger.prototype.ontouchend =
-Dragger.prototype.dragEnd = function( event ) {
+Dragger.prototype.dragEnd = function(/* event */) {
   window.removeEventListener( moveEvent, this );
   window.removeEventListener( upEvent, this );
-  this.onDragEnd( event );
+  this.onDragEnd();
 };
 
 return Dragger;
