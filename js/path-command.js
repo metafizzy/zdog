@@ -21,7 +21,7 @@
 function PathCommand( method, points, previousPoint ) {
   this.method = method;
   this.points = points.map( mapVectorPoint );
-  this.renderPoints = points.map( mapVectorPoint );
+  this.renderPoints = points.map( mapNewVector );
   this.previousPoint = previousPoint;
   this.endRenderPoint = this.renderPoints[ this.renderPoints.length - 1 ];
   // arc actions come with previous point & corner point
@@ -32,6 +32,14 @@ function PathCommand( method, points, previousPoint ) {
 }
 
 function mapVectorPoint( point ) {
+  if ( point instanceof Vector ) {
+    return point;
+  } else {
+    return new Vector( point );
+  }
+}
+
+function mapNewVector( point ) {
   return new Vector( point );
 }
 
