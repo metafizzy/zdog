@@ -20,6 +20,7 @@
 }( this, function factory( utils, Vector ) {
 
 var TAU = utils.TAU;
+var onePoint = { x: 1, y: 1, z: 1 };
 
 function Anchor( options ) {
   this.create( options || {} );
@@ -33,16 +34,7 @@ Anchor.prototype.create = function( options ) {
   // transform
   this.translate = new Vector( options.translate );
   this.rotate = new Vector( options.rotate );
-  // scale
-  if ( typeof options.scale == 'number' ) {
-    // number, set all properties to number { x: 3, y: 3, z: 3 }
-    this.scale = Vector.sanitize( {}, options.scale );
-  } else {
-    // object, set undefined properties to 1 { x: 3, y: 1, z: 1 }
-    this.scale = Vector.sanitize( options.scale, 1 );
-  }
-  this.scale = new Vector( this.scale );
-
+  this.scale = new Vector( onePoint ).multiply( this.scale );
   // origin
   this.origin = new Vector();
   this.renderOrigin = new Vector();
