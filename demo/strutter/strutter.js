@@ -15,7 +15,7 @@ var eggplant = '#636';
 var midnight = '#424';
 
 var illo = new Zdog.Illustration({
-  element: illoElem,
+  element: '.illo',
   zoom: zoom,
   rotate: { y: -TAU/8 },
   translate: { y: 4 },

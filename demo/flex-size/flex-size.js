@@ -22,9 +22,13 @@ var canvasIllo = new Zdog.Illustration({
 var svgIllo = new Zdog.Illustration({
   element: 'svg',
   zoom: zoom,
+  resize: true,
   dragRotate: model,
   onDragStart: function() {
     isSpinning = false;
+  },
+  onResize: function( width, height ) {
+    this.zoom = Math.min( width, height ) / 50;
   },
 });
 

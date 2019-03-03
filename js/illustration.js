@@ -69,19 +69,6 @@ Illustration.prototype.setSize = function( width, height ) {
   }
 };
 
-Illustration.prototype.measureSize = function() {
-  var width, height;
-  if ( this.resize == 'fullscreen' ) {
-    width = window.innerWidth;
-    height = window.innerHeight;
-  } else {
-    var rect = this.element.getBoundingClientRect();
-    width = rect.width;
-    height = rect.height;
-  }
-  this.setSize( width, height );
-};
-
 Illustration.prototype.setResize = function( resize ) {
   this.resize = resize;
   // create resize event listener
@@ -99,8 +86,22 @@ Illustration.prototype.setResize = function( resize ) {
 
 // TODO debounce this?
 Illustration.prototype.onWindowResize = function() {
-  this.measureSize();
+  this.setMeasuredSize();
   this.onResize( this.width, this.height );
+};
+
+Illustration.prototype.setMeasuredSize = function() {
+  var width, height;
+  var isFullscreen = this.resize == 'fullscreen';
+  if ( isFullscreen ) {
+    width = window.innerWidth;
+    height = window.innerHeight;
+  } else {
+    var rect = this.element.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+  }
+  this.setSize( width, height );
 };
 
 // ----- render ----- //
@@ -135,8 +136,8 @@ Illustration.prototype.setSizeCanvas = function( width, height ) {
   this.height = height;
   // up-rez for hi-DPI devices
   var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
-  this.element.width = width * pixelRatio;
-  this.element.height = height * pixelRatio;
+  this.element.width = this.canvasWidth = width * pixelRatio;
+  this.element.height = this.canvasHeight = height * pixelRatio;
   if ( pixelRatio > 1 ) {
     this.element.style.width = width + 'px';
     this.element.style.height = height + 'px';
@@ -154,7 +155,7 @@ Illustration.prototype.prerenderCanvas = function() {
   var ctx = this.ctx;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.clearRect( 0, 0, this.width, this.height );
+  ctx.clearRect( 0, 0, this.canvasWidth, this.canvasHeight );
   ctx.save();
   if ( this.centered ) {
     ctx.translate( this.width/2, this.height/2 );
@@ -178,9 +179,6 @@ Illustration.prototype.setSvg = function( element ) {
   var width = element.getAttribute('width');
   var height = element.getAttribute('height');
   this.setSizeSvg( width, height );
-  // remove size attributes, let size be determined by viewbox
-  element.removeAttribute('width');
-  element.removeAttribute('height');
 };
 
 Illustration.prototype.setSizeSvg = function( width, height ) {
@@ -192,6 +190,14 @@ Illustration.prototype.setSizeSvg = function( width, height ) {
   var viewY = this.centered ? -viewHeight/2 : 0;
   this.element.setAttribute( 'viewBox', viewX + ' ' + viewY + ' ' +
     viewWidth + ' ' + viewHeight );
+  if ( this.resize ) {
+    // remove size attributes, let size be determined by viewbox
+    this.element.removeAttribute('width');
+    this.element.removeAttribute('height');
+  } else {
+    this.element.setAttribute( 'width', width );
+    this.element.setAttribute( 'height', height );
+  }
 };
 
 Illustration.prototype.renderGraphSvg = function( item ) {
@@ -230,10 +236,10 @@ Illustration.prototype.dragMove = function( event, pointer ) {
   var moveX = pointer.pageX - this.dragStartX;
   var moveY = pointer.pageY - this.dragStartY;
   var displaySize = Math.min( this.width, this.height );
-  var moveRX = moveX / displaySize * TAU;
-  var moveRY = moveY / displaySize * TAU;
-  this.dragRotate.rotate.x = this.dragStartRX - moveRY;
-  this.dragRotate.rotate.y = this.dragStartRY - moveRX;
+  var moveRY = moveX / displaySize * TAU;
+  var moveRX = moveY / displaySize * TAU;
+  this.dragRotate.rotate.x = this.dragStartRX - moveRX;
+  this.dragRotate.rotate.y = this.dragStartRY - moveRY;
   Dragger.prototype.dragMove.apply( this, arguments );
 };
 
