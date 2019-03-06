@@ -1,0 +1,25 @@
+{
+  "name": "zdog",
+  "description": "Round, flat, designer-friendly pseudo-3D engine",
+  "main": "js/index.js",
+  "authors": [
+    "David DeSandro"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "3D",
+    "canvas",
+    "svg"
+  ],
+  "homepage": "https://zzz.dog",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "package.json",
+    "demo",
+    "demos"
+  ]
+}

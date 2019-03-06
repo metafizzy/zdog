@@ -1,0 +1,24 @@
+{
+  "name": "zdog",
+  "version": "0.1.0",
+  "description": "Round, flat, designer-friendly pseudo-3D engine",
+  "main": "js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metafizzy/zdog.git"
+  },
+  "keywords": [
+    "3D",
+    "canvas",
+    "svg"
+  ],
+  "author": "David DeSandro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/metafizzy/zdog/issues"
+  },
+  "homepage": "https://zzz.dog"
+}

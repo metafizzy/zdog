@@ -32,6 +32,9 @@ var svgIllo = new Zdog.Illustration({
   },
 });
 
+// HACK set initial zoom
+svgIllo.setSize( svgIllo.width, svgIllo.height );
+
 // ----- model ----- //
 
 new Zdog.Rect({
