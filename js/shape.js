@@ -1,5 +1,5 @@
 /**
- * Rect
+ * Shape
  */
 
 ( function( root, factory ) {
