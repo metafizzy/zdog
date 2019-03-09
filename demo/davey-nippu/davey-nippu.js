@@ -1,5 +1,9 @@
 // -------------------------- demo -------------------------- //
 
+// HACK - better z-sort separation of shapes
+Zdog.RoundedRect.prototype.updateSortValue =
+Zdog.Ellipse.prototype.updateSortValue = Zdog.Shape.prototype.updateSortValue;
+
 var illoElem = document.querySelector('.illo');
 var w = 128;
 var h = 128;
@@ -770,7 +774,7 @@ var ground = new Zdog.Anchor({
 })();
 
 ( function() {
-  
+
 
   // big puff
   var cloud = new Zdog.Shape({
