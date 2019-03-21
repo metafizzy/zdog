@@ -3,7 +3,7 @@
 var illoElem = document.querySelector('.illo');
 var sceneSize = 270;
 var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / sceneSize );
+var zoom = Math.floor( minWindowSize / (sceneSize/2) ) / 2;
 var illoSize = sceneSize * zoom;
 illoElem.setAttribute( 'width', illoSize );
 illoElem.setAttribute( 'height', illoSize );
