@@ -48,55 +48,6 @@ dot.copy({ translate: { x: -1 } });
 dot.copy({ translate: { y: -1 } });
 dot.copy({ translate: { y:  1 } });
 
-var line = new Zdog.Shape({
-  addTo: side,
-  path: [
-    { x: -1, y: -1 },
-    { x:  1, y: -1 },
-  ],
-  stroke: 2/zoom,
-  color: 'white',
-  visible: false,
-});
-
-line.copy({
-  path: [
-    { x: -1, y: -1 },
-    { x: -1, y:  1 },
-  ],
-});
-
-line.copy({
-  path: [
-    { x:  1, y: -1 },
-    { x:  1, y:  1 },
-  ],
-});
-
-line.copy({
-  scale: -1,
-});
-
-var midLine = line.copy({
-  addTo: cube,
-  path: [
-    { z: -1, y: -1 },
-    { z:  1, y: -1 },
-  ],
-  translate: { x: 1 }
-});
-midLine.copy({
-  translate: { x: -1 },
-});
-midLine.copy({
-  scale: { y: -1 },
-});
-midLine.copy({
-  scale: { y: -1 },
-  translate: { x: -1 },
-});
-
-
 side.copyGraph({
   translate: { z: -1 },
 });
