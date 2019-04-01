@@ -3,21 +3,17 @@
  */
 
 ( function( root, factory ) {
-  // universal module definition
+  // module definition
   var depends = [ './utils', '/path-command', './shape',
-    './group', './ellipse' ];
-  /* globals define, module, require */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( depends, factory );
-  } else if ( typeof module == 'object' && module.exports ) {
-    // CommonJS
+      './group', './ellipse' ];
+  if ( typeof module == 'object' && module.exports ) {
+    /* globals module, require */ // CommonJS
     module.exports = factory.apply( root, depends.map( require ) );
   } else {
     // browser global
     var Zdog = root.Zdog;
     Zdog.Cylinder = factory( Zdog, Zdog.PathCommand, Zdog.Shape,
-      Zdog.Group, Zdog.Ellipse );
+        Zdog.Group, Zdog.Ellipse );
   }
 }( this, function factory( utils, PathCommand, Shape, Group, Ellipse ) {
 

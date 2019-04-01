@@ -3,13 +3,9 @@
  */
 
 ( function( root, factory ) {
-  // universal module definition
-  /* globals define, module, require */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( [ './anchor' ], factory );
-  } else if ( typeof module == 'object' && module.exports ) {
-    // CommonJS
+  // module definition
+  if ( typeof module == 'object' && module.exports ) {
+    /* globals module, require */ // CommonJS
     module.exports = factory( require('./anchor') );
   } else {
     // browser global

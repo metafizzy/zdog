@@ -3,14 +3,10 @@
  */
 
 ( function( root, factory ) {
-  // universal module definition
+  // module definition
   var depends = [ './utils', './vector' ];
-  /* globals define, module, require */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( depends, factory );
-  } else if ( typeof module == 'object' && module.exports ) {
-    // CommonJS
+  if ( typeof module == 'object' && module.exports ) {
+    /* globals module, require */ // CommonJS
     module.exports = factory.apply( root, depends.map( require ) );
   } else {
     // browser global

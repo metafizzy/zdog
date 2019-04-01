@@ -3,21 +3,18 @@
  */
 
 ( function( root, factory ) {
-  // universal module definition
+  // module definition
   var depends = [ './utils', './vector', './path-command',
-    './anchor', './ellipse' ];
-  /* globals define, module, require */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( depends, factory );
-  } else if ( typeof module == 'object' && module.exports ) {
+      './anchor', './ellipse' ];
+  /* globals module, require */
+  if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory.apply( root, depends.map( require ) );
   } else {
     // browser global
     var Zdog = root.Zdog;
     Zdog.Cone = factory( Zdog, Zdog.Vector, Zdog.PathCommand,
-      Zdog.Anchor, Zdog.Ellipse );
+        Zdog.Anchor, Zdog.Ellipse );
   }
 }( this, function factory( utils, Vector, PathCommand, Anchor, Ellipse ) {
 

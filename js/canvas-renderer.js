@@ -3,13 +3,9 @@
  */
 
 ( function( root, factory ) {
-  // universal module definition
-  /* globals define, module */
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( factory );
-  } else if ( typeof module == 'object' && module.exports ) {
-    // CommonJS
+  // module definition
+  if ( typeof module == 'object' && module.exports ) {
+    /* globals module */ // CommonJS
     module.exports = factory();
   } else {
     // browser global

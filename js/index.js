@@ -7,8 +7,7 @@
  */
 
 ( function( root, factory ) {
-  // universal module definition
-  /* globals define, module, require */
+  // module definition
   var depends = [
     './utils',
     './canvas-renderer',
@@ -27,13 +26,18 @@
     './cone',
     './box',
   ];
-  if ( typeof define == 'function' && define.amd ) {
-    // AMD
-    define( depends, factory );
-  } else if ( typeof module == 'object' && module.exports ) {
-    // CommonJS
+  if ( typeof module == 'object' && module.exports ) {
+    /* globals module, require */ // CommonJS
     module.exports = factory.apply( root, depends.map( require ) );
   }
-})( window, function factory( Zdog ) {
+})( this, function factory( Zdog ) {
+
+  if ( typeof define == 'function' && define.amd ) {
+    /* globals define */ // AMD
+    define( 'zdog', function() {
+      return Zdog;
+    });
+  }
+
   return Zdog;
 });
