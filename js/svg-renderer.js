@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals define */ // CommonJS
+    /* globals module */ // CommonJS
     module.exports = factory();
   } else {
     // browser global

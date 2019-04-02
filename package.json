@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Round, flat, designer-friendly pseudo-3D engine",
   "main": "js/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jshint": "^2.10.2",
+    "uglify-js": "^3.5.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
