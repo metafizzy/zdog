@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // module definition
-  var depends = [ './utils', './vector' ];
+  var depends = [ './boilerplate', './vector' ];
   if ( typeof module == 'object' && module.exports ) {
     /* globals module, require */ // CommonJS
     module.exports = factory.apply( root, depends.map( require ) );

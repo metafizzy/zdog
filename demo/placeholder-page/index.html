@@ -213,10 +213,10 @@ return CanvasRenderer;
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
-    define( [ './utils' ], factory );
+    define( [ './boilerplate' ], factory );
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
-    module.exports = factory( require('./utils') );
+    module.exports = factory( require('./boilerplate') );
   } else {
     // browser global
     var Zdog = root.Zdog;
@@ -369,7 +369,7 @@ return Vector;
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './vector' ];
+  var depends = [ './boilerplate', './vector' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -706,7 +706,7 @@ return PathCommand;
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils',  './vector', './path-command', './anchor' ];
+  var depends = [ './boilerplate',  './vector', './path-command', './anchor' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -1237,7 +1237,7 @@ return Dragger;
 
 ( function( root, factory ) {
   // universal module definition
-  var depends = [ './utils', './anchor', './dragger' ];
+  var depends = [ './boilerplate', './anchor', './dragger' ];
   /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD

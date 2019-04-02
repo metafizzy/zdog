@@ -1,3 +1,11 @@
+/*!
+ * Zdog v0.1.0
+ * Round, flat, designer-friendly pseudo-3D engine
+ * Licensed MIT
+ * https://zzz.dog
+ * Copyright 2019 Metafizzy
+ */
+
 /**
  * Boilerplate & utils
  */

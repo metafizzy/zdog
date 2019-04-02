@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // module definition
-  var depends = [ './utils', './vector', './path-command',
+  var depends = [ './boilerplate', './vector', './path-command',
       './anchor', './ellipse' ];
   /* globals module, require */
   if ( typeof module == 'object' && module.exports ) {

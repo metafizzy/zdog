@@ -4,7 +4,7 @@
 
 ( function( root, factory ) {
   // module definition
-  var depends = [ './utils', '/path-command', './shape',
+  var depends = [ './boilerplate', '/path-command', './shape',
       './group', './ellipse' ];
   if ( typeof module == 'object' && module.exports ) {
     /* globals module, require */ // CommonJS

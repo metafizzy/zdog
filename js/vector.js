@@ -6,7 +6,7 @@
   // module definition
   if ( typeof module == 'object' && module.exports ) {
     /* globals module, require */ // CommonJS
-    module.exports = factory( require('./utils') );
+    module.exports = factory( require('./boilerplate') );
   } else {
     // browser global
     var Zdog = root.Zdog;
