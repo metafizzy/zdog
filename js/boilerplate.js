@@ -19,7 +19,6 @@
     // browser global
     root.Zdog = factory();
   }
-
 }( this, function factory() {
 
 var Zdog = {};

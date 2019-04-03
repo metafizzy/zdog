@@ -4,11 +4,11 @@
 
 ( function( root, factory ) {
   // module definition
-  var depends = [ './boilerplate', '/path-command', './shape',
-      './group', './ellipse' ];
   if ( typeof module == 'object' && module.exports ) {
     /* globals module, require */ // CommonJS
-    module.exports = factory.apply( root, depends.map( require ) );
+    module.exports = factory( require('./boilerplate'),
+        require('./path-command'), require('./shape'), require('./group'),
+        require('./ellipse') );
   } else {
     // browser global
     var Zdog = root.Zdog;

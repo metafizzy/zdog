@@ -4,36 +4,32 @@
 
 ( function( root, factory ) {
   // module definition
-  var depends = [
-    './boilerplate',
-    './canvas-renderer',
-    './svg-renderer',
-    './vector',
-    './anchor',
-    './path-command',
-    './shape',
-    './group',
-    './rect',
-    './rounded-rect',
-    './ellipse',
-    './polygon',
-    './hemisphere',
-    './cylinder',
-    './cone',
-    './box',
-  ];
   if ( typeof module == 'object' && module.exports ) {
     /* globals module, require */ // CommonJS
-    module.exports = factory.apply( root, depends.map( require ) );
+    module.exports = factory(
+      require('./boilerplate'),
+      require('./canvas-renderer'),
+      require('./svg-renderer'),
+      require('./vector'),
+      require('./anchor'),
+      require('./path-command'),
+      require('./shape'),
+      require('./group'),
+      require('./rect'),
+      require('./rounded-rect'),
+      require('./ellipse'),
+      require('./polygon'),
+      require('./hemisphere'),
+      require('./cylinder'),
+      require('./cone'),
+      require('./box')
+    );
+  } else if ( typeof define == 'function' && define.amd ) {
+    /* globals define */ // AMD
+    define( 'zdog', [], root.Zdog );
   }
 })( this, function factory( Zdog ) {
 
-  if ( typeof define == 'function' && define.amd ) {
-    /* globals define */ // AMD
-    define( 'zdog', function() {
-      return Zdog;
-    });
-  }
-
   return Zdog;
+
 });
