@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
 
-  <title>flex size</title>
+  <title>shade &amp; shades</title>
 
   <style>
     html { height: 100%; }
@@ -15,40 +15,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: white;
       font-family: sans-serif;
       text-align: center;
     }
 
     .illo {
       display: block;
+      margin: 20px auto;
+      background: #FDB;
       cursor: move;
-      background: #FED;
-      border-radius: 8px;
-      margin: 20px 2%;
-      width: 46%;
     }
   </style>
 
 </head>
 <body>
 
-<canvas class="illo"  width="200" height="200"></canvas>
-<svg class="illo" width="200" height="200"></svg>
+<div class="container">
+  <canvas class="illo"></canvas>
+</div>
 
 <script src="../../js/boilerplate.js"></script>
 <script src="../../js/canvas-renderer.js"></script>
-<script src="../../js/svg-renderer.js"></script>
 <script src="../../js/vector.js"></script>
-<script src="../../js/anchor.js"></script>
 <script src="../../js/path-command.js"></script>
+<script src="../../js/anchor.js"></script>
 <script src="../../js/shape.js"></script>
 <script src="../../js/ellipse.js"></script>
-<script src="../../js/rect.js"></script>
-<script src="../../js/group.js"></script>
 <script src="../../js/dragger.js"></script>
 <script src="../../js/illustration.js"></script>
-<script src="flex-size.js"></script>
+<script src="shade-and-shades.js"></script>
 
 </body>
 </html>

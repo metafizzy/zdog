@@ -7,7 +7,7 @@ bundle:
 uglify:
 	npx uglifyjs dist/zdog.dist.js -o dist/zdog.dist.min.js --mangle --comments /^!/
 
-hint:
+lint:
 	npx jshint js/*.js
 
 dist: hint bundle uglify

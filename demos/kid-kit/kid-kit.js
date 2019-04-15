@@ -1,26 +1,21 @@
 var illoElem = document.querySelector('.illo');
 var w = 72;
 var h = 72;
-var zoom = 6;
+var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
+var zoom = Math.floor( minWindowSize / w );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
+
+var offWhite = '#FED';
+var gold = '#EA0';
+var garnet = '#C25';
+var eggplant = '#636';
 
 var illo = new Zdog.Illustration({
   element: illoElem,
   zoom: zoom,
   dragRotate: true,
 });
-
-// colors
-var colors = {
-  fur: '#EA0',
-  eye: '#444',
-  inner: '#FEE',
-  cloak: '#F18',
-  // cloak: 'hsla(0, 100%, 50%, 0.1)',
-  armor: '#926',
-};
-
 
 // -- illustration shapes --- //
 
@@ -32,7 +27,7 @@ new Zdog.Shape({
     { x: 3, y: 10 },
   ],
   addTo: illo,
-  color: colors.inner,
+  color: offWhite,
   stroke: 13,
 });
 
@@ -40,7 +35,7 @@ new Zdog.Shape({
 new Zdog.Shape({
   addTo: illo,
   translate: { y: -12 },
-  color: colors.fur,
+  color: gold,
   stroke: 32,
 });
 
@@ -55,7 +50,7 @@ new Zdog.Shape({
     { x: 1 },
   ],
   addTo: nose,
-  color: colors.eye,
+  color: eggplant,
   stroke: 3,
 });
 new Zdog.Shape({
@@ -64,7 +59,7 @@ new Zdog.Shape({
     { y: 1 },
   ],
   addTo: nose,
-  color: colors.eye,
+  color: eggplant,
   stroke: 3,
 });
 
@@ -77,7 +72,7 @@ new Zdog.Shape({
     { x: -2, y: -3, z: 7 },
   ],
   addTo: illo,
-  color: colors.fur,
+  color: gold,
   stroke: 12,
 });
 
@@ -89,7 +84,7 @@ var eye = new Zdog.Shape({
   ],
   addTo: illo,
   translate: { x: -8, z: 11 },
-  color: colors.eye,
+  color: eggplant,
   stroke: 4,
 });
 eye.copy({
@@ -100,7 +95,7 @@ eye.copy({
 // ears
 var frontEarZ = 4;
 var topEarY = -30;
-var earColor = colors.fur;
+var earColor = gold;
 
 var earAnchor = new Zdog.Anchor({
   addTo: illo,
@@ -143,7 +138,7 @@ new Zdog.Shape({
     { x: earE.x + innerEarXShift, y: earE.y+2 },
   ],
   addTo: earAnchor,
-  color: colors.inner,
+  color: offWhite,
   fill: true,
   stroke: 3,
 });
@@ -168,7 +163,7 @@ var whisker = new Zdog.Shape({
   addTo: illo,
   translate: { z: 6 },
   fill: true,
-  color: colors.fur,
+  color: gold,
   stroke: 3,
 });
 whisker.copy({
@@ -196,7 +191,7 @@ new Zdog.Shape({
   ],
   addTo: armAnchor,
   closed: true,
-  color: colors.armor,
+  color: eggplant,
   stroke: 8,
 });
 // forearm
@@ -206,14 +201,14 @@ new Zdog.Shape({
     { x: 12, y: 15, z: -2 },
   ],
   addTo: armAnchor,
-  color: colors.fur,
+  color: gold,
   stroke: 8,
 });
 // hand
 new Zdog.Shape({
   path: [ { x: 11, y: 18, z: -1} ],
   addTo: armAnchor,
-  color: colors.armor,
+  color: eggplant,
   stroke: 10,
 });
 
@@ -229,7 +224,7 @@ var leg = new Zdog.Shape({
   ],
   addTo: illo,
   translate: { x: -6 },
-  color: colors.armor,
+  color: eggplant,
   stroke: 8,
 });
 leg.copy({
@@ -238,7 +233,6 @@ leg.copy({
 
 var cloakX0 = 8;
 var cloakX1 = 5;
-// var cloakX1 = 8;
 
 var cloakY0 = 4;
 var cloakY1 = 6;
@@ -262,7 +256,7 @@ var topCloakStrap =   new Zdog.Shape({
   ],
   addTo: cloakSide,
   fill: true,
-  color: colors.cloak,
+  color: garnet,
   stroke: 4,
 });
 
@@ -284,7 +278,7 @@ new Zdog.Shape({
   ],
   addTo: cloakSide,
   fill: true,
-  color: colors.cloak,
+  color: garnet,
   stroke: 4,
 });
 new Zdog.Shape({
@@ -297,7 +291,7 @@ new Zdog.Shape({
   addTo: cloakSide,
   translate: { z: cloakZ2 },
   fill: true,
-  color: colors.cloak,
+  color: garnet,
   stroke: 4,
 });
 

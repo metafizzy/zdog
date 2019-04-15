@@ -7,19 +7,23 @@
   <title>kid-kit</title>
 
   <style>
+    html { height: 100%; }
+
     body {
-      background: #DDD;
+      min-height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
       text-align: center;
     }
 
     .illo {
       display: block;
-      border: 2px solid white;
-      margin: 0px auto;
-    }
-
-    .rotate-slider {
-      width: 300px;
+      margin: 20px auto;
+      background: #FDB;
+      cursor: move;
     }
   </style>
 
@@ -28,17 +32,12 @@
 
 <canvas class="illo"></canvas>
 
-<p>Click &amp; drag to rotate</p>
-
 <script src="../../js/boilerplate.js"></script>
 <script src="../../js/canvas-renderer.js"></script>
 <script src="../../js/vector.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/path-command.js"></script>
 <script src="../../js/shape.js"></script>
-<!-- <script src="../../js/group.js"></script> -->
-<!-- <script src="../../js/ellipse.js"></script> -->
-<!-- <script src="../../js/rect.js"></script> -->
 <script src="../../js/dragger.js"></script>
 <script src="../../js/illustration.js"></script>
 <script src="kid-kit.js"></script>
