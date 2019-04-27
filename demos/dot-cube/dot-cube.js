@@ -70,19 +70,19 @@ var keyframes = [
   { x: -TAU/4, y: 0, z: TAU/2 },
 ];
 
-var t = 0;
+var ticker = 0;
 
 
 function animate() {
-  var easeT = Zdog.easeInOut( t % 1, 4 );
+  var easeT = Zdog.easeInOut( ticker % 1, 4 );
   var turnLimit = keyframes.length - 1;
-  var turn = Math.floor( t % turnLimit );
+  var turn = Math.floor( ticker % turnLimit );
   var keyA = keyframes[ turn ];
   var keyB = keyframes[ turn + 1 ];
   cube.rotate.x = Zdog.lerp( keyA.x, keyB.x, easeT );
   cube.rotate.y = Zdog.lerp( keyA.y, keyB.y, easeT );
   cube.rotate.z = Zdog.lerp( keyA.z, keyB.z, easeT );
-  t += 1/75;
+  ticker += 1/75;
 
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
