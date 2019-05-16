@@ -13,8 +13,6 @@ var ROOT3 = Math.sqrt(3);
 var ROOT5 = Math.sqrt(5);
 var PHI = ( 1 + ROOT5 ) / 2;
 var isSpinning = true;
-var t = 0;
-var tSpeed = 1/180;
 var viewRotation = new Zdog.Vector();
 
 // warm colors
@@ -390,6 +388,16 @@ solids.push( cube );
 
 // -- animate --- //
 
+var keyframes = [
+  { x:   0, y:   0 },
+  { x:   0, y: TAU },
+  { x: TAU, y: TAU },
+];
+
+var ticker = 0;
+var cycleCount = 180;
+var turnLimit = keyframes.length - 1;
+
 function animate() {
   update();
   illo.renderGraph();
@@ -399,14 +407,16 @@ function animate() {
 animate();
 
 function update() {
-  viewRotation.y += isSpinning ? +TAU/150 : 0;
 
   if ( isSpinning ) {
-    t += tSpeed;
-    var theta = Zdog.easeInOut( t % 1 ) * TAU;
-    var everyOtherCycle = t % 2 < 1;
-    viewRotation.y = everyOtherCycle ? theta : 0;
-    viewRotation.x = everyOtherCycle ? 0 : -theta;
+    var progress = ticker / cycleCount;
+    var tween = Zdog.easeInOut( progress % 1, 4 );
+    var turn = Math.floor( progress % turnLimit );
+    var keyA = keyframes[ turn ];
+    var keyB = keyframes[ turn + 1 ];
+    viewRotation.x = Zdog.lerp( keyA.x, keyB.x, tween );
+    viewRotation.y = Zdog.lerp( keyA.y, keyB.y, tween );
+    ticker++;
   }
 
   solids.forEach( function( solid ) {

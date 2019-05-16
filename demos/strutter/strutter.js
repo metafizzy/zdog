@@ -205,15 +205,16 @@ brim.copyGraph({
 
 // -- animate --- //
 
-var t = 0;
+var ticker = 0;
+var cycleCount = 150;
 
 function animate() {
   if ( isSpinning ) {
-    illo.rotate.y = Zdog.easeInOut( t % 1, 4 ) * TAU - TAU/8;
-    t += 1/150;
+    var progress = ticker / cycleCount;
+    illo.rotate.y = Zdog.easeInOut( progress % 1, 4 ) * TAU - TAU/8;
+    ticker++;
   }
-  illo.updateGraph();
-  illo.renderGraph();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
 

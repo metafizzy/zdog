@@ -1,10 +1,4 @@
-var illoElem = document.querySelector('.illo');
-var w = 72;
-var h = 72;
-var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / w );
-illoElem.setAttribute( 'width', w * zoom );
-illoElem.setAttribute( 'height', h * zoom );
+// --- variables --- //
 
 var offWhite = '#FED';
 var gold = '#EA0';
@@ -12,12 +6,12 @@ var garnet = '#C25';
 var eggplant = '#636';
 
 var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
+  element: '.illo',
+  zoom: 4,
   dragRotate: true,
 });
 
-// -- illustration shapes --- //
+// --- model --- //
 
 // body center
 new Zdog.Shape({

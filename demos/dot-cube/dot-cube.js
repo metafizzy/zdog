@@ -71,18 +71,19 @@ var keyframes = [
 ];
 
 var ticker = 0;
-
+var cycleCount = 75;
+var turnLimit = keyframes.length - 1;
 
 function animate() {
-  var easeT = Zdog.easeInOut( ticker % 1, 4 );
-  var turnLimit = keyframes.length - 1;
-  var turn = Math.floor( ticker % turnLimit );
+  var progress = ticker / cycleCount;
+  var tween = Zdog.easeInOut( progress % 1, 4 );
+  var turn = Math.floor( progress % turnLimit );
   var keyA = keyframes[ turn ];
   var keyB = keyframes[ turn + 1 ];
-  cube.rotate.x = Zdog.lerp( keyA.x, keyB.x, easeT );
-  cube.rotate.y = Zdog.lerp( keyA.y, keyB.y, easeT );
-  cube.rotate.z = Zdog.lerp( keyA.z, keyB.z, easeT );
-  ticker += 1/75;
+  cube.rotate.x = Zdog.lerp( keyA.x, keyB.x, tween );
+  cube.rotate.y = Zdog.lerp( keyA.y, keyB.y, tween );
+  cube.rotate.z = Zdog.lerp( keyA.z, keyB.z, tween );
+  ticker++;
 
   illo.updateRenderGraph();
   requestAnimationFrame( animate );

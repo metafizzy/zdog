@@ -176,12 +176,15 @@ glassesArm.copy({
 
 // -- animate --- //
 
-var t = 0;
+var ticker = 0;
+var cycleCount = 150;
 
 function animate() {
   if ( isSpinning ) {
-    illo.rotate.y = Zdog.easeInOut( t % 1, 4 ) * TAU + initialRotate.y;
-    t += 1/150;
+    var progress = ticker / cycleCount;
+    var tween = Zdog.easeInOut( progress % 1, 4 );
+    illo.rotate.y = tween * TAU + initialRotate.y;
+    ticker++;
   }
 
   illo.updateRenderGraph();

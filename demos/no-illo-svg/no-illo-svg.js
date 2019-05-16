@@ -42,7 +42,7 @@ new Zdog.Rect({
 // ----- animate ----- //
 
 function animate() {
-  scene.rotate.y += isSpinning ? +TAU/150 : 0;
+  scene.rotate.y += isSpinning ? 0.03 : 0;
   scene.updateGraph();
   render();
   requestAnimationFrame( animate );

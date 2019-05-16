@@ -4,7 +4,7 @@ var illoElem = document.querySelector('.illo');
 var w = 48;
 var h = 48;
 var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 10, Math.floor( minWindowSize / w ) );
+var zoom = Math.floor( minWindowSize / w );
 illoElem.setAttribute( 'width', w * zoom );
 illoElem.setAttribute( 'height', h * zoom );
 
@@ -52,7 +52,6 @@ var cone = new Zdog.Cone({
 var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
 
 [ true, false ].forEach( function( isHemi ) {
-  var ySide = isHemi ? -1 : 1;
   var shape = isHemi ? hemi : cone;
 
   for ( var i=0; i < 5; i++ ) {
@@ -81,11 +80,12 @@ var keyframes = [
   { x: TAU * 1,   y: TAU * 1 },
 ];
 
-var t = 0;
-var cycleFrame = 360;
+var ticker = 0;
+var cycleCount = 180;
+var turnLimit = keyframes.length - 1;
 
 function animate() {
-  rotate();
+  spin();
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
@@ -94,17 +94,17 @@ animate();
 
 // -- update -- //
 
-function rotate() {
+function spin() {
   if ( !isSpinning ) {
     return;
   }
-  var easeT = Zdog.easeInOut( t % 1, 3 );
-  var turnLimit = keyframes.length - 1;
-  var turn = Math.floor( t % turnLimit );
+  var progress = ticker / cycleCount;
+  var tween = Zdog.easeInOut( progress % 1, 3 );
+  var turn = Math.floor( progress % turnLimit );
   var keyA = keyframes[ turn ];
   var keyB = keyframes[ turn + 1 ];
-  var thetaX = Zdog.lerp( keyA.x, keyB.x, easeT );
+  var thetaX = Zdog.lerp( keyA.x, keyB.x, tween );
   illo.rotate.x = Math.cos( thetaX ) * TAU/12;
-  illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, easeT ) ;
-  t += 1/180;
+  illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, tween ) ;
+  ticker++;
 }

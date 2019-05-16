@@ -282,7 +282,7 @@ new Zdog.Shape({
 // -- animate --- //
 
 function animate() {
-  illo.rotate.y += isSpinning ? -TAU/150 : 0;
+  illo.rotate.y += isSpinning ? -0.03 : 0;
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }

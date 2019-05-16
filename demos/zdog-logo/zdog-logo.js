@@ -233,26 +233,34 @@ earGroup.copyGraph({
 
 // -- animate --- //
 
-var t = 0;
-var tSpeed = 1/180;
+var keyframes = [
+  { y:   0 + initRotate.y, z:   0 },
+  { y: TAU + initRotate.y, z:   0 },
+  { y: TAU + initRotate.y, z: TAU },
+];
+
+var ticker = 0;
+var cycleCount = 180;
+var turnLimit = keyframes.length - 1;
 
 function animate() {
-  // update
-  if ( isSpinning ) {
-    var turn = Math.floor( t % 2 );
-    var easeT = Zdog.easeInOut( t % 1, 4 );
-    if ( turn == 0 ) {
-      illo.rotate.y = easeT * TAU + initRotate.y;
-    } else if ( turn == 1 ) {
-      illo.rotate.z = easeT * TAU;
-      // scene.rotate.x = easeT * TAU + initRotate.x;
-    }
-    t += tSpeed;
-  }
-  illo.updateGraph();
-  // render
-  illo.renderGraph();
+  spin();
+  illo.updateRenderGraph();
   requestAnimationFrame( animate );
+}
+
+function spin() {
+  if ( !isSpinning ) {
+    return;
+  }
+  var progress = ticker / cycleCount;
+  var tween = Zdog.easeInOut( progress % 1, 4 );
+  var turn = Math.floor( progress % turnLimit );
+  var keyA = keyframes[ turn ];
+  var keyB = keyframes[ turn + 1 ];
+  illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, tween );
+  illo.rotate.z = Zdog.lerp( keyA.z, keyB.z, tween );
+  ticker++;
 }
 
 animate();

@@ -192,12 +192,14 @@ house.copyGraph({
 // ----- animate ----- //
 
 var ticker = 0;
+var cycleCount = 240;
 
 function animate() {
   if ( isSpinning ) {
-    var easeT = Zdog.easeInOut( ticker % 1, 3 );
-    illo.rotate.y = easeT * TAU + initRotate.y;
-    ticker += 1/240; // 1 rotation every 240 frames
+    var progress = ticker / cycleCount;
+    var tween = Zdog.easeInOut( progress % 1, 3 );
+    illo.rotate.y = tween * TAU + initRotate.y;
+    ticker++;
   }
   illo.updateRenderGraph();
   requestAnimationFrame( animate );

@@ -113,24 +113,30 @@ dot.copy({
 
 // -- animate --- //
 
-var t = 0;
+var ticker = 0;
+var cycleCount = 150;
 
 function animate() {
-  if ( isSpinning ) {
-    var turn = Math.floor( t % 4 );
-    var theta = Zdog.easeInOut( t%1, 3 ) * TAU;
-    if ( turn === 0  || turn == 2 ) {
-      model.rotate.y = theta;
-    } else if ( turn == 1 ) {
-      model.rotate.x = theta;
-    } else if ( turn == 3 ) {
-      model.rotate.z = theta;
-    }
-    t += 1/150;
-  }
-
+  spin();
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
+}
+
+function spin() {
+  if ( !isSpinning ) {
+    return;
+  }
+  var progress = ticker / cycleCount;
+  var turn = Math.floor( progress % 4 );
+  var theta = Zdog.easeInOut( progress % 1, 3 ) * TAU;
+  if ( turn == 0  || turn == 2 ) {
+    model.rotate.y = theta;
+  } else if ( turn == 1 ) {
+    model.rotate.x = theta;
+  } else if ( turn == 3 ) {
+    model.rotate.z = theta;
+  }
+  ticker++;
 }
 
 animate();

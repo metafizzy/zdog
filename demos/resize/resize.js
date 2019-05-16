@@ -2,7 +2,6 @@
 
 var zoom = 4;
 var isSpinning = true;
-var TAU = Zdog.TAU;
 
 var model = new Zdog.Anchor();
 
@@ -81,7 +80,7 @@ model.copyGraph({
 // ----- animate ----- //
 
 function animate() {
-  model.rotate.y += isSpinning ? +TAU/150 : 0;
+  model.rotate.y += isSpinning ? 0.03 : 0;
   model.updateGraph();
   svgIllo.renderGraph( model );
   canvasIllo.renderGraph( model );

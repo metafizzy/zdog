@@ -2,10 +2,13 @@
 
 var zoom = 4;
 var isSpinning = true;
-var TAU = Zdog.TAU;
+var gold = '#EA0';
+var orange = '#E62';
+var garnet = '#C25';
+var eggplant = '#636';
 
 var illo = new Zdog.Illustration({
-  element: 'canvas',
+  element: '.illo',
   zoom: zoom,
   resize: 'fullscreen',
   dragRotate: true,
@@ -25,7 +28,7 @@ new Zdog.Rect({
   addTo: illo,
   translate: { z: -10 },
   stroke: 2,
-  color: '#E21',
+  color: garnet,
 });
 
 new Zdog.Ellipse({
@@ -33,7 +36,7 @@ new Zdog.Ellipse({
   addTo: illo,
   translate: { z: 10 },
   stroke: 4,
-  color: '#19F',
+  color: eggplant,
 });
 
 new Zdog.Shape({
@@ -46,20 +49,20 @@ new Zdog.Shape({
   addTo: illo,
   stroke: 2,
   fill: true,
-  color: '#EA0',
+  color: gold,
 });
 
 new Zdog.Shape({
   translate: { x: 10, y: -5 },
   addTo: illo,
   stroke: 7,
-  color: '#246',
+  color: orange,
 });
 
 // ----- animate ----- //
 
 function animate() {
-  illo.rotate.y += isSpinning ? +TAU/150 : 0;
+  illo.rotate.y += isSpinning ? 0.03 : 0;
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }

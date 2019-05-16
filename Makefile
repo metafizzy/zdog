@@ -8,6 +8,6 @@ uglify:
 	npx uglifyjs dist/zdog.dist.js -o dist/zdog.dist.min.js --mangle --comments /^!/
 
 lint:
-	npx jshint js/*.js
+	npx jshint js/*.js demos/**/*.js
 
 dist: hint bundle uglify
