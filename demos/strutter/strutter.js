@@ -1,11 +1,6 @@
-// -------------------------- demo -------------------------- //
+// ----- setup ----- //
 
-var illoElem = document.querySelector('.illo');
 var sceneSize = 48;
-var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / sceneSize );
-illoElem.setAttribute( 'width', sceneSize * zoom );
-illoElem.setAttribute( 'height', sceneSize * zoom );
 var isSpinning = true;
 var TAU = Zdog.TAU;
 // colors
@@ -16,16 +11,19 @@ var midnight = '#424';
 
 var illo = new Zdog.Illustration({
   element: '.illo',
-  zoom: zoom,
   rotate: { y: -TAU/8 },
   translate: { y: 4 },
   dragRotate: true,
+  resize: 'fullscreen',
   onDragStart: function() {
     isSpinning = false;
   },
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) / sceneSize );
+  },
 });
 
-// -- illustration shapes --- //
+// ----- model ----- //
 
 var hipX = 3;
 
@@ -203,7 +201,7 @@ brim.copyGraph({
 });
 
 
-// -- animate --- //
+// ----- animate ----- //
 
 var ticker = 0;
 var cycleCount = 150;

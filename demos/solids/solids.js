@@ -1,21 +1,16 @@
-// -------------------------- demo -------------------------- //
+// ----- setup ----- //
 
 var illoElem = document.querySelector('.illo');
 var sceneSize = 96;
-var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 6, Math.floor( minWindowSize / sceneSize ) );
-var illoSize = sceneSize * zoom;
-illoElem.setAttribute( 'width', illoSize );
-illoElem.setAttribute( 'height', illoSize );
-
 var TAU = Zdog.TAU;
 var ROOT3 = Math.sqrt(3);
 var ROOT5 = Math.sqrt(5);
 var PHI = ( 1 + ROOT5 ) / 2;
 var isSpinning = true;
 var viewRotation = new Zdog.Vector();
+var displaySize;
 
-// warm colors
+// colors
 var eggplant = '#636';
 var garnet = '#C25';
 var orange = '#E62';
@@ -24,8 +19,12 @@ var yellow = '#ED0';
 
 var illo = new Zdog.Illustration({
   element: illoElem,
-  zoom: zoom,
   scale: 8,
+  resize: 'fullscreen',
+  onResize: function( width, height ) {
+    displaySize = Math.min( width, height );
+    this.zoom = Math.floor( displaySize / sceneSize );
+  },
 });
 
 var solids = [];
@@ -438,7 +437,7 @@ new Zdog.Dragger({
     dragStartRY = viewRotation.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    viewRotation.x = dragStartRX - ( moveY / illoSize * TAU );
-    viewRotation.y = dragStartRY - ( moveX / illoSize * TAU );
+    viewRotation.x = dragStartRX - ( moveY / displaySize * TAU );
+    viewRotation.y = dragStartRY - ( moveX / displaySize * TAU );
   },
 });

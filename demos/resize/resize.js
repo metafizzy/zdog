@@ -1,7 +1,11 @@
-// ------------------------- demo ------------------------- //
+// ----- setup ----- //
 
 var zoom = 4;
 var isSpinning = true;
+var gold = '#EA0';
+var orange = '#E62';
+var garnet = '#C25';
+var eggplant = '#636';
 
 var model = new Zdog.Anchor();
 
@@ -31,7 +35,7 @@ var svgIllo = new Zdog.Illustration({
   },
 });
 
-// HACK set initial zoom
+// HACK set initial zoom for SVG
 svgIllo.setSize( svgIllo.width, svgIllo.height );
 
 // ----- model ----- //
@@ -42,7 +46,7 @@ new Zdog.Rect({
   addTo: model,
   translate: { z: -10 },
   stroke: 2,
-  color: '#E21',
+  color: garnet,
 });
 
 new Zdog.Ellipse({
@@ -50,7 +54,7 @@ new Zdog.Ellipse({
   addTo: model,
   translate: { z: 10 },
   stroke: 4,
-  color: '#19F',
+  color: eggplant,
 });
 
 new Zdog.Shape({
@@ -63,14 +67,14 @@ new Zdog.Shape({
   addTo: model,
   stroke: 2,
   fill: true,
-  color: '#EA0',
+  color: gold,
 });
 
 new Zdog.Shape({
   translate: { x: 10, y: -5 },
   addTo: model,
   stroke: 7,
-  color: '#246',
+  color: orange,
 });
 
 model.copyGraph({

@@ -1,19 +1,16 @@
-// ------------------------- demo ------------------------- //
+// ----- setup ----- //
 
-var illoElem = document.querySelector('.illo');
 var sceneSize = 24;
-var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / sceneSize );
-var illoSize = sceneSize * zoom;
-illoElem.setAttribute( 'width', illoSize );
-illoElem.setAttribute( 'height', illoSize );
 var TAU = Zdog.TAU;
 
 var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
+  element: '.illo',
   rotate: { x: TAU * -35/360, y: TAU * 1/8 },
   dragRotate: true,
+  resize: 'fullscreen',
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) / sceneSize );
+  },
 });
 
 // ----- model ----- //
@@ -35,7 +32,6 @@ var dot = new Zdog.Shape({
   translate: oneUnit.copy(),
   stroke: 1,
   color: 'white',
-  // visible: false,
 });
 
 dot.copy({ translate: { x: -1, y:  1 } });

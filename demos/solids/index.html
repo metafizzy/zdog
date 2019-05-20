@@ -12,17 +12,13 @@
     body {
       min-height: 100%;
       margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #FDB;
-      font-family: sans-serif;
-      text-align: center;
     }
 
     .illo {
       display: block;
-      margin: 0px auto 20px;
+      width: 100%;
+      height: 100%;
+      background: #FDB;
       cursor: move;
     }
   </style>
@@ -30,9 +26,7 @@
 </head>
 <body>
 
-<div class="container">
-  <canvas class="illo"></canvas>
-</div>
+<canvas class="illo"></canvas>
 
 <script src="../../js/boilerplate.js"></script>
 <script src="../../js/canvas-renderer.js"></script>

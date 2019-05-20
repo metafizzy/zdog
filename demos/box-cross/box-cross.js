@@ -1,37 +1,31 @@
-// -------------------------- demo -------------------------- //
+// ----- setup ----- //
 
-var illoElem = document.querySelector('.illo');
-var w = 9;
-var h = 9;
-var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / w );
-illoElem.setAttribute( 'width', w * zoom );
-illoElem.setAttribute( 'height', h * zoom );
+var sceneSize = 9;
 var isSpinning = true;
 var TAU = Zdog.TAU;
 // colors
-// var white = 'white';
 var yellow = '#ED0';
 var gold = '#EA0';
 var orange = '#E62';
 var garnet = '#C25';
-// var navy = '#369';
-// var denim = '#345';
 var eggplant = '#636';
 
 var initRotate = { x: (35/360) * TAU, y: TAU/8 };
 
 var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
+  element: '.illo',
   rotate: initRotate,
+  resize: 'fullscreen',
   dragRotate: true,
   onDragStart: function() {
     isSpinning = false;
   },
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) / sceneSize );
+  },
 });
 
-// -- illustration shapes --- //
+// ----- model ----- //
 
 var model = new Zdog.Anchor({
   addTo: illo,
@@ -111,7 +105,7 @@ dot.copy({
   color: eggplant,
 });
 
-// -- animate --- //
+// ----- animate ----- //
 
 var ticker = 0;
 var cycleCount = 150;

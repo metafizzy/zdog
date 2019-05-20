@@ -1,12 +1,6 @@
-// ------------------------- demo ------------------------- //
+// ----- setup ----- //
 
-var illoElem = document.querySelector('.illo');
 var sceneSize = 24;
-var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / sceneSize );
-var illoSize = sceneSize * zoom;
-illoElem.setAttribute( 'width', illoSize );
-illoElem.setAttribute( 'height', illoSize );
 var isSpinning = true;
 var TAU = Zdog.TAU;
 var offWhite = '#FED';
@@ -16,11 +10,14 @@ var garnet = '#C25';
 var eggplant = '#636';
 
 var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
+  element: '.illo',
   dragRotate: true,
+  resize: 'fullscreen',
   onDragStart: function() {
     isSpinning = false;
+  },
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) / sceneSize );
   },
 });
 

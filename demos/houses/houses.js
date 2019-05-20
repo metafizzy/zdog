@@ -1,12 +1,6 @@
-// ------------------------- demo ------------------------- //
+// ----- setup ----- //
 
-var illoElem = document.querySelector('.illo');
 var sceneSize = 56;
-var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( minWindowSize / sceneSize );
-var illoSize = sceneSize * zoom;
-illoElem.setAttribute( 'width', illoSize );
-illoElem.setAttribute( 'height', illoSize );
 var isSpinning = true;
 var TAU = Zdog.TAU;
 
@@ -27,14 +21,17 @@ var initRotate = { y: TAU/8 };
 var turnRatio = 1 / Math.sin( TAU/8 );
 
 var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
+  element: '.illo',
   rotate: initRotate,
   // stretch looks circular at 1/8 turn
   scale: { x: turnRatio, z: turnRatio },
   dragRotate: true,
+  resize: 'fullscreen',
   onDragStart: function() {
     isSpinning = false;
+  },
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) / sceneSize );
   },
 });
 

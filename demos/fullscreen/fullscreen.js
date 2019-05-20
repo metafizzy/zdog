@@ -1,6 +1,5 @@
-// ------------------------- demo ------------------------- //
+// ----- setup ----- //
 
-var zoom = 4;
 var isSpinning = true;
 var gold = '#EA0';
 var orange = '#E62';
@@ -9,7 +8,7 @@ var eggplant = '#636';
 
 var illo = new Zdog.Illustration({
   element: '.illo',
-  zoom: zoom,
+  zoom: 4,
   resize: 'fullscreen',
   dragRotate: true,
   onDragStart: function() {

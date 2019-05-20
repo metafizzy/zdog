@@ -1,25 +1,8 @@
-// -------------------------- demo -------------------------- //
+// ----- setup ----- //
 
-var illoElem = document.querySelector('.illo');
-var w = 80;
-var h = 80;
-var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 7, Math.floor( minWindowSize / w ) );
-illoElem.setAttribute( 'width', w * zoom );
-illoElem.setAttribute( 'height', h * zoom );
-
+var sceneSize = 80;
 var isSpinning = true;
 var TAU = Zdog.TAU;
-
-var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
-  dragRotate: true,
-  onDragStart: function() {
-    isSpinning = false;
-  },
-});
-
 // colors
 var pink = '#F8B';
 var blush = '#F5A';
@@ -28,7 +11,19 @@ var shoe = '#D03';
 var red = '#E10';
 var yellow = '#FD0';
 
-// -- illustration shapes --- //
+var illo = new Zdog.Illustration({
+  element: '.illo',
+  dragRotate: true,
+  resize: 'fullscreen',
+  onDragStart: function() {
+    isSpinning = false;
+  },
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) / sceneSize );
+  },
+});
+
+// ----- model ----- //
 
 var body = new Zdog.Shape({
   stroke: 22,
@@ -263,8 +258,7 @@ new Zdog.Shape({
   }
 })();
 
-// ----- floater stars ----- //
-
+// floater stars
 ( function() {
   for ( var i=0; i < 6; i++ ) {
     var starHolder = new Zdog.Anchor({
@@ -279,7 +273,7 @@ new Zdog.Shape({
   }
 })();
 
-// -- animate --- //
+// ----- animate ----- //
 
 function animate() {
   illo.rotate.y += isSpinning ? -0.03 : 0;

@@ -1,16 +1,10 @@
-// -------------------------- demo -------------------------- //
+// ----- setup ----- //
 
-var illoElem = document.querySelector('.illo');
-var w = 96;
-var h = 96;
-var minWindowSize = Math.min( window.innerWidth, window.innerHeight );
-var zoom = Math.min( 8, Math.floor( minWindowSize / w ) );
-illoElem.setAttribute( 'width', w * zoom );
-illoElem.setAttribute( 'height', h * zoom );
-// colors
+var sceneSize = 96;
 var orange = '#E62';
 var eggplant = '#636';
 
+// shape defaults
 Zdog.Shape.defaults.closed = false;
 [ Zdog.Shape, Zdog.Ellipse ].forEach( function( ShapeClass ) {
   ShapeClass.defaults.stroke = 3;
@@ -22,13 +16,16 @@ var TAU = Zdog.TAU;
 var initialRotate = { y: -TAU/8 };
 
 var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
+  element: '.illo',
   rotate: initialRotate,
   dragRotate: true,
+  resize: 'fullscreen',
   onDragStart: function() {
     isSpinning = false;
-  }
+  },
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) / sceneSize );
+  },
 });
 
 // -- illustration shapes --- //
@@ -174,7 +171,7 @@ glassesArm.copy({
   translate: { x: 16, y: 8 },
 });
 
-// -- animate --- //
+// ----- animate ----- //
 
 var ticker = 0;
 var cycleCount = 150;

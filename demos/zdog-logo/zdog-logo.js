@@ -1,35 +1,29 @@
+// ----- setup ----- //
 
-// -------------------------- demo -------------------------- //
-
-var illoElem = document.querySelector('.illo');
-var w = 128;
-var h = 128;
-var minWindowSize = Math.min( window.innerWidth - 20 , window.innerHeight - 20 );
-var zoom = Math.floor( (minWindowSize*2) / w ) / 2;
-illoElem.setAttribute( 'width', w * zoom );
-illoElem.setAttribute( 'height', h * zoom );
+var sceneSize = 100;
 var isSpinning = true;
 var TAU = Zdog.TAU;
 var initRotate = { x: 20/360 * TAU, y: -50/360 * TAU };
-
-var illo = new Zdog.Illustration({
-  element: illoElem,
-  zoom: zoom,
-  rotate: initRotate,
-  dragRotate: true,
-  onDragStart: function() {
-    isSpinning = false;
-  },
-});
-
-var red = '#E62';
+var orange = '#E62';
 var gold = '#EA0';
-var denim = '#636';
-
+var eggplant = '#636';
 var depth = 20;
 var lineWidth = 8;
 
-// -- illustration shapes --- //
+var illo = new Zdog.Illustration({
+  element: '.illo',
+  rotate: initRotate,
+  dragRotate: true,
+  resize: 'fullscreen',
+  onDragStart: function() {
+    isSpinning = false;
+  },
+  onResize: function( width, height ) {
+    this.zoom = Math.floor( Math.min( width, height ) * 2 / sceneSize ) / 2;
+  },
+});
+
+// ----- model ----- //
 
 var bigGroup = new Zdog.Group({
   addTo: illo,
@@ -50,7 +44,7 @@ var topSide = new Zdog.Rect({
   rotate: { x: TAU/4 },
   fill: true,
   stroke: lineWidth,
-  color: red,
+  color: orange,
 });
 topSide.copy({
   translate: { y: 20 },
@@ -64,18 +58,21 @@ var endCap = new Zdog.Rect({
   translate: { x: -20, y: -16 },
   rotate: { y: TAU/4 },
   fill: true,
-  color: red,
+  color: orange,
   stroke: lineWidth,
-});
-endCap.copy({
-  translate: { x: -20,  y: 16 },
-});
-endCap.copy({
-  translate: { x: 20,  y: -16 },
-  rotate: { y: -TAU/4 },
+  backface: false,
 });
 endCap.copy({
   translate: { x: 20,  y: 16 },
+  rotate: { y: -TAU/4 },
+});
+
+var cornerCap = endCap.copy({
+  height: 10,
+  translate: { x: -20, y: 15 },
+});
+cornerCap.copy({
+  translate: { x: 20, y: -15 },
   rotate: { y: -TAU/4 },
 });
 
@@ -87,7 +84,7 @@ var underside = new Zdog.Rect({
   rotate: { x: -TAU/4 },
   stroke: lineWidth,
   fill: true,
-  color: red,
+  color: orange,
 });
 underside.copy({
   translate: { x: 5, y: 12 },
@@ -102,15 +99,16 @@ var slope = new Zdog.Rect({
   addTo: backGroup,
   width: Math.sqrt( slopeH*slopeH + slopeW*slopeW ),
   height: depth,
-  translate: { x: -5 },
+  translate: { x: -5, y: -1 },
   rotate: { x: TAU/4, y: slopeAngle },
   stroke: lineWidth,
   fill: true,
-  color: red,
+  color: orange,
+  backface: false,
 });
 
 slope.copy({
-  translate: { x: 5, y: 0 },
+  translate: { x: 5, y: 1 },
   rotate: { x: -TAU/4, y: -slopeAngle },
 });
 
@@ -122,7 +120,7 @@ new Zdog.Ellipse({
   closed: false,
   translate: { x: 22, y: -4 },
   rotate: { z: TAU/4 },
-  color: red,
+  color: orange,
   stroke: lineWidth,
 });
 
@@ -157,7 +155,7 @@ new Zdog.Shape({
   rotate: { x: TAU/4 - Math.atan(16/22) },
   fill: true,
   stroke: 4,
-  color: denim,
+  color: eggplant,
 
 });
 
@@ -202,7 +200,7 @@ var semiCircle = new Zdog.Ellipse({
   rotate: { y: TAU/4, z: TAU/4 },
   fill: true,
   stroke: 5,
-  color: denim,
+  color: eggplant,
   closed: true,
   // backface: false,
 });
@@ -231,7 +229,7 @@ earGroup.copyGraph({
   scale: { z: -1 },
 });
 
-// -- animate --- //
+// ----- animate ----- //
 
 var keyframes = [
   { y:   0 + initRotate.y, z:   0 },
