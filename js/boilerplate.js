@@ -1,5 +1,5 @@
 /*!
- * Zdog v0.1.0
+ * Zdog v1.0.0
  * Round, flat, designer-friendly pseudo-3D engine
  * Licensed MIT
  * https://zzz.dog

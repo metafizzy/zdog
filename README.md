@@ -8,15 +8,15 @@ View complete documentation and live demos at [zzz.dog](https://zzz.dog).
 
 ### Download
 
-+ [zdog.dist.min.js](https://unpkg.com/zdog@0/dist/zdog.dist.min.js) minified, or
-+ [zdog.dist.js](https://unpkg.com/zdog@0/dist/zdog.dist.js) un-minified
++ [zdog.dist.min.js](https://unpkg.com/zdog@1/dist/zdog.dist.min.js) minified, or
++ [zdog.dist.js](https://unpkg.com/zdog@1/dist/zdog.dist.js) un-minified
 
 ### CDN
 
 Link directly to Zdog JS on [unpkg](https://unpkg.com).
 
 ``` html
-<script src="https://unpkg.com/zdog@0/dist/zdog.dist.min.js"></script>
+<script src="https://unpkg.com/zdog@1/dist/zdog.dist.min.js"></script>
 ```
 
 ### Package managers
@@ -86,7 +86,7 @@ Zdog v1 is a beta-release, of sorts. This is my first time creating a 3D engine,
 
 ### Other Zdog repos
 
-+ [zdog-demos](https://github.com/metafizzy/zdog-demos) - Lots more bigger, wilder Zdog demos
++ [zdog-demos](https://github.com/metafizzy/zdog-demos) - More, bigger, wilder Zdog demos
 + [zdog-docs](https://github.com/metafizzy/zdog-docs) - Documentation site source code for [zzz.dog](https://zzz.dog)
 
 ---

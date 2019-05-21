@@ -12,6 +12,8 @@
       require('./svg-renderer'),
       require('./vector'),
       require('./anchor'),
+      require('./dragger'),
+      require('./illustration'),
       require('./path-command'),
       require('./shape'),
       require('./group'),

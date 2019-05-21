@@ -2,11 +2,9 @@
 
 **Add 👍 reaction** to issues for features you would like to see added to Zdog. Do not add +1 comments — [they will be deleted](https://metafizzy.co/blog/use-github-reactions-delete-plus-1-comments/).
 
-## Submitting issues
+## Reduced test cases required
 
-### Reduced test case required
-
-All bug reports and problem issues require a [**reduced test case**](https://css-tricks.com/reduced-test-cases/).
+All bug reports and problem issues require a [**reduced test case**](https://css-tricks.com/reduced-test-cases/). Create one by [forking this CodePen](https://codepen.io/desandro/pen/xNLWwG).
 
 + A reduced test case clearly demonstrates the bug or issue.
 + It contains the bare minimum HTML, CSS, and JavaScript required to demonstrate the bug.
