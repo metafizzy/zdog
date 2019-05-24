@@ -154,7 +154,9 @@ Illustration.prototype.prerenderCanvas = function() {
   ctx.clearRect( 0, 0, this.canvasWidth, this.canvasHeight );
   ctx.save();
   if ( this.centered ) {
-    ctx.translate( this.width/2, this.height/2 );
+    var centerX = this.width/2 * this.pixelRatio;
+    var centerY = this.height/2 * this.pixelRatio;
+    ctx.translate( centerX, centerY );
   }
   var scale = this.pixelRatio * this.zoom;
   ctx.scale( scale, scale );
