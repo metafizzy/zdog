@@ -23,7 +23,7 @@ var orange = '#E62';
 var garnet = '#C25';
 var eggplant = '#636';
 
-// -- illustration shapes --- //
+// ----- model ----- //
 
 var hemi = new Zdog.Hemisphere({
   addTo: illo,
@@ -68,7 +68,7 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
   }
 });
 
-// -- animate --- //
+// ----- animate ----- //
 
 var keyframes = [
   { x: TAU * 0,   y: TAU * 0 },
@@ -86,10 +86,6 @@ function animate() {
   requestAnimationFrame( animate );
 }
 
-animate();
-
-// -- update -- //
-
 function spin() {
   if ( !isSpinning ) {
     return;
@@ -104,3 +100,5 @@ function spin() {
   illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, tween ) ;
   ticker++;
 }
+
+animate();

@@ -1,4 +1,4 @@
-// --- variables --- //
+// ----- setup ----- //
 
 var offWhite = '#FED';
 var gold = '#EA0';
@@ -11,7 +11,7 @@ var illo = new Zdog.Illustration({
   dragRotate: true,
 });
 
-// --- model --- //
+// ----- model ----- //
 
 // body center
 new Zdog.Shape({
@@ -294,7 +294,7 @@ cloakSide.copyGraph({
 });
 
 
-// -- animate --- //
+// ----- animate ----- //
 
 function animate() {
   illo.updateRenderGraph();

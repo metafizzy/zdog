@@ -4,7 +4,16 @@
 
 ## Reduced test cases required
 
-All bug reports and problem issues require a [**reduced test case**](https://css-tricks.com/reduced-test-cases/). Create one by [forking this CodePen](https://codepen.io/desandro/pen/xNLWwG).
+All bug reports and problem issues require a [**reduced test case**](https://css-tricks.com/reduced-test-cases/). Create one by forking this any one of the [Zdog demos on CodePen](https://codepen.io/desandro/pens/tags/?grid_type=list&selected_tag=zdog-v1-docs&sort_col=created_at&sort_order=asc).
+
+**CodePen**
+
++ [Hello world canvas](https://codepen.io/desandro/pen/YbrLaO)
++ [Hello world SVG](https://codepen.io/desandro/pen/Bewxme)
++ [resize fullscreen](https://codepen.io/desandro/pen/dEJxaV)
++ [Stutter](https://codepen.io/desandro/pen/xNPaoP)
+
+**Test cases**
 
 + A reduced test case clearly demonstrates the bug or issue.
 + It contains the bare minimum HTML, CSS, and JavaScript required to demonstrate the bug.

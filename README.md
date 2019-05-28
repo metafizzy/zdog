@@ -32,7 +32,7 @@ Create 3D models with Zdog by adding shapes. See [Getting started](https://zzz.d
 ``` js
 let isSpinning = true;
 
-const illo = new Zdog.Illustration({
+let illo = new Zdog.Illustration({
   element: '.zdog-canvas',
   zoom: 4,
   dragRotate: true,
@@ -86,7 +86,7 @@ Zdog v1 is a beta-release, of sorts. This is my first time creating a 3D engine,
 
 ### Other Zdog repos
 
-+ [zdog-demos](https://github.com/metafizzy/zdog-demos) - More, bigger, wilder Zdog demos
++ [zdog-demos](https://github.com/metafizzy/zdog-demos) - Bigger, wilder Zdog demos
 + [zdog-docs](https://github.com/metafizzy/zdog-docs) - Documentation site source code for [zzz.dog](https://zzz.dog)
 
 ---

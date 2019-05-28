@@ -28,7 +28,7 @@ var illo = new Zdog.Illustration({
   },
 });
 
-// -- illustration shapes --- //
+// ----- model ----- //
 
 // cap top
 [ 0, 1, 2, 3, 4 ].forEach( function( i ) {

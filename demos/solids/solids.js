@@ -385,7 +385,7 @@ solids.push( cube );
 
 })();
 
-// -- animate --- //
+// ----- animate ----- //
 
 var keyframes = [
   { x:   0, y:   0 },
