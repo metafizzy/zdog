@@ -1,5 +1,5 @@
 /*!
- * Zdog v1.0.0
+ * Zdog v1.0.1
  * Round, flat, designer-friendly pseudo-3D engine
  * Licensed MIT
  * https://zzz.dog
@@ -888,7 +888,9 @@ Illustration.prototype.prerenderCanvas = function() {
   ctx.clearRect( 0, 0, this.canvasWidth, this.canvasHeight );
   ctx.save();
   if ( this.centered ) {
-    ctx.translate( this.width/2, this.height/2 );
+    var centerX = this.width/2 * this.pixelRatio;
+    var centerY = this.height/2 * this.pixelRatio;
+    ctx.translate( centerX, centerY );
   }
   var scale = this.pixelRatio * this.zoom;
   ctx.scale( scale, scale );
@@ -1743,8 +1745,7 @@ CylinderEllipse.prototype.copyGraph = noop;
 var Cylinder = Shape.subclass({
   diameter: 1,
   length: 1,
-  frontBaseColor: undefined,
-  rearBaseColor: undefined,
+  frontFace: undefined,
   fill: true,
 });
 
@@ -1771,14 +1772,14 @@ Cylinder.prototype.create = function(/* options */) {
     color: this.color,
     stroke: this.stroke,
     fill: this.fill,
-    backface: this.frontBaseColor || baseColor,
+    backface: this.frontFace || baseColor,
     visible: this.visible,
   });
   // back outside base
   this.rearBase = this.group.rearBase = this.frontBase.copy({
     translate: { z: -baseZ },
     rotate: { y: 0 },
-    backface: this.rearBaseColor || baseColor,
+    backface: baseColor,
   });
 };
 
