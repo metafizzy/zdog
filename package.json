@@ -13,8 +13,8 @@
     "uglify-js": "^3.5.3"
   },
   "scripts": {
-    "preversion": "npm test",
-    "version": "node ./tasks/version && make dist && git add -A dist js",
+    "preversion": "make lint",
+    "version": "make version",
     "test": "make lint"
   },
   "repository": {
