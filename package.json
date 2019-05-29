@@ -7,15 +7,40 @@
     "dist/",
     "js/"
   ],
-  "dependencies": {},
   "devDependencies": {
-    "jshint": "^2.10.2",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^2.3.0",
+    "lint-staged": "^8.1.7",
+    "prettier": "^1.17.1",
     "uglify-js": "^3.5.3"
   },
   "scripts": {
-    "preversion": "make lint",
+    "preversion": "npm test",
     "version": "make version",
-    "test": "make lint"
+    "format:other": "yarn prettier --write",
+    "format:js": "yarn test:js --fix",
+    "format": "yarn format:js && yarn format:other",
+    "prettier": "prettier \"**/*.{json,md}\"",
+    "test:other": "yarn prettier --list-different",
+    "test:js": "eslint --ignore-path .gitignore --ignore-path .prettierignore \"**/*.js\"",
+    "test": "yarn test:other && yarn test:js"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "repository": {
     "type": "git",

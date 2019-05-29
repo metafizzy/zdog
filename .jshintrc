@@ -1,8 +1,0 @@
-{
-  "browser": true,
-  "unused": true,
-  "undef": true,
-  "globals": {
-    "Zdog": false
-  }
-}
