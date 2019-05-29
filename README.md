@@ -76,7 +76,7 @@ Hi, [Dave here](https://desandro.com). I wanted to make a video game. I needed a
 
 Zdog is directly inspired by [Dogz](https://en.wikipedia.org/wiki/Petz), a virtual pet game by P.F. Magic released in 1995. It used flat 2D circle sprites to render the Dogz’ models, but in a 3D scene. [See Dogz playthrough video here.](https://www.youtube.com/watch?v=6lKSn_cHw5k) Dogz were fully animated in real time, running, flopping, scratching (on Windows 3.1!). It was remarkable.
 
-Zdog uses the same principal. It renders all shapes using the 2D drawing APIs in either `<canvas>` or `<svg>`. Spheres are actually dots. Toruses are actually circles . Capsules are actually thick lines. It’s a simple, but effective trick.
+Zdog uses the same principle. It renders all shapes using the 2D drawing APIs in either `<canvas>` or `<svg>`. Spheres are actually dots. Toruses are actually circles. Capsules are actually thick lines. It’s a simple, but effective trick.
 
 Zdog is pronounced "Zee-dog" in American parlance or "Zed-dog" in British.
 
