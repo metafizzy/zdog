@@ -30,8 +30,28 @@
     /* globals define */ // AMD
     define( 'zdog', [], root.Zdog );
   }
-})( this, function factory( Zdog ) {
+})( this, function factory( Zdog, CanvasRenderer, SvgRenderer, Vector, Anchor,
+    Dragger, Illustration, PathCommand, Shape, Group, Rect, RoundedRect,
+    Ellipse, Polygon, Hemisphere, Cylinder, Cone, Box ) {
 
-  return Zdog;
+      Zdog.CanvasRenderer = CanvasRenderer;
+      Zdog.SvgRenderer = SvgRenderer;
+      Zdog.Vector = Vector;
+      Zdog.Anchor = Anchor;
+      Zdog.Dragger = Dragger;
+      Zdog.Illustration = Illustration;
+      Zdog.PathCommand = PathCommand;
+      Zdog.Shape = Shape;
+      Zdog.Group = Group;
+      Zdog.Rect = Rect;
+      Zdog.RoundedRect = RoundedRect;
+      Zdog.Ellipse = Ellipse;
+      Zdog.Polygon = Polygon;
+      Zdog.Hemisphere = Hemisphere;
+      Zdog.Cylinder = Cylinder;
+      Zdog.Cone = Cone;
+      Zdog.Box = Box;
 
-});
+      return Zdog;
+    }
+);
