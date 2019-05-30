@@ -9,8 +9,7 @@ lint:
 
 dist: bundle uglify
 
-versionTick:
+version:
 	node ./tasks/version
-
-version: versionTick dist
+	make dist
 	git add -A dist js
