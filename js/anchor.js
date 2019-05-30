@@ -6,13 +6,15 @@
   // module definition
   if ( typeof module == 'object' && module.exports ) {
     /* globals module, require */ // CommonJS
-    module.exports = factory( require('./boilerplate'), require('./vector') );
+    module.exports = factory( require('./boilerplate'), require('./vector'),
+       require('./canvas-renderer'), require('./svg-renderer') );
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Anchor = factory( Zdog, Zdog.Vector );
+    Zdog.Anchor = factory( Zdog, Zdog.Vector, Zdog.CanvasRenderer,
+        Zdog.SvgRenderer );
   }
-}( this, function factory( utils, Vector ) {
+}( this, function factory( utils, Vector, CanvasRenderer, SvgRenderer ) {
 
 var TAU = utils.TAU;
 var onePoint = { x: 1, y: 1, z: 1 };
@@ -148,6 +150,7 @@ Anchor.prototype.updateSortValue = function() {
 
 Anchor.prototype.render = function() {};
 
+// TODO refactor out CanvasRenderer so its not a dependency within anchor.js
 Anchor.prototype.renderGraphCanvas = function( ctx ) {
   if ( !ctx ) {
     throw new Error( 'ctx is ' + ctx + '. ' +
@@ -155,7 +158,7 @@ Anchor.prototype.renderGraphCanvas = function( ctx ) {
   }
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
-    item.render( ctx, Zdog.CanvasRenderer );
+    item.render( ctx, CanvasRenderer );
   });
 };
 
@@ -166,7 +169,7 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
   }
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
-    item.render( svg, Zdog.SvgRenderer );
+    item.render( svg, SvgRenderer );
   });
 };
 

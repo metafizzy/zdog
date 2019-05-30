@@ -1,5 +1,3 @@
-/* jshint node: true, esversion: 6, unused: true, undef: true */
-
 const fs = require('fs');
 const execSync = require('child_process').execSync;
 
