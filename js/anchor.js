@@ -110,7 +110,7 @@ Anchor.prototype.transform = function( translation, rotation, scale ) {
 
 Anchor.prototype.updateGraph = function() {
   this.update();
-  this.checkFlatGraph();
+  this.updateFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
   });
@@ -122,11 +122,18 @@ Anchor.shapeSorter = function( a, b ) {
   return a.sortValue - b.sortValue;
 };
 
-Anchor.prototype.checkFlatGraph = function() {
-  if ( !this.flatGraph ) {
-    this.updateFlatGraph();
-  }
-};
+// custom getter to check for flatGraph before using it
+Object.defineProperty( Anchor.prototype, 'flatGraph', {
+  get: function() {
+    if ( !this._flatGraph ) {
+      this.updateFlatGraph();
+    }
+    return this._flatGraph;
+  },
+  set: function( graph ) {
+    this._flatGraph = graph;
+  },
+});
 
 Anchor.prototype.updateFlatGraph = function() {
   this.flatGraph = this.getFlatGraph();
@@ -135,9 +142,13 @@ Anchor.prototype.updateFlatGraph = function() {
 // return Array of self & all child graph items
 Anchor.prototype.getFlatGraph = function() {
   var flatGraph = [ this ];
+  return this.addChildFlatGraph( flatGraph );
+};
+
+Anchor.prototype.addChildFlatGraph = function( flatGraph ) {
   this.children.forEach( function( child ) {
     var childFlatGraph = child.getFlatGraph();
-    flatGraph = flatGraph.concat( childFlatGraph );
+    Array.prototype.push.apply( flatGraph, childFlatGraph );
   });
   return flatGraph;
 };
@@ -156,7 +167,6 @@ Anchor.prototype.renderGraphCanvas = function( ctx ) {
     throw new Error( 'ctx is ' + ctx + '. ' +
       'Canvas context required for render. Check .renderGraphCanvas( ctx ).' );
   }
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, CanvasRenderer );
   });

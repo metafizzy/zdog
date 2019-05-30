@@ -23,7 +23,6 @@ var Group = Anchor.subclass({
 
 Group.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
     sortValueTotal += item.sortValue;
@@ -44,27 +43,21 @@ Group.prototype.render = function( ctx, renderer ) {
     return;
   }
 
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, renderer );
   });
 };
 
-// do not include children, group handles rendering & sorting internally
-Group.prototype.getFlatGraph = function() {
-  return [ this ];
-};
-
-// get flat graph only used for group
-// do not include in parent flatGraphs
+// actual group flatGraph only used inside group
 Group.prototype.updateFlatGraph = function() {
   // do not include self
   var flatGraph = [];
-  this.children.forEach( function( child ) {
-    var childFlatGraph = child.getFlatGraph();
-    flatGraph = flatGraph.concat( childFlatGraph );
-  });
-  this.flatGraph = flatGraph;
+  this.flatGraph = this.addChildFlatGraph( flatGraph ); 
+};
+
+// do not include children, group handles rendering & sorting internally
+Group.prototype.getFlatGraph = function() {
+  return [ this ];
 };
 
 return Group;
