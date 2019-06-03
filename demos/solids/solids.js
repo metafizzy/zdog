@@ -156,7 +156,7 @@ new Zdog.Cone({
     var rotor2 = new Zdog.Anchor({
       addTo: rotor1,
       translate: { z: inradius, y: height/2 },
-      rotate: { x: Math.acos(1/3) * -1 + TAU/4  },
+      rotate: { x: Math.acos(1/3) * -1 + TAU/4 },
     });
     triangle.copy({
       addTo: rotor2,
@@ -284,7 +284,7 @@ solids.push( cube );
     for ( var i=0; i < 5; i++ ) {
       var rotor1 = new Zdog.Anchor({
         addTo: dodecahedron,
-        rotate: { y: TAU/5 * (i) },
+        rotate: { y: TAU/5 * i },
       });
       var rotor2 = new Zdog.Anchor({
         addTo: rotor1,
@@ -377,7 +377,7 @@ solids.push( cube );
         addTo: sideAnchor,
         translate: { y: -faceRadius/2 },
         rotate: { y: TAU/2 },
-        color: sideColors[i]
+        color: sideColors[i],
       });
 
     }

@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./anchor') );
   } else {
     // browser global
@@ -52,7 +52,7 @@ Group.prototype.render = function( ctx, renderer ) {
 Group.prototype.updateFlatGraph = function() {
   // do not include self
   var flatGraph = [];
-  this.flatGraph = this.addChildFlatGraph( flatGraph ); 
+  this.flatGraph = this.addChildFlatGraph( flatGraph );
 };
 
 // do not include children, group handles rendering & sorting internally

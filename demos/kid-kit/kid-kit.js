@@ -127,7 +127,7 @@ new Zdog.Shape({
 var innerEarXShift = 4;
 new Zdog.Shape({
   path: [
-    { x: earA.x - innerEarXShift , y: earA.y-3 },
+    { x: earA.x - innerEarXShift, y: earA.y-3 },
     { x: earD.x, y: earD.y+5 },
     { x: earE.x + innerEarXShift, y: earE.y+2 },
   ],
@@ -242,7 +242,7 @@ var cloakSide = new Zdog.Anchor({
 });
 
 // top straps
-var topCloakStrap =   new Zdog.Shape({
+var topCloakStrap = new Zdog.Shape({
   path: [
     { x: cloakX0, y: cloakY0, z: cloakZ0 },
     { x: cloakX0, y: cloakY1, z: cloakZ1 },

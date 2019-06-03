@@ -123,7 +123,7 @@ function spin() {
   var progress = ticker / cycleCount;
   var turn = Math.floor( progress % 4 );
   var theta = Zdog.easeInOut( progress % 1, 3 ) * TAU;
-  if ( turn == 0  || turn == 2 ) {
+  if ( turn == 0 || turn == 2 ) {
     model.rotate.y = theta;
   } else if ( turn == 1 ) {
     model.rotate.x = theta;

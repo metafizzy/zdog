@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./ellipse') );
   } else {
     // browser global
@@ -45,10 +45,10 @@ Hemisphere.prototype.renderDome = function( ctx, renderer ) {
   } else if ( renderer.isSvg ) {
     // svg
     contourAngle = (contourAngle - TAU/4) / TAU * 360;
-    this.domeSvgElement.setAttribute( 'd', 'M ' + (-domeRadius) + ',0 A ' +
-      domeRadius + ',' + domeRadius + ' 0 0 1 ' + domeRadius  + ',0' );
+    this.domeSvgElement.setAttribute( 'd', 'M ' + -domeRadius + ',0 A ' +
+        domeRadius + ',' + domeRadius + ' 0 0 1 ' + domeRadius + ',0' );
     this.domeSvgElement.setAttribute( 'transform',
-      'translate(' + x + ',' + y + ' ) rotate(' + contourAngle + ')' );
+        'translate(' + x + ',' + y + ' ) rotate(' + contourAngle + ')' );
   }
 
   renderer.stroke( ctx, elem, this.stroke, this.color, this.getLineWidth() );

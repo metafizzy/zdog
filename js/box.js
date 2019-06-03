@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./anchor'),
         require('./shape'), require('./rect') );
   } else {

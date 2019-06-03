@@ -102,12 +102,12 @@ var brimBridge = new Zdog.Shape({
     { bezier: [
       { x: -16, y: 4, z: 30 },
       brimEdge,
-      brimTip
+      brimTip,
     ]},
   ],
 });
 brimBridge.copy({
-  scale: { x: - 1},
+  scale: { x: -1},
 });
 
 // glasses front top
@@ -115,7 +115,7 @@ var glassFront = new Zdog.Shape({
   addTo: illo,
   path: [
     { x: -16 },
-    { x:  16 }
+    { x:  16 },
   ],
   translate: { y: 8, z: 12 },
   color: eggplant,

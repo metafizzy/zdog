@@ -165,7 +165,7 @@ var rightFoot = new Zdog.Shape({
 
 rightFoot.copy({
   translate: { x: 9.5, y: 6, z: -6 },
-  rotate: { z: -1.1, y: 0.8 }
+  rotate: { z: -1.1, y: 0.8 },
 });
 
 // ----- umbrella ----- //

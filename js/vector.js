@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate') );
   } else {
     // browser global
@@ -120,10 +120,10 @@ Vector.prototype.transform = function( translation, rotation, scale ) {
   return this;
 };
 
-Vector.prototype.lerp = function( pos, t ) {
-  this.x = utils.lerp( this.x, pos.x || 0, t );
-  this.y = utils.lerp( this.y, pos.y || 0, t );
-  this.z = utils.lerp( this.z, pos.z || 0, t );
+Vector.prototype.lerp = function( pos, alpha ) {
+  this.x = utils.lerp( this.x, pos.x || 0, alpha );
+  this.y = utils.lerp( this.y, pos.y || 0, alpha );
+  this.z = utils.lerp( this.z, pos.z || 0, alpha );
   return this;
 };
 

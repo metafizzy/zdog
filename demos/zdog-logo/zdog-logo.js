@@ -63,7 +63,7 @@ var endCap = new Zdog.Rect({
   backface: false,
 });
 endCap.copy({
-  translate: { x: 20,  y: 16 },
+  translate: { x: 20, y: 16 },
   rotate: { y: -TAU/4 },
 });
 
@@ -129,13 +129,13 @@ new Zdog.Ellipse({
 var tongueAnchor = new Zdog.Anchor({
   addTo: backGroup,
   translate: { x: -6, y: -7 },
-  rotate: {  y: TAU/4  },
+  rotate: { y: TAU/4 },
 
 });
 
 var tongueH = 12;
 var tongueS = 5;
-var tongueTip  = tongueH + tongueS;
+var tongueTip = tongueH + tongueS;
 
 new Zdog.Shape({
   addTo: tongueAnchor,
@@ -145,11 +145,11 @@ new Zdog.Shape({
     { x:  tongueS, y: tongueH },
     { arc: [
       { x: tongueS, y: tongueTip },
-      { x: 0, y: tongueTip }
+      { x: 0, y: tongueTip },
     ]},
     { arc: [
       { x: -tongueS, y: tongueTip },
-      { x: -tongueS, y: tongueH }
+      { x: -tongueS, y: tongueH },
     ]},
   ],
   rotate: { x: TAU/4 - Math.atan(16/22) },

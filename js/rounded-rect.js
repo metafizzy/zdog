@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./shape') );
   } else {
     // browser global
@@ -22,6 +22,9 @@ var RoundedRect = Shape.subclass({
 });
 
 RoundedRect.prototype.setPath = function() {
+  /* eslint
+     id-length: [ "error", { "min": 2, "exceptions": [ "x", "y" ] }],
+     key-spacing: "off" */
   var xA = this.width / 2;
   var yA = this.height / 2;
   var shortSide = Math.min( xA, yA );

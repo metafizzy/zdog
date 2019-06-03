@@ -11,7 +11,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "jshint": "^2.10.2",
+    "eslint": "^5.16.0",
     "uglify-js": "^3.5.3"
   },
   "scripts": {

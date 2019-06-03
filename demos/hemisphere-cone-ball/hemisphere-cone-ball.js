@@ -45,7 +45,7 @@ var cone = new Zdog.Cone({
   stroke: false,
 });
 
-var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
+var colorWheel = [ eggplant, garnet, orange, gold, yellow ];
 
 [ true, false ].forEach( function( isHemi ) {
   var shape = isHemi ? hemi : cone;
@@ -71,9 +71,9 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow, ];
 // ----- animate ----- //
 
 var keyframes = [
-  { x: TAU * 0,   y: TAU * 0 },
-  { x: TAU * 1/2, y: TAU * 1/2 },
-  { x: TAU * 1,   y: TAU * 1 },
+  { x: TAU*0, y: TAU*0 },
+  { x: TAU/2, y: TAU/2 },
+  { x: TAU*1, y: TAU*1 },
 ];
 
 var ticker = 0;
@@ -97,7 +97,7 @@ function spin() {
   var keyB = keyframes[ turn + 1 ];
   var thetaX = Zdog.lerp( keyA.x, keyB.x, tween );
   illo.rotate.x = Math.cos( thetaX ) * TAU/12;
-  illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, tween ) ;
+  illo.rotate.y = Zdog.lerp( keyA.y, keyB.y, tween );
   ticker++;
 }
 

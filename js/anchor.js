@@ -5,9 +5,9 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./vector'),
-       require('./canvas-renderer'), require('./svg-renderer') );
+        require('./canvas-renderer'), require('./svg-renderer') );
   } else {
     // browser global
     var Zdog = root.Zdog;

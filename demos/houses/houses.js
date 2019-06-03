@@ -84,7 +84,7 @@ new Zdog.Shape({
       { x: 2, y: -3 },
       { x: 2, y: -1 },
     ]},
-    { x: 2, y: 3 }
+    { x: 2, y: 3 },
   ],
   translate: { x: 2, y: 4 },
   color: eggplant,

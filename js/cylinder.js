@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'),
         require('./path-command'), require('./shape'), require('./group'),
         require('./ellipse') );
@@ -20,7 +20,7 @@
 function noop() {}
 
 // ----- CylinderGroup ----- //
-  
+
 var CylinderGroup = Group.subclass({
   color: '#333',
   updateSort: true,

@@ -86,7 +86,7 @@ var armSize = 6;
     path: [ { x: 0 }, { x: armSize } ],
     scale: { x: xSide },
     translate: { x: 4.5 * xSide, y: -8, z: -4 },
-    rotate: isRight ? { y: TAU/8, z: -TAU/16 } : { y: TAU/8  },
+    rotate: isRight ? { y: TAU/8, z: -TAU/16 } : { y: TAU/8 },
     color: eggplant,
     stroke: 4,
   });
@@ -95,7 +95,8 @@ var armSize = 6;
     addTo: upperArm,
     path: [ { x: 0 }, { x: armSize-2 } ],
     translate: { x: armSize },
-    rotate: isRight ? { z: TAU/16 * 3, y: TAU/4 } : { z: -TAU/4, x: -TAU/32 * 2, y: TAU/8 },
+    rotate: isRight ? { z: TAU/16 * 3, y: TAU/4 } :
+      { z: -TAU/4, x: -TAU/32 * 2, y: TAU/8 },
     color: orange,
     stroke: 4,
   });

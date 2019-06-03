@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */// CommonJS
+    // CommonJS
     module.exports = factory( require('./shape') );
   } else {
     // browser global
@@ -22,6 +22,7 @@ var Rect = Shape.subclass({
 Rect.prototype.setPath = function() {
   var x = this.width / 2;
   var y = this.height / 2;
+  /* eslint key-spacing: "off" */
   this.path = [
     { x: -x, y: -y },
     { x:  x, y: -y },

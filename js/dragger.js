@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module */ // CommonJS
+    // CommonJS
     module.exports = factory( root );
   } else {
     // browser global
@@ -49,7 +49,7 @@ Dragger.prototype.create = function( options ) {
 Dragger.prototype.bindDrag = function( element ) {
   element = this.getQueryElement( element );
   if ( element ) {
-    element.addEventListener( downEvent , this );
+    element.addEventListener( downEvent, this );
   }
 };
 

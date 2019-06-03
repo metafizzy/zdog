@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./vector') );
   } else {
     // browser global
@@ -73,14 +73,16 @@ PathCommand.prototype.bezier = function( ctx, elem, renderer ) {
   return renderer.bezier( ctx, elem, cp0, cp1, end );
 };
 
+var arcHandleLength = 9/16;
+
 PathCommand.prototype.arc = function( ctx, elem, renderer ) {
   var prev = this.previousPoint;
   var corner = this.renderPoints[0];
   var end = this.renderPoints[1];
   var cp0 = this.controlPoints[0];
   var cp1 = this.controlPoints[1];
-  cp0.set( prev ).lerp( corner, 9/16 );
-  cp1.set( end ).lerp( corner, 9/16 );
+  cp0.set( prev ).lerp( corner, arcHandleLength );
+  cp1.set( end ).lerp( corner, arcHandleLength );
   return renderer.bezier( ctx, elem, cp0, cp1, end );
 };
 

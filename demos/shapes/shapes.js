@@ -67,7 +67,7 @@ new Zdog.Shape({
     { move: { y: -1 } },
     { y: 1 },
     { move: { z: -1 } },
-    { z: 1 }
+    { z: 1 },
   ],
   scale: 1.25,
   stroke: 1,

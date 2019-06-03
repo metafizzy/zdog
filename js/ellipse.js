@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./shape') );
   } else {
     // browser global
@@ -33,7 +33,7 @@ Ellipse.prototype.setPath = function() {
     { arc: [ // top right
       { x: x, y: -y },
       { x: x, y: 0 },
-    ]}
+    ]},
   ];
   // bottom right
   if ( this.quarters > 1 ) {

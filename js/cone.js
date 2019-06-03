@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./vector'),
         require('./path-command'), require('./anchor'), require('./ellipse') );
   } else {
@@ -69,7 +69,8 @@ Cone.prototype.renderConeSurface = function( ctx, renderer ) {
     return;
   }
   // update tangents
-  var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) + TAU/2;
+  var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) +
+      TAU/2;
   var projectLength = apexDistance / eccen;
   var projectAngle = Math.acos( radius / projectLength );
   // set tangent points

@@ -5,7 +5,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./anchor'),
         require('./dragger') );
   } else {
@@ -48,7 +48,7 @@ Illustration.prototype.setElement = function( element ) {
   }
 
   var nodeName = element.nodeName.toLowerCase();
-  if ( nodeName == 'canvas'  ) {
+  if ( nodeName == 'canvas' ) {
     this.setCanvas( element );
   } else if ( nodeName == 'svg' ) {
     this.setSvg( element );
@@ -163,7 +163,7 @@ Illustration.prototype.prerenderCanvas = function() {
   this.onPrerender( ctx );
 };
 
-Illustration.prototype.postrenderCanvas = function () {
+Illustration.prototype.postrenderCanvas = function() {
   this.ctx.restore();
 };
 
@@ -217,6 +217,7 @@ Illustration.prototype.setDragRotate = function( item ) {
   if ( !item ) {
     return;
   } else if ( item === true ) {
+    /* eslint consistent-this: "off" */
     item = this;
   }
   this.dragRotate = item;

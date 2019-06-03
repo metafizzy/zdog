@@ -13,7 +13,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module */ // CommonJS
+    // CommonJS
     module.exports = factory();
   } else {
     // browser global
@@ -32,8 +32,8 @@ Zdog.extend = function( a, b ) {
   return a;
 };
 
-Zdog.lerp = function( a, b, t ) {
-  return ( b - a ) * t + a;
+Zdog.lerp = function( a, b, alpha ) {
+  return ( b - a ) * alpha + a;
 };
 
 Zdog.modulo = function( num, div ) {
@@ -52,7 +52,7 @@ var powerMultipliers = {
   },
   5: function( a ) {
     return a * a * a * a * a;
-  }
+  },
 };
 
 Zdog.easeInOut = function( alpha, power ) {
@@ -62,11 +62,11 @@ Zdog.easeInOut = function( alpha, power ) {
   alpha = Math.max( 0, Math.min( 1, alpha ) );
   var isFirstHalf = alpha < 0.5;
   var slope = isFirstHalf ? alpha : 1 - alpha;
-  slope = slope / 0.5;
+  slope /= 0.5;
   // make easing steeper with more multiples
   var powerMultiplier = powerMultipliers[ power ] || powerMultipliers[2];
   var curve = powerMultiplier( slope );
-  curve = curve / 2;
+  curve /= 2;
   return isFirstHalf ? curve : 1 - curve;
 };
 
