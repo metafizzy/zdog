@@ -76,7 +76,7 @@ Hi, [Dave here](https://desandro.com). I wanted to make a video game. I needed a
 
 Zdog is directly inspired by [Dogz](https://en.wikipedia.org/wiki/Petz), a virtual pet game by P.F. Magic released in 1995. It used flat 2D circle sprites to render the Dogz’ models, but in a 3D scene. [See Dogz playthrough video here.](https://www.youtube.com/watch?v=6lKSn_cHw5k) Dogz were fully animated in real time, running, flopping, scratching (on Windows 3.1!). It was remarkable.
 
-Zdog uses the same principle. It renders all shapes using the 2D drawing APIs in either `<canvas>` or `<svg>`. Spheres are actually dots. Toruses are actually circles. Capsules are actually thick lines. It’s a simple, but effective trick.
+Zdog uses the same principle. It renders all shapes using the 2D drawing APIs in either `<canvas>` or `<svg>`. Spheres are actually dots. Toruses are actually circles. Capsules are actually thick lines. It’s a simple, but effective trick. The underlying 3D math comes from [Rotating 3D Shapes](https://www.khanacademy.org/computing/computer-programming/programming-games-visualizations/programming-3d-shapes/a/rotating-3d-shapes) by [Peter Collingridge](https://petercollingridge.appspot.com/3D-tutorial/rotating-objects).
 
 Zdog is pronounced "Zee-dog" in American parlance or "Zed-dog" in British.
 
@@ -84,10 +84,14 @@ Zdog is pronounced "Zee-dog" in American parlance or "Zed-dog" in British.
 
 Zdog v1 is a beta-release, of sorts. This is my first time creating a 3D engine, so I probably got some stuff wrong. Expect lots of changes for v2. Provide input and select new features on the [Zdog issue tracker on GitHub](https://github.com/metafizzy/zdog/issues).
 
-### Other Zdog repos
+### More Zdog resources
 
-+ [zdog-demos](https://github.com/metafizzy/zdog-demos) - Bigger, wilder Zdog demos
++ [Zdog demos CodePen Collection](https://github.com/metafizzy/zdog-demos) - Bigger, wilder Zdog demos
++ [zdog-demos](https://github.com/metafizzy/zdog-demos) - My repo for the bigger, wilder Zdog demos
++ [Made with Zdog CodePen Collection](https://codepen.io/collection/DzdGMe/) - Community Zdog creations
++ [Made with Zdog on Twitter](https://twitter.com/i/moments/1135000612356206592)
 + [zdog-docs](https://github.com/metafizzy/zdog-docs) - Documentation site source code for [zzz.dog](https://zzz.dog)
++ [zDogPy](https://github.com/gferreira/zdogpy) - Python port of Zdog for DrawBot
 
 ---
 
