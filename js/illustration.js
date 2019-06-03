@@ -134,7 +134,8 @@ Illustration.prototype.setSizeCanvas = function( width, height ) {
   var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
   this.element.width = this.canvasWidth = width * pixelRatio;
   this.element.height = this.canvasHeight = height * pixelRatio;
-  if ( pixelRatio > 1 ) {
+  var needsHighPixelRatioSizing = pixelRatio > 1 && !this.resize;
+  if ( needsHighPixelRatioSizing ) {
     this.element.style.width = width + 'px';
     this.element.style.height = height + 'px';
   }
