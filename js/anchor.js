@@ -177,7 +177,6 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
     throw new Error( 'svg is ' + svg + '. ' +
       'SVG required for render. Check .renderGraphSvg( svg ).' );
   }
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( svg, SvgRenderer );
   });
