@@ -1,5 +1,5 @@
 /*!
- * Zdog v1.0.1
+ * Zdog v1.0.2
  * Round, flat, designer-friendly pseudo-3D engine
  * Licensed MIT
  * https://zzz.dog
@@ -13,7 +13,7 @@
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module */ // CommonJS
+    // CommonJS
     module.exports = factory();
   } else {
     // browser global
@@ -32,8 +32,8 @@ Zdog.extend = function( a, b ) {
   return a;
 };
 
-Zdog.lerp = function( a, b, t ) {
-  return ( b - a ) * t + a;
+Zdog.lerp = function( a, b, alpha ) {
+  return ( b - a ) * alpha + a;
 };
 
 Zdog.modulo = function( num, div ) {
@@ -52,7 +52,7 @@ var powerMultipliers = {
   },
   5: function( a ) {
     return a * a * a * a * a;
-  }
+  },
 };
 
 Zdog.easeInOut = function( alpha, power ) {
@@ -62,11 +62,11 @@ Zdog.easeInOut = function( alpha, power ) {
   alpha = Math.max( 0, Math.min( 1, alpha ) );
   var isFirstHalf = alpha < 0.5;
   var slope = isFirstHalf ? alpha : 1 - alpha;
-  slope = slope / 0.5;
+  slope /= 0.5;
   // make easing steeper with more multiples
   var powerMultiplier = powerMultipliers[ power ] || powerMultipliers[2];
   var curve = powerMultiplier( slope );
-  curve = curve / 2;
+  curve /= 2;
   return isFirstHalf ? curve : 1 - curve;
 };
 
@@ -80,7 +80,7 @@ return Zdog;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module */ // CommonJS
+    // CommonJS
     module.exports = factory();
   } else {
     // browser global
@@ -151,7 +151,7 @@ return CanvasRenderer;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module */ // CommonJS
+    // CommonJS
     module.exports = factory();
   } else {
     // browser global
@@ -231,7 +231,7 @@ return SvgRenderer;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate') );
   } else {
     // browser global
@@ -346,10 +346,10 @@ Vector.prototype.transform = function( translation, rotation, scale ) {
   return this;
 };
 
-Vector.prototype.lerp = function( pos, t ) {
-  this.x = utils.lerp( this.x, pos.x || 0, t );
-  this.y = utils.lerp( this.y, pos.y || 0, t );
-  this.z = utils.lerp( this.z, pos.z || 0, t );
+Vector.prototype.lerp = function( pos, alpha ) {
+  this.x = utils.lerp( this.x, pos.x || 0, alpha );
+  this.y = utils.lerp( this.y, pos.y || 0, alpha );
+  this.z = utils.lerp( this.z, pos.z || 0, alpha );
   return this;
 };
 
@@ -385,14 +385,16 @@ return Vector;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
-    module.exports = factory( require('./boilerplate'), require('./vector') );
+    // CommonJS
+    module.exports = factory( require('./boilerplate'), require('./vector'),
+        require('./canvas-renderer'), require('./svg-renderer') );
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Anchor = factory( Zdog, Zdog.Vector );
+    Zdog.Anchor = factory( Zdog, Zdog.Vector, Zdog.CanvasRenderer,
+        Zdog.SvgRenderer );
   }
-}( this, function factory( utils, Vector ) {
+}( this, function factory( utils, Vector, CanvasRenderer, SvgRenderer ) {
 
 var TAU = utils.TAU;
 var onePoint = { x: 1, y: 1, z: 1 };
@@ -488,7 +490,7 @@ Anchor.prototype.transform = function( translation, rotation, scale ) {
 
 Anchor.prototype.updateGraph = function() {
   this.update();
-  this.checkFlatGraph();
+  this.updateFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
   });
@@ -500,11 +502,18 @@ Anchor.shapeSorter = function( a, b ) {
   return a.sortValue - b.sortValue;
 };
 
-Anchor.prototype.checkFlatGraph = function() {
-  if ( !this.flatGraph ) {
-    this.updateFlatGraph();
-  }
-};
+// custom getter to check for flatGraph before using it
+Object.defineProperty( Anchor.prototype, 'flatGraph', {
+  get: function() {
+    if ( !this._flatGraph ) {
+      this.updateFlatGraph();
+    }
+    return this._flatGraph;
+  },
+  set: function( graph ) {
+    this._flatGraph = graph;
+  },
+});
 
 Anchor.prototype.updateFlatGraph = function() {
   this.flatGraph = this.getFlatGraph();
@@ -513,9 +522,13 @@ Anchor.prototype.updateFlatGraph = function() {
 // return Array of self & all child graph items
 Anchor.prototype.getFlatGraph = function() {
   var flatGraph = [ this ];
+  return this.addChildFlatGraph( flatGraph );
+};
+
+Anchor.prototype.addChildFlatGraph = function( flatGraph ) {
   this.children.forEach( function( child ) {
     var childFlatGraph = child.getFlatGraph();
-    flatGraph = flatGraph.concat( childFlatGraph );
+    Array.prototype.push.apply( flatGraph, childFlatGraph );
   });
   return flatGraph;
 };
@@ -528,14 +541,14 @@ Anchor.prototype.updateSortValue = function() {
 
 Anchor.prototype.render = function() {};
 
+// TODO refactor out CanvasRenderer so its not a dependency within anchor.js
 Anchor.prototype.renderGraphCanvas = function( ctx ) {
   if ( !ctx ) {
     throw new Error( 'ctx is ' + ctx + '. ' +
       'Canvas context required for render. Check .renderGraphCanvas( ctx ).' );
   }
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
-    item.render( ctx, Zdog.CanvasRenderer );
+    item.render( ctx, CanvasRenderer );
   });
 };
 
@@ -546,7 +559,7 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
   }
   this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
-    item.render( svg, Zdog.SvgRenderer );
+    item.render( svg, SvgRenderer );
   });
 };
 
@@ -622,13 +635,13 @@ return Anchor;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module */ // CommonJS
-    module.exports = factory();
+    // CommonJS
+    module.exports = factory( root );
   } else {
     // browser global
-    root.Zdog.Dragger = factory();
+    root.Zdog.Dragger = factory( root );
   }
-}( this, function factory() {
+}( this, function factory( window ) {
 
 // quick & dirty drag event stuff
 // messes up if multiple pointers/touches
@@ -666,7 +679,7 @@ Dragger.prototype.create = function( options ) {
 Dragger.prototype.bindDrag = function( element ) {
   element = this.getQueryElement( element );
   if ( element ) {
-    element.addEventListener( downEvent , this );
+    element.addEventListener( downEvent, this );
   }
 };
 
@@ -739,7 +752,7 @@ return Dragger;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./anchor'),
         require('./dragger') );
   } else {
@@ -782,7 +795,7 @@ Illustration.prototype.setElement = function( element ) {
   }
 
   var nodeName = element.nodeName.toLowerCase();
-  if ( nodeName == 'canvas'  ) {
+  if ( nodeName == 'canvas' ) {
     this.setCanvas( element );
   } else if ( nodeName == 'svg' ) {
     this.setSvg( element );
@@ -868,7 +881,8 @@ Illustration.prototype.setSizeCanvas = function( width, height ) {
   var pixelRatio = this.pixelRatio = window.devicePixelRatio || 1;
   this.element.width = this.canvasWidth = width * pixelRatio;
   this.element.height = this.canvasHeight = height * pixelRatio;
-  if ( pixelRatio > 1 ) {
+  var needsHighPixelRatioSizing = pixelRatio > 1 && !this.resize;
+  if ( needsHighPixelRatioSizing ) {
     this.element.style.width = width + 'px';
     this.element.style.height = height + 'px';
   }
@@ -897,7 +911,7 @@ Illustration.prototype.prerenderCanvas = function() {
   this.onPrerender( ctx );
 };
 
-Illustration.prototype.postrenderCanvas = function () {
+Illustration.prototype.postrenderCanvas = function() {
   this.ctx.restore();
 };
 
@@ -951,6 +965,7 @@ Illustration.prototype.setDragRotate = function( item ) {
   if ( !item ) {
     return;
   } else if ( item === true ) {
+    /* eslint consistent-this: "off" */
     item = this;
   }
   this.dragRotate = item;
@@ -985,7 +1000,7 @@ return Illustration;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./vector') );
   } else {
     // browser global
@@ -1053,14 +1068,16 @@ PathCommand.prototype.bezier = function( ctx, elem, renderer ) {
   return renderer.bezier( ctx, elem, cp0, cp1, end );
 };
 
+var arcHandleLength = 9/16;
+
 PathCommand.prototype.arc = function( ctx, elem, renderer ) {
   var prev = this.previousPoint;
   var corner = this.renderPoints[0];
   var end = this.renderPoints[1];
   var cp0 = this.controlPoints[0];
   var cp1 = this.controlPoints[1];
-  cp0.set( prev ).lerp( corner, 9/16 );
-  cp1.set( end ).lerp( corner, 9/16 );
+  cp0.set( prev ).lerp( corner, arcHandleLength );
+  cp1.set( end ).lerp( corner, arcHandleLength );
   return renderer.bezier( ctx, elem, cp0, cp1, end );
 };
 
@@ -1074,8 +1091,8 @@ return PathCommand;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
-    module.exports = factory( require('./boilerplate'),  require('./vector'),
+    // CommonJS
+    module.exports = factory( require('./boilerplate'), require('./vector'),
         require('./path-command'), require('./anchor') );
   } else {
     // browser global
@@ -1282,7 +1299,7 @@ return Shape;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./anchor') );
   } else {
     // browser global
@@ -1300,7 +1317,6 @@ var Group = Anchor.subclass({
 
 Group.prototype.updateSortValue = function() {
   var sortValueTotal = 0;
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
     sortValueTotal += item.sortValue;
@@ -1321,27 +1337,21 @@ Group.prototype.render = function( ctx, renderer ) {
     return;
   }
 
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, renderer );
   });
 };
 
-// do not include children, group handles rendering & sorting internally
-Group.prototype.getFlatGraph = function() {
-  return [ this ];
-};
-
-// get flat graph only used for group
-// do not include in parent flatGraphs
+// actual group flatGraph only used inside group
 Group.prototype.updateFlatGraph = function() {
   // do not include self
   var flatGraph = [];
-  this.children.forEach( function( child ) {
-    var childFlatGraph = child.getFlatGraph();
-    flatGraph = flatGraph.concat( childFlatGraph );
-  });
-  this.flatGraph = flatGraph;
+  this.flatGraph = this.addChildFlatGraph( flatGraph );
+};
+
+// do not include children, group handles rendering & sorting internally
+Group.prototype.getFlatGraph = function() {
+  return [ this ];
 };
 
 return Group;
@@ -1354,7 +1364,7 @@ return Group;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */// CommonJS
+    // CommonJS
     module.exports = factory( require('./shape') );
   } else {
     // browser global
@@ -1371,6 +1381,7 @@ var Rect = Shape.subclass({
 Rect.prototype.setPath = function() {
   var x = this.width / 2;
   var y = this.height / 2;
+  /* eslint key-spacing: "off" */
   this.path = [
     { x: -x, y: -y },
     { x:  x, y: -y },
@@ -1389,7 +1400,7 @@ return Rect;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./shape') );
   } else {
     // browser global
@@ -1406,6 +1417,9 @@ var RoundedRect = Shape.subclass({
 });
 
 RoundedRect.prototype.setPath = function() {
+  /* eslint
+     id-length: [ "error", { "min": 2, "exceptions": [ "x", "y" ] }],
+     key-spacing: "off" */
   var xA = this.width / 2;
   var yA = this.height / 2;
   var shortSide = Math.min( xA, yA );
@@ -1471,7 +1485,7 @@ return RoundedRect;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./shape') );
   } else {
     // browser global
@@ -1499,7 +1513,7 @@ Ellipse.prototype.setPath = function() {
     { arc: [ // top right
       { x: x, y: -y },
       { x: x, y: 0 },
-    ]}
+    ]},
   ];
   // bottom right
   if ( this.quarters > 1 ) {
@@ -1545,7 +1559,7 @@ return Ellipse;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./shape') );
   } else {
     // browser global
@@ -1581,7 +1595,7 @@ return Polygon;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./ellipse') );
   } else {
     // browser global
@@ -1621,10 +1635,10 @@ Hemisphere.prototype.renderDome = function( ctx, renderer ) {
   } else if ( renderer.isSvg ) {
     // svg
     contourAngle = (contourAngle - TAU/4) / TAU * 360;
-    this.domeSvgElement.setAttribute( 'd', 'M ' + (-domeRadius) + ',0 A ' +
-      domeRadius + ',' + domeRadius + ' 0 0 1 ' + domeRadius  + ',0' );
+    this.domeSvgElement.setAttribute( 'd', 'M ' + -domeRadius + ',0 A ' +
+        domeRadius + ',' + domeRadius + ' 0 0 1 ' + domeRadius + ',0' );
     this.domeSvgElement.setAttribute( 'transform',
-      'translate(' + x + ',' + y + ' ) rotate(' + contourAngle + ')' );
+        'translate(' + x + ',' + y + ' ) rotate(' + contourAngle + ')' );
   }
 
   renderer.stroke( ctx, elem, this.stroke, this.color, this.getLineWidth() );
@@ -1657,7 +1671,7 @@ return Hemisphere;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'),
         require('./path-command'), require('./shape'), require('./group'),
         require('./ellipse') );
@@ -1672,7 +1686,7 @@ return Hemisphere;
 function noop() {}
 
 // ----- CylinderGroup ----- //
-  
+
 var CylinderGroup = Group.subclass({
   color: '#333',
   updateSort: true,
@@ -1820,7 +1834,7 @@ return Cylinder;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./vector'),
         require('./path-command'), require('./anchor'), require('./ellipse') );
   } else {
@@ -1884,7 +1898,8 @@ Cone.prototype.renderConeSurface = function( ctx, renderer ) {
     return;
   }
   // update tangents
-  var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) + TAU/2;
+  var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) +
+      TAU/2;
   var projectLength = apexDistance / eccen;
   var projectAngle = Math.acos( radius / projectLength );
   // set tangent points
@@ -1944,7 +1959,7 @@ return Cone;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory( require('./boilerplate'), require('./anchor'),
         require('./shape'), require('./rect') );
   } else {
@@ -2065,33 +2080,52 @@ return Box;
 ( function( root, factory ) {
   // module definition
   if ( typeof module == 'object' && module.exports ) {
-    /* globals module, require */ // CommonJS
+    // CommonJS
     module.exports = factory(
-      require('./boilerplate'),
-      require('./canvas-renderer'),
-      require('./svg-renderer'),
-      require('./vector'),
-      require('./anchor'),
-      require('./dragger'),
-      require('./illustration'),
-      require('./path-command'),
-      require('./shape'),
-      require('./group'),
-      require('./rect'),
-      require('./rounded-rect'),
-      require('./ellipse'),
-      require('./polygon'),
-      require('./hemisphere'),
-      require('./cylinder'),
-      require('./cone'),
-      require('./box')
+        require('./boilerplate'),
+        require('./canvas-renderer'),
+        require('./svg-renderer'),
+        require('./vector'),
+        require('./anchor'),
+        require('./dragger'),
+        require('./illustration'),
+        require('./path-command'),
+        require('./shape'),
+        require('./group'),
+        require('./rect'),
+        require('./rounded-rect'),
+        require('./ellipse'),
+        require('./polygon'),
+        require('./hemisphere'),
+        require('./cylinder'),
+        require('./cone'),
+        require('./box')
     );
   } else if ( typeof define == 'function' && define.amd ) {
     /* globals define */ // AMD
     define( 'zdog', [], root.Zdog );
   }
-})( this, function factory( Zdog ) {
+})( this, function factory( Zdog, CanvasRenderer, SvgRenderer, Vector, Anchor,
+    Dragger, Illustration, PathCommand, Shape, Group, Rect, RoundedRect,
+    Ellipse, Polygon, Hemisphere, Cylinder, Cone, Box ) {
 
-  return Zdog;
+      Zdog.CanvasRenderer = CanvasRenderer;
+      Zdog.SvgRenderer = SvgRenderer;
+      Zdog.Vector = Vector;
+      Zdog.Anchor = Anchor;
+      Zdog.Dragger = Dragger;
+      Zdog.Illustration = Illustration;
+      Zdog.PathCommand = PathCommand;
+      Zdog.Shape = Shape;
+      Zdog.Group = Group;
+      Zdog.Rect = Rect;
+      Zdog.RoundedRect = RoundedRect;
+      Zdog.Ellipse = Ellipse;
+      Zdog.Polygon = Polygon;
+      Zdog.Hemisphere = Hemisphere;
+      Zdog.Cylinder = Cylinder;
+      Zdog.Cone = Cone;
+      Zdog.Box = Box;
 
+      return Zdog;
 });

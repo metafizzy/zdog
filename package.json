@@ -1,6 +1,6 @@
 {
   "name": "zdog",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Round, flat, designer-friendly pseudo-3D engine",
   "main": "js/index.js",
   "files": [
