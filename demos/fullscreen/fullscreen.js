@@ -58,7 +58,7 @@ new Zdog.Shape({
   color: orange,
 });
 
-// ----- animate -----a //
+// ----- animate ----- //
 
 function animate() {
   illo.rotate.y += isSpinning ? 0.03 : 0;
