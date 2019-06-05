@@ -1,10 +1,10 @@
 // ----- setup ----- //
 
 var isSpinning = true;
-var gold = '#EA0';
-var orange = '#E62';
-var garnet = '#C25';
 var eggplant = '#636';
+var garnet = '#C25';
+var orange = '#E62';
+var gold = '#EA0';
 
 var illo = new Zdog.Illustration({
   element: '.illo',
@@ -21,15 +21,6 @@ var illo = new Zdog.Illustration({
 
 // ----- model ----- //
 
-new Zdog.Rect({
-  width: 20,
-  height: 20,
-  addTo: illo,
-  translate: { z: -10 },
-  stroke: 2,
-  color: garnet,
-});
-
 new Zdog.Ellipse({
   diameter: 16,
   addTo: illo,
@@ -38,30 +29,43 @@ new Zdog.Ellipse({
   color: eggplant,
 });
 
-new Zdog.Shape({
-  path: [
-    { x:  0, z:  1 },
-    { x: -1, z: -1 },
-    { x:  1, z: -1 },
-  ],
-  scale: { x: 5, z: 5 },
+new Zdog.Rect({
+  width: 5,
+  height: 5,
+  addTo: illo,
+  stroke: 3,
+  color: garnet,
+});
+
+new Zdog.Rect({
+  width: 2,
+  height: 2,
   addTo: illo,
   stroke: 2,
-  fill: true,
+  translate:{
+    z: -5,
+  },
+  color: orange,
+});
+
+new Zdog.Rect({
+  width: 1,
+  height: 1,
+  addTo: illo,
+  stroke: 1,
+  translate:{
+    z: -8,
+  },
   color: gold,
 });
 
-new Zdog.Shape({
-  translate: { x: 10, y: -5 },
-  addTo: illo,
-  stroke: 7,
-  color: orange,
-});
 
 // ----- animate -----a //
 
 function animate() {
-  illo.rotate.y += isSpinning ? 0.03 : 0;
+  // Spinning 5 degrees on both axis
+  illo.rotate.y += isSpinning ? Zdog.toRadians(5) : 0;
+  illo.rotate.x += isSpinning ? Zdog.toRadians(5) : 0;
   illo.updateRenderGraph();
   requestAnimationFrame( animate );
 }
