@@ -60,7 +60,7 @@ new Zdog.Rect({
 });
 
 
-// ----- animate -----a //
+// ----- animate ----- //
 
 function animate() {
   // Spinning 5 degrees on both axis
