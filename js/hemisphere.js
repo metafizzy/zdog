@@ -20,6 +20,16 @@ var Hemisphere = Ellipse.subclass({
 
 var TAU = utils.TAU;
 
+Hemisphere.prototype.updateSortValue = function() {
+  // call super
+  Ellipse.prototype.updateSortValue.apply( this, arguments );
+  var contourAngleZ = Math.atan2( this.renderNormal.z, this.renderNormal.y );
+  contourAngleZ = utils.modulo( contourAngleZ, TAU );
+  //center of dome is half the radius.
+  var domeZ = this.diameter/2/2 * Math.sin(contourAngleZ);
+  this.sortValue -= domeZ;
+};
+
 Hemisphere.prototype.render = function( ctx, renderer ) {
   this.renderDome( ctx, renderer );
   // call super
