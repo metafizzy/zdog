@@ -44,6 +44,19 @@ Cone.prototype.create = function(/* options */) {
   ];
 };
 
+Cone.prototype.updateSortValue = function() {
+  // call super
+  Ellipse.prototype.updateSortValue.apply( this, arguments );
+  var apexNormal = new Vector();
+  apexNormal.set( this.renderOrigin )
+    .subtract( this.apex.renderOrigin );
+  var apexAngleZ = Math.atan2( apexNormal.z, apexNormal.y );
+  apexAngleZ = utils.modulo( apexAngleZ, TAU );
+  //center of cone is one third of its length.
+  var apexZ = this.length/3 * Math.sin(apexAngleZ);
+  this.sortValue -= apexZ;
+};
+
 Cone.prototype.render = function( ctx, renderer ) {
   this.renderConeSurface( ctx, renderer );
   Ellipse.prototype.render.apply( this, arguments );

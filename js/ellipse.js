@@ -58,17 +58,6 @@ Ellipse.prototype.setPath = function() {
   }
 };
 
-Ellipse.prototype.updateSortValue = function() {
-  Shape.prototype.updateSortValue.apply( this, arguments );
-  if ( this.quarters != 4 ) {
-    return;
-  }
-  // ellipse is self closing, do not count last point twice
-  var length = this.pathCommands.length;
-  var lastPoint = this.pathCommands[ length - 1 ].endRenderPoint;
-  this.sortValue -= lastPoint.z / length;
-};
-
 return Ellipse;
 
 }));
