@@ -20,12 +20,18 @@
 var downEvent = 'mousedown';
 var moveEvent = 'mousemove';
 var upEvent = 'mouseup';
-if ( window.PointerEvent ) {
-  // PointerEvent, Chrome
-  downEvent = 'pointerdown';
-  moveEvent = 'pointermove';
-  upEvent = 'pointerup';
-} else if ( 'ontouchstart' in window ) {
+/**
+ * Potential bug with PointerEvent implementation
+ * pointermove doesn't register for every move and
+ * neither does pointerup
+ */
+// if ( window.PointerEvent ) {
+//   // PointerEvent, Chrome
+//   downEvent = 'pointerdown';
+//   moveEvent = 'pointermove';
+//   upEvent = 'pointerup';
+// } else
+if ( 'ontouchstart' in window ) {
   // Touch Events, iOS Safari
   downEvent = 'touchstart';
   moveEvent = 'touchmove';
@@ -78,7 +84,7 @@ Dragger.prototype.ontouchstart = function( event ) {
 };
 
 Dragger.prototype.dragStart = function( event, pointer ) {
-  event.preventDefault();
+  if (downEvent === 'pointerdown') event.preventDefault();
   this.dragStartX = pointer.pageX;
   this.dragStartY = pointer.pageY;
   window.addEventListener( moveEvent, this );
@@ -97,7 +103,7 @@ Dragger.prototype.onpointermove = function( event ) {
 };
 
 Dragger.prototype.dragMove = function( event, pointer ) {
-  event.preventDefault();
+  if (downEvent === 'pointerdown') event.preventDefault();
   var moveX = pointer.pageX - this.dragStartX;
   var moveY = pointer.pageY - this.dragStartY;
   this.onDragMove( pointer, moveX, moveY );
