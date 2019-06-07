@@ -59,7 +59,7 @@ Anchor.prototype.setOptions = function( options ) {
   var optionKeys = this.constructor.optionKeys;
 
   for ( var key in options ) {
-    if ( optionKeys.indexOF( key ) > -1 ) {
+    if ( optionKeys.indexOf( key ) > -1 ) {
       this[ key ] = options[ key ];
     }
   }
