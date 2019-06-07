@@ -41,6 +41,9 @@ Anchor.prototype.create = function( options ) {
   if ( this.addTo ) {
     this.addTo.addChild( this );
   }
+  if ( options.importGraph ) {
+    this.importGraph( options.importGraph );
+  }
 };
 
 Anchor.defaults = {};
@@ -207,6 +210,37 @@ Anchor.prototype.copyGraph = function( options ) {
   });
   return clone;
 };
+  
+Anchor.prototype.importGraph = function( model ) {
+  if ( typeof model === 'string' ) {
+    fetch( model )
+      .then(function( res ) {
+        return res.json(); 
+      })
+      .then(function( model ) {
+        this.importGraph( model );
+      }.bind( this ))
+  } else if ( typeof model === 'object' ) {
+    this.addChild( revive( model ) );
+  }
+
+  function revive( graph ) {
+    graph = utils.extend( {}, graph );
+    var type = graph.type;
+    var children = (graph.children || []).slice( 0 );
+    delete graph.children;
+    
+    var Item = Zdog[ type ];
+    var rootGraph;
+    if ( Item ) {
+      rootGraph = new Item( graph );
+      children.forEach( function( child ) {
+        revive( utils.extend( child, { addTo: rootGraph } ) );
+      } )
+    }
+    return rootGraph;
+  }
+}
 
 Anchor.prototype.normalizeRotate = function() {
   this.rotate.x = utils.modulo( this.rotate.x, TAU );

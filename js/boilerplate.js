@@ -69,6 +69,10 @@ Zdog.easeInOut = function( alpha, power ) {
   curve /= 2;
   return isFirstHalf ? curve : 1 - curve;
 };
+  
+Zdog.exportGraph = function (model) {
+  return JSON.parse( JSON.stringify( model ) );
+}
 
 return Zdog;
 
