@@ -115,11 +115,9 @@ Shape.prototype.updateSortValue = function() {
   var howManyPoints = this.pathCommands.length;
   var sortValueTotal = 0;
   var firstPoint = this.pathCommands[0].endRenderPoint;
-  var lastPoint = this.pathCommands[this.pathCommands.length - 1].endRenderPoint;
+  var lastPoint = this.pathCommands[this.pathCommands.length-1].endRenderPoint;
   if (howManyPoints > 2 &&
-      firstPoint.x === lastPoint.x &&
-      firstPoint.y === lastPoint.y &&
-      firstPoint.z === lastPoint.z) {
+      firstPoint.isSame(lastPoint)) {
     howManyPoints -= 1; // closed shape; ignore final point.
   }
   
