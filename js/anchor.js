@@ -22,6 +22,7 @@ var onePoint = { x: 1, y: 1, z: 1 };
 function Anchor( options ) {
   this.create( options || {} );
 }
+Anchor.prototype.type = 'Anchor';
 
 Anchor.prototype.create = function( options ) {
   // set defaults & options
