@@ -212,17 +212,7 @@ Anchor.prototype.copyGraph = function( options ) {
 };
   
 Anchor.prototype.importGraph = function( model ) {
-  if ( typeof model === 'string' ) {
-    fetch( model )
-      .then(function( res ) {
-        return res.json(); 
-      })
-      .then(function( model ) {
-        this.importGraph( model );
-      }.bind( this ))
-  } else if ( typeof model === 'object' ) {
-    this.addChild( revive( model ) );
-  }
+  this.addChild( revive( model ) );
 
   function revive( graph ) {
     graph = utils.extend( {}, graph );
