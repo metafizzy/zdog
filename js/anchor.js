@@ -212,6 +212,36 @@ Anchor.prototype.normalizeRotate = function() {
   this.rotate.y = utils.modulo( this.rotate.y, TAU );
   this.rotate.z = utils.modulo( this.rotate.z, TAU );
 };
+  
+Anchor.prototype.toJSON = function () {
+  var result = {};
+  var optionKeys = this.constructor.optionKeys;
+
+  [...optionKeys, 'children'].forEach(function (key) {
+    if (['addTo', 'dragRotate', 'element', 'resize'].includes(key)) return;
+    var value = this[key];
+    var defaults = this.constructor.defaults;
+
+    if (!['undefined', 'function'].includes(typeof value) && value !== defaults[key]) {
+      if (Array.isArray(value) && value.length === 0) {
+        return;
+      }
+      if (value.toJSON) {
+        var serialized = value.toJSON();
+        if (typeof serialized !== 'undefined') {
+          if (key === 'scale' && serialized === 1) {
+            return;
+          }
+          result[key] = serialized;
+        }
+      } else {
+        result[key] = value;
+      }
+    }
+  }, this);
+
+  return result;
+};
 
 // ----- subclass ----- //
 

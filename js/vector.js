@@ -148,6 +148,28 @@ Vector.prototype.magnitude2d = function() {
 Vector.prototype.copy = function() {
   return new Vector( this );
 };
+  
+Vector.prototype.toJSON = function() {
+  var x = this.x;
+  var y = this.y;
+  var z = this.z;
+  
+  if ( x === y && y === z ) {
+    return ( x !== 0 ) ? x : undefined;
+  }
+
+  var obj = { x: x, y: y, z: z };
+  var result = {};
+  
+  Object.keys( obj ).forEach( function ( key ) {
+    var value = obj[ key ];
+    if ( value !== 0 ) {
+      result[ key ] = value;
+    }
+  })
+
+  return Object.keys( result ).length ? result : undefined;
+};
 
 return Vector;
 
