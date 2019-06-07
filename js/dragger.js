@@ -48,9 +48,12 @@ Dragger.prototype.create = function( options ) {
 
 Dragger.prototype.bindDrag = function( element ) {
   element = this.getQueryElement( element );
-  if ( element ) {
-    element.addEventListener( downEvent, this );
+  if ( !element ) {
+    return;
   }
+  // disable browser gestures #53
+  element.style.touchAction = 'none';
+  element.addEventListener( downEvent, this );
 };
 
 Dragger.prototype.getQueryElement = function( element ) {
