@@ -17,6 +17,8 @@
 var Hemisphere = Ellipse.subclass({
   fill: true,
 });
+  
+Hemisphere.prototype.type = 'Hemisphere';
 
 var TAU = utils.TAU;
 

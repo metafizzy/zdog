@@ -26,6 +26,8 @@ var Shape = Anchor.subclass({
   backface: true,
 });
 
+Shape.prototype.type = 'Shape';
+
 Shape.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
   this.updatePath();

@@ -22,6 +22,8 @@ var Ellipse = Shape.subclass({
   quarters: 4,
   closed: false,
 });
+  
+Ellipse.prototype.type = 'Ellipse';
 
 Ellipse.prototype.setPath = function() {
   var width = this.width != undefined ? this.width : this.diameter;

@@ -25,6 +25,8 @@ var CylinderGroup = Group.subclass({
   color: '#333',
   updateSort: true,
 });
+  
+CylinderGroup.prototype.type = 'CylinderGroup';
 
 CylinderGroup.prototype.create = function() {
   Group.prototype.create.apply( this, arguments );
@@ -96,6 +98,9 @@ var Cylinder = Shape.subclass({
   frontFace: undefined,
   fill: true,
 });
+  
+Cylinder.prototype.type = 'Cylinder';
+
 
 var TAU = utils.TAU;
 

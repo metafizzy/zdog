@@ -20,6 +20,8 @@ var Cone = Ellipse.subclass({
   length: 1,
   fill: true,
 });
+  
+Cone.prototype.type = 'Cone';
 
 var TAU = utils.TAU;
 

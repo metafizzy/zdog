@@ -30,6 +30,8 @@ var Illustration = Anchor.subclass({
   onDragEnd: noop,
   onResize: noop,
 });
+  
+Illustration.prototype.type = 'Illustration';
 
 utils.extend( Illustration.prototype, Dragger.prototype );
 

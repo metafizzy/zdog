@@ -214,10 +214,16 @@ Anchor.prototype.normalizeRotate = function() {
 };
   
 Anchor.prototype.toJSON = function () {
-  var result = {};
-  var optionKeys = this.constructor.optionKeys;
+  var type = this.type;
+  var ignoreChildren = this.ignoreChildren || false;
+  var result = { type: type };
+  var optionKeys = [...this.constructor.optionKeys];
 
-  [...optionKeys, 'children'].forEach(function (key) {
+  if (!ignoreChildren) {
+    optionKeys = [...optionKeys, 'children'];
+  }
+
+  optionKeys.forEach(function ( key ) {
     if (['addTo', 'dragRotate', 'element', 'resize'].includes(key)) return;
     var value = this[key];
     var defaults = this.constructor.defaults;
