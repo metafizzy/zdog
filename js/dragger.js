@@ -52,8 +52,10 @@ Dragger.prototype.bindDrag = function( element ) {
     return;
   }
   // disable browser gestures #53
-  element.style.touchAction = 'none';
-  element.addEventListener( downEvent, this );
+  if (window.PointerEvent) {
+    element.style.touchAction = 'none';
+  }
+  element.addEventListener( downEvent, this, { passive: false } );
 };
 
 Dragger.prototype.getQueryElement = function( element ) {
@@ -84,7 +86,7 @@ Dragger.prototype.dragStart = function( event, pointer ) {
   event.preventDefault();
   this.dragStartX = pointer.pageX;
   this.dragStartY = pointer.pageY;
-  window.addEventListener( moveEvent, this );
+  window.addEventListener( moveEvent, this, { passive: false } );
   window.addEventListener( upEvent, this );
   this.onDragStart( pointer );
 };
