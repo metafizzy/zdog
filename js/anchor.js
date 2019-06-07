@@ -59,7 +59,7 @@ Anchor.prototype.setOptions = function( options ) {
   var optionKeys = this.constructor.optionKeys;
 
   for ( var key in options ) {
-    if ( optionKeys.includes( key ) ) {
+    if ( optionKeys.indexOF( key ) > -1 ) {
       this[ key ] = options[ key ];
     }
   }
@@ -242,18 +242,23 @@ Anchor.prototype.toJSON = function () {
   var type = this.type;
   var ignoreChildren = this.ignoreChildren || false;
   var result = { type: type };
-  var optionKeys = [...this.constructor.optionKeys];
+  var optionKeys = this.constructor.optionKeys.slice(0);
 
   if (!ignoreChildren) {
-    optionKeys = [...optionKeys, 'children'];
+    optionKeys = optionKeys.concat(['children']);
   }
 
   optionKeys.forEach(function ( key ) {
-    if (['addTo', 'dragRotate', 'element', 'resize'].includes(key)) return;
-    var value = this[key];
+    if (['addTo', 'dragRotate', 'element', 'resize'].indexOf(key) > -1) {
+      return;
+    }
+     value = this[key];
     var defaults = this.constructor.defaults;
 
-    if (!['undefined', 'function'].includes(typeof value) && value !== defaults[key]) {
+    if (
+        !['undefined', 'function'].indexOf(typeof value) > -1
+        && value !== defaults[key]
+    ) {
       if (Array.isArray(value) && value.length === 0) {
         return;
       }
@@ -292,7 +297,7 @@ function getSubclass( Super ) {
     Item.optionKeys = Super.optionKeys.slice(0);
     // add defaults keys to optionKeys, dedupe
     Object.keys( Item.defaults ).forEach( function( key ) {
-      if ( !Item.optionKeys.includes( key ) ) {
+      if ( !Item.optionKeys.indexOf( key ) > -1 ) {
         Item.optionKeys.push( key );
       }
     });

@@ -62,7 +62,7 @@ Shape.prototype.updatePathCommands = function() {
     var method = keys[0];
     var points = pathPart[ method ];
     // default to line if no instruction
-    var isInstruction = keys.length == 1 && actionNames.includes( method );
+    var isInstruction = keys.length == 1 && actionNames.indexOf( method ) > -1;
     if ( !isInstruction ) {
       method = 'line';
       points = pathPart;
