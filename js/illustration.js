@@ -43,6 +43,9 @@ Illustration.prototype.create = function( options ) {
 
 Illustration.prototype.setElement = function( element ) {
   element = this.getQueryElement( element );
+  if (window.PointerEvent && element) {
+    element.style.touchAction = 'none';
+  }
   if ( !element ) {
     throw new Error( 'Zdog.Illustration element required. Set to ' + element );
   }
