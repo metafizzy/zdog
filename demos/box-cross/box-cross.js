@@ -107,6 +107,8 @@ dot.copy({
 
 // ----- animate ----- //
 
+console.log(Zdog.exportGraph(illo));
+
 var ticker = 0;
 var cycleCount = 150;
 
