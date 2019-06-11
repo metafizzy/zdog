@@ -220,7 +220,8 @@ Anchor.prototype.importGraph = function( model ) {
 
   function revive( graph ) {
     graph = utils.extend( {}, graph );
-    var type = graph.type;
+    // quick hack to avoid nested Illustration items
+    var type = graph.type === 'Illustration' ? 'Anchor' : graph.type;
     var children = (graph.children || []).slice( 0 );
     delete graph.children;
     
@@ -247,7 +248,7 @@ Anchor.prototype.toJSON = function () {
   var result = { type: type };
   var defaults = this.constructor.defaults;
   var optionKeys = this.constructor.optionKeys.slice(0).concat('children');
-  var ignoreKeys = Anchor.ignoreKeysJSON.slice(0).concat(this.constructor.ignoreKeysJSON);
+  var ignoreKeys = Anchor.ignoreKeysJSON.slice(0).concat(this.constructor.ignoreKeysJSON || []);
 
   optionKeys.forEach(function ( key ) {
     if (ignoreKeys.indexOf(key) > -1) {
