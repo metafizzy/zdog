@@ -30,7 +30,7 @@ var Illustration = Anchor.subclass({
   onDragEnd: noop,
   onResize: noop,
 });
-  
+Illustration.ignoreKeysJSON = ['dragRotate', 'element', 'resize'];
 Illustration.prototype.type = 'Illustration';
 
 utils.extend( Illustration.prototype, Dragger.prototype );
@@ -244,6 +244,12 @@ Illustration.prototype.dragMove = function( event, pointer ) {
   this.dragRotate.rotate.y = this.dragStartRY - moveRY;
   Dragger.prototype.dragMove.apply( this, arguments );
 };
+  
+// ----- JSON ----- //
+Illustration.prototype.importGraph = function (graph) {
+  console.log(`Import Graph on Illustration level`);
+  Anchor.prototype.importGraph.call(this, graph);
+}
 
 return Illustration;
 

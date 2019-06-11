@@ -54,6 +54,10 @@ Anchor.optionKeys = Object.keys( Anchor.defaults ).concat([
   'scale',
   'addTo',
 ]);
+  
+Anchor.ignoreKeysJSON = [
+  'addTo',
+];
 
 Anchor.prototype.setOptions = function( options ) {
   var optionKeys = this.constructor.optionKeys;
@@ -240,20 +244,16 @@ Anchor.prototype.normalizeRotate = function() {
   
 Anchor.prototype.toJSON = function () {
   var type = this.type;
-  var ignoreChildren = this.ignoreChildren || false;
   var result = { type: type };
-  var optionKeys = this.constructor.optionKeys.slice(0);
-
-  if (!ignoreChildren) {
-    optionKeys = optionKeys.concat(['children']);
-  }
+  var defaults = this.constructor.defaults;
+  var optionKeys = this.constructor.optionKeys.slice(0).concat('children');
+  var ignoreKeys = this.constructor.ignoreKeysJSON.slice(0).concat(Anchor.ignoreKeysJSON);
 
   optionKeys.forEach(function ( key ) {
-    if (['addTo', 'dragRotate', 'element', 'resize'].indexOf(key) > -1) {
+    if (ignoreKeys.indexOf(key) > -1) {
       return;
     }
-     value = this[key];
-    var defaults = this.constructor.defaults;
+    value = this[key];
 
     if (
         !['undefined', 'function'].indexOf(typeof value) > -1
@@ -301,7 +301,9 @@ function getSubclass( Super ) {
         Item.optionKeys.push( key );
       }
     });
-
+    // create ignoreKeysJSON
+    Item.ignoreKeysJSON = Super.ignoreKeysJSON.slice(0);
+    
     Item.subclass = getSubclass( Item );
 
     return Item;

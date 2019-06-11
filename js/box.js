@@ -39,10 +39,9 @@ var boxDefaults = utils.extend( {
 // default fill
 boxDefaults.fill = true;
 delete boxDefaults.path;
-
 var Box = Anchor.subclass( boxDefaults );
+Box.ignoreKeysJSON = ['children'];
 Box.prototype.type = 'Box';
-Box.prototype.ignoreChildren = true;
 
 var TAU = utils.TAU;
 
