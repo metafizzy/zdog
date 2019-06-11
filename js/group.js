@@ -18,7 +18,7 @@ var Group = Anchor.subclass({
   updateSort: false,
   visible: true,
 });
-  
+
 Group.type = 'Group';
 
 

@@ -54,7 +54,7 @@ Anchor.optionKeys = Object.keys( Anchor.defaults ).concat([
   'scale',
   'addTo',
 ]);
-  
+
 Anchor.ignoreKeysJSON = [
   'addTo',
 ];
@@ -214,7 +214,7 @@ Anchor.prototype.copyGraph = function( options ) {
   });
   return clone;
 };
-  
+
 Anchor.prototype.importGraph = function( model ) {
   this.addChild( revive( model ) );
 
@@ -224,41 +224,41 @@ Anchor.prototype.importGraph = function( model ) {
     var type = graph.type === 'Illustration' ? 'Anchor' : graph.type;
     var children = (graph.children || []).slice( 0 );
     delete graph.children;
-    
+
     var Item = Zdog[ type ];
     var rootGraph;
     if ( Item ) {
       rootGraph = new Item( graph );
       children.forEach( function( child ) {
         revive( utils.extend( child, { addTo: rootGraph } ) );
-      } )
+      } );
     }
     return rootGraph;
   }
-}
+};
 
 Anchor.prototype.normalizeRotate = function() {
   this.rotate.x = utils.modulo( this.rotate.x, TAU );
   this.rotate.y = utils.modulo( this.rotate.y, TAU );
   this.rotate.z = utils.modulo( this.rotate.z, TAU );
 };
-  
-Anchor.prototype.toJSON = function () {
+
+Anchor.prototype.toJSON = function() {
   var type = this.constructor.type;
   var result = { type: type };
   var defaults = this.constructor.defaults;
   var optionKeys = this.constructor.optionKeys.slice(0).concat('children');
   var ignoreKeys = Anchor.ignoreKeysJSON.slice(0).concat(this.constructor.ignoreKeysJSON || []);
 
-  optionKeys.forEach(function ( key ) {
+  optionKeys.forEach(function( key ) {
     if (ignoreKeys.indexOf(key) > -1) {
       return;
     }
     value = this[key];
 
     if (
-        !['undefined', 'function'].indexOf(typeof value) > -1
-        && value !== defaults[key]
+      ![ 'undefined', 'function' ].indexOf(typeof value) > -1 &&
+        value !== defaults[key]
     ) {
       if (Array.isArray(value) && value.length === 0) {
         return;
@@ -304,7 +304,7 @@ function getSubclass( Super ) {
     });
     // create ignoreKeysJSON
     Item.ignoreKeysJSON = Super.ignoreKeysJSON.slice(0);
-    
+
     Item.subclass = getSubclass( Item );
 
     return Item;

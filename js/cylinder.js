@@ -25,7 +25,7 @@ var CylinderGroup = Group.subclass({
   color: '#333',
   updateSort: true,
 });
-  
+
 CylinderGroup.type = 'CylinderGroup';
 
 CylinderGroup.prototype.create = function() {
@@ -98,7 +98,7 @@ var Cylinder = Shape.subclass({
   frontFace: undefined,
   fill: true,
 });
-  
+
 Cylinder.type = 'Cylinder';
 
 

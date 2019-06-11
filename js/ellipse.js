@@ -22,7 +22,7 @@ var Ellipse = Shape.subclass({
   quarters: 4,
   closed: false,
 });
-  
+
 Ellipse.type = 'Ellipse';
 
 Ellipse.prototype.setPath = function() {

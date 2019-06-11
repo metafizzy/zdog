@@ -18,7 +18,7 @@ var Rect = Shape.subclass({
   width: 1,
   height: 1,
 });
-  
+
 Rect.type = 'Rect';
 
 Rect.prototype.setPath = function() {

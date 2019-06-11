@@ -1,7 +1,8 @@
 fetch('zdog.json')
   .then(function( res ) {
     return res.json();
-  }).then(function (model) {
+  })
+  .then(function(model) {
     // ----- variables ----- //
     var sceneSize = 100;
     var TAU = Zdog.TAU;
@@ -27,4 +28,4 @@ fetch('zdog.json')
     }
 
     animate();
-})
+});

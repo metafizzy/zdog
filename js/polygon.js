@@ -18,7 +18,7 @@ var Polygon = Shape.subclass({
   sides: 3,
   radius: 0.5,
 });
-  
+
 Polygon.type = 'Polygon';
 
 var TAU = utils.TAU;

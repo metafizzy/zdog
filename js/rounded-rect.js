@@ -20,7 +20,7 @@ var RoundedRect = Shape.subclass({
   cornerRadius: 0.25,
   closed: false,
 });
-  
+
 RoundedRect.type = 'RoundedRect';
 
 RoundedRect.prototype.setPath = function() {
