@@ -19,7 +19,7 @@ var Rect = Shape.subclass({
   height: 1,
 });
   
-Rect.prototype.type = 'Rect';
+Rect.type = 'Rect';
 
 Rect.prototype.setPath = function() {
   var x = this.width / 2;

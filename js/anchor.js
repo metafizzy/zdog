@@ -22,7 +22,7 @@ var onePoint = { x: 1, y: 1, z: 1 };
 function Anchor( options ) {
   this.create( options || {} );
 }
-Anchor.prototype.type = 'Anchor';
+Anchor.type = 'Anchor';
 
 Anchor.prototype.create = function( options ) {
   // set defaults & options
@@ -243,11 +243,11 @@ Anchor.prototype.normalizeRotate = function() {
 };
   
 Anchor.prototype.toJSON = function () {
-  var type = this.type;
+  var type = this.constructor.type;
   var result = { type: type };
   var defaults = this.constructor.defaults;
   var optionKeys = this.constructor.optionKeys.slice(0).concat('children');
-  var ignoreKeys = this.constructor.ignoreKeysJSON.slice(0).concat(Anchor.ignoreKeysJSON);
+  var ignoreKeys = Anchor.ignoreKeysJSON.slice(0).concat(this.constructor.ignoreKeysJSON);
 
   optionKeys.forEach(function ( key ) {
     if (ignoreKeys.indexOf(key) > -1) {

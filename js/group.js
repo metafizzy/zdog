@@ -19,7 +19,7 @@ var Group = Anchor.subclass({
   visible: true,
 });
   
-Group.prototype.type = 'Group';
+Group.type = 'Group';
 
 
 // ----- update ----- //

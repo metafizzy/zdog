@@ -19,7 +19,7 @@ var Polygon = Shape.subclass({
   radius: 0.5,
 });
   
-Polygon.prototype.type = 'Polygon';
+Polygon.type = 'Polygon';
 
 var TAU = utils.TAU;
 

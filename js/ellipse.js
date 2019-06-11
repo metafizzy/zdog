@@ -23,7 +23,7 @@ var Ellipse = Shape.subclass({
   closed: false,
 });
   
-Ellipse.prototype.type = 'Ellipse';
+Ellipse.type = 'Ellipse';
 
 Ellipse.prototype.setPath = function() {
   var width = this.width != undefined ? this.width : this.diameter;
