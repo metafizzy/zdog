@@ -149,9 +149,9 @@ Vector.prototype.copy = function() {
   return new Vector( this );
 };
 
-var round = function( num ) {
+function round( num ) {
   return Math.round( num * 1000 ) / 1000;
-};
+}
 
 Vector.prototype.toJSON = function() {
   var x = this.x;

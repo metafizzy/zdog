@@ -225,7 +225,7 @@ Anchor.prototype.importGraph = function( model ) {
     var children = (graph.children || []).slice( 0 );
     delete graph.children;
 
-    var Item = Zdog[ type ];
+    var Item = utils[ type ];
     var rootGraph;
     if ( Item ) {
       rootGraph = new Item( graph );
@@ -248,13 +248,15 @@ Anchor.prototype.toJSON = function() {
   var result = { type: type };
   var defaults = this.constructor.defaults;
   var optionKeys = this.constructor.optionKeys.slice(0).concat('children');
-  var ignoreKeys = Anchor.ignoreKeysJSON.slice(0).concat(this.constructor.ignoreKeysJSON || []);
+  var ignoreKeys = Anchor.ignoreKeysJSON
+    .slice(0)
+    .concat(this.constructor.ignoreKeysJSON || []);
 
   optionKeys.forEach(function( key ) {
     if (ignoreKeys.indexOf(key) > -1) {
       return;
     }
-    value = this[key];
+    var value = this[key];
 
     if (
       ![ 'undefined', 'function' ].indexOf(typeof value) > -1 &&
