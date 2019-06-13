@@ -24,6 +24,7 @@ function Anchor( options ) {
 }
 
 Anchor.prototype.create = function( options ) {
+  this.children = [];
   // set defaults & options
   utils.extend( this, this.constructor.defaults );
   this.setOptions( options );
@@ -35,8 +36,7 @@ Anchor.prototype.create = function( options ) {
   // origin
   this.origin = new Vector();
   this.renderOrigin = new Vector();
-  // children
-  this.children = [];
+
   if ( this.addTo ) {
     this.addTo.addChild( this );
   }
