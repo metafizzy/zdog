@@ -11,7 +11,7 @@ All bug reports and problem issues require a [**reduced test case**](https://css
 + [Hello world canvas](https://codepen.io/desandro/pen/YbrLaO)
 + [Hello world SVG](https://codepen.io/desandro/pen/Bewxme)
 + [resize fullscreen](https://codepen.io/desandro/pen/dEJxaV)
-+ [Stutter](https://codepen.io/desandro/pen/xNPaoP)
++ [Strutter](https://codepen.io/desandro/pen/xNPaoP)
 
 **Test cases**
 
@@ -26,7 +26,7 @@ Providing a reduced test case is the best way to get your issue addressed. They 
 Contributions are welcome! 
 
 + **For typos and one-line fixes,** send those right in.
-+ **For larger features,** open an issue before starting any significant work. Let's discuss to see how your feature fits within Flickity's vision.
++ **For larger features,** open an issue before starting any significant work. Let's discuss to see how your feature fits within Zdog's vision.
 + **Follow the code style.** Spaces in brackets, semicolons, trailing commas.
 + **Do not edit `dist/` files.** Make your edits to source files in `js/` and `css/`.
 + **Do not run `make` to update `dist/` files.** I'll take care of this when I create a new release.
