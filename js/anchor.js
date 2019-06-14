@@ -55,15 +55,14 @@ Anchor.prototype.setOptions = function( options ) {
   var optionKeys = this.constructor.optionKeys;
 
   for ( var key in options ) {
-    if ( optionKeys.includes( key ) ) {
+    if ( optionKeys.indexOf( key ) != -1 ) {
       this[ key ] = options[ key ];
     }
   }
 };
 
 Anchor.prototype.addChild = function( shape ) {
-  var index = this.children.indexOf( shape );
-  if ( index != -1 ) {
+  if ( this.children.indexOf( shape ) != -1 ) {
     return;
   }
   shape.remove(); // remove previous parent
@@ -231,7 +230,7 @@ function getSubclass( Super ) {
     Item.optionKeys = Super.optionKeys.slice(0);
     // add defaults keys to optionKeys, dedupe
     Object.keys( Item.defaults ).forEach( function( key ) {
-      if ( !Item.optionKeys.includes( key ) ) {
+      if ( !Item.optionKeys.indexOf( key ) != 1 ) {
         Item.optionKeys.push( key );
       }
     });
