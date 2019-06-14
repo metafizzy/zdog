@@ -34,6 +34,7 @@ Cone.prototype.create = function(/* options */) {
 
   // vectors used for calculation
   this.renderApex = new Vector();
+  this.renderCentroid = new Vector();
   this.tangentA = new Vector();
   this.tangentB = new Vector();
 
@@ -45,16 +46,10 @@ Cone.prototype.create = function(/* options */) {
 };
 
 Cone.prototype.updateSortValue = function() {
-  // call super
-  Ellipse.prototype.updateSortValue.apply( this, arguments );
-  var apexNormal = new Vector();
-  apexNormal.set( this.renderOrigin )
-    .subtract( this.apex.renderOrigin );
-  var apexAngleZ = Math.atan2( apexNormal.z, apexNormal.y );
-  apexAngleZ = utils.modulo( apexAngleZ, TAU );
-  //center of cone is one third of its length.
-  var apexZ = this.length/3 * Math.sin(apexAngleZ);
-  this.sortValue -= apexZ;
+  // center of cone is one third of its length
+  this.renderCentroid.set( this.renderOrigin )
+    .lerp( this.apex.renderOrigin, 1/3 );
+  this.sortValue = this.renderCentroid.z;
 };
 
 Cone.prototype.render = function( ctx, renderer ) {

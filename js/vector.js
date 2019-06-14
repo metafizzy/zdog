@@ -79,9 +79,7 @@ Vector.prototype.isSame = function( pos ) {
   if ( !pos ) {
     return false;
   }
-  return (this.x === pos.x &&
-          this.y === pos.y &&
-          this.z === pos.z);
+  return this.x === pos.x && this.y === pos.y && this.z === pos.z;
 };
 
 Vector.prototype.add = function( pos ) {

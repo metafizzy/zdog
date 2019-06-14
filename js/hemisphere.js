@@ -6,13 +6,14 @@
   // module definition
   if ( typeof module == 'object' && module.exports ) {
     // CommonJS
-    module.exports = factory( require('./boilerplate'), require('./ellipse') );
+    module.exports = factory( require('./boilerplate'), require('./vector'),
+        require('./anchor'), require('./ellipse') );
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Hemisphere = factory( Zdog, Zdog.Ellipse );
+    Zdog.Hemisphere = factory( Zdog, Zdog.Vector, Zdog.Anchor, Zdog.Ellipse );
   }
-}( this, function factory( utils, Ellipse ) {
+}( this, function factory( utils, Vector, Anchor, Ellipse ) {
 
 var Hemisphere = Ellipse.subclass({
   fill: true,
@@ -20,14 +21,23 @@ var Hemisphere = Ellipse.subclass({
 
 var TAU = utils.TAU;
 
-Hemisphere.prototype.updateSortValue = function() {
+Hemisphere.prototype.create = function(/* options */) {
   // call super
-  Ellipse.prototype.updateSortValue.apply( this, arguments );
-  var contourAngleZ = Math.atan2( this.renderNormal.z, this.renderNormal.y );
-  contourAngleZ = utils.modulo( contourAngleZ, TAU );
-  //center of dome is half the radius.
-  var domeZ = this.diameter/2/2 * Math.sin(contourAngleZ);
-  this.sortValue -= domeZ;
+  Ellipse.prototype.create.apply( this, arguments );
+  // composite shape, create child shapes
+  this.apex = new Anchor({
+    addTo: this,
+    translate: { z: this.diameter/2 },
+  });
+  // vector used for calculation
+  this.renderCentroid = new Vector();
+};
+
+Hemisphere.prototype.updateSortValue = function() {
+  // centroid of hemisphere is 3/8 between origin and apex
+  this.renderCentroid.set( this.renderOrigin )
+    .lerp( this.apex.renderOrigin, 3/8 );
+  this.sortValue = this.renderCentroid.z;
 };
 
 Hemisphere.prototype.render = function( ctx, renderer ) {

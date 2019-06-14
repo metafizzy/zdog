@@ -108,25 +108,23 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   });
 };
 
-
 Shape.prototype.updateSortValue = function() {
-  // average sort all z points.
-  // ignore the final point if it is a closed shape.
-  var howManyPoints = this.pathCommands.length;
-  var sortValueTotal = 0;
+  // sort by average z of all points
+  // def not geometrically correct, but works for me
+  var pointCount = this.pathCommands.length;
   var firstPoint = this.pathCommands[0].endRenderPoint;
-  var lastPoint = this.pathCommands[this.pathCommands.length-1].endRenderPoint;
-  if (howManyPoints > 2 &&
-      firstPoint.isSame(lastPoint)) {
-    howManyPoints -= 1; // closed shape; ignore final point.
+  var lastPoint = this.pathCommands[ pointCount - 1 ].endRenderPoint;
+  // ignore the final point if self closing shape
+  var isSelfClosing = pointCount > 2 && firstPoint.isSame( lastPoint );
+  if ( isSelfClosing ) {
+    pointCount -= 1;
   }
-  
-  for (var i = 0; i < howManyPoints; i++) {
-      sortValueTotal += this.pathCommands[i].endRenderPoint.z;
-    }
-    // average sort value of all points
-    // def not geometrically correct, but works for me
-    this.sortValue = sortValueTotal / howManyPoints;
+
+  var sortValueTotal = 0;
+  for ( var i = 0; i < pointCount; i++ ) {
+    sortValueTotal += this.pathCommands[i].endRenderPoint.z;
+  }
+  this.sortValue = sortValueTotal / pointCount;
 };
 
 // ----- render ----- //
