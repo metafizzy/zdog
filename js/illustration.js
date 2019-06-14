@@ -30,6 +30,8 @@ var Illustration = Anchor.subclass({
   onDragEnd: noop,
   onResize: noop,
 });
+Illustration.ignoreKeysJSON = [ 'dragRotate', 'element', 'resize' ];
+Illustration.type = 'Illustration';
 
 utils.extend( Illustration.prototype, Dragger.prototype );
 

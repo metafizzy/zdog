@@ -19,6 +19,9 @@ var Group = Anchor.subclass({
   visible: true,
 });
 
+Group.type = 'Group';
+
+
 // ----- update ----- //
 
 Group.prototype.updateSortValue = function() {

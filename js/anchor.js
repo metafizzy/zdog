@@ -22,6 +22,7 @@ var onePoint = { x: 1, y: 1, z: 1 };
 function Anchor( options ) {
   this.create( options || {} );
 }
+Anchor.type = 'Anchor';
 
 Anchor.prototype.create = function( options ) {
   // set defaults & options
@@ -40,6 +41,9 @@ Anchor.prototype.create = function( options ) {
   if ( this.addTo ) {
     this.addTo.addChild( this );
   }
+  if ( options.importGraph ) {
+    this.importGraph( options.importGraph );
+  }
 };
 
 Anchor.defaults = {};
@@ -51,11 +55,15 @@ Anchor.optionKeys = Object.keys( Anchor.defaults ).concat([
   'addTo',
 ]);
 
+Anchor.ignoreKeysJSON = [
+  'addTo',
+];
+
 Anchor.prototype.setOptions = function( options ) {
   var optionKeys = this.constructor.optionKeys;
 
   for ( var key in options ) {
-    if ( optionKeys.includes( key ) ) {
+    if ( optionKeys.indexOf( key ) > -1 ) {
       this[ key ] = options[ key ];
     }
   }
@@ -207,10 +215,71 @@ Anchor.prototype.copyGraph = function( options ) {
   return clone;
 };
 
+Anchor.prototype.importGraph = function( model ) {
+  this.addChild( revive( model ) );
+
+  function revive( graph ) {
+    graph = utils.extend( {}, graph );
+    // quick hack to avoid nested Illustration items
+    var type = graph.type === 'Illustration' ? 'Anchor' : graph.type;
+    var children = (graph.children || []).slice( 0 );
+    delete graph.children;
+
+    var Item = utils[ type ];
+    var rootGraph;
+    if ( Item ) {
+      rootGraph = new Item( graph );
+      children.forEach( function( child ) {
+        revive( utils.extend( child, { addTo: rootGraph } ) );
+      } );
+    }
+    return rootGraph;
+  }
+};
+
 Anchor.prototype.normalizeRotate = function() {
   this.rotate.x = utils.modulo( this.rotate.x, TAU );
   this.rotate.y = utils.modulo( this.rotate.y, TAU );
   this.rotate.z = utils.modulo( this.rotate.z, TAU );
+};
+
+Anchor.prototype.toJSON = function() {
+  var type = this.constructor.type;
+  var result = { type: type };
+  var defaults = this.constructor.defaults;
+  var optionKeys = this.constructor.optionKeys.slice(0).concat('children');
+  var ignoreKeys = Anchor.ignoreKeysJSON
+    .slice(0)
+    .concat(this.constructor.ignoreKeysJSON || []);
+
+  optionKeys.forEach(function( key ) {
+    if (ignoreKeys.indexOf(key) > -1) {
+      return;
+    }
+    var value = this[key];
+
+    if (
+      ![ 'undefined', 'function' ].indexOf(typeof value) > -1 &&
+        value !== defaults[key]
+    ) {
+      if (Array.isArray(value) && value.length === 0) {
+        return;
+      }
+      if (value.toJSON) {
+        var serialized = value.toJSON();
+        if (typeof serialized !== 'undefined') {
+          if (key === 'scale' && serialized === 1) {
+            return;
+          }
+          result[key] = serialized;
+        }
+      } else {
+        result[key] = value;
+      }
+    }
+  }, this);
+
+  return result;
 };
 
 // ----- subclass ----- //
@@ -231,10 +300,12 @@ function getSubclass( Super ) {
     Item.optionKeys = Super.optionKeys.slice(0);
     // add defaults keys to optionKeys, dedupe
     Object.keys( Item.defaults ).forEach( function( key ) {
-      if ( !Item.optionKeys.includes( key ) ) {
+      if ( !Item.optionKeys.indexOf( key ) > -1 ) {
         Item.optionKeys.push( key );
       }
     });
+    // create ignoreKeysJSON
+    Item.ignoreKeysJSON = Super.ignoreKeysJSON.slice(0);
 
     Item.subclass = getSubclass( Item );
 

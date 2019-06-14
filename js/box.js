@@ -18,9 +18,10 @@
 // ----- BoxRect ----- //
 
 var BoxRect = Rect.subclass();
+
 // prevent double-creation in parent.copyGraph()
 // only create in Box.create()
-BoxRect.prototype.copyGraph = function() {};
+BoxRect.prototype.copyGraph = function() { };
 
 // ----- Box ----- //
 
@@ -38,8 +39,9 @@ var boxDefaults = utils.extend( {
 // default fill
 boxDefaults.fill = true;
 delete boxDefaults.path;
-
 var Box = Anchor.subclass( boxDefaults );
+Box.ignoreKeysJSON = [ 'children' ];
+Box.type = 'Box';
 
 var TAU = utils.TAU;
 

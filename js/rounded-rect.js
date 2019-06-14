@@ -21,6 +21,8 @@ var RoundedRect = Shape.subclass({
   closed: false,
 });
 
+RoundedRect.type = 'RoundedRect';
+
 RoundedRect.prototype.setPath = function() {
   /* eslint
      id-length: [ "error", { "min": 2, "exceptions": [ "x", "y" ] }],

@@ -158,6 +158,32 @@ Vector.prototype.copy = function() {
   return new Vector( this );
 };
 
+function round( num ) {
+  return Math.round( num * 1000 ) / 1000;
+}
+
+Vector.prototype.toJSON = function() {
+  var x = this.x;
+  var y = this.y;
+  var z = this.z;
+
+  if ( x === y && y === z ) {
+    return x !== 0 ? round( x ) : undefined;
+  }
+
+  var obj = { x: x, y: y, z: z };
+  var result = {};
+
+  Object.keys( obj ).forEach( function( key ) {
+    var value = obj[ key ];
+    if ( value !== 0 ) {
+      result[ key ] = round( value );
+    }
+  });
+
+  return Object.keys( result ).length ? result : undefined;
+};
+
 return Vector;
 
 }));

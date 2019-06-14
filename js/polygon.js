@@ -19,6 +19,8 @@ var Polygon = Shape.subclass({
   radius: 0.5,
 });
 
+Polygon.type = 'Polygon';
+
 var TAU = utils.TAU;
 
 Polygon.prototype.setPath = function() {
