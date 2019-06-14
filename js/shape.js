@@ -110,13 +110,23 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
 
 
 Shape.prototype.updateSortValue = function() {
+  // average sort all z points.
+  // ignore the final point if it is a closed shape.
+  var howManyPoints = this.pathCommands.length;
   var sortValueTotal = 0;
-  this.pathCommands.forEach( function( command ) {
-    sortValueTotal += command.endRenderPoint.z;
-  });
-  // average sort value of all points
-  // def not geometrically correct, but works for me
-  this.sortValue = sortValueTotal / this.pathCommands.length;
+  var firstPoint = this.pathCommands[0].endRenderPoint;
+  var lastPoint = this.pathCommands[this.pathCommands.length-1].endRenderPoint;
+  if (howManyPoints > 2 &&
+      firstPoint.isSame(lastPoint)) {
+    howManyPoints -= 1; // closed shape; ignore final point.
+  }
+  
+  for (var i = 0; i < howManyPoints; i++) {
+      sortValueTotal += this.pathCommands[i].endRenderPoint.z;
+    }
+    // average sort value of all points
+    // def not geometrically correct, but works for me
+    this.sortValue = sortValueTotal / howManyPoints;
 };
 
 // ----- render ----- //

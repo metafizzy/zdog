@@ -75,6 +75,15 @@ function rotateProperty( vec, angle, propA, propB ) {
   vec[ propB ] = b*cos + a*sin;
 }
 
+Vector.prototype.isSame = function( pos ) {
+  if ( !pos ) {
+    return false;
+  }
+  return (this.x === pos.x &&
+          this.y === pos.y &&
+          this.z === pos.z);
+};
+
 Vector.prototype.add = function( pos ) {
   if ( !pos ) {
     return this;
