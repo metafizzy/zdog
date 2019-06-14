@@ -1,5 +1,5 @@
 /*!
- * Zdog v1.0.2
+ * Zdog v1.1.0
  * Round, flat, designer-friendly pseudo-3D engine
  * Licensed MIT
  * https://zzz.dog
@@ -301,6 +301,13 @@ function rotateProperty( vec, angle, propA, propB ) {
   vec[ propB ] = b*cos + a*sin;
 }
 
+Vector.prototype.isSame = function( pos ) {
+  if ( !pos ) {
+    return false;
+  }
+  return this.x === pos.x && this.y === pos.y && this.z === pos.z;
+};
+
 Vector.prototype.add = function( pos ) {
   if ( !pos ) {
     return this;
@@ -404,6 +411,7 @@ function Anchor( options ) {
 }
 
 Anchor.prototype.create = function( options ) {
+  this.children = [];
   // set defaults & options
   utils.extend( this, this.constructor.defaults );
   this.setOptions( options );
@@ -415,8 +423,7 @@ Anchor.prototype.create = function( options ) {
   // origin
   this.origin = new Vector();
   this.renderOrigin = new Vector();
-  // children
-  this.children = [];
+
   if ( this.addTo ) {
     this.addTo.addChild( this );
   }
@@ -435,15 +442,14 @@ Anchor.prototype.setOptions = function( options ) {
   var optionKeys = this.constructor.optionKeys;
 
   for ( var key in options ) {
-    if ( optionKeys.includes( key ) ) {
+    if ( optionKeys.indexOf( key ) != -1 ) {
       this[ key ] = options[ key ];
     }
   }
 };
 
 Anchor.prototype.addChild = function( shape ) {
-  var index = this.children.indexOf( shape );
-  if ( index != -1 ) {
+  if ( this.children.indexOf( shape ) != -1 ) {
     return;
   }
   shape.remove(); // remove previous parent
@@ -557,7 +563,6 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
     throw new Error( 'svg is ' + svg + '. ' +
       'SVG required for render. Check .renderGraphSvg( svg ).' );
   }
-  this.checkFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.render( svg, SvgRenderer );
   });
@@ -612,7 +617,7 @@ function getSubclass( Super ) {
     Item.optionKeys = Super.optionKeys.slice(0);
     // add defaults keys to optionKeys, dedupe
     Object.keys( Item.defaults ).forEach( function( key ) {
-      if ( !Item.optionKeys.includes( key ) ) {
+      if ( !Item.optionKeys.indexOf( key ) != 1 ) {
         Item.optionKeys.push( key );
       }
     });
@@ -678,9 +683,12 @@ Dragger.prototype.create = function( options ) {
 
 Dragger.prototype.bindDrag = function( element ) {
   element = this.getQueryElement( element );
-  if ( element ) {
-    element.addEventListener( downEvent, this );
+  if ( !element ) {
+    return;
   }
+  // disable browser gestures #53
+  element.style.touchAction = 'none';
+  element.addEventListener( downEvent, this );
 };
 
 Dragger.prototype.getQueryElement = function( element ) {
@@ -1146,7 +1154,7 @@ Shape.prototype.updatePathCommands = function() {
     var method = keys[0];
     var points = pathPart[ method ];
     // default to line if no instruction
-    var isInstruction = keys.length == 1 && actionNames.includes( method );
+    var isInstruction = keys.length == 1 && actionNames.indexOf( method ) != -1;
     if ( !isInstruction ) {
       method = 'line';
       points = pathPart;
@@ -1194,15 +1202,23 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   });
 };
 
-
 Shape.prototype.updateSortValue = function() {
-  var sortValueTotal = 0;
-  this.pathCommands.forEach( function( command ) {
-    sortValueTotal += command.endRenderPoint.z;
-  });
-  // average sort value of all points
+  // sort by average z of all points
   // def not geometrically correct, but works for me
-  this.sortValue = sortValueTotal / this.pathCommands.length;
+  var pointCount = this.pathCommands.length;
+  var firstPoint = this.pathCommands[0].endRenderPoint;
+  var lastPoint = this.pathCommands[ pointCount - 1 ].endRenderPoint;
+  // ignore the final point if self closing shape
+  var isSelfClosing = pointCount > 2 && firstPoint.isSame( lastPoint );
+  if ( isSelfClosing ) {
+    pointCount -= 1;
+  }
+
+  var sortValueTotal = 0;
+  for ( var i = 0; i < pointCount; i++ ) {
+    sortValueTotal += this.pathCommands[i].endRenderPoint.z;
+  }
+  this.sortValue = sortValueTotal / pointCount;
 };
 
 // ----- render ----- //
@@ -1467,14 +1483,6 @@ RoundedRect.prototype.setPath = function() {
   this.path = path;
 };
 
-RoundedRect.prototype.updateSortValue = function() {
-  Shape.prototype.updateSortValue.apply( this, arguments );
-  // ellipse is self closing, do not count last point twice
-  var length = this.pathCommands.length;
-  var lastPoint = this.pathCommands[ length - 1 ].endRenderPoint;
-  this.sortValue -= lastPoint.z / length;
-};
-
 return RoundedRect;
 
 }));
@@ -1538,17 +1546,6 @@ Ellipse.prototype.setPath = function() {
   }
 };
 
-Ellipse.prototype.updateSortValue = function() {
-  Shape.prototype.updateSortValue.apply( this, arguments );
-  if ( this.quarters != 4 ) {
-    return;
-  }
-  // ellipse is self closing, do not count last point twice
-  var length = this.pathCommands.length;
-  var lastPoint = this.pathCommands[ length - 1 ].endRenderPoint;
-  this.sortValue -= lastPoint.z / length;
-};
-
 return Ellipse;
 
 }));
@@ -1596,19 +1593,39 @@ return Polygon;
   // module definition
   if ( typeof module == 'object' && module.exports ) {
     // CommonJS
-    module.exports = factory( require('./boilerplate'), require('./ellipse') );
+    module.exports = factory( require('./boilerplate'), require('./vector'),
+        require('./anchor'), require('./ellipse') );
   } else {
     // browser global
     var Zdog = root.Zdog;
-    Zdog.Hemisphere = factory( Zdog, Zdog.Ellipse );
+    Zdog.Hemisphere = factory( Zdog, Zdog.Vector, Zdog.Anchor, Zdog.Ellipse );
   }
-}( this, function factory( utils, Ellipse ) {
+}( this, function factory( utils, Vector, Anchor, Ellipse ) {
 
 var Hemisphere = Ellipse.subclass({
   fill: true,
 });
 
 var TAU = utils.TAU;
+
+Hemisphere.prototype.create = function(/* options */) {
+  // call super
+  Ellipse.prototype.create.apply( this, arguments );
+  // composite shape, create child shapes
+  this.apex = new Anchor({
+    addTo: this,
+    translate: { z: this.diameter/2 },
+  });
+  // vector used for calculation
+  this.renderCentroid = new Vector();
+};
+
+Hemisphere.prototype.updateSortValue = function() {
+  // centroid of hemisphere is 3/8 between origin and apex
+  this.renderCentroid.set( this.renderOrigin )
+    .lerp( this.apex.renderOrigin, 3/8 );
+  this.sortValue = this.renderCentroid.z;
+};
 
 Hemisphere.prototype.render = function( ctx, renderer ) {
   this.renderDome( ctx, renderer );
@@ -1863,6 +1880,7 @@ Cone.prototype.create = function(/* options */) {
 
   // vectors used for calculation
   this.renderApex = new Vector();
+  this.renderCentroid = new Vector();
   this.tangentA = new Vector();
   this.tangentB = new Vector();
 
@@ -1871,6 +1889,13 @@ Cone.prototype.create = function(/* options */) {
     new PathCommand( 'line', [ {} ] ),
     new PathCommand( 'line', [ {} ] ),
   ];
+};
+
+Cone.prototype.updateSortValue = function() {
+  // center of cone is one third of its length
+  this.renderCentroid.set( this.renderOrigin )
+    .lerp( this.apex.renderOrigin, 1/3 );
+  this.sortValue = this.renderCentroid.z;
 };
 
 Cone.prototype.render = function( ctx, renderer ) {
@@ -1978,87 +2003,69 @@ BoxRect.prototype.copyGraph = function() {};
 
 // ----- Box ----- //
 
-var boxDefaults = utils.extend( {
+var TAU = utils.TAU;
+var faceNames = [
+  'frontFace',
+  'rearFace',
+  'leftFace',
+  'rightFace',
+  'topFace',
+  'bottomFace',
+];
+
+var boxDefaults = utils.extend( {}, Shape.defaults );
+delete boxDefaults.path;
+faceNames.forEach( function( faceName ) {
+  boxDefaults[ faceName ] = true;
+});
+utils.extend( boxDefaults, {
   width: 1,
   height: 1,
   depth: 1,
-  frontFace: true,
-  rearFace: true,
-  leftFace: true,
-  rightFace: true,
-  topFace: true,
-  bottomFace: true,
-}, Shape.defaults );
-// default fill
-boxDefaults.fill = true;
-delete boxDefaults.path;
+  fill: true,
+});
 
 var Box = Anchor.subclass( boxDefaults );
-
-var TAU = utils.TAU;
 
 Box.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
   this.updatePath();
+  // HACK reset fill to trigger face setter
+  this.fill = this.fill;
 };
 
 Box.prototype.updatePath = function() {
-  this.setFace( 'frontFace', {
-    width: this.width,
-    height: this.height,
-    translate: { z: this.depth/2 },
-  });
-  this.setFace( 'rearFace', {
-    width: this.width,
-    height: this.height,
-    translate: { z: -this.depth/2 },
-    rotate: { y: TAU/2 },
-  });
-  this.setFace( 'leftFace', {
-    width: this.depth,
-    height: this.height,
-    translate: { x: -this.width/2 },
-    rotate: { y: -TAU/4 },
-  });
-  this.setFace( 'rightFace', {
-    width: this.depth,
-    height: this.height,
-    translate: { x: this.width/2 },
-    rotate: { y: TAU/4 },
-  });
-  this.setFace( 'topFace', {
-    width: this.width,
-    height: this.depth,
-    translate: { y: -this.height/2 },
-    rotate: { x: -TAU/4 },
-  });
-  this.setFace( 'bottomFace', {
-    width: this.width,
-    height: this.depth,
-    translate: { y: this.height/2 },
-    rotate: { x: -TAU/4 },
-  });
+  // reset all faces to trigger setters
+  faceNames.forEach( function( faceName ) {
+    this[ faceName ] = this[ faceName ];
+  }, this );
 };
 
-Box.prototype.setFace = function( faceName, options ) {
-  var property = this[ faceName ];
+faceNames.forEach( function( faceName ) {
+  var _faceName = '_' + faceName;
+  Object.defineProperty( Box.prototype, faceName, {
+    get: function() {
+      return this[ _faceName ];
+    },
+    set: function( value ) {
+      this[ _faceName ] = value;
+      this.setFace( faceName, value );
+    },
+  });
+});
+
+Box.prototype.setFace = function( faceName, value ) {
   var rectProperty = faceName + 'Rect';
   var rect = this[ rectProperty ];
   // remove if false
-  if ( !property ) {
+  if ( !value ) {
     this.removeChild( rect );
     return;
   }
   // update & add face
-  utils.extend( options, {
-    // set color from option, i.e. `front: '#19F'`
-    color: typeof property == 'string' ? property : this.color,
-    stroke: this.stroke,
-    fill: this.fill,
-    backface: this.backface,
-    front: this.front,
-    visible: this.visible,
-  });
+  var options = this.getFaceOptions( faceName );
+  options.color = typeof value == 'string' ? value : this.color;
+
   if ( rect ) {
     // update previous
     rect.setOptions( options );
@@ -2069,6 +2076,71 @@ Box.prototype.setFace = function( faceName, options ) {
   rect.updatePath();
   this.addChild( rect );
 };
+
+Box.prototype.getFaceOptions = function( faceName ) {
+  return {
+    frontFace: {
+      width: this.width,
+      height: this.height,
+      translate: { z: this.depth/2 },
+    },
+    rearFace: {
+      width: this.width,
+      height: this.height,
+      translate: { z: -this.depth/2 },
+      rotate: { y: TAU/2 },
+    },
+    leftFace: {
+      width: this.depth,
+      height: this.height,
+      translate: { x: -this.width/2 },
+      rotate: { y: -TAU/4 },
+    },
+    rightFace: {
+      width: this.depth,
+      height: this.height,
+      translate: { x: this.width/2 },
+      rotate: { y: TAU/4 },
+    },
+    topFace: {
+      width: this.width,
+      height: this.depth,
+      translate: { y: -this.height/2 },
+      rotate: { x: -TAU/4 },
+    },
+    bottomFace: {
+      width: this.width,
+      height: this.depth,
+      translate: { y: this.height/2 },
+      rotate: { x: TAU/4 },
+    },
+  }[ faceName ];
+};
+
+// ----- set face properties ----- //
+
+var childProperties = [ 'color', 'stroke', 'fill', 'backface', 'front',
+  'visible' ];
+childProperties.forEach( function( property ) {
+  // use proxy property for custom getter & setter
+  var _prop = '_' + property;
+  Object.defineProperty( Box.prototype, property, {
+    get: function() {
+      return this[ _prop ];
+    },
+    set: function( value ) {
+      this[ _prop ] = value;
+      faceNames.forEach( function( faceName ) {
+        var rect = this[ faceName + 'Rect' ];
+        var isFaceColor = typeof this[ faceName ] == 'string';
+        var isColorUnderwrite = property == 'color' && isFaceColor;
+        if ( rect && !isColorUnderwrite ) {
+          rect[ property ] = value;
+        }
+      }, this );
+    },
+  });
+});
 
 return Box;
 
