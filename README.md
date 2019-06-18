@@ -86,12 +86,18 @@ Zdog v1 is a beta-release, of sorts. This is my first time creating a 3D engine,
 
 ### More Zdog resources
 
-+ [Zdog demos CodePen Collection](https://github.com/metafizzy/zdog-demos) - Bigger, wilder Zdog demos
-+ [zdog-demos](https://github.com/metafizzy/zdog-demos) - My repo for the bigger, wilder Zdog demos
-+ [Made with Zdog CodePen Collection](https://codepen.io/collection/DzdGMe/) - Community Zdog creations
-+ [Made with Zdog on Twitter](https://twitter.com/i/moments/1135000612356206592)
-+ [zdog-docs](https://github.com/metafizzy/zdog-docs) - Documentation site source code for [zzz.dog](https://zzz.dog)
+Other people's stuff:
+
++ [Zfont](https://jaames.github.io/zfont/) - Text plugin for Zdog
++ [vue-zdog](https://github.com/AlexandreBonaventure/vue-zdog) - Vue wrapper for Zdog
 + [zDogPy](https://github.com/gferreira/zdogpy) - Python port of Zdog for DrawBot
++ [Made with Zdog CodePen Collection](https://codepen.io/collection/DzdGMe/)
++ [Made with Zdog on Twitter](https://twitter.com/i/moments/1135000612356206592)
+
+My stuff:
+
++ [Zdog demos on CodePen](https://github.com/metafizzy/zdog-demos), source code at [zdog-demos](https://github.com/metafizzy/zdog-demos)
++ [zdog-docs](https://github.com/metafizzy/zdog-docs) - Docs site source code
 
 ---
 
