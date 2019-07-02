@@ -74,6 +74,7 @@ HornGroup.prototype.renderHornSurface = function( ctx, renderer ) {
   var frontRadius = frontDiameter/2 * scale;
   var rearRadius = rearDiameter/2 * scale;
   // does apex extend beyond eclipse of face
+  apexDistance = apexDistance + frontRadius/4 + rearRadius/4;
   var isApexVisible = frontRadius * eccen < apexDistance &&
                       rearRadius * eccen < apexDistance;
   if ( !isApexVisible ) {
@@ -204,6 +205,18 @@ Horn.prototype.create = function(/* options */) {
   
 };
 
+Horn.prototype.updateFrontCapDiameter = function(size) {
+	this.frontBase.stroke = size;
+	var baseZ = this.length/2;
+	this.frontBase.translate.z = (baseZ - size/2);
+}
+
+Horn.prototype.updateRearCapDiameter = function(size) {
+	this.rearBase.stroke = size;
+	var baseZ = this.length/2;
+	this.rearBase.translate.z = (-baseZ + size/2);
+}
+
 // Horn shape does not render anything
 Horn.prototype.render = function() {};
 
@@ -222,6 +235,12 @@ childProperties.forEach( function( property ) {
       this[ _prop ] = value;
       // set property on children
       if ( this.frontBase ) {
+		if (property === 'frontDiameter') {
+		  this.updateFrontCapDiameter(value);
+		}
+		if (property === 'rearDiameter') {
+		  this.updateRearCapDiameter(value);
+		}
         this.frontBase[ property ] = value;
         this.rearBase[ property ] = value;
         this.group[ property ] = value;
