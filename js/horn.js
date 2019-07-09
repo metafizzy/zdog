@@ -60,6 +60,8 @@ HornGroup.prototype.renderHornSurface = function( ctx, renderer ) {
   var rearBase = this.rearBase;
   var rearDiameter = rearBase.stroke;
   var scale = frontBase.renderNormal.magnitude();
+  var frontRadius = frontDiameter/2 * scale;
+  var rearRadius = rearDiameter/2 * scale;
   
   this.renderApex.set( rearBase.renderOrigin )
     .subtract( frontBase.renderOrigin );
@@ -70,9 +72,14 @@ HornGroup.prototype.renderHornSurface = function( ctx, renderer ) {
   var normalDistance = frontBase.renderNormal.magnitude2d();
   // eccentricity
   var eccenAngle = Math.acos( normalDistance / scale );
-  var eccen = Math.sin( eccenAngle );
-  var frontRadius = frontDiameter/2 * scale;
-  var rearRadius = rearDiameter/2 * scale;
+  var biggerRadius =  (frontRadius > rearRadius) ? frontRadius : rearRadius;
+  var eccenPercent;
+  if (frontRadius == 0 || rearRadius == 0) {
+	  eccenPercent = 1.0;
+  } else {
+	  eccenPercent = (Math.abs(frontRadius - rearRadius) / biggerRadius);
+  }
+  var eccen = Math.sin( eccenAngle ) * Math.sqrt(eccenPercent);
   // does apex extend beyond eclipse of face
   apexDistance = apexDistance + frontRadius/4 + rearRadius/4;
   var isApexVisible = frontRadius * eccen < apexDistance &&
