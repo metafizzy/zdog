@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "Round, flat, designer-friendly pseudo-3D engine",
   "main": "js/index.js",
+  "unpkg": "dist/zdog.dist.min.js",
   "files": [
     "dist/*.*",
     "js/*.*",
