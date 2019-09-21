@@ -6,12 +6,12 @@
   // module definition
   if ( typeof module == 'object' && module.exports ) {
     // CommonJS
-    module.exports = factory( root );
+    module.exports = factory();
   } else {
     // browser global
-    root.Zdog.Dragger = factory( root );
+    root.Zdog.Dragger = factory();
   }
-}( this, function factory( window ) {
+}( this, function factory() {
 
 // quick & dirty drag event stuff
 // messes up if multiple pointers/touches
