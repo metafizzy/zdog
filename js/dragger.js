@@ -20,12 +20,16 @@
 var downEvent = 'mousedown';
 var moveEvent = 'mousemove';
 var upEvent = 'mouseup';
-if ( window.PointerEvent ) {
+if (
+  (window && window.PointerEvent) ||
+  (document && document.PointerEvent)) {
   // PointerEvent, Chrome
   downEvent = 'pointerdown';
   moveEvent = 'pointermove';
   upEvent = 'pointerup';
-} else if ( 'ontouchstart' in window ) {
+} else if (
+  (window && 'ontouchstart' in window) ||
+  (document && 'ontouchstart' in document)) {
   // Touch Events, iOS Safari
   downEvent = 'touchstart';
   moveEvent = 'touchmove';
@@ -84,8 +88,8 @@ Dragger.prototype.dragStart = function( event, pointer ) {
   event.preventDefault();
   this.dragStartX = pointer.pageX;
   this.dragStartY = pointer.pageY;
-  window.addEventListener( moveEvent, this );
-  window.addEventListener( upEvent, this );
+  (document || window).addEventListener(moveEvent, this);
+  (document || window).addEventListener(upEvent, this);
   this.onDragStart( pointer );
 };
 
@@ -110,8 +114,8 @@ Dragger.prototype.onmouseup =
 Dragger.prototype.onpointerup =
 Dragger.prototype.ontouchend =
 Dragger.prototype.dragEnd = function(/* event */) {
-  window.removeEventListener( moveEvent, this );
-  window.removeEventListener( upEvent, this );
+  (document || window).removeEventListener(moveEvent, this);
+  (document || window).removeEventListener(upEvent, this);
   this.onDragEnd();
 };
 
