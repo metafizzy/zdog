@@ -1,5 +1,5 @@
 /*!
- * Zdog v1.1.0
+ * Zdog v1.1.1
  * Round, flat, designer-friendly pseudo-3D engine
  * Licensed MIT
  * https://zzz.dog
@@ -641,30 +641,34 @@ return Anchor;
   // module definition
   if ( typeof module == 'object' && module.exports ) {
     // CommonJS
-    module.exports = factory( root );
+    module.exports = factory();
   } else {
     // browser global
-    root.Zdog.Dragger = factory( root );
+    root.Zdog.Dragger = factory();
   }
-}( this, function factory( window ) {
+}( this, function factory() {
 
 // quick & dirty drag event stuff
 // messes up if multiple pointers/touches
 
+// check for browser window #85
+var hasWindow = typeof window != 'undefined';
 // event support, default to mouse events
 var downEvent = 'mousedown';
 var moveEvent = 'mousemove';
 var upEvent = 'mouseup';
-if ( window.PointerEvent ) {
-  // PointerEvent, Chrome
-  downEvent = 'pointerdown';
-  moveEvent = 'pointermove';
-  upEvent = 'pointerup';
-} else if ( 'ontouchstart' in window ) {
-  // Touch Events, iOS Safari
-  downEvent = 'touchstart';
-  moveEvent = 'touchmove';
-  upEvent = 'touchend';
+if ( hasWindow ) {
+  if ( window.PointerEvent ) {
+    // PointerEvent, Chrome
+    downEvent = 'pointerdown';
+    moveEvent = 'pointermove';
+    upEvent = 'pointerup';
+  } else if ( 'ontouchstart' in window ) {
+    // Touch Events, iOS Safari
+    downEvent = 'touchstart';
+    moveEvent = 'touchmove';
+    upEvent = 'touchend';
+  }
 }
 
 function noop() {}
@@ -719,8 +723,10 @@ Dragger.prototype.dragStart = function( event, pointer ) {
   event.preventDefault();
   this.dragStartX = pointer.pageX;
   this.dragStartY = pointer.pageY;
-  window.addEventListener( moveEvent, this );
-  window.addEventListener( upEvent, this );
+  if ( hasWindow ) {
+    window.addEventListener( moveEvent, this );
+    window.addEventListener( upEvent, this );
+  }
   this.onDragStart( pointer );
 };
 
