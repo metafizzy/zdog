@@ -16,9 +16,13 @@
     "uglify-js": "^3.5.3"
   },
   "scripts": {
-    "preversion": "make lint",
-    "version": "make version",
-    "test": "make lint"
+    "bundle": "node tasks/bundle",
+    "dist": "npm run bundle && npm run uglify",
+    "lint": "eslint js/ demos/ tasks/",
+    "preversion": "npm run lint",
+    "version": "node tasks/version && npm run dist && git add -A dist js",
+    "test": "npm run lint",
+    "uglify": "uglifyjs dist/zdog.dist.js -o dist/zdog.dist.min.js --mangle --comments /^!/"
   },
   "repository": {
     "type": "git",
