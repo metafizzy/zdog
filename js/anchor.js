@@ -139,9 +139,17 @@ Anchor.prototype.updateFlatGraph = function() {
 };
 
 // return Array of self & all child graph items
-Anchor.prototype.getFlatGraph = function() {
-  var flatGraph = [ this ];
-  return this.addChildFlatGraph( flatGraph );
+Anchor.prototype.getFlatGraph = function () {
+  var flatGraph = [this];
+  var index = 0;
+  while (index < flatGraph.length) {
+    var currentGraph = flatGraph[index];
+    currentGraph.children.forEach(function (child) {
+      flatGraph.push(child);
+    });
+    index++;
+  }
+  return flatGraph;
 };
 
 Anchor.prototype.addChildFlatGraph = function( flatGraph ) {
