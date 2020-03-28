@@ -1,9 +1,9 @@
 /*!
- * Zdog v1.1.1
+ * Zdog v1.1.2
  * Round, flat, designer-friendly pseudo-3D engine
  * Licensed MIT
  * https://zzz.dog
- * Copyright 2019 Metafizzy
+ * Copyright 2020 Metafizzy
  */
 
 /**
