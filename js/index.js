@@ -24,6 +24,7 @@
         require('./hemisphere'),
         require('./cylinder'),
         require('./cone'),
+		require('./horn'),
         require('./box')
     );
   } else if ( typeof define == 'function' && define.amd ) {
@@ -32,7 +33,7 @@
   }
 })( this, function factory( Zdog, CanvasRenderer, SvgRenderer, Vector, Anchor,
     Dragger, Illustration, PathCommand, Shape, Group, Rect, RoundedRect,
-    Ellipse, Polygon, Hemisphere, Cylinder, Cone, Box ) {
+    Ellipse, Polygon, Hemisphere, Cylinder, Cone, Horn, Box ) {
 
       Zdog.CanvasRenderer = CanvasRenderer;
       Zdog.SvgRenderer = SvgRenderer;
@@ -50,6 +51,7 @@
       Zdog.Hemisphere = Hemisphere;
       Zdog.Cylinder = Cylinder;
       Zdog.Cone = Cone;
+	  Zdog.Horn = Horn;
       Zdog.Box = Box;
 
       return Zdog;
