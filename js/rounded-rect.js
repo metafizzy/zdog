@@ -37,7 +37,7 @@ RoundedRect.prototype.setPath = function() {
     { arc: [
       { x: xA, y: -yA },
       { x: xA, y: -yB },
-    ]},
+    ] },
   ];
   // bottom right corner
   if ( yB ) {
@@ -46,7 +46,7 @@ RoundedRect.prototype.setPath = function() {
   path.push({ arc: [
     { x: xA, y:  yA },
     { x: xB, y:  yA },
-  ]});
+  ] });
   // bottom left corner
   if ( xB ) {
     path.push({ x: -xB, y: yA });
@@ -54,7 +54,7 @@ RoundedRect.prototype.setPath = function() {
   path.push({ arc: [
     { x: -xA, y:  yA },
     { x: -xA, y:  yB },
-  ]});
+  ] });
   // top left corner
   if ( yB ) {
     path.push({ x: -xA, y: -yB });
@@ -62,7 +62,7 @@ RoundedRect.prototype.setPath = function() {
   path.push({ arc: [
     { x: -xA, y: -yA },
     { x: -xB, y: -yA },
-  ]});
+  ] });
 
   // back to top right corner
   if ( xB ) {
@@ -74,4 +74,4 @@ RoundedRect.prototype.setPath = function() {
 
 return RoundedRect;
 
-}));
+} ) );

@@ -155,8 +155,8 @@ Illustration.prototype.prerenderCanvas = function() {
   ctx.clearRect( 0, 0, this.canvasWidth, this.canvasHeight );
   ctx.save();
   if ( this.centered ) {
-    var centerX = this.width/2 * this.pixelRatio;
-    var centerY = this.height/2 * this.pixelRatio;
+    var centerX = this.width / 2 * this.pixelRatio;
+    var centerY = this.height / 2 * this.pixelRatio;
     ctx.translate( centerX, centerY );
   }
   var scale = this.pixelRatio * this.zoom;
@@ -226,7 +226,7 @@ Illustration.prototype.setDragRotate = function( item ) {
   this.bindDrag( this.element );
 };
 
-Illustration.prototype.dragStart = function(/* event, pointer */) {
+Illustration.prototype.dragStart = function( /* event, pointer */) {
   this.dragStartRX = this.dragRotate.rotate.x;
   this.dragStartRY = this.dragRotate.rotate.y;
   Dragger.prototype.dragStart.apply( this, arguments );
@@ -236,8 +236,8 @@ Illustration.prototype.dragMove = function( event, pointer ) {
   var moveX = pointer.pageX - this.dragStartX;
   var moveY = pointer.pageY - this.dragStartY;
   var displaySize = Math.min( this.width, this.height );
-  var moveRY = moveX / displaySize * TAU;
-  var moveRX = moveY / displaySize * TAU;
+  var moveRY = moveX/displaySize * TAU;
+  var moveRX = moveY/displaySize * TAU;
   this.dragRotate.rotate.x = this.dragStartRX - moveRX;
   this.dragRotate.rotate.y = this.dragStartRY - moveRY;
   Dragger.prototype.dragMove.apply( this, arguments );
@@ -245,4 +245,4 @@ Illustration.prototype.dragMove = function( event, pointer ) {
 
 return Illustration;
 
-}));
+} ) );

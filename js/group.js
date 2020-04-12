@@ -26,7 +26,7 @@ Group.prototype.updateSortValue = function() {
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
     sortValueTotal += item.sortValue;
-  });
+  } );
   // average sort value of all points
   // def not geometrically correct, but works for me
   this.sortValue = sortValueTotal / this.flatGraph.length;
@@ -45,7 +45,7 @@ Group.prototype.render = function( ctx, renderer ) {
 
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, renderer );
-  });
+  } );
 };
 
 // actual group flatGraph only used inside group
@@ -62,4 +62,4 @@ Group.prototype.getFlatGraph = function() {
 
 return Group;
 
-}));
+} ) );

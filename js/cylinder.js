@@ -73,7 +73,7 @@ CylinderGroup.prototype.getRenderElement = function( ctx, renderer ) {
   }
   if ( !this.svgElement ) {
     // create svgElement
-    this.svgElement = document.createElementNS( svgURI, 'path');
+    this.svgElement = document.createElementNS( svgURI, 'path' );
   }
   return this.svgElement;
 };
@@ -99,7 +99,7 @@ var Cylinder = Shape.subclass({
 
 var TAU = utils.TAU;
 
-Cylinder.prototype.create = function(/* options */) {
+Cylinder.prototype.create = function( /* options */) {
   // call super
   Shape.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
@@ -109,7 +109,7 @@ Cylinder.prototype.create = function(/* options */) {
     color: this.color,
     visible: this.visible,
   });
-  var baseZ = this.length/2;
+  var baseZ = this.length / 2;
   var baseColor = this.backface || true;
   // front outside base
   this.frontBase = this.group.frontBase = new Ellipse({
@@ -153,11 +153,11 @@ childProperties.forEach( function( property ) {
         this.group[ property ] = value;
       }
     },
-  });
-});
+  } );
+} );
 
 // TODO child property setter for backface, frontBaseColor, & rearBaseColor
 
 return Cylinder;
 
-}));
+} ) );

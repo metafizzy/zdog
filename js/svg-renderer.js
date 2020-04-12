@@ -39,7 +39,7 @@ SvgRenderer.bezier = function( svg, elem, cp0, cp1, end ) {
     getPointString( end );
 };
 
-SvgRenderer.closePath = function(/* elem */) {
+SvgRenderer.closePath = function( /* elem */) {
   return 'Z';
 };
 
@@ -51,7 +51,7 @@ SvgRenderer.renderPath = function( svg, elem, pathCommands, isClosed ) {
   var pathValue = '';
   pathCommands.forEach( function( command ) {
     pathValue += command.render( svg, elem, SvgRenderer );
-  });
+  } );
   if ( isClosed ) {
     pathValue += this.closePath( svg, elem );
   }
@@ -77,4 +77,4 @@ SvgRenderer.end = function( svg, elem ) {
 
 return SvgRenderer;
 
-}));
+} ) );

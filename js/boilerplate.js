@@ -72,4 +72,4 @@ Zdog.easeInOut = function( alpha, power ) {
 
 return Zdog;
 
-}));
+} ) );

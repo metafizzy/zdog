@@ -52,10 +52,9 @@ var midDot = dot.copy({
   addTo: cube,
 });
 
-midDot.copy({ translate: { x: -1, y:  1 }} );
-midDot.copy({ translate: { x:  1, y: -1 }} );
-midDot.copy({ translate: { x: -1, y: -1 }} );
-
+midDot.copy({ translate: { x: -1, y:  1 } });
+midDot.copy({ translate: { x:  1, y: -1 } });
+midDot.copy({ translate: { x: -1, y: -1 } });
 
 // ----- animate ----- //
 
@@ -71,7 +70,7 @@ var cycleCount = 75;
 var turnLimit = keyframes.length - 1;
 
 function animate() {
-  var progress = ticker / cycleCount;
+  var progress = ticker/cycleCount;
   var tween = Zdog.easeInOut( progress % 1, 4 );
   var turn = Math.floor( progress % turnLimit );
   var keyA = keyframes[ turn ];

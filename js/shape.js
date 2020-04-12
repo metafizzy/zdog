@@ -79,7 +79,7 @@ Shape.prototype.updatePathCommands = function() {
     // update previousLastPoint
     previousPoint = command.endRenderPoint;
     return command;
-  });
+  } );
 };
 
 // ----- update ----- //
@@ -90,7 +90,7 @@ Shape.prototype.reset = function() {
   // reset command render points
   this.pathCommands.forEach( function( command ) {
     command.reset();
-  });
+  } );
 };
 
 Shape.prototype.transform = function( translation, rotation, scale ) {
@@ -101,11 +101,11 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   // transform points
   this.pathCommands.forEach( function( command ) {
     command.transform( translation, rotation, scale );
-  });
+  } );
   // transform children
   this.children.forEach( function( child ) {
     child.transform( translation, rotation, scale );
-  });
+  } );
 };
 
 Shape.prototype.updateSortValue = function() {
@@ -124,7 +124,7 @@ Shape.prototype.updateSortValue = function() {
   for ( var i = 0; i < pointCount; i++ ) {
     sortValueTotal += this.pathCommands[i].endRenderPoint.z;
   }
-  this.sortValue = sortValueTotal / pointCount;
+  this.sortValue = sortValueTotal/pointCount;
 };
 
 // ----- render ----- //
@@ -204,7 +204,7 @@ Shape.prototype.getRenderElement = function( ctx, renderer ) {
   }
   if ( !this.svgElement ) {
     // create svgElement
-    this.svgElement = document.createElementNS( svgURI, 'path');
+    this.svgElement = document.createElementNS( svgURI, 'path' );
     this.svgElement.setAttribute( 'stroke-linecap', 'round' );
     this.svgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
@@ -213,4 +213,4 @@ Shape.prototype.getRenderElement = function( ctx, renderer ) {
 
 return Shape;
 
-}));
+} ) );

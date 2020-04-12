@@ -7,8 +7,8 @@ var zoom = 5;
 var svgWidth = svg.getAttribute('width');
 var svgHeight = svg.getAttribute('height');
 // set viewBox for zoom & centering
-var viewWidth = svgWidth / zoom;
-var viewHeight = svgHeight / zoom;
+var viewWidth = svgWidth/zoom;
+var viewHeight = svgHeight/zoom;
 svg.setAttribute( 'viewBox', -viewWidth/2 + ' ' + -viewHeight/2 + ' ' +
   viewWidth + ' ' + viewHeight );
 // rendering variable
@@ -75,7 +75,7 @@ new Zdog.Dragger({
     dragStartRY = scene.rotate.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    scene.rotate.x = dragStartRX - ( moveY / minSize * TAU );
-    scene.rotate.y = dragStartRY - ( moveX / minSize * TAU );
+    scene.rotate.x = dragStartRX - ( moveY/minSize * TAU );
+    scene.rotate.y = dragStartRY - ( moveX/minSize * TAU );
   },
 });

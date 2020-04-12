@@ -10,9 +10,9 @@ let paths = cjsBlockMatch[0].match( /require\('([.\-/\w]+)'\)/gi );
 
 paths = paths.map( function( path ) {
   return path.replace( "require('.", 'js' ).replace( "')", '.js' );
-});
+} );
 paths.push( indexPath );
 
-execSync( `cat ${paths.join(' ')} > dist/zdog.dist.js`);
+execSync( `cat ${paths.join(' ')} > dist/zdog.dist.js` );
 
 console.log('bundled dist/zdog.dist.js');

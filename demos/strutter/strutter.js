@@ -93,7 +93,7 @@ var armSize = 6;
 
   var forearm = new Zdog.Shape({
     addTo: upperArm,
-    path: [ { x: 0 }, { x: armSize-2 } ],
+    path: [ { x: 0 }, { x: armSize - 2 } ],
     translate: { x: armSize },
     rotate: isRight ? { z: TAU/16 * 3, y: TAU/4 } :
       { z: -TAU/4, x: -TAU/32 * 2, y: TAU/8 },
@@ -108,7 +108,7 @@ var armSize = 6;
     color: gold,
   });
 
-});
+} );
 
 var head = new Zdog.Anchor({
   addTo: illo,
@@ -176,7 +176,7 @@ new Zdog.Shape({
     { arc: [
       { x: -1, z:  0 },
       { x: -1, z: -1 },
-    ]},
+    ] },
     { x:  -1, z: 0 },
   ],
   color: eggplant,
@@ -190,7 +190,7 @@ new Zdog.Shape({
     { arc: [
       { x: -1, z: 1 },
       { x:  0, z: 1 },
-    ]},
+    ] },
     { x: 0, z:  0 },
   ],
   color: eggplant,
@@ -201,7 +201,6 @@ brim.copyGraph({
   scale: brim.scale.copy().multiply({ x: -1 }),
 });
 
-
 // ----- animate ----- //
 
 var ticker = 0;
@@ -209,7 +208,7 @@ var cycleCount = 150;
 
 function animate() {
   if ( isSpinning ) {
-    var progress = ticker / cycleCount;
+    var progress = ticker/cycleCount;
     illo.rotate.y = Zdog.easeInOut( progress % 1, 4 ) * TAU - TAU/8;
     ticker++;
   }

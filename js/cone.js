@@ -23,7 +23,7 @@ var Cone = Ellipse.subclass({
 
 var TAU = utils.TAU;
 
-Cone.prototype.create = function(/* options */) {
+Cone.prototype.create = function( /* options */) {
   // call super
   Ellipse.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
@@ -68,9 +68,9 @@ Cone.prototype.renderConeSurface = function( ctx, renderer ) {
   var apexDistance = this.renderApex.magnitude2d();
   var normalDistance = this.renderNormal.magnitude2d();
   // eccentricity
-  var eccenAngle = Math.acos( normalDistance / scale );
+  var eccenAngle = Math.acos( normalDistance/scale );
   var eccen = Math.sin( eccenAngle );
-  var radius = this.diameter/2 * scale;
+  var radius = this.diameter / 2 * scale;
   // does apex extend beyond eclipse of face
   var isApexVisible = radius * eccen < apexDistance;
   if ( !isApexVisible ) {
@@ -79,8 +79,8 @@ Cone.prototype.renderConeSurface = function( ctx, renderer ) {
   // update tangents
   var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) +
       TAU/2;
-  var projectLength = apexDistance / eccen;
-  var projectAngle = Math.acos( radius / projectLength );
+  var projectLength = apexDistance/eccen;
+  var projectAngle = Math.acos( radius/projectLength );
   // set tangent points
   var tangentA = this.tangentA;
   var tangentB = this.tangentB;
@@ -116,7 +116,7 @@ Cone.prototype.getSurfaceRenderElement = function( ctx, renderer ) {
   }
   if ( !this.surfaceSvgElement ) {
     // create svgElement
-    this.surfaceSvgElement = document.createElementNS( svgURI, 'path');
+    this.surfaceSvgElement = document.createElementNS( svgURI, 'path' );
     this.surfaceSvgElement.setAttribute( 'stroke-linecap', 'round' );
     this.surfaceSvgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
@@ -130,4 +130,4 @@ Cone.prototype.setSurfaceRenderPoint = function( index, point ) {
 
 return Cone;
 
-}));
+} ) );

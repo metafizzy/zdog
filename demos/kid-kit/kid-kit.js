@@ -85,7 +85,6 @@ eye.copy({
   translate: { x: 8, z: 11 },
 });
 
-
 // ears
 var frontEarZ = 4;
 var topEarY = -30;
@@ -127,9 +126,9 @@ new Zdog.Shape({
 var innerEarXShift = 4;
 new Zdog.Shape({
   path: [
-    { x: earA.x - innerEarXShift, y: earA.y-3 },
-    { x: earD.x, y: earD.y+5 },
-    { x: earE.x + innerEarXShift, y: earE.y+2 },
+    { x: earA.x - innerEarXShift, y: earA.y - 3 },
+    { x: earD.x, y: earD.y + 5 },
+    { x: earE.x + innerEarXShift, y: earE.y + 2 },
   ],
   addTo: earAnchor,
   color: offWhite,
@@ -141,11 +140,10 @@ earAnchor.copyGraph({
   scale: { x: -1 },
 });
 
-
-//var whiskerX0 = 10*xSide;
-//var whiskerX1 = 17*xSide;
-//var whiskerY0 = -6+yShift;
-//var whiskerY1 = -2+yShift;
+// var whiskerX0 = 10*xSide;
+// var whiskerX1 = 17*xSide;
+// var whiskerY0 = -6+yShift;
+// var whiskerY1 = -2+yShift;
 
 // whiskers
 var whisker = new Zdog.Shape({
@@ -200,7 +198,7 @@ new Zdog.Shape({
 });
 // hand
 new Zdog.Shape({
-  path: [ { x: 11, y: 18, z: -1} ],
+  path: [ { x: 11, y: 18, z: -1 } ],
   addTo: armAnchor,
   color: eggplant,
   stroke: 10,
@@ -258,8 +256,8 @@ topCloakStrap.copy({
   scale: { x: -1 },
 });
 
-var vNeckY = ( cloakY1+cloakY2 ) / 2;
-var vNeckZ = ( cloakZ2+cloakZ1 ) / 2;
+var vNeckY = ( cloakY1 + cloakY2 )/2;
+var vNeckZ = ( cloakZ2 + cloakZ1 )/2;
 new Zdog.Shape({
   path: [
     { x: -cloakX0, y: cloakY1, z: cloakZ1 },
@@ -292,7 +290,6 @@ new Zdog.Shape({
 cloakSide.copyGraph({
   scale: { z: -1 },
 });
-
 
 // ----- animate ----- //
 

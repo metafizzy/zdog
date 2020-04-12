@@ -23,8 +23,8 @@ var TAU = utils.TAU;
 
 Polygon.prototype.setPath = function() {
   this.path = [];
-  for ( var i=0; i < this.sides; i++ ) {
-    var theta = i/this.sides * TAU - TAU/4;
+  for ( var i = 0; i < this.sides; i++ ) {
+    var theta = i / this.sides * TAU - TAU/4;
     var x = Math.cos( theta ) * this.radius;
     var y = Math.sin( theta ) * this.radius;
     this.path.push({ x: x, y: y });
@@ -33,4 +33,4 @@ Polygon.prototype.setPath = function() {
 
 return Polygon;
 
-}));
+} ) );

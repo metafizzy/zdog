@@ -48,11 +48,11 @@ new Zdog.Shape({
     { arc: [
       { x:  2, y: -6 }, // corner
       { x:  2, y:  2 }, // end point
-    ]},
+    ] },
     { arc: [ // start next arc from last end point
       { x:  2, y:  6 }, // corner
       { x:  6, y:  6 }, // end point
-    ]},
+    ] },
   ],
   translate: { x: -12, y: 12 },
   closed: false,
@@ -69,7 +69,7 @@ new Zdog.Shape({
       { x:  2, y: -6 }, // start control point
       { x:  2, y:  6 }, // end control point
       { x:  6, y:  6 }, // end control point
-    ]},
+    ] },
   ],
   translate: { x: 12, y: 12 },
   closed: false,

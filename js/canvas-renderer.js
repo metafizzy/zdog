@@ -41,7 +41,7 @@ CanvasRenderer.renderPath = function( ctx, elem, pathCommands, isClosed ) {
   this.begin( ctx, elem );
   pathCommands.forEach( function( command ) {
     command.render( ctx, elem, CanvasRenderer );
-  });
+  } );
   if ( isClosed ) {
     this.closePath( ctx, elem );
   }
@@ -68,4 +68,4 @@ CanvasRenderer.end = function() {};
 
 return CanvasRenderer;
 
-}));
+} ) );

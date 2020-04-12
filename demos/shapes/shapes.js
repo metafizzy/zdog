@@ -124,7 +124,7 @@ var cycleCount = 360;
 
 function animate() {
   if ( isSpinning ) {
-    var progress = ticker / cycleCount;
+    var progress = ticker/cycleCount;
     var theta = Zdog.easeInOut( progress % 1, 3 ) * TAU;
     illo.rotate.y = theta * 2;
     illo.rotate.x = Math.sin( theta ) * 0.5;

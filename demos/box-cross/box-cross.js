@@ -10,7 +10,7 @@ var orange = '#E62';
 var garnet = '#C25';
 var eggplant = '#636';
 
-var initRotate = { x: (35/360) * TAU, y: TAU/8 };
+var initRotate = { x: ( 35/360 ) * TAU, y: TAU/8 };
 
 var illo = new Zdog.Illustration({
   element: '.illo',
@@ -120,7 +120,7 @@ function spin() {
   if ( !isSpinning ) {
     return;
   }
-  var progress = ticker / cycleCount;
+  var progress = ticker/cycleCount;
   var turn = Math.floor( progress % 4 );
   var theta = Zdog.easeInOut( progress % 1, 3 ) * TAU;
   if ( turn == 0 || turn == 2 ) {

@@ -41,7 +41,7 @@ var face = new Zdog.Anchor({
 [ -1, 1 ].forEach( function( xSide ) {
   var eyeGroup = new Zdog.Group({
     addTo: face,
-    translate: { x: 2.4*xSide, y: -2 },
+    translate: { x: 2.4 * xSide, y: -2 },
     rotate: { x: -0.1 },
   });
   // eye
@@ -67,7 +67,7 @@ var face = new Zdog.Anchor({
   // cheek holder
   var cheekHolder = new Zdog.Anchor({
     addTo: body,
-    rotate: { y: 0.6*xSide },
+    rotate: { y: 0.6 * xSide },
   });
 
   new Zdog.Ellipse({
@@ -79,7 +79,7 @@ var face = new Zdog.Anchor({
     stroke: 1,
   });
 
-});
+} );
 
 // mouth
 new Zdog.Shape({
@@ -89,22 +89,22 @@ new Zdog.Shape({
       { x: 1.1, y: 0 },
       { x: 1.1, y: 0.2 },
       { x: 1.1, y: 0.5 },
-    ]},
+    ] },
     { bezier: [
       { x: 1.1, y: 1.1 },
       { x: 0.2, y: 1.8 },
       { x: 0, y: 1.8 },
-    ]},
+    ] },
     { bezier: [
       { x: -0.2, y: 1.8 },
       { x: -1.1, y: 1.1 },
       { x: -1.1, y: 0.5 },
-    ]},
+    ] },
     { bezier: [
       { x: -1.1, y: 0.2 },
       { x: -1.1, y: 0 },
       { x: 0, y: 0 },
-    ]},
+    ] },
   ],
   addTo: face,
   translate: { y: 2, z: -0.5 },
@@ -140,19 +140,19 @@ var rightFoot = new Zdog.Shape({
     { arc: [
       { x: 2, y: -2 },
       { x: 2, y: 0 },
-    ]},
+    ] },
     { arc: [
       { x: 2, y: 5 },
       { x: 0, y: 5 },
-    ]},
+    ] },
     { arc: [
       { x: -2, y: 5 },
       { x: -2, y: 0 },
-    ]},
+    ] },
     { arc: [
       { x: -2, y: -2 },
       { x: 0, y: -2 },
-    ]},
+    ] },
   ],
   addTo: body,
   translate: { x: -1, y: 9, z: -9 },
@@ -188,7 +188,7 @@ var starPath = ( function() {
   var path = [];
   var starRadiusA = 3;
   var starRadiusB = 1.7;
-  for ( var i=0; i<10; i++ ) {
+  for ( var i = 0; i < 10; i++ ) {
     var radius = i % 2 ? starRadiusA : starRadiusB;
     var angle = TAU * i/10 + TAU/4;
     var point = {
@@ -198,7 +198,7 @@ var starPath = ( function() {
     path.push( point );
   }
   return path;
-})();
+} )();
 // star shape
 var star = new Zdog.Shape({
   path: starPath,
@@ -217,11 +217,11 @@ new Zdog.Shape({
     { arc: [
       { z: 0, y: 4 },
       { z: 3, y: 4 },
-    ]},
+    ] },
     { arc: [
       { z: 6, y: 4 },
       { z: 6, y: 1 },
-    ]},
+    ] },
   ],
   addTo: umbrella,
   translate: { y: 23 },
@@ -234,20 +234,20 @@ new Zdog.Shape({
 ( function() {
   var umbPanelX = 14 * Math.sin( TAU/24 );
   var umbPanelZ = 14 * Math.cos( TAU/24 );
-  for ( var i=0; i<12; i++ ) {
-    var colorSide = Math.floor( i / 2 ) % 2;
+  for ( var i = 0; i < 12; i++ ) {
+    var colorSide = Math.floor( i/2 ) % 2;
     new Zdog.Shape({
       path: [
         { x: 0, y: 0, z: 0 },
         { arc: [
           { x: -umbPanelX, y: 0, z: umbPanelZ },
           { x: -umbPanelX, y: 14, z: umbPanelZ },
-        ]},
+        ] },
         { x: umbPanelX, y: 14, z: umbPanelZ },
         { arc: [
           { x: umbPanelX, y: 0, z: umbPanelZ },
           { x: 0, y: 0, z: 0 },
-        ]},
+        ] },
       ],
       addTo: umbrella,
       rotate: { y: TAU/12 * i },
@@ -256,11 +256,11 @@ new Zdog.Shape({
       fill: true,
     });
   }
-})();
+} )();
 
 // floater stars
 ( function() {
-  for ( var i=0; i < 6; i++ ) {
+  for ( var i = 0; i < 6; i++ ) {
     var starHolder = new Zdog.Anchor({
       addTo: umbrella,
       translate: { y: 10 },
@@ -271,7 +271,7 @@ new Zdog.Shape({
       translate: { z: 28 },
     });
   }
-})();
+} )();
 
 // ----- animate ----- //
 

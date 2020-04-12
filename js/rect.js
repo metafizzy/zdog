@@ -33,4 +33,4 @@ Rect.prototype.setPath = function() {
 
 return Rect;
 
-}));
+} ) );

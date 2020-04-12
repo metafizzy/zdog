@@ -19,7 +19,7 @@ var illo = new Zdog.Illustration({
     isSpinning = false;
   },
   onResize: function( width, height ) {
-    this.zoom = Math.floor( Math.min( width, height ) * 2 / sceneSize ) / 2;
+    this.zoom = Math.floor( Math.min( width, height ) * 2/sceneSize ) / 2;
   },
 });
 
@@ -33,7 +33,6 @@ var backGroup = new Zdog.Group({
   addTo: bigGroup,
   updateSort: true,
 });
-
 
 // top
 var topSide = new Zdog.Rect({
@@ -97,7 +96,7 @@ var slopeAngle = Math.atan( slopeH/slopeW );
 
 var slope = new Zdog.Rect({
   addTo: backGroup,
-  width: Math.sqrt( slopeH*slopeH + slopeW*slopeW ),
+  width: Math.sqrt( slopeH * slopeH + slopeW * slopeW ),
   height: depth,
   translate: { x: -5, y: -1 },
   rotate: { x: TAU/4, y: slopeAngle },
@@ -146,13 +145,13 @@ new Zdog.Shape({
     { arc: [
       { x: tongueS, y: tongueTip },
       { x: 0, y: tongueTip },
-    ]},
+    ] },
     { arc: [
       { x: -tongueS, y: tongueTip },
       { x: -tongueS, y: tongueH },
-    ]},
+    ] },
   ],
-  rotate: { x: TAU/4 - Math.atan(16/22) },
+  rotate: { x: TAU/4 - Math.atan( 16/22 ) },
   fill: true,
   stroke: 4,
   color: eggplant,
@@ -251,7 +250,7 @@ function spin() {
   if ( !isSpinning ) {
     return;
   }
-  var progress = ticker / cycleCount;
+  var progress = ticker/cycleCount;
   var tween = Zdog.easeInOut( progress % 1, 4 );
   var turn = Math.floor( progress % turnLimit );
   var keyA = keyframes[ turn ];

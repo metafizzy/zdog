@@ -50,7 +50,7 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow ];
 [ true, false ].forEach( function( isHemi ) {
   var shape = isHemi ? hemi : cone;
 
-  for ( var i=0; i < 5; i++ ) {
+  for ( var i = 0; i < 5; i++ ) {
     var rotor1 = new Zdog.Anchor({
       addTo: illo,
       rotate: { y: TAU/5 * i },
@@ -63,17 +63,17 @@ var colorWheel = [ eggplant, garnet, orange, gold, yellow ];
     shape.copy({
       addTo: rotor2,
       color: colorWheel[i],
-      backface: colorWheel[ (i+7) % 5 ],
+      backface: colorWheel[ ( i + 7 ) % 5 ],
     });
   }
-});
+} );
 
 // ----- animate ----- //
 
 var keyframes = [
-  { x: TAU*0, y: TAU*0 },
+  { x: TAU * 0, y: TAU * 0 },
   { x: TAU/2, y: TAU/2 },
-  { x: TAU*1, y: TAU*1 },
+  { x: TAU * 1, y: TAU * 1 },
 ];
 
 var ticker = 0;
@@ -90,7 +90,7 @@ function spin() {
   if ( !isSpinning ) {
     return;
   }
-  var progress = ticker / cycleCount;
+  var progress = ticker/cycleCount;
   var tween = Zdog.easeInOut( progress % 1, 3 );
   var turn = Math.floor( progress % turnLimit );
   var keyA = keyframes[ turn ];

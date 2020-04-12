@@ -3,9 +3,9 @@
 var illoElem = document.querySelector('.illo');
 var sceneSize = 96;
 var TAU = Zdog.TAU;
-var ROOT3 = Math.sqrt(3);
-var ROOT5 = Math.sqrt(5);
-var PHI = ( 1 + ROOT5 ) / 2;
+var ROOT3 = Math.sqrt( 3 );
+var ROOT5 = Math.sqrt( 5 );
+var PHI = ( 1 + ROOT5 )/2;
 var isSpinning = true;
 var viewRotation = new Zdog.Vector();
 var displaySize;
@@ -23,7 +23,7 @@ var illo = new Zdog.Illustration({
   resize: 'fullscreen',
   onResize: function( width, height ) {
     displaySize = Math.min( width, height );
-    this.zoom = Math.floor( displaySize / sceneSize );
+    this.zoom = Math.floor( displaySize/sceneSize );
   },
 });
 
@@ -56,7 +56,7 @@ var solids = [];
     backface: gold,
   });
 
-})();
+} )();
 
 // ----- sphere ----- //
 
@@ -83,7 +83,7 @@ var solids = [];
     backface: orange,
   });
 
-})();
+} )();
 
 // ----- cylinder ----- //
 
@@ -147,8 +147,7 @@ new Zdog.Cone({
     // backface: false,
   });
 
-
-  for ( var i=0; i < 3; i++ ) {
+  for ( var i = 0; i < 3; i++ ) {
     var rotor1 = new Zdog.Anchor({
       addTo: tetrahedron,
       rotate: { y: TAU/3 * -i },
@@ -156,7 +155,7 @@ new Zdog.Cone({
     var rotor2 = new Zdog.Anchor({
       addTo: rotor1,
       translate: { z: inradius, y: height/2 },
-      rotate: { x: Math.acos(1/3) * -1 + TAU/4 },
+      rotate: { x: Math.acos( 1/3 ) * -1 + TAU/4 },
     });
     triangle.copy({
       addTo: rotor2,
@@ -167,7 +166,7 @@ new Zdog.Cone({
 
   triangle.rotate.set({ x: -TAU/4, z: -TAU/2 });
 
-})();
+} )();
 
 // ----- octahedron ----- //
 
@@ -186,13 +185,13 @@ new Zdog.Cone({
   // radius of triangle with side length = 1
   var radius = ROOT3/2 * 2/3;
   var height = radius * 3/2;
-  var tilt = Math.asin( 0.5 / height );
+  var tilt = Math.asin( 0.5/height );
 
   [ -1, 1 ].forEach( function( ySide ) {
-    for ( var i=0; i < 4; i++ ) {
+    for ( var i = 0; i < 4; i++ ) {
       var rotor = new Zdog.Anchor({
         addTo: octahedron,
-        rotate: { y: TAU/4 * (i + 1.5) * -1 },
+        rotate: { y: TAU/4 * ( i + 1.5 ) * -1 },
       });
 
       var anchor = new Zdog.Anchor({
@@ -210,14 +209,13 @@ new Zdog.Cone({
         scale: { y: ySide },
         stroke: false,
         fill: true,
-        color: colorWheel[ i + 0.5 + 0.5*ySide ],
+        color: colorWheel[ i + 0.5 + 0.5 * ySide ],
         backface: false,
       });
     }
-  });
+  } );
 
-
-})();
+} )();
 
 // ----- cube ----- //
 
@@ -251,7 +249,7 @@ solids.push( cube );
   solids.push( dodecahedron );
 
   // https://en.wikipedia.org/wiki/Regular_dodecahedron#Dimensions
-  var midradius = ( PHI * PHI ) / 2;
+  var midradius = ( PHI * PHI )/2;
 
   // top & bottom faces
   var face = new Zdog.Polygon({
@@ -272,23 +270,21 @@ solids.push( cube );
     color: eggplant,
   });
 
-
   [ -1, 1 ].forEach( function( ySide ) {
-
 
     var colorWheel = {
       '-1': [ eggplant, garnet, gold, orange, garnet ],
       1: [ yellow, gold, garnet, orange, gold ],
     }[ ySide ];
 
-    for ( var i=0; i < 5; i++ ) {
+    for ( var i = 0; i < 5; i++ ) {
       var rotor1 = new Zdog.Anchor({
         addTo: dodecahedron,
         rotate: { y: TAU/5 * i },
       });
       var rotor2 = new Zdog.Anchor({
         addTo: rotor1,
-        rotate: { x: TAU/4*ySide - Math.atan(2) },
+        rotate: { x: TAU/4 * ySide - Math.atan( 2 ) },
       });
 
       face.copy({
@@ -298,9 +294,9 @@ solids.push( cube );
         color: colorWheel[i],
       });
     }
-  });
+  } );
 
-})();
+} )();
 
 // ----- isocahedron ----- //
 
@@ -320,10 +316,10 @@ solids.push( cube );
   var faceHeight = faceRadius * 3/2;
   var capApothem = 0.5 / Math.tan( TAU/10 );
   var capRadius = 0.5 / Math.sin( TAU/10 );
-  var capTilt = Math.asin( capApothem / faceHeight );
+  var capTilt = Math.asin( capApothem/faceHeight );
   var capSagitta = capRadius - capApothem;
-  var sideTilt = Math.asin( capSagitta / faceHeight );
-  var sideHeight = Math.sqrt( faceHeight*faceHeight - capSagitta*capSagitta );
+  var sideTilt = Math.asin( capSagitta/faceHeight );
+  var sideHeight = Math.sqrt( faceHeight * faceHeight - capSagitta * capSagitta );
 
   // var colorWheel = [ eggplant, garnet, orange, gold, yellow ];
 
@@ -338,7 +334,7 @@ solids.push( cube );
       1: [ gold, garnet, eggplant, orange, orange ],
     }[ ySide ];
 
-    for ( var i=0; i < 5; i++ ) {
+    for ( var i = 0; i < 5; i++ ) {
       var rotor = new Zdog.Anchor({
         addTo: isocahedron,
         rotate: { y: TAU/5 * -i },
@@ -381,9 +377,9 @@ solids.push( cube );
       });
 
     }
-  });
+  } );
 
-})();
+} )();
 
 // ----- animate ----- //
 
@@ -408,7 +404,7 @@ animate();
 function update() {
 
   if ( isSpinning ) {
-    var progress = ticker / cycleCount;
+    var progress = ticker/cycleCount;
     var tween = Zdog.easeInOut( progress % 1, 4 );
     var turn = Math.floor( progress % turnLimit );
     var keyA = keyframes[ turn ];
@@ -420,7 +416,7 @@ function update() {
 
   solids.forEach( function( solid ) {
     solid.rotate.set( viewRotation );
-  });
+  } );
 
   illo.updateGraph();
 }
@@ -437,7 +433,7 @@ new Zdog.Dragger({
     dragStartRY = viewRotation.y;
   },
   onDragMove: function( pointer, moveX, moveY ) {
-    viewRotation.x = dragStartRX - ( moveY / displaySize * TAU );
-    viewRotation.y = dragStartRY - ( moveX / displaySize * TAU );
+    viewRotation.x = dragStartRX - ( moveY/displaySize * TAU );
+    viewRotation.y = dragStartRY - ( moveX/displaySize * TAU );
   },
 });

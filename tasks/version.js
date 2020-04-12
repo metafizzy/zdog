@@ -10,4 +10,4 @@ boilerplateSrc = boilerplateSrc.replace( /\n \* Zdog v\d+\.\d+\.\d+/,
 
 fs.writeFileSync( boilerplatePath, boilerplateSrc, 'utf8' );
 
-console.log(`updated ${boilerplatePath} to ${version}`);
+console.log( `updated ${boilerplatePath} to ${version}` );

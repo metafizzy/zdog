@@ -15,7 +15,7 @@ var eggplant = '#636';
 [ Zdog.Rect, Zdog.Shape, Zdog.Ellipse ].forEach( function( Item ) {
   Item.defaults.fill = true;
   Item.defaults.stroke = false;
-});
+} );
 
 var initRotate = { y: TAU/8 };
 var turnRatio = 1 / Math.sin( TAU/8 );
@@ -79,11 +79,11 @@ new Zdog.Shape({
     { arc: [
       { x: -2, y: -3 },
       { x: 0, y: -3 },
-    ]},
+    ] },
     { arc: [
       { x: 2, y: -3 },
       { x: 2, y: -1 },
-    ]},
+    ] },
     { x: 2, y: 3 },
   ],
   translate: { x: 2, y: 4 },
@@ -99,7 +99,7 @@ var backGroup = frontGroup.copyGraph({
 backGroup.children.forEach( function( child, i ) {
   // orange windows, yellow wall
   child.color = i ? orange : yellow;
-});
+} );
 
 var rightGroup = new Zdog.Group({
   addTo: house,
@@ -153,7 +153,7 @@ var leftGroup = rightGroup.copyGraph({
 leftGroup.children.forEach( function( child, i ) {
   // eggplant windows, yellow wall
   child.color = i ? eggplant : orange;
-});
+} );
 
 // front roof
 var frontRoof = new Zdog.Shape({
@@ -193,7 +193,7 @@ var cycleCount = 240;
 
 function animate() {
   if ( isSpinning ) {
-    var progress = ticker / cycleCount;
+    var progress = ticker/cycleCount;
     var tween = Zdog.easeInOut( progress % 1, 3 );
     illo.rotate.y = tween * TAU + initRotate.y;
     ticker++;

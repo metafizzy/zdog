@@ -45,13 +45,13 @@ PathCommand.prototype.reset = function() {
   this.renderPoints.forEach( function( renderPoint, i ) {
     var point = points[i];
     renderPoint.set( point );
-  });
+  } );
 };
 
 PathCommand.prototype.transform = function( translation, rotation, scale ) {
   this.renderPoints.forEach( function( renderPoint ) {
     renderPoint.transform( translation, rotation, scale );
-  });
+  } );
 };
 
 PathCommand.prototype.render = function( ctx, elem, renderer ) {
@@ -88,4 +88,4 @@ PathCommand.prototype.arc = function( ctx, elem, renderer ) {
 
 return PathCommand;
 
-}));
+} ) );

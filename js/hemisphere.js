@@ -21,13 +21,13 @@ var Hemisphere = Ellipse.subclass({
 
 var TAU = utils.TAU;
 
-Hemisphere.prototype.create = function(/* options */) {
+Hemisphere.prototype.create = function( /* options */) {
   // call super
   Ellipse.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
   this.apex = new Anchor({
     addTo: this,
-    translate: { z: this.diameter/2 },
+    translate: { z: this.diameter / 2 },
   });
   // vector used for calculation
   this.renderCentroid = new Vector();
@@ -52,7 +52,7 @@ Hemisphere.prototype.renderDome = function( ctx, renderer ) {
   }
   var elem = this.getDomeRenderElement( ctx, renderer );
   var contourAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x );
-  var domeRadius = this.diameter/2 * this.renderNormal.magnitude();
+  var domeRadius = this.diameter / 2 * this.renderNormal.magnitude();
   var x = this.renderOrigin.x;
   var y = this.renderOrigin.y;
 
@@ -64,7 +64,7 @@ Hemisphere.prototype.renderDome = function( ctx, renderer ) {
     ctx.arc( x, y, domeRadius, startAngle, endAngle );
   } else if ( renderer.isSvg ) {
     // svg
-    contourAngle = (contourAngle - TAU/4) / TAU * 360;
+    contourAngle = ( contourAngle - TAU/4 ) / TAU * 360;
     this.domeSvgElement.setAttribute( 'd', 'M ' + -domeRadius + ',0 A ' +
         domeRadius + ',' + domeRadius + ' 0 0 1 ' + domeRadius + ',0' );
     this.domeSvgElement.setAttribute( 'transform',
@@ -84,7 +84,7 @@ Hemisphere.prototype.getDomeRenderElement = function( ctx, renderer ) {
   }
   if ( !this.domeSvgElement ) {
     // create svgElement
-    this.domeSvgElement = document.createElementNS( svgURI, 'path');
+    this.domeSvgElement = document.createElementNS( svgURI, 'path' );
     this.domeSvgElement.setAttribute( 'stroke-linecap', 'round' );
     this.domeSvgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
@@ -93,4 +93,4 @@ Hemisphere.prototype.getDomeRenderElement = function( ctx, renderer ) {
 
 return Hemisphere;
 
-}));
+} ) );

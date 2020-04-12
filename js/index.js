@@ -30,9 +30,11 @@
     /* globals define */ // AMD
     define( 'zdog', [], root.Zdog );
   }
-})( this, function factory( Zdog, CanvasRenderer, SvgRenderer, Vector, Anchor,
+/* eslint-disable max-params */
+} )( this, function factory( Zdog, CanvasRenderer, SvgRenderer, Vector, Anchor,
     Dragger, Illustration, PathCommand, Shape, Group, Rect, RoundedRect,
     Ellipse, Polygon, Hemisphere, Cylinder, Cone, Box ) {
+/* eslint-enable max-params */
 
       Zdog.CanvasRenderer = CanvasRenderer;
       Zdog.SvgRenderer = SvgRenderer;
@@ -53,4 +55,4 @@
       Zdog.Box = Box;
 
       return Zdog;
-});
+} );

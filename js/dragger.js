@@ -115,7 +115,7 @@ Dragger.prototype.dragMove = function( event, pointer ) {
 Dragger.prototype.onmouseup =
 Dragger.prototype.onpointerup =
 Dragger.prototype.ontouchend =
-Dragger.prototype.dragEnd = function(/* event */) {
+Dragger.prototype.dragEnd = function( /* event */) {
   window.removeEventListener( moveEvent, this );
   window.removeEventListener( upEvent, this );
   this.onDragEnd();
@@ -123,4 +123,4 @@ Dragger.prototype.dragEnd = function(/* event */) {
 
 return Dragger;
 
-}));
+} ) );

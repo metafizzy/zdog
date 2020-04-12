@@ -71,8 +71,8 @@ function rotateProperty( vec, angle, propA, propB ) {
   var sin = Math.sin( angle );
   var a = vec[ propA ];
   var b = vec[ propB ];
-  vec[ propA ] = a*cos - b*sin;
-  vec[ propB ] = b*cos + a*sin;
+  vec[ propA ] = a * cos - b * sin;
+  vec[ propB ] = b * cos + a * sin;
 }
 
 Vector.prototype.isSame = function( pos ) {
@@ -135,7 +135,7 @@ Vector.prototype.lerp = function( pos, alpha ) {
 };
 
 Vector.prototype.magnitude = function() {
-  var sum = this.x*this.x + this.y*this.y + this.z*this.z;
+  var sum = this.x * this.x + this.y * this.y + this.z * this.z;
   return getMagnitudeSqrt( sum );
 };
 
@@ -148,7 +148,7 @@ function getMagnitudeSqrt( sum ) {
 }
 
 Vector.prototype.magnitude2d = function() {
-  var sum = this.x*this.x + this.y*this.y;
+  var sum = this.x * this.x + this.y * this.y;
   return getMagnitudeSqrt( sum );
 };
 
@@ -158,4 +158,4 @@ Vector.prototype.copy = function() {
 
 return Vector;
 
-}));
+} ) );

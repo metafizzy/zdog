@@ -91,7 +91,7 @@ Anchor.prototype.update = function() {
   // update children
   this.children.forEach( function( child ) {
     child.update();
-  });
+  } );
   this.transform( this.translate, this.rotate, this.scale );
 };
 
@@ -104,7 +104,7 @@ Anchor.prototype.transform = function( translation, rotation, scale ) {
   // transform children
   this.children.forEach( function( child ) {
     child.transform( translation, rotation, scale );
-  });
+  } );
 };
 
 Anchor.prototype.updateGraph = function() {
@@ -112,7 +112,7 @@ Anchor.prototype.updateGraph = function() {
   this.updateFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
-  });
+  } );
   // z-sort
   this.flatGraph.sort( Anchor.shapeSorter );
 };
@@ -132,7 +132,7 @@ Object.defineProperty( Anchor.prototype, 'flatGraph', {
   set: function( graph ) {
     this._flatGraph = graph;
   },
-});
+} );
 
 Anchor.prototype.updateFlatGraph = function() {
   this.flatGraph = this.getFlatGraph();
@@ -148,7 +148,7 @@ Anchor.prototype.addChildFlatGraph = function( flatGraph ) {
   this.children.forEach( function( child ) {
     var childFlatGraph = child.getFlatGraph();
     Array.prototype.push.apply( flatGraph, childFlatGraph );
-  });
+  } );
   return flatGraph;
 };
 
@@ -168,7 +168,7 @@ Anchor.prototype.renderGraphCanvas = function( ctx ) {
   }
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, CanvasRenderer );
-  });
+  } );
 };
 
 Anchor.prototype.renderGraphSvg = function( svg ) {
@@ -178,7 +178,7 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
   }
   this.flatGraph.forEach( function( item ) {
     item.render( svg, SvgRenderer );
-  });
+  } );
 };
 
 // ----- misc ----- //
@@ -202,7 +202,7 @@ Anchor.prototype.copyGraph = function( options ) {
     child.copyGraph({
       addTo: clone,
     });
-  });
+  } );
   return clone;
 };
 
@@ -227,13 +227,13 @@ function getSubclass( Super ) {
     Item.defaults = utils.extend( {}, Super.defaults );
     utils.extend( Item.defaults, defaults );
     // create optionKeys
-    Item.optionKeys = Super.optionKeys.slice(0);
+    Item.optionKeys = Super.optionKeys.slice( 0 );
     // add defaults keys to optionKeys, dedupe
     Object.keys( Item.defaults ).forEach( function( key ) {
       if ( !Item.optionKeys.indexOf( key ) != 1 ) {
         Item.optionKeys.push( key );
       }
-    });
+    } );
 
     Item.subclass = getSubclass( Item );
 
@@ -245,4 +245,4 @@ Anchor.subclass = getSubclass( Anchor );
 
 return Anchor;
 
-}));
+} ) );

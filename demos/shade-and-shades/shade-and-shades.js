@@ -9,7 +9,7 @@ Zdog.Shape.defaults.closed = false;
 [ Zdog.Shape, Zdog.Ellipse ].forEach( function( ShapeClass ) {
   ShapeClass.defaults.stroke = 3;
   ShapeClass.defaults.color = orange;
-});
+} );
 
 var isSpinning = true;
 var TAU = Zdog.TAU;
@@ -39,12 +39,12 @@ var illo = new Zdog.Illustration({
       { arc: [
         { x: -20, y: -20 },
         { x:   0, y: -20 },
-      ]},
+      ] },
     ],
-    rotate: { y: TAU/6 * i -TAU/12 },
+    rotate: { y: TAU/6 * i - TAU/12 },
     addTo: illo,
   });
-});
+} );
 
 // cap back
 new Zdog.Ellipse({
@@ -62,7 +62,7 @@ var brimConnector = new Zdog.Shape({
     { arc: [
       { x: -20, z: 6 },
       { x: -16, z: 12 },
-    ]},
+    ] },
   ],
   addTo: illo,
   translate: { y: 4 },
@@ -103,11 +103,11 @@ var brimBridge = new Zdog.Shape({
       { x: -16, y: 4, z: 30 },
       brimEdge,
       brimTip,
-    ]},
+    ] },
   ],
 });
 brimBridge.copy({
-  scale: { x: -1},
+  scale: { x: -1 },
 });
 
 // glasses front top
@@ -131,11 +131,11 @@ var glassLens = new Zdog.Shape({
     { arc: [
       { x: 1, y: 1 },
       { x: 0, y: 1 },
-    ]},
+    ] },
     { arc: [
       { x: -1, y: 1 },
       { x: -1, y: 0 },
-    ]},
+    ] },
   ],
   closed: true,
   scale: 5,
@@ -157,7 +157,7 @@ var glassesArm = new Zdog.Shape({
     { arc: [
       { x: -12, y: 0 },
       { x: -12, y: 8 },
-    ]},
+    ] },
   ],
   rotate: { y: TAU/4 },
   translate: { x: -16, y: 8 },
@@ -178,7 +178,7 @@ var cycleCount = 150;
 
 function animate() {
   if ( isSpinning ) {
-    var progress = ticker / cycleCount;
+    var progress = ticker/cycleCount;
     var tween = Zdog.easeInOut( progress % 1, 4 );
     illo.rotate.y = tween * TAU + initialRotate.y;
     ticker++;
