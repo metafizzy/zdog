@@ -70,6 +70,12 @@ function animate() {
 animate();
 ```
 
+## Online one-click setup for contributing
+
+Contribute to Zdog using a fully featured online development environment that will automatically: clone the repo and install the dependencies.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+
 ## About Zdog
 
 Hi, [Dave here](https://desandro.com). I wanted to make a video game. I needed a 3D engine, but most engines were too powerful and complex for me. I made Zdog so I could design and display simple 3D models without a lot of overhead.
