@@ -230,7 +230,7 @@ function getSubclass( Super ) {
     Item.optionKeys = Super.optionKeys.slice( 0 );
     // add defaults keys to optionKeys, dedupe
     Object.keys( Item.defaults ).forEach( function( key ) {
-      if ( !Item.optionKeys.indexOf( key ) != 1 ) {
+      if ( Item.optionKeys.indexOf( key ) < 0 ) {
         Item.optionKeys.push( key );
       }
     } );
