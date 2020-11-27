@@ -62,12 +62,18 @@ SvgRenderer.stroke = function( svg, elem, isStroke, color, lineWidth ) {
   if ( !isStroke ) {
     return;
   }
+  if (color && color.getSvgFill) {
+    color = color.getSvgFill(svg);
+  }
   elem.setAttribute( 'stroke', color );
   elem.setAttribute( 'stroke-width', lineWidth );
 };
 
 SvgRenderer.fill = function( svg, elem, isFill, color ) {
   var fillColor = isFill ? color : 'none';
+  if (fillColor && fillColor.getSvgFill) {
+    fillColor = fillColor.getSvgFill(svg);
+  }
   elem.setAttribute( 'fill', fillColor );
 };
 

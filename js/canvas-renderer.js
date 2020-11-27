@@ -51,17 +51,31 @@ CanvasRenderer.stroke = function( ctx, elem, isStroke, color, lineWidth ) {
   if ( !isStroke ) {
     return;
   }
-  ctx.strokeStyle = color;
   ctx.lineWidth = lineWidth;
-  ctx.stroke();
+  if (color && color.getCanvasFill) {
+    ctx.save();
+    ctx.strokeStyle = color.getCanvasFill(ctx);
+    ctx.stroke();
+    ctx.restore();
+  } else {
+    ctx.strokeStyle = color;
+    ctx.stroke();
+  }
 };
 
 CanvasRenderer.fill = function( ctx, elem, isFill, color ) {
   if ( !isFill ) {
     return;
   }
-  ctx.fillStyle = color;
-  ctx.fill();
+  if (color && color.getCanvasFill) {
+    ctx.save();
+    ctx.fillStyle = color.getCanvasFill(ctx);
+    ctx.fill();
+    ctx.restore();
+  } else {
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
 };
 
 CanvasRenderer.end = function() {};
