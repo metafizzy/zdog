@@ -28,20 +28,14 @@
     return tp.map(x => x / det);
   }
 
-  /**
-   * Possible values of a point map:
-   *   [x, y, width, height] => We use 3 points top-left, top-right, bottom-left
-   *   [x, y] => image size is used for width and height with the above rule
-   *   [vector, vector, vector] => provided points are used
-   */
-  function parsePointMap(img, map) {
+  function parsePointMap(size, map) {
     if (!Array.isArray(map) || !map.length) {
-      map = [0, 0, img.width, img.height];
+      map = [0, 0, size[0], size[1]];
     }
     if (typeof(map[0]) == "number") {
       if (map.length < 4) {
         let tmp = map;
-        map = [0, 0, img.width, img.height];
+        map = [0, 0, size[0], size[1]];
         for (let i = 0; i < tmp.length; i++) {
           map[i] = tmp[i];
         }
@@ -57,14 +51,60 @@
   }
 
   var idCounter = 0;
-  function Texture(img, options ) {
+
+  const optionKeys = [
+    'img',
+    'linearGrad',
+    'radialGrad',
+    'colorStops',
+    'src',
+    'dst'
+  ]
+
+  /**
+   * Creates a tecture map. Possible options:
+   *    img: Image object to be used as texture
+   *    linearGrad: [x1, y1, x2, y2]  Array defining the linear gradient
+   *    radialGrad: [x0, y0, r0, x1, y1, r1] Array defining the radial gradient
+   *    colorStops: [offset1, color1, offset2, color2...] Array defining the color
+   *                stops for the gradient, offset must be in range [0, 1]
+   *
+   *    src: <surface definition> Represents the surface for the texture. Above
+   *         gradient definition should be represented in this coordinate space
+   *    dst: <surface definition> Represents the surface of the object. This allows
+   *         keeping the texture definition independent of the surface definition
+   *
+   *   <surface definition> Can be represented in one of the following ways:
+   *     [x, y, width, height] => We use 3 points top-left, top-right, bottom-left
+   *     [x, y] => image/gradient size is used for width and height with the above rule
+   *     [vector, vector, vector] => provided points are used
+   */
+  function Texture(options) {
     this.id = idCounter++;
     this.isTexture = true;
-    this.img = img;
 
     options = options || { }
-    this.src = parsePointMap(img, options.src);
-    this.dst = parsePointMap(img, options.dst);
+    for (var key in options ) {
+      if (optionKeys.indexOf( key ) != -1 ) {
+        this[key] = options[key];
+      }
+    }
+
+    var size;
+    if (options.img) {
+      size = [options.img.width, options.img.height];
+    } else if (options.linearGrad) {
+      size = [Math.abs(options.linearGrad[2] - options.linearGrad[0]), Math.abs(options.linearGrad[3] - options.linearGrad[1])];
+    } else if (options.radialGrad) {
+      size = [Math.abs(options.radialGrad[3] - options.radialGrad[0]), Math.abs(options.radialGrad[4] - options.radialGrad[1])];
+    } else {
+      throw "One of [img, linearGrad, radialGrad] is required";
+    }
+    if (size[0] == 0) size[0] = size[1];
+    if (size[1] == 0) size[1] = size[0];
+
+    this.src = parsePointMap(size, options.src);
+    this.dst = parsePointMap(size, options.dst);
 
     this.srcInverse = inverse(
       this.src[0].x, this.src[0].y,
@@ -90,7 +130,18 @@
 
   Texture.prototype.getCanvasFill = function(ctx) {
     if (!this.pattern) {
-      this.pattern = ctx.createPattern(this.img, "repeat");
+      if (this.img) {
+        this.pattern = ctx.createPattern(this.img, "repeat");
+      } else {
+        this.pattern = this.linearGrad
+          ? ctx.createLinearGradient(...this.linearGrad)
+          : ctx.createRadialGradient(...this.radialGrad);
+        if (this.colorStops) {
+          for (var i = 0; i < this.colorStops.length; i+=2) {
+            this.pattern.addColorStop(this.colorStops[i], this.colorStops[i+1]);
+          }
+        }
+      }
     }
     // pattern.setTransform is not supported in IE,
     // so transform the context instead
@@ -101,21 +152,50 @@
   const svgURI = 'http://www.w3.org/2000/svg';
   Texture.prototype.getSvgFill = function(svg) {
     if (!this.svgPattern) {
-      this.svgPattern = document.createElementNS( svgURI, 'pattern');
-      this.svgPattern.setAttribute("id", "texture_" + this.id);
-      this.svgPattern.setAttribute("width", this.img.width);
-      this.svgPattern.setAttribute("height", this.img.height);
-      this.svgPattern.setAttribute("patternUnits", "userSpaceOnUse");
+      if (this.img) {
+        this.svgPattern = document.createElementNS( svgURI, 'pattern');
+        this.svgPattern.setAttribute("width", this.img.width);
+        this.svgPattern.setAttribute("height", this.img.height);
+        this.svgPattern.setAttribute("patternUnits", "userSpaceOnUse");
+        this.attrTransform = "patternTransform";
 
-      let img = document.createElementNS( svgURI, 'image');
-      img.setAttribute("href", this.img.src);
-      this.svgPattern.appendChild(img);
+        let img = document.createElementNS( svgURI, 'image');
+        img.setAttribute("href", this.img.src);
+        this.svgPattern.appendChild(img);
+      } else {
+        var type, vals, keys;
+        if (this.linearGrad) {
+          type = "linearGradient";
+          vals = this.linearGrad;
+          keys = ["x1", "y1", "x2", "y2"]
+        } else {
+          type = "radialGradient";
+          vals = this.radialGrad;
+          keys = ["fx", "fy", "fr", "cx", "cy", "r"]
+        }
+        this.svgPattern = document.createElementNS( svgURI, type);
+        for (var i = 0; i < keys.length; i++) {
+          this.svgPattern.setAttribute(keys[i], vals[i]);
+        }
+
+        if (this.colorStops) {
+          for (var i = 0; i < this.colorStops.length; i+=2) {
+            let colorStop = document.createElementNS(svgURI, 'stop' );
+            colorStop.setAttribute("offset", this.colorStops[i]);
+            colorStop.setAttribute("style", "stop-color:" + this.colorStops[i+1]);
+            this.svgPattern.appendChild(colorStop);
+          }
+        }
+        this.svgPattern.setAttribute("gradientUnits", "userSpaceOnUse");
+        this.attrTransform = "gradientTransform";
+      }
+      this.svgPattern.setAttribute("id", "texture_" + this.id);
 
       this.defs = document.createElementNS(svgURI, 'defs' );
       this.defs.appendChild(this.svgPattern);
-
     }
-    this.svgPattern.setAttribute("patternTransform", `matrix(${this.getMatrix().join(' ')})`);
+
+    this.svgPattern.setAttribute(this.attrTransform, `matrix(${this.getMatrix().join(' ')})`);
     svg.appendChild( this.defs );
     return `url(#texture_${this.id})`;
   }
@@ -134,7 +214,7 @@
   };
 
   Texture.prototype.clone = function() {
-    return new Texture(this.img, this);
+    return new Texture(this);
   };
 
   return Texture;
