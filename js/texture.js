@@ -25,7 +25,7 @@
       y3 - y1, x1 - x3, x3*y1 - x1*y3,
       y1 - y2, x2 - x1, x1*y2 - x2*y1];
     let det = tp[2] + tp[5] + tp[8];
-    return tp.map(x => x / det);
+    return tp.map(function(x) { return x / det;});
   }
 
   function parsePointMap(size, map) {
@@ -134,8 +134,8 @@
         this.pattern = ctx.createPattern(this.img, "repeat");
       } else {
         this.pattern = this.linearGrad
-          ? ctx.createLinearGradient(...this.linearGrad)
-          : ctx.createRadialGradient(...this.radialGrad);
+          ? ctx.createLinearGradient.apply(ctx, this.linearGrad)
+          : ctx.createRadialGradient.apply(ctx, this.radialGrad);
         if (this.colorStops) {
           for (var i = 0; i < this.colorStops.length; i+=2) {
             this.pattern.addColorStop(this.colorStops[i], this.colorStops[i+1]);
@@ -145,7 +145,7 @@
     }
     // pattern.setTransform is not supported in IE,
     // so transform the context instead
-    ctx.transform(...this.getMatrix());
+    ctx.transform.apply(ctx, this.getMatrix());
     return this.pattern;
   };
 
@@ -190,14 +190,15 @@
         this.attrTransform = "gradientTransform";
       }
       this.svgPattern.setAttribute("id", "texture_" + this.id);
+      this._svgUrl = 'url(#texture_' + this.id + ')';
 
       this.defs = document.createElementNS(svgURI, 'defs' );
       this.defs.appendChild(this.svgPattern);
     }
 
-    this.svgPattern.setAttribute(this.attrTransform, `matrix(${this.getMatrix().join(' ')})`);
+    this.svgPattern.setAttribute(this.attrTransform, 'matrix(' + this.getMatrix().join(' ') + ')');
     svg.appendChild( this.defs );
-    return `url(#texture_${this.id})`;
+    return this._svgUrl;
   }
 
   // ----- update ----- //
