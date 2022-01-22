@@ -1,5 +1,5 @@
 /*!
- * Zdog v1.1.2
+ * Zdog v1.1.3
  * Round, flat, designer-friendly pseudo-3D engine
  * Licensed MIT
  * https://zzz.dog
@@ -72,7 +72,7 @@ Zdog.easeInOut = function( alpha, power ) {
 
 return Zdog;
 
-}));
+} ) );
 /**
  * CanvasRenderer
  */
@@ -116,7 +116,7 @@ CanvasRenderer.renderPath = function( ctx, elem, pathCommands, isClosed ) {
   this.begin( ctx, elem );
   pathCommands.forEach( function( command ) {
     command.render( ctx, elem, CanvasRenderer );
-  });
+  } );
   if ( isClosed ) {
     this.closePath( ctx, elem );
   }
@@ -143,7 +143,7 @@ CanvasRenderer.end = function() {};
 
 return CanvasRenderer;
 
-}));
+} ) );
 /**
  * SvgRenderer
  */
@@ -185,7 +185,7 @@ SvgRenderer.bezier = function( svg, elem, cp0, cp1, end ) {
     getPointString( end );
 };
 
-SvgRenderer.closePath = function(/* elem */) {
+SvgRenderer.closePath = function( /* elem */) {
   return 'Z';
 };
 
@@ -197,7 +197,7 @@ SvgRenderer.renderPath = function( svg, elem, pathCommands, isClosed ) {
   var pathValue = '';
   pathCommands.forEach( function( command ) {
     pathValue += command.render( svg, elem, SvgRenderer );
-  });
+  } );
   if ( isClosed ) {
     pathValue += this.closePath( svg, elem );
   }
@@ -223,7 +223,7 @@ SvgRenderer.end = function( svg, elem ) {
 
 return SvgRenderer;
 
-}));
+} ) );
 /**
  * Vector
  */
@@ -297,8 +297,8 @@ function rotateProperty( vec, angle, propA, propB ) {
   var sin = Math.sin( angle );
   var a = vec[ propA ];
   var b = vec[ propB ];
-  vec[ propA ] = a*cos - b*sin;
-  vec[ propB ] = b*cos + a*sin;
+  vec[ propA ] = a * cos - b * sin;
+  vec[ propB ] = b * cos + a * sin;
 }
 
 Vector.prototype.isSame = function( pos ) {
@@ -361,7 +361,7 @@ Vector.prototype.lerp = function( pos, alpha ) {
 };
 
 Vector.prototype.magnitude = function() {
-  var sum = this.x*this.x + this.y*this.y + this.z*this.z;
+  var sum = this.x * this.x + this.y * this.y + this.z * this.z;
   return getMagnitudeSqrt( sum );
 };
 
@@ -374,7 +374,7 @@ function getMagnitudeSqrt( sum ) {
 }
 
 Vector.prototype.magnitude2d = function() {
-  var sum = this.x*this.x + this.y*this.y;
+  var sum = this.x * this.x + this.y * this.y;
   return getMagnitudeSqrt( sum );
 };
 
@@ -384,7 +384,7 @@ Vector.prototype.copy = function() {
 
 return Vector;
 
-}));
+} ) );
 /**
  * Anchor
  */
@@ -478,7 +478,7 @@ Anchor.prototype.update = function() {
   // update children
   this.children.forEach( function( child ) {
     child.update();
-  });
+  } );
   this.transform( this.translate, this.rotate, this.scale );
 };
 
@@ -491,7 +491,7 @@ Anchor.prototype.transform = function( translation, rotation, scale ) {
   // transform children
   this.children.forEach( function( child ) {
     child.transform( translation, rotation, scale );
-  });
+  } );
 };
 
 Anchor.prototype.updateGraph = function() {
@@ -499,7 +499,7 @@ Anchor.prototype.updateGraph = function() {
   this.updateFlatGraph();
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
-  });
+  } );
   // z-sort
   this.flatGraph.sort( Anchor.shapeSorter );
 };
@@ -519,7 +519,7 @@ Object.defineProperty( Anchor.prototype, 'flatGraph', {
   set: function( graph ) {
     this._flatGraph = graph;
   },
-});
+} );
 
 Anchor.prototype.updateFlatGraph = function() {
   this.flatGraph = this.getFlatGraph();
@@ -535,7 +535,7 @@ Anchor.prototype.addChildFlatGraph = function( flatGraph ) {
   this.children.forEach( function( child ) {
     var childFlatGraph = child.getFlatGraph();
     Array.prototype.push.apply( flatGraph, childFlatGraph );
-  });
+  } );
   return flatGraph;
 };
 
@@ -555,7 +555,7 @@ Anchor.prototype.renderGraphCanvas = function( ctx ) {
   }
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, CanvasRenderer );
-  });
+  } );
 };
 
 Anchor.prototype.renderGraphSvg = function( svg ) {
@@ -565,7 +565,7 @@ Anchor.prototype.renderGraphSvg = function( svg ) {
   }
   this.flatGraph.forEach( function( item ) {
     item.render( svg, SvgRenderer );
-  });
+  } );
 };
 
 // ----- misc ----- //
@@ -589,7 +589,7 @@ Anchor.prototype.copyGraph = function( options ) {
     child.copyGraph({
       addTo: clone,
     });
-  });
+  } );
   return clone;
 };
 
@@ -614,13 +614,13 @@ function getSubclass( Super ) {
     Item.defaults = utils.extend( {}, Super.defaults );
     utils.extend( Item.defaults, defaults );
     // create optionKeys
-    Item.optionKeys = Super.optionKeys.slice(0);
+    Item.optionKeys = Super.optionKeys.slice( 0 );
     // add defaults keys to optionKeys, dedupe
     Object.keys( Item.defaults ).forEach( function( key ) {
       if ( !Item.optionKeys.indexOf( key ) != 1 ) {
         Item.optionKeys.push( key );
       }
-    });
+    } );
 
     Item.subclass = getSubclass( Item );
 
@@ -632,7 +632,7 @@ Anchor.subclass = getSubclass( Anchor );
 
 return Anchor;
 
-}));
+} ) );
 /**
  * Dragger
  */
@@ -750,7 +750,7 @@ Dragger.prototype.dragMove = function( event, pointer ) {
 Dragger.prototype.onmouseup =
 Dragger.prototype.onpointerup =
 Dragger.prototype.ontouchend =
-Dragger.prototype.dragEnd = function(/* event */) {
+Dragger.prototype.dragEnd = function( /* event */) {
   window.removeEventListener( moveEvent, this );
   window.removeEventListener( upEvent, this );
   this.onDragEnd();
@@ -758,7 +758,7 @@ Dragger.prototype.dragEnd = function(/* event */) {
 
 return Dragger;
 
-}));
+} ) );
 /**
  * Illustration
  */
@@ -916,8 +916,8 @@ Illustration.prototype.prerenderCanvas = function() {
   ctx.clearRect( 0, 0, this.canvasWidth, this.canvasHeight );
   ctx.save();
   if ( this.centered ) {
-    var centerX = this.width/2 * this.pixelRatio;
-    var centerY = this.height/2 * this.pixelRatio;
+    var centerX = this.width / 2 * this.pixelRatio;
+    var centerY = this.height / 2 * this.pixelRatio;
     ctx.translate( centerX, centerY );
   }
   var scale = this.pixelRatio * this.zoom;
@@ -987,7 +987,7 @@ Illustration.prototype.setDragRotate = function( item ) {
   this.bindDrag( this.element );
 };
 
-Illustration.prototype.dragStart = function(/* event, pointer */) {
+Illustration.prototype.dragStart = function( /* event, pointer */) {
   this.dragStartRX = this.dragRotate.rotate.x;
   this.dragStartRY = this.dragRotate.rotate.y;
   Dragger.prototype.dragStart.apply( this, arguments );
@@ -997,8 +997,8 @@ Illustration.prototype.dragMove = function( event, pointer ) {
   var moveX = pointer.pageX - this.dragStartX;
   var moveY = pointer.pageY - this.dragStartY;
   var displaySize = Math.min( this.width, this.height );
-  var moveRY = moveX / displaySize * TAU;
-  var moveRX = moveY / displaySize * TAU;
+  var moveRY = moveX/displaySize * TAU;
+  var moveRX = moveY/displaySize * TAU;
   this.dragRotate.rotate.x = this.dragStartRX - moveRX;
   this.dragRotate.rotate.y = this.dragStartRY - moveRY;
   Dragger.prototype.dragMove.apply( this, arguments );
@@ -1006,7 +1006,7 @@ Illustration.prototype.dragMove = function( event, pointer ) {
 
 return Illustration;
 
-}));
+} ) );
 /**
  * PathCommand
  */
@@ -1054,13 +1054,13 @@ PathCommand.prototype.reset = function() {
   this.renderPoints.forEach( function( renderPoint, i ) {
     var point = points[i];
     renderPoint.set( point );
-  });
+  } );
 };
 
 PathCommand.prototype.transform = function( translation, rotation, scale ) {
   this.renderPoints.forEach( function( renderPoint ) {
     renderPoint.transform( translation, rotation, scale );
-  });
+  } );
 };
 
 PathCommand.prototype.render = function( ctx, elem, renderer ) {
@@ -1097,7 +1097,7 @@ PathCommand.prototype.arc = function( ctx, elem, renderer ) {
 
 return PathCommand;
 
-}));
+} ) );
 /**
  * Shape
  */
@@ -1179,7 +1179,7 @@ Shape.prototype.updatePathCommands = function() {
     // update previousLastPoint
     previousPoint = command.endRenderPoint;
     return command;
-  });
+  } );
 };
 
 // ----- update ----- //
@@ -1190,7 +1190,7 @@ Shape.prototype.reset = function() {
   // reset command render points
   this.pathCommands.forEach( function( command ) {
     command.reset();
-  });
+  } );
 };
 
 Shape.prototype.transform = function( translation, rotation, scale ) {
@@ -1201,11 +1201,11 @@ Shape.prototype.transform = function( translation, rotation, scale ) {
   // transform points
   this.pathCommands.forEach( function( command ) {
     command.transform( translation, rotation, scale );
-  });
+  } );
   // transform children
   this.children.forEach( function( child ) {
     child.transform( translation, rotation, scale );
-  });
+  } );
 };
 
 Shape.prototype.updateSortValue = function() {
@@ -1224,7 +1224,7 @@ Shape.prototype.updateSortValue = function() {
   for ( var i = 0; i < pointCount; i++ ) {
     sortValueTotal += this.pathCommands[i].endRenderPoint.z;
   }
-  this.sortValue = sortValueTotal / pointCount;
+  this.sortValue = sortValueTotal/pointCount;
 };
 
 // ----- render ----- //
@@ -1304,7 +1304,7 @@ Shape.prototype.getRenderElement = function( ctx, renderer ) {
   }
   if ( !this.svgElement ) {
     // create svgElement
-    this.svgElement = document.createElementNS( svgURI, 'path');
+    this.svgElement = document.createElementNS( svgURI, 'path' );
     this.svgElement.setAttribute( 'stroke-linecap', 'round' );
     this.svgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
@@ -1313,7 +1313,7 @@ Shape.prototype.getRenderElement = function( ctx, renderer ) {
 
 return Shape;
 
-}));
+} ) );
 /**
  * Group
  */
@@ -1342,7 +1342,7 @@ Group.prototype.updateSortValue = function() {
   this.flatGraph.forEach( function( item ) {
     item.updateSortValue();
     sortValueTotal += item.sortValue;
-  });
+  } );
   // average sort value of all points
   // def not geometrically correct, but works for me
   this.sortValue = sortValueTotal / this.flatGraph.length;
@@ -1361,7 +1361,7 @@ Group.prototype.render = function( ctx, renderer ) {
 
   this.flatGraph.forEach( function( item ) {
     item.render( ctx, renderer );
-  });
+  } );
 };
 
 // actual group flatGraph only used inside group
@@ -1378,7 +1378,7 @@ Group.prototype.getFlatGraph = function() {
 
 return Group;
 
-}));
+} ) );
 /**
  * Rect
  */
@@ -1414,7 +1414,7 @@ Rect.prototype.setPath = function() {
 
 return Rect;
 
-}));
+} ) );
 /**
  * RoundedRect
  */
@@ -1454,7 +1454,7 @@ RoundedRect.prototype.setPath = function() {
     { arc: [
       { x: xA, y: -yA },
       { x: xA, y: -yB },
-    ]},
+    ] },
   ];
   // bottom right corner
   if ( yB ) {
@@ -1463,7 +1463,7 @@ RoundedRect.prototype.setPath = function() {
   path.push({ arc: [
     { x: xA, y:  yA },
     { x: xB, y:  yA },
-  ]});
+  ] });
   // bottom left corner
   if ( xB ) {
     path.push({ x: -xB, y: yA });
@@ -1471,7 +1471,7 @@ RoundedRect.prototype.setPath = function() {
   path.push({ arc: [
     { x: -xA, y:  yA },
     { x: -xA, y:  yB },
-  ]});
+  ] });
   // top left corner
   if ( yB ) {
     path.push({ x: -xA, y: -yB });
@@ -1479,7 +1479,7 @@ RoundedRect.prototype.setPath = function() {
   path.push({ arc: [
     { x: -xA, y: -yA },
     { x: -xB, y: -yA },
-  ]});
+  ] });
 
   // back to top right corner
   if ( xB ) {
@@ -1491,7 +1491,7 @@ RoundedRect.prototype.setPath = function() {
 
 return RoundedRect;
 
-}));
+} ) );
 /**
  * Ellipse
  */
@@ -1520,41 +1520,41 @@ var Ellipse = Shape.subclass({
 Ellipse.prototype.setPath = function() {
   var width = this.width != undefined ? this.width : this.diameter;
   var height = this.height != undefined ? this.height : this.diameter;
-  var x = width / 2;
-  var y = height / 2;
+  var x = width/2;
+  var y = height/2;
   this.path = [
     { x: 0, y: -y },
     { arc: [ // top right
       { x: x, y: -y },
       { x: x, y: 0 },
-    ]},
+    ] },
   ];
   // bottom right
   if ( this.quarters > 1 ) {
     this.path.push({ arc: [
       { x: x, y: y },
       { x: 0, y: y },
-    ]});
+    ] });
   }
   // bottom left
   if ( this.quarters > 2 ) {
     this.path.push({ arc: [
       { x: -x, y: y },
       { x: -x, y: 0 },
-    ]});
+    ] });
   }
   // top left
   if ( this.quarters > 3 ) {
     this.path.push({ arc: [
       { x: -x, y: -y },
       { x: 0, y: -y },
-    ]});
+    ] });
   }
 };
 
 return Ellipse;
 
-}));
+} ) );
 /**
  * Shape
  */
@@ -1580,8 +1580,8 @@ var TAU = utils.TAU;
 
 Polygon.prototype.setPath = function() {
   this.path = [];
-  for ( var i=0; i < this.sides; i++ ) {
-    var theta = i/this.sides * TAU - TAU/4;
+  for ( var i = 0; i < this.sides; i++ ) {
+    var theta = i / this.sides * TAU - TAU/4;
     var x = Math.cos( theta ) * this.radius;
     var y = Math.sin( theta ) * this.radius;
     this.path.push({ x: x, y: y });
@@ -1590,7 +1590,7 @@ Polygon.prototype.setPath = function() {
 
 return Polygon;
 
-}));
+} ) );
 /**
  * Hemisphere composite shape
  */
@@ -1614,13 +1614,13 @@ var Hemisphere = Ellipse.subclass({
 
 var TAU = utils.TAU;
 
-Hemisphere.prototype.create = function(/* options */) {
+Hemisphere.prototype.create = function( /* options */) {
   // call super
   Ellipse.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
   this.apex = new Anchor({
     addTo: this,
-    translate: { z: this.diameter/2 },
+    translate: { z: this.diameter / 2 },
   });
   // vector used for calculation
   this.renderCentroid = new Vector();
@@ -1645,7 +1645,7 @@ Hemisphere.prototype.renderDome = function( ctx, renderer ) {
   }
   var elem = this.getDomeRenderElement( ctx, renderer );
   var contourAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x );
-  var domeRadius = this.diameter/2 * this.renderNormal.magnitude();
+  var domeRadius = this.diameter / 2 * this.renderNormal.magnitude();
   var x = this.renderOrigin.x;
   var y = this.renderOrigin.y;
 
@@ -1657,7 +1657,7 @@ Hemisphere.prototype.renderDome = function( ctx, renderer ) {
     ctx.arc( x, y, domeRadius, startAngle, endAngle );
   } else if ( renderer.isSvg ) {
     // svg
-    contourAngle = (contourAngle - TAU/4) / TAU * 360;
+    contourAngle = ( contourAngle - TAU/4 ) / TAU * 360;
     this.domeSvgElement.setAttribute( 'd', 'M ' + -domeRadius + ',0 A ' +
         domeRadius + ',' + domeRadius + ' 0 0 1 ' + domeRadius + ',0' );
     this.domeSvgElement.setAttribute( 'transform',
@@ -1677,7 +1677,7 @@ Hemisphere.prototype.getDomeRenderElement = function( ctx, renderer ) {
   }
   if ( !this.domeSvgElement ) {
     // create svgElement
-    this.domeSvgElement = document.createElementNS( svgURI, 'path');
+    this.domeSvgElement = document.createElementNS( svgURI, 'path' );
     this.domeSvgElement.setAttribute( 'stroke-linecap', 'round' );
     this.domeSvgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
@@ -1686,7 +1686,7 @@ Hemisphere.prototype.getDomeRenderElement = function( ctx, renderer ) {
 
 return Hemisphere;
 
-}));
+} ) );
 /**
  * Cylinder composite shape
  */
@@ -1762,7 +1762,7 @@ CylinderGroup.prototype.getRenderElement = function( ctx, renderer ) {
   }
   if ( !this.svgElement ) {
     // create svgElement
-    this.svgElement = document.createElementNS( svgURI, 'path');
+    this.svgElement = document.createElementNS( svgURI, 'path' );
   }
   return this.svgElement;
 };
@@ -1788,7 +1788,7 @@ var Cylinder = Shape.subclass({
 
 var TAU = utils.TAU;
 
-Cylinder.prototype.create = function(/* options */) {
+Cylinder.prototype.create = function( /* options */) {
   // call super
   Shape.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
@@ -1798,7 +1798,7 @@ Cylinder.prototype.create = function(/* options */) {
     color: this.color,
     visible: this.visible,
   });
-  var baseZ = this.length/2;
+  var baseZ = this.length / 2;
   var baseColor = this.backface || true;
   // front outside base
   this.frontBase = this.group.frontBase = new Ellipse({
@@ -1842,14 +1842,14 @@ childProperties.forEach( function( property ) {
         this.group[ property ] = value;
       }
     },
-  });
-});
+  } );
+} );
 
 // TODO child property setter for backface, frontBaseColor, & rearBaseColor
 
 return Cylinder;
 
-}));
+} ) );
 /**
  * Cone composite shape
  */
@@ -1875,7 +1875,7 @@ var Cone = Ellipse.subclass({
 
 var TAU = utils.TAU;
 
-Cone.prototype.create = function(/* options */) {
+Cone.prototype.create = function( /* options */) {
   // call super
   Ellipse.prototype.create.apply( this, arguments );
   // composite shape, create child shapes
@@ -1920,9 +1920,9 @@ Cone.prototype.renderConeSurface = function( ctx, renderer ) {
   var apexDistance = this.renderApex.magnitude2d();
   var normalDistance = this.renderNormal.magnitude2d();
   // eccentricity
-  var eccenAngle = Math.acos( normalDistance / scale );
+  var eccenAngle = Math.acos( normalDistance/scale );
   var eccen = Math.sin( eccenAngle );
-  var radius = this.diameter/2 * scale;
+  var radius = this.diameter / 2 * scale;
   // does apex extend beyond eclipse of face
   var isApexVisible = radius * eccen < apexDistance;
   if ( !isApexVisible ) {
@@ -1931,8 +1931,8 @@ Cone.prototype.renderConeSurface = function( ctx, renderer ) {
   // update tangents
   var apexAngle = Math.atan2( this.renderNormal.y, this.renderNormal.x ) +
       TAU/2;
-  var projectLength = apexDistance / eccen;
-  var projectAngle = Math.acos( radius / projectLength );
+  var projectLength = apexDistance/eccen;
+  var projectAngle = Math.acos( radius/projectLength );
   // set tangent points
   var tangentA = this.tangentA;
   var tangentB = this.tangentB;
@@ -1968,7 +1968,7 @@ Cone.prototype.getSurfaceRenderElement = function( ctx, renderer ) {
   }
   if ( !this.surfaceSvgElement ) {
     // create svgElement
-    this.surfaceSvgElement = document.createElementNS( svgURI, 'path');
+    this.surfaceSvgElement = document.createElementNS( svgURI, 'path' );
     this.surfaceSvgElement.setAttribute( 'stroke-linecap', 'round' );
     this.surfaceSvgElement.setAttribute( 'stroke-linejoin', 'round' );
   }
@@ -1982,7 +1982,7 @@ Cone.prototype.setSurfaceRenderPoint = function( index, point ) {
 
 return Cone;
 
-}));
+} ) );
 /**
  * Box composite shape
  */
@@ -2023,16 +2023,17 @@ var boxDefaults = utils.extend( {}, Shape.defaults );
 delete boxDefaults.path;
 faceNames.forEach( function( faceName ) {
   boxDefaults[ faceName ] = true;
-});
+} );
 utils.extend( boxDefaults, {
   width: 1,
   height: 1,
   depth: 1,
   fill: true,
-});
+} );
 
 var Box = Anchor.subclass( boxDefaults );
 
+/* eslint-disable no-self-assign */
 Box.prototype.create = function( options ) {
   Anchor.prototype.create.call( this, options );
   this.updatePath();
@@ -2046,6 +2047,7 @@ Box.prototype.updatePath = function() {
     this[ faceName ] = this[ faceName ];
   }, this );
 };
+/* eslint-enable no-self-assign */
 
 faceNames.forEach( function( faceName ) {
   var _faceName = '_' + faceName;
@@ -2057,8 +2059,8 @@ faceNames.forEach( function( faceName ) {
       this[ _faceName ] = value;
       this.setFace( faceName, value );
     },
-  });
-});
+  } );
+} );
 
 Box.prototype.setFace = function( faceName, value ) {
   var rectProperty = faceName + 'Rect';
@@ -2088,36 +2090,36 @@ Box.prototype.getFaceOptions = function( faceName ) {
     frontFace: {
       width: this.width,
       height: this.height,
-      translate: { z: this.depth/2 },
+      translate: { z: this.depth / 2 },
     },
     rearFace: {
       width: this.width,
       height: this.height,
-      translate: { z: -this.depth/2 },
+      translate: { z: -this.depth / 2 },
       rotate: { y: TAU/2 },
     },
     leftFace: {
       width: this.depth,
       height: this.height,
-      translate: { x: -this.width/2 },
+      translate: { x: -this.width / 2 },
       rotate: { y: -TAU/4 },
     },
     rightFace: {
       width: this.depth,
       height: this.height,
-      translate: { x: this.width/2 },
+      translate: { x: this.width / 2 },
       rotate: { y: TAU/4 },
     },
     topFace: {
       width: this.width,
       height: this.depth,
-      translate: { y: -this.height/2 },
+      translate: { y: -this.height / 2 },
       rotate: { x: -TAU/4 },
     },
     bottomFace: {
       width: this.width,
       height: this.depth,
-      translate: { y: this.height/2 },
+      translate: { y: this.height / 2 },
       rotate: { x: TAU/4 },
     },
   }[ faceName ];
@@ -2145,12 +2147,12 @@ childProperties.forEach( function( property ) {
         }
       }, this );
     },
-  });
-});
+  } );
+} );
 
 return Box;
 
-}));
+} ) );
 /**
  * Index
  */
@@ -2183,9 +2185,11 @@ return Box;
     /* globals define */ // AMD
     define( 'zdog', [], root.Zdog );
   }
-})( this, function factory( Zdog, CanvasRenderer, SvgRenderer, Vector, Anchor,
+/* eslint-disable max-params */
+} )( this, function factory( Zdog, CanvasRenderer, SvgRenderer, Vector, Anchor,
     Dragger, Illustration, PathCommand, Shape, Group, Rect, RoundedRect,
     Ellipse, Polygon, Hemisphere, Cylinder, Cone, Box ) {
+/* eslint-enable max-params */
 
       Zdog.CanvasRenderer = CanvasRenderer;
       Zdog.SvgRenderer = SvgRenderer;
@@ -2206,4 +2210,4 @@ return Box;
       Zdog.Box = Box;
 
       return Zdog;
-});
+} );
