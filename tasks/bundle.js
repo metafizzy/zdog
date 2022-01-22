@@ -13,6 +13,6 @@ paths = paths.map( function( path ) {
 } );
 paths.push( indexPath );
 
-execSync( `cat ${paths.join(' ')} > dist/zdog.dist.js` );
+execSync(`cat ${paths.join(' ')} > dist/zdog.dist.js`);
 
 console.log('bundled dist/zdog.dist.js');
