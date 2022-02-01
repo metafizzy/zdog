@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+
+  <title>Textures</title>
+
+  <style>
+    html { height: 100%; }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    .illo {
+      display: block;
+      margin: 20px auto;
+      background: #FDB;
+      cursor: move;
+    }
+    .container {
+      margin: 0 5px;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      text-align: center;
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="row">
+    <h1>Canvas</h1>
+  </div>
+  <div class="row">
+    <div class="container">
+      <h3>Gradient</h3>
+      <canvas class="illo" id="illo_coin" width="300" height="300"></canvas>
+    </div>
+
+    <div class="container">
+      <h3>Box</h3>
+      <canvas class="illo" id="illo_box" width="300" height="300"></canvas>
+    </div>
+
+    <div class="container">
+      <h3>Tetrahedron</h3>
+      <canvas class="illo" id="illo_tetrahedron" width="300" height="300"></canvas>
+    </div>
+  </div>
+
+  <div class="row">
+    <h1>SVG</h1>
+  </div>
+  <div class="row">
+    <div class="container">
+      <h3>Gradient</h3>
+      <svg class="illo" id="illo_coin_svg" width="300" height="300"></svg>
+    </div>
+
+    <div class="container">
+      <h3>Box</h3>
+      <svg class="illo" id="illo_box_svg" width="300" height="300"></svg>
+    </div>
+
+    <div class="container">
+      <h3>Tetrahedron</h3>
+      <svg class="illo" id="illo_tetrahedron_svg" width="300" height="300"></svg>
+    </div>
+  </div>
+
+<script src="../../js/boilerplate.js"></script>
+<script src="../../js/canvas-renderer.js"></script>
+<script src="../../js/svg-renderer.js"></script>
+<script src="../../js/vector.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/path-command.js"></script>
+<script src="../../js/shape.js"></script>
+<script src="../../js/ellipse.js"></script>
+<script src="../../js/rect.js"></script>
+<script src="../../js/rounded-rect.js"></script>
+<script src="../../js/polygon.js"></script>
+<script src="../../js/group.js"></script>
+<script src="../../js/hemisphere.js"></script>
+<script src="../../js/cylinder.js"></script>
+<script src="../../js/cone.js"></script>
+<script src="../../js/box.js"></script>
+<script src="../../js/dragger.js"></script>
+<script src="../../js/illustration.js"></script>
+
+<script src="../../js/texture.js"></script>
+
+<script src="textures.js"></script>
+
+</body>
+</html>

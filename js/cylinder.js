@@ -120,14 +120,14 @@ Cylinder.prototype.create = function( /* options */) {
     color: this.color,
     stroke: this.stroke,
     fill: this.fill,
-    backface: this.frontFace || baseColor,
+    backface: utils.cloneColor(this.frontFace || baseColor),
     visible: this.visible,
   });
   // back outside base
   this.rearBase = this.group.rearBase = this.frontBase.copy({
     translate: { z: -baseZ },
     rotate: { y: 0 },
-    backface: baseColor,
+    backface: utils.cloneColor(baseColor),
   });
 };
 

@@ -87,7 +87,11 @@ Box.prototype.setFace = function( faceName, value ) {
   }
   // update & add face
   var options = this.getFaceOptions( faceName );
-  options.color = typeof value == 'string' ? value : this.color;
+  if (utils.isColor(value)) {
+    options.color = value;
+  } else {
+    options.color = utils.cloneColor(this.color);
+  }
 
   if ( rect ) {
     // update previous

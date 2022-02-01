@@ -70,6 +70,13 @@ Zdog.easeInOut = function( alpha, power ) {
   return isFirstHalf ? curve : 1 - curve;
 };
 
+Zdog.isColor = function(value) {
+  return (typeof value == 'string') || (value && value.isTexture);
+}
+Zdog.cloneColor = function(value) {
+  return (value && value.clone) ? value.clone() : value;
+}
+
 return Zdog;
 
 } ) );
