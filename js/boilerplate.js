@@ -25,6 +25,10 @@ var Zdog = {};
 
 Zdog.TAU = Math.PI * 2;
 
+Zdog.toRadians = function(degrees) {
+  return (Math.PI * degrees) / 180;
+};
+
 Zdog.extend = function( a, b ) {
   for ( var prop in b ) {
     a[ prop ] = b[ prop ];
